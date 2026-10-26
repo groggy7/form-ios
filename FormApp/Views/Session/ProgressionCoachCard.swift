@@ -609,8 +609,9 @@ private struct LockedProgressionTrend: Shape {
 }
 
 /// The ratings asked once every working set of an exercise is recorded: Smart Progression's effort rating and
-/// the opt-in joint-stress rating share one card, so there is never a second prompt. Both are the user's own
-/// reports; tapping the selected value again clears it.
+/// the opt-in joint-stress rating share one compact card under the last set, so there is never a second prompt.
+/// Both are the user's own reports; tapping the selected value again clears it. Their explanations are spoken
+/// hints and live in Settings, so the card stays one line per rating.
 struct ExerciseRatingsCard: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let effort: ProgressionEffort?
@@ -621,7 +622,7 @@ struct ExerciseRatingsCard: View {
     var body: some View {
         let _ = themeManager.currentTheme
         if onEffort != nil || onJointStress != nil {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 8) {
                 if let onEffort {
                     RatingSection(title: LanguageManager.t("progression.effort.title"), hint: LanguageManager.t("progression.effort.hint"),
                                   options: ProgressionEffort.allCases.map { ($0.rawValue, LanguageManager.t($0.labelKey)) },
@@ -636,9 +637,8 @@ struct ExerciseRatingsCard: View {
                                   selected: jointStress?.rawValue, identifier: "joint-stress") { onJointStress($0.flatMap(JointStress.init(rawValue:))) }
                 }
             }
-            .padding(.horizontal, 14).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
-            .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+            .padding(.horizontal, 12).padding(.vertical, 8).frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.surfaceRaised.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier("exercise-ratings")
         }
@@ -653,20 +653,25 @@ private struct RatingSection: View {
     let identifier: String
     let onSelect: (String?) -> Void
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
-    @ScaledMetric(relativeTo: .caption) private var hintSize = 12.0
     @ScaledMetric(relativeTo: .subheadline) private var optionSize = 13.0
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(hint)
-                .font(.app(size: hintSize)).foregroundStyle(AppColors.muted)
-                .fixedSize(horizontal: false, vertical: true)
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 8) { buttons }
-                VStack(alignment: .leading, spacing: 0) { buttons }
+        let label = Text(title)
+            .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+            .fixedSize(horizontal: false, vertical: true)
+        // The label shares the line with its choices while they fit, then the choices wrap below it.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                label.fixedSize().frame(maxWidth: .infinity, alignment: .leading)
+                // Whole words only: inline is chosen just when every choice fits at its natural width.
+                HStack(spacing: 8) { buttons }.fixedSize()
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                label
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) { buttons }.fixedSize()
+                    VStack(alignment: .leading, spacing: 0) { buttons }
+                }
             }
         }
         .accessibilityElement(children: .contain)
@@ -681,7 +686,7 @@ private struct RatingSection: View {
                     .font(.app(size: optionSize, weight: isSelected ? .semibold : .medium))
                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .padding(.horizontal, 12).padding(.vertical, 8)
                     .background(isSelected ? AppColors.positiveBg : AppColors.surfaceRaised)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -689,6 +694,8 @@ private struct RatingSection: View {
                     .frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("\(title), \(label)")
+            .accessibilityHint(hint)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             .accessibilityIdentifier("\(identifier)-\(code)")
         }

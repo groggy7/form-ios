@@ -26,7 +26,11 @@ final class RestAlertScheduler: NSObject, UNUserNotificationCenterDelegate {
 
     /// Read from the notification delegate; the open workout handles its own rest completion.
     var isWorkoutVisible = false
+    /// True while the first rest's tip is still to be read. The system prompt then waits for `resumeDeferredPrompt`,
+    /// so it never covers the tip.
+    var shouldDeferPrompt: () -> Bool = { false }
     private var plan: Plan?
+    private var deferredExerciseName: String?
     // Tests drive AppStore without touching the simulator's notification settings.
     private let isEnabled = NSClassFromString("XCTestCase") == nil
 
@@ -43,8 +47,30 @@ final class RestAlertScheduler: NSObject, UNUserNotificationCenterDelegate {
         guard isEnabled else { return }
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [Self.requestIdentifier])
+        deferredExerciseName = nil
         guard let next, let exerciseName = draft?.restTimer?.exerciseName else { return }
-        // Asks on the first rest rather than at launch; declining never blocks a workout.
+        center.getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                guard self.plan == next else { return }
+                if settings.authorizationStatus == .notDetermined && self.shouldDeferPrompt() {
+                    self.deferredExerciseName = exerciseName
+                } else {
+                    self.authorizeAndSchedule(next, exerciseName: exerciseName)
+                }
+            }
+        }
+    }
+
+    /// Asks for the deferred permission once the rest tip has been read, for the rest still running.
+    func resumeDeferredPrompt() {
+        guard isEnabled, let plan, let exerciseName = deferredExerciseName else { return }
+        deferredExerciseName = nil
+        authorizeAndSchedule(plan, exerciseName: exerciseName)
+    }
+
+    // Asks on the first rest rather than at launch; declining never blocks a workout.
+    private func authorizeAndSchedule(_ next: Plan, exerciseName: String) {
+        let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
             guard granted else { return }
             DispatchQueue.main.async {

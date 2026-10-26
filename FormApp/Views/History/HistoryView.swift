@@ -377,6 +377,7 @@ public struct HistoryView: View {
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var showBody = false
+    @State private var showQuickBodyLog = false
     @State private var displayedDate: Date = Date()
     @State private var selectedDateString: String? = ProcessInfo.processInfo.environment["SELECTED_HISTORY_DATE"]
 
@@ -628,7 +629,8 @@ public struct HistoryView: View {
                         }
 
                         // The day preview stays directly below the legend; the body log follows it.
-                        BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
+                        BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true },
+                                        onLog: { showQuickBodyLog = true })
                             .padding(.horizontal, 20)
                     }
 
@@ -654,6 +656,9 @@ public struct HistoryView: View {
     }
     .fullScreenCover(isPresented: $showBody) {
         BodyLogView(store: store)
+    }
+    .sheet(isPresented: $showQuickBodyLog) {
+        BodyQuickLogSheet(store: store)
     }
     // See Premium on a sample preview's last step opens that feature's paywall.
     .onChange(of: tour.paywallRequest) { _, request in
@@ -711,7 +716,8 @@ public struct HistoryView: View {
                         .padding(.horizontal, 20)
                     }
 
-                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
+                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true },
+                                        onLog: { showQuickBodyLog = true })
                         .padding(.horizontal, 20)
 
                     Spacer().frame(height: 24)

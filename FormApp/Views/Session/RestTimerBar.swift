@@ -12,6 +12,8 @@ public struct RestTimerBar: View {
     var onSkip: () -> Void
     var isMuted: Bool
     var onToggleMute: () -> Void
+    /// One line while the keyboard is up; tapping still opens the full rest screen.
+    var compact: Bool = false
 
     @State private var isExpanded: Bool = false
 
@@ -25,7 +27,8 @@ public struct RestTimerBar: View {
         onSetDuration: @escaping (Int) -> Void,
         onSkip: @escaping () -> Void,
         isMuted: Bool,
-        onToggleMute: @escaping () -> Void
+        onToggleMute: @escaping () -> Void,
+        compact: Bool = false
     ) {
         self.secondsRemaining = secondsRemaining
         self.totalSeconds = totalSeconds
@@ -37,6 +40,7 @@ public struct RestTimerBar: View {
         self.onSkip = onSkip
         self.isMuted = isMuted
         self.onToggleMute = onToggleMute
+        self.compact = compact
     }
 
     private var progress: Double {
@@ -54,6 +58,81 @@ public struct RestTimerBar: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
+        Group {
+            if compact { compactContent } else { fullContent }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, compact ? 8 : 12)
+        .background {
+            Button(action: { isExpanded = true }) {
+                RoundedRectangle(cornerRadius: compact ? 14 : 18, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [AppColors.restTimerSurfaceStart, AppColors.restTimerSurfaceEnd],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: compact ? 14 : 18, style: .continuous)
+                            .stroke(AppColors.restTimerBorder, lineWidth: 1)
+                    )
+                    .contentShape(RoundedRectangle(cornerRadius: compact ? 14 : 18, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(LanguageManager.t("rest.title")), \(exerciseName), \(timeText)")
+            .accessibilityHint(LanguageManager.t("rest.expand"))
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, compact ? 4 : 8)
+        .fullScreenCover(isPresented: $isExpanded) {
+            RestTimerFullScreenModal(
+                secondsRemaining: secondsRemaining,
+                totalSeconds: totalSeconds,
+                exerciseName: exerciseName,
+                isRunning: isRunning,
+                progress: progress,
+                complete: complete,
+                timeText: timeText,
+                isMuted: isMuted,
+                onDismiss: { isExpanded = false },
+                onTogglePause: onTogglePause,
+                onAddSeconds: onAddSeconds,
+                onSetDuration: onSetDuration,
+                onSkip: {
+                    isExpanded = false
+                    onSkip()
+                },
+                onToggleMute: onToggleMute
+            )
+        }
+    }
+
+    private var compactContent: some View {
+        HStack(spacing: 10) {
+            Text(LanguageManager.t("rest.title").uppercased())
+                .font(.app(size: 11, weight: .bold))
+                .tracking(1.25)
+                .foregroundStyle(AppColors.restTimerAccent)
+                .lineLimit(1)
+                .fixedSize()
+            Text(exerciseName)
+                .font(.app(size: 14, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(timeText)
+                .font(.app(size: 17, weight: .bold))
+                .monospacedDigit()
+                .foregroundStyle(AppColors.restTimerAccent)
+                .fixedSize()
+        }
+        .frame(minHeight: 28)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    private var fullContent: some View {
         VStack(alignment: .leading, spacing: 10) {
             // Top info row
             HStack(spacing: 12) {
@@ -125,51 +204,6 @@ public struct RestTimerBar: View {
 
                 Spacer()
             }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background {
-            Button(action: { isExpanded = true }) {
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [AppColors.restTimerSurfaceStart, AppColors.restTimerSurfaceEnd],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(AppColors.restTimerBorder, lineWidth: 1)
-                    )
-                    .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("\(LanguageManager.t("rest.title")), \(exerciseName), \(timeText)")
-            .accessibilityHint(LanguageManager.t("rest.expand"))
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 8)
-        .fullScreenCover(isPresented: $isExpanded) {
-            RestTimerFullScreenModal(
-                secondsRemaining: secondsRemaining,
-                totalSeconds: totalSeconds,
-                exerciseName: exerciseName,
-                isRunning: isRunning,
-                progress: progress,
-                complete: complete,
-                timeText: timeText,
-                isMuted: isMuted,
-                onDismiss: { isExpanded = false },
-                onTogglePause: onTogglePause,
-                onAddSeconds: onAddSeconds,
-                onSetDuration: onSetDuration,
-                onSkip: {
-                    isExpanded = false
-                    onSkip()
-                },
-                onToggleMute: onToggleMute
-            )
         }
     }
 }

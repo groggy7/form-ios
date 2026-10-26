@@ -31,6 +31,11 @@ public struct ActiveSessionView: View {
     @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
     @ObservedObject private var tour = TourController.shared
     @State private var compactHeight = false
+    /// While the keyboard is up, the exercise strip and navigation make way for a field bar and a one-line rest.
+    @State private var keyboardVisible = false
+    @StateObject private var fieldNavigator = SessionFieldNavigator()
+    /// The exercise whose notes panel is open.
+    @State private var notesOpenFor: String?
 
     /// Workout tours start only while no sheet, detail or summary covers the exercise screen.
     private var tourIdle: Bool {
@@ -170,7 +175,8 @@ public struct ActiveSessionView: View {
                             store.abandonActiveSession()
                         }
                     },
-                    weightUnit: store.weightUnit
+                    weightUnit: store.weightUnit,
+                    workoutNote: workoutNoteBinding
                 )
             } else {
                 let sessionColumn = VStack(spacing: 0) {
@@ -187,7 +193,8 @@ public struct ActiveSessionView: View {
                         onFinish: presentWorkoutSummary)
 
                     // The strip stays pinned above the sets, like Android, unless the window is too short for both.
-                    if !compactHeight { exerciseStrip }
+                    // Typing needs the room more than switching exercises does.
+                    if !compactHeight && !keyboardVisible { exerciseStrip }
 
                     // Main Content
                     ScrollViewReader { tourProxy in
@@ -199,8 +206,27 @@ public struct ActiveSessionView: View {
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 12) {
                                     // A substitute replaces the exercise only until one of its working sets is completed.
+                                    let setupNote = exercise.setupNote ?? ""
                                     ExerciseTitleRow(name: (Supersets.label(activeDraft.workout, exercise.id).map { "\($0) · " } ?? "") + exercise.displayName,
-                                        action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
+                                        action: HStack(spacing: 8) {
+                                            notesButton(for: exercise, hasNotes: !setupNote.isEmpty || !(activeDraft.note ?? "").isEmpty)
+                                            if !currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) { replaceButton(for: exercise) }
+                                        })
+
+                                    if notesOpenFor == exercise.id {
+                                        notesPanel(for: exercise)
+                                    } else if !setupNote.isEmpty {
+                                        // The setup is read before the first set, so a saved one sits under the name.
+                                        Button { openNotes(for: exercise) } label: {
+                                            Text(setupNote)
+                                                .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
+                                                .multilineTextAlignment(.leading).lineLimit(3)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .accessibilityLabel("\(LanguageManager.t("notes.setup")): \(setupNote)")
+                                        .accessibilityIdentifier("session-setup-note")
+                                    }
 
                                     let recommendation = historyInsights?.recommendation
                                     let showsProgressionCard = recommendation != nil && store.showProgressionTargets
@@ -265,6 +291,11 @@ public struct ActiveSessionView: View {
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let isRestForCurrentExercise = isRestActive && activeDraft.restTimer?.exerciseName == exercise.name
+                                    let workingRows = currentSets.filter { !$0.isWarmup }
+                                    let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
+                                    let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
+                                        workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
+                                    let asksJointStress = store.jointStressRatings && workingSetsDone
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -300,31 +331,18 @@ public struct ActiveSessionView: View {
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         logbookBeatenSets: logbookBeatenSets,
-                                        intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil
+                                        intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil,
+                                        // The ratings sit right under the last set, where the exercise ends.
+                                        ratings: asksEffort || asksJointStress ? AnyView(ExerciseRatingsCard(
+                                            effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
+                                            onEffort: asksEffort ? { setEffort($0, exerciseId: exercise.id) } : nil,
+                                            jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
+                                            onJointStress: asksJointStress ? { setJointStress($0, exerciseId: exercise.id) } : nil
+                                        )) : nil,
+                                        fieldNavigator: fieldNavigator
                                     )
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
                                     .padding(.top, showsProgressionCard || showsWarmupCard ? 8 : 0)
-
-                                    NoteField(titleKey: "notes.setup", text: Binding(
-                                        get: { exercise.setupNote ?? "" },
-                                        set: { store.updateSetupNote(exerciseId: exercise.id, text: $0) }))
-                                        .id("setup-note-\(exercise.id)")
-                                    NoteField(titleKey: "notes.workout", text: Binding(
-                                        get: { activeDraft.note ?? "" },
-                                        set: { text in store.updateActiveSession { current in
-                                            var copy = current; copy.note = text.isEmpty ? nil : text; return copy
-                                        } }))
-
-                                    let workingRows = currentSets.filter { !$0.isWarmup }
-                                    let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
-                                    let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
-                                        workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
-                                    ExerciseRatingsCard(
-                                        effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
-                                        onEffort: asksEffort ? { setEffort($0, exerciseId: exercise.id) } : nil,
-                                        jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
-                                        onJointStress: store.jointStressRatings && workingSetsDone ? { setJointStress($0, exerciseId: exercise.id) } : nil
-                                    )
                                 }
                                 .padding(.horizontal, 18)
                                 .padding(.top, 8)
@@ -340,93 +358,77 @@ public struct ActiveSessionView: View {
                         .padding(.top, compactHeight ? 0 : 10)
                         .padding(.bottom, 20)
                     }
+                    .scrollDismissesKeyboard(.interactively)
                     .tourScrollable(tourProxy)
                     }
 
-                    // Keep exercise navigation outside the scrolling content.
-                    HStack(spacing: 10) {
-                        Button(action: {
-                            if currentIndex > 0 {
-                                sessionMedia.freezeActive()
-                                store.updateActiveSession { d in
-                                    var copy = d
-                                    copy.currentExerciseIndex = currentIndex - 1
-                                    return copy
+                    if keyboardVisible {
+                        restBar(restTimer, compact: true)
+                        keyboardBar
+                    } else {
+                        // Keep exercise navigation outside the scrolling content.
+                        HStack(spacing: 10) {
+                            Button(action: {
+                                if currentIndex > 0 {
+                                    sessionMedia.freezeActive()
+                                    store.updateActiveSession { d in
+                                        var copy = d
+                                        copy.currentExerciseIndex = currentIndex - 1
+                                        return copy
+                                    }
                                 }
+                            }) {
+                                Image(systemName: "arrow.left")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                    .frame(width: 50, height: 50)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                    .stroke(AppColors.border, lineWidth: 1)
+                                            )
+                                    )
                             }
-                        }) {
-                            Image(systemName: "arrow.left")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
-                                .frame(width: 50, height: 50)
+                            .buttonStyle(.plain)
+                            .disabled(currentIndex <= 0)
+                            .accessibilityLabel(LanguageManager.t("session.prevExercise"))
+
+                            Button(action: {
+                                if let nextIndex = Supersets.nextIndex(currentDraft) {
+                                    sessionMedia.freezeActive()
+                                    store.updateActiveSession { d in
+                                        var copy = d
+                                        copy.currentExerciseIndex = Supersets.nextIndex(d) ?? nextIndex
+                                        return copy
+                                    }
+                                } else {
+                                    presentWorkoutSummary()
+                                }
+                            }) {
+                                HStack(spacing: 8) {
+                                    Text(LanguageManager.t(Supersets.nextIndex(activeDraft) != nil ? "session.nextExercise" : "session.review"))
+                                        .font(.app(size: 14, weight: .semibold))
+                                        .foregroundStyle(AppColors.background)
+                                    Image(systemName: "arrow.right")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundStyle(AppColors.background)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(minHeight: 50)
                                 .background(
                                     RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                        .fill(AppColors.surfaceRaised)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                                .stroke(AppColors.border, lineWidth: 1)
-                                        )
+                                        .fill(AppColors.accent)
                                 )
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
-                        .disabled(currentIndex <= 0)
-                        .accessibilityLabel(LanguageManager.t("session.prevExercise"))
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 8)
+                        .background(AppColors.background)
 
-                        Button(action: {
-                            if let nextIndex = Supersets.nextIndex(currentDraft) {
-                                sessionMedia.freezeActive()
-                                store.updateActiveSession { d in
-                                    var copy = d
-                                    copy.currentExerciseIndex = Supersets.nextIndex(d) ?? nextIndex
-                                    return copy
-                                }
-                            } else {
-                                presentWorkoutSummary()
-                            }
-                        }) {
-                            HStack(spacing: 8) {
-                                Text(LanguageManager.t(Supersets.nextIndex(activeDraft) != nil ? "session.nextExercise" : "session.review"))
-                                    .font(.app(size: 14, weight: .semibold))
-                                    .foregroundStyle(AppColors.background)
-                                Image(systemName: "arrow.right")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundStyle(AppColors.background)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: 50)
-                            .background(
-                                RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                    .fill(AppColors.accent)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 8)
-                    .background(AppColors.background)
-
-                    // Floating Rest Timer Bar
-                    if let rest = restTimer {
-                        TimelineView(.periodic(from: .now, by: 0.25)) { timeline in
-                            let remaining = rest.secondsRemaining(nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))
-                            if remaining > 0 {
-                                RestTimerBar(
-                                    secondsRemaining: remaining,
-                                    totalSeconds: rest.totalSeconds,
-                                    exerciseName: rest.exerciseName,
-                                    isRunning: rest.isRunning,
-                                    onTogglePause: { toggleRest() },
-                                    onAddSeconds: { adjustRest(seconds: $0) },
-                                    onSetDuration: { setRestDuration(seconds: $0) },
-                                    onSkip: { skipRest() },
-                                    // The rest chime and its notification follow the app sound setting, as on Android.
-                                    isMuted: !store.soundEnabled,
-                                    onToggleMute: { store.soundEnabled.toggle() }
-                                )
-                                .tourTarget("workout.rest", cornerRadius: 18)
-                                .padding(.bottom, 16)
-                            }
-                        }
+                        restBar(restTimer, compact: false)
                     }
                 }
                 .onGeometryChange(for: Bool.self) { $0.size.height < 480 } action: { compactHeight = $0 }
@@ -536,6 +538,10 @@ public struct ActiveSessionView: View {
         .tourTrigger(.workout, enabled: true)
         .tourTrigger(.restTimer, enabled: tour.hasTarget("workout.rest") && !tour.progress.shouldStart(.workout))
         .onChange(of: tourIdle, initial: true) { _, idle in tour.setIdle(idle, host: .workout) }
+        // The first rest's notification prompt follows its tip instead of covering it.
+        .onChange(of: tour.activeTour) { previous, active in
+            if previous == .restTimer && active != .restTimer { RestAlertScheduler.shared.resumeDeferredPrompt() }
+        }
         .task(id: mediaKey) {
             await sessionMedia.prepare(key: mediaKey, initialRowId: currentExercise?.id)
         }
@@ -645,6 +651,12 @@ public struct ActiveSessionView: View {
         }
         .onReceive(timer) { _ in
             checkRestTimerAlarm()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+            withAnimation(.easeOut(duration: 0.2)) { keyboardVisible = true }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+            withAnimation(.easeOut(duration: 0.2)) { keyboardVisible = false }
         }
         .alert(LanguageManager.t("session.exit"), isPresented: $showExitConfirmation) {
             Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
@@ -756,6 +768,131 @@ public struct ActiveSessionView: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("session-replace-exercise")
+    }
+
+    /// The running rest under the exercise: the full bar, or one line while the keyboard is up.
+    @ViewBuilder
+    private func restBar(_ restTimer: RestTimerState?, compact: Bool) -> some View {
+        if let rest = restTimer {
+            TimelineView(.periodic(from: .now, by: 0.25)) { timeline in
+                let remaining = rest.secondsRemaining(nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))
+                if remaining > 0 {
+                    RestTimerBar(
+                        secondsRemaining: remaining,
+                        totalSeconds: rest.totalSeconds,
+                        exerciseName: rest.exerciseName,
+                        isRunning: rest.isRunning,
+                        onTogglePause: { toggleRest() },
+                        onAddSeconds: { adjustRest(seconds: $0) },
+                        onSetDuration: { setRestDuration(seconds: $0) },
+                        onSkip: { skipRest() },
+                        // The rest chime and its notification follow the app sound setting, as on Android.
+                        isMuted: !store.soundEnabled,
+                        onToggleMute: { store.soundEnabled.toggle() },
+                        compact: compact
+                    )
+                    .tourTarget("workout.rest", cornerRadius: compact ? 14 : 18)
+                    .padding(.bottom, compact ? 0 : 16)
+                }
+            }
+        }
+    }
+
+    /// Sits on the keyboard like the system's input bar: previous and next field, then Done.
+    private var keyboardBar: some View {
+        HStack(spacing: 0) {
+            Button { fieldNavigator.send(.previous) } label: {
+                Image(systemName: "chevron.up").font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(fieldNavigator.canMovePrevious ? AppColors.text : AppColors.muted.opacity(0.4))
+                    .frame(width: 48, height: 44).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(!fieldNavigator.canMovePrevious)
+            .accessibilityLabel(LanguageManager.t("keyboard.previousField"))
+            Button { fieldNavigator.send(.next) } label: {
+                Image(systemName: "chevron.down").font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(fieldNavigator.canMoveNext ? AppColors.text : AppColors.muted.opacity(0.4))
+                    .frame(width: 48, height: 44).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(!fieldNavigator.canMoveNext)
+            .accessibilityLabel(LanguageManager.t("keyboard.nextField"))
+            Spacer(minLength: 8)
+            Button {
+                fieldNavigator.send(.done)
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            } label: {
+                Text(LanguageManager.t("common.done")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.accent)
+                    .padding(.horizontal, 12).frame(minWidth: 64, minHeight: 44).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("keyboard-done")
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 2)
+        .background(AppColors.surfaceRaised)
+        .accessibilityIdentifier("keyboard-bar")
+    }
+
+    private var workoutNoteBinding: Binding<String> {
+        Binding(
+            get: { currentDraft.note ?? "" },
+            set: { text in store.updateActiveSession { current in
+                var copy = current; copy.note = text.isEmpty ? nil : text; return copy
+            } })
+    }
+
+    private func openNotes(for exercise: Exercise) {
+        withAnimation(.easeInOut(duration: 0.2)) { notesOpenFor = exercise.id }
+    }
+
+    /// The title line's notes action; it turns mint once either note has text.
+    private func notesButton(for exercise: Exercise, hasNotes: Bool) -> some View {
+        Button {
+            if notesOpenFor == exercise.id {
+                withAnimation(.easeInOut(duration: 0.2)) { notesOpenFor = nil }
+            } else {
+                openNotes(for: exercise)
+            }
+        } label: {
+            Image(systemName: "note.text")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(hasNotes ? AppColors.accent : AppColors.text)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+                .frame(minWidth: 48, minHeight: 48)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(LanguageManager.t("notes.button"))
+        .accessibilityAddTraits(notesOpenFor == exercise.id ? .isSelected : [])
+        .accessibilityIdentifier("session-notes")
+    }
+
+    /// Both notes, opened from the title line: this occurrence's setup, then the note for the whole workout.
+    private func notesPanel(for exercise: Exercise) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            NoteEditor(titleKey: "notes.setup", text: Binding(
+                get: { exercise.setupNote ?? "" },
+                set: { store.updateSetupNote(exerciseId: exercise.id, text: $0) }))
+                .id("setup-note-\(exercise.id)")
+            NoteEditor(titleKey: "notes.workout", text: workoutNoteBinding)
+            Button {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                withAnimation(.easeInOut(duration: 0.2)) { notesOpenFor = nil }
+            } label: {
+                Text(LanguageManager.t("common.done")).font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.accent)
+                    .frame(minWidth: 48, minHeight: 44).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .accessibilityIdentifier("session-notes-done")
+        }
+        .padding(12)
+        .background(AppColors.surfaceRaised)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .accessibilityIdentifier("session-notes-panel")
     }
 
     // MARK: - Actions

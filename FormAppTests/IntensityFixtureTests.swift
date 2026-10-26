@@ -148,6 +148,18 @@ final class IntensitySetsBehaviorTests: XCTestCase {
         XCTAssertNil(set.technique)
     }
 
+    func testTheRemoveActionNamesThePartItRemoves() {
+        XCTAssertNil(IntensitySets.lastRemovablePart(main(1, 100, 6)))
+        XCTAssertEqual(IntensitySets.lastRemovablePart(IntensitySets.addingPartials(to: main(1, 100, 6))), .partials)
+        var set = IntensitySets.addingPartials(to: dropSet())
+        XCTAssertEqual(IntensitySets.lastRemovablePart(set), .partials)
+        set = IntensitySets.removingLastPart(set)
+        XCTAssertEqual(IntensitySets.lastRemovablePart(set), .drop)
+        let restPause = IntensitySets.addingExtension(.restPause, to: main(2, 100, 8), unit: .kg)
+        XCTAssertEqual(IntensitySets.lastRemovablePart(restPause), .restPause)
+        XCTAssertEqual(SetLoggingTable.removeKey(.restPause), "intensity.removeRestPause")
+    }
+
     func testUndoingOrInvalidatingTheSetUnticksItsExtensions() {
         let undone = WorkoutSessionUtils.togglingCompletion(of: 0, in: [dropSet()], prefillNextSet: false, unit: .kg)
         XCTAssertFalse(undone[0].isCompleted)

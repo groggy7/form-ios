@@ -262,6 +262,16 @@ extension BodyLog {
         return .save(stored: entry.hasValue ? entry : nil, hideHealth: hideHealth)
     }
 
+    /// The quick bodyweight sheet's form: the date's shown measurements unchanged, with the typed weight.
+    public static func quickLogInputs(shown: BodyEntry?, weight: String, unit: WeightUnit) -> [BodyMetric: String] {
+        var inputs: [BodyMetric: String] = [:]
+        for metric in BodyMetric.measurements {
+            if let value = shown?.value(metric) { inputs[metric] = BodyUnits.formatCanonical(metric, value, unit: unit) }
+        }
+        inputs[.bodyweight] = weight
+        return inputs
+    }
+
     /// Replaces or removes the date's typed entry and, when asked, hides its Health weigh-in.
     public static func applyEdit(_ entries: [BodyEntry], hidden: [String], date: String, stored: BodyEntry?,
                                  hideHealth: Bool) -> (entries: [BodyEntry], hidden: [String]) {

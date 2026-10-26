@@ -11,6 +11,8 @@ public struct SessionSummaryView: View {
     var onSaveAndClose: () -> Void
     var onDiscard: (() -> Void)? = nil
     var weightUnit: WeightUnit = .kg
+    /// The note for the whole workout, written while reviewing it before saving.
+    var workoutNote: Binding<String>? = nil
 
     public init(
         workoutTitle: String,
@@ -21,7 +23,8 @@ public struct SessionSummaryView: View {
         onBack: @escaping () -> Void,
         onSaveAndClose: @escaping () -> Void,
         onDiscard: (() -> Void)? = nil,
-        weightUnit: WeightUnit = .kg
+        weightUnit: WeightUnit = .kg,
+        workoutNote: Binding<String>? = nil
     ) {
         self.workoutTitle = workoutTitle
         self.durationSeconds = durationSeconds
@@ -32,6 +35,7 @@ public struct SessionSummaryView: View {
         self.onSaveAndClose = onSaveAndClose
         self.onDiscard = onDiscard
         self.weightUnit = weightUnit
+        self.workoutNote = workoutNote
     }
 
     private var totalExercises: Int { exerciseLogs.count }
@@ -163,6 +167,10 @@ public struct SessionSummaryView: View {
                                 )
                             }
 
+                            if let workoutNote {
+                                NoteField(titleKey: "notes.workout", text: workoutNote)
+                            }
+
                             // Exercise Recap Section
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(LanguageManager.t("summary.exerciseRecap"))
@@ -186,12 +194,13 @@ public struct SessionSummaryView: View {
                                                     .foregroundStyle(AppColors.text)
 
                                                 let subtitleText: String = {
+                                                    let sets = LanguageManager.t("history.setsFraction", ["completed": completedCount, "total": targetCount])
                                                     if isUnstarted {
-                                                        return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
+                                                        return "\(sets) • \(LanguageManager.t("history.notStarted"))"
                                                     } else if exerciseVolumeKg <= 0.0 {
-                                                        return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
+                                                        return "\(sets) • \(LanguageManager.t("exercise.history.bodyweight"))"
                                                     } else {
-                                                        return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
+                                                        return "\(sets) • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
                                                     }
                                                 }()
 

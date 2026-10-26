@@ -38,6 +38,25 @@ struct NoteField: View {
     }
 }
 
+/// A labeled multiline note that is already open, for a notes panel the user opened.
+struct NoteEditor: View {
+    let titleKey: String
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(LanguageManager.t(titleKey)).font(.app(size: 12, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+            TextField(LanguageManager.t(titleKey), text: $text, axis: .vertical)
+                .lineLimit(2...6).font(.app(size: 14)).foregroundStyle(AppColors.text)
+                .padding(12).background(AppColors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                .accessibilityIdentifier("\(titleKey)-input")
+                .onChange(of: text) { _, value in if value.count > 10_000 { text = String(value.prefix(10_000)) } }
+        }
+    }
+}
+
 struct SavedNote: View {
     let text: String?
     var body: some View {

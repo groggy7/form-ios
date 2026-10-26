@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 public struct SetLoggingTable: View {
     @ObservedObject var themeManager = ThemeManager.shared
@@ -28,6 +29,10 @@ public struct SetLoggingTable: View {
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     /// Drop sets, rest-pause and partials (docs/design/intensity-sets.md).
     var intensity: IntensityActions? = nil
+    /// The exercise's ratings, shown directly beneath its last set once every working set is done.
+    var ratings: AnyView? = nil
+    /// The keyboard bar's previous, next and Done controls.
+    var fieldNavigator: SessionFieldNavigator? = nil
     @State private var knownExtensionIds: [String] = []
 
     public init(
@@ -48,7 +53,9 @@ public struct SetLoggingTable: View {
         isAssisted: Bool = false,
         isBodyweight: Bool = false,
         logbookBeatenSets: [Int: LogbookBeatResult] = [:],
-        intensity: IntensityActions? = nil
+        intensity: IntensityActions? = nil,
+        ratings: AnyView? = nil,
+        fieldNavigator: SessionFieldNavigator? = nil
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -68,6 +75,8 @@ public struct SetLoggingTable: View {
         self.isBodyweight = isBodyweight
         self.logbookBeatenSets = logbookBeatenSets
         self.intensity = intensity
+        self.ratings = ratings
+        self.fieldNavigator = fieldNavigator
     }
 
     private func weightInputFontSize(_ text: String, width: CGFloat) -> CGFloat {
@@ -79,6 +88,7 @@ public struct SetLoggingTable: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
+        ScrollViewReader { scrollProxy in
         VStack(spacing: 8) {
             let workingSets = sets.filter { !$0.isWarmup }
             let done = workingSets.filter(\.isCompleted).count
@@ -136,7 +146,8 @@ public struct SetLoggingTable: View {
                     .font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
-            let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
+            let latestCompletedIndex = sets.lastIndex(where: { $0.isCompleted && !$0.isWarmup })
+            let selectedIndex = sets.firstIndex(where: { Self.field(selectedField, belongsTo: $0) })
             // Set rows sit closer than the table's other blocks; every input keeps its 48pt target.
             VStack(spacing: 4) {
                 ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
@@ -144,9 +155,10 @@ public struct SetLoggingTable: View {
                         let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                         let selectedInSet = Self.field(selectedField, belongsTo: set)
                         let isSetInputEnabled = isSetEnabled
-                        let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
-                            && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
-                            && (selectedInSet || index == currentLoggedIndex)
+                        // A technique follows a finished effort: offered under the newest completed working set until a
+                        // later set is being edited, and under any completed set being edited.
+                        let showsTechniqueMenu = intensity != nil && !set.isWarmup && set.isCompleted
+                            && (selectedInSet || (index == latestCompletedIndex && (selectedIndex ?? index) <= index))
                         let previous = set.isWarmup ? nil : previousSets[index].flatMap { $0.isWarmup ? nil : $0 }
                         let previousText: String = {
                             guard let previous, let load = previous.weightKg, load.isFinite, load >= 0,
@@ -187,54 +199,83 @@ public struct SetLoggingTable: View {
 
                         let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight))
 
-                        HStack(spacing: 8) {
-                            Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
-                                .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
-                                .foregroundStyle(
-                                    set.isWarmup
-                                        ? AppColors.warmupAmber
-                                        : (set.isCompleted
-                                            ? AppColors.accent
-                                            : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
-                                )
-                                .frame(width: 32, alignment: .center)
+                        // A set and its drops, rest-pause efforts and partials share one container, so they read as one set.
+                        VStack(spacing: 0) {
+                            HStack(spacing: 8) {
+                                Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
+                                    .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
+                                    .foregroundStyle(
+                                        set.isWarmup
+                                            ? AppColors.warmupAmber
+                                            : (set.isCompleted
+                                                ? AppColors.accent
+                                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
+                                    )
+                                    .frame(width: 32, alignment: .center)
 
-                            let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
-                            if set.isWarmup {
-                                Text(LanguageManager.t("warmup.badge"))
-                                    .font(.app(size: 10.5, weight: .bold))
-                                    .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
-                                    .lineLimit(1)
-                                    .frame(width: 56, alignment: .center)
-                            } else {
-                                let beaten = beatResult != nil && previous != nil
-                                Text(previousText.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
-                                    .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(previousText, unit: weightUnit) +
-                                        (previous == nil ? "" : beatResult.map { ", \(WorkoutSessionUtils.formatLogbookBeatBadge(result: $0, unit: weightUnit))" } ?? ""))
-                                    .accessibilityIdentifier("set-prev-\(set.id)")
-                                    .font(.app(size: 13, weight: .medium))
-                                    .foregroundStyle(beaten ? AppColors.accent : AppColors.secondaryText)
-                                    .lineLimit(previousText.hasPrefix("BW") ? 2 : 1)
-                                    .multilineTextAlignment(.center)
-                                    .minimumScaleFactor(previousText.hasPrefix("BW") ? 0.7 : 1)
-                                    .frame(width: 56, alignment: .center)
-                                    .background(beaten ? AppColors.positiveBg : .clear, in: RoundedRectangle(cornerRadius: 4))
-                                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(beaten ? AppColors.accent.opacity(0.35) : .clear))
-                            }
+                                let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
+                                if set.isWarmup {
+                                    Text(LanguageManager.t("warmup.badge"))
+                                        .font(.app(size: 10.5, weight: .bold))
+                                        .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
+                                        .lineLimit(1)
+                                        .frame(width: 56, alignment: .center)
+                                } else {
+                                    let beaten = beatResult != nil && previous != nil
+                                    Text(previousText.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
+                                        .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(previousText, unit: weightUnit) +
+                                            (previous == nil ? "" : beatResult.map { ", \(WorkoutSessionUtils.formatLogbookBeatBadge(result: $0, unit: weightUnit))" } ?? ""))
+                                        .accessibilityIdentifier("set-prev-\(set.id)")
+                                        .font(.app(size: 13, weight: .medium))
+                                        .foregroundStyle(beaten ? AppColors.accent : AppColors.secondaryText)
+                                        .lineLimit(previousText.hasPrefix("BW") ? 2 : 1)
+                                        .multilineTextAlignment(.center)
+                                        .minimumScaleFactor(previousText.hasPrefix("BW") ? 0.7 : 1)
+                                        .frame(width: 56, alignment: .center)
+                                        .background(beaten ? AppColors.positiveBg : .clear, in: RoundedRectangle(cornerRadius: 4))
+                                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(beaten ? AppColors.accent.opacity(0.35) : .clear))
+                                }
 
-                            GeometryReader { geometry in
-                                TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                                    .focused($focusedField, equals: Field(id: set.id, weight: true))
+                                GeometryReader { geometry in
+                                    TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                                        .focused($focusedField, equals: Field(id: set.id, weight: true))
+                                        .simultaneousGesture(TapGesture().onEnded {
+                                            if isSetInputEnabled {
+                                                selectedField = Field(id: set.id, weight: true)
+                                            }
+                                        })
+                                        .disabled(!isSetInputEnabled)
+                                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
+                                        .keyboardType(.decimalPad)
+                                        .multilineTextAlignment(.center)
+                                        .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
+                                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                                        .padding(.vertical, 8)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(minHeight: 48)
+                                        .background(RoundedRectangle(cornerRadius: 8)
+                                            .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
+                                        .overlay(RoundedRectangle(cornerRadius: 8)
+                                            .stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 48)
+
+                                // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
+                                let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
+                                TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                                    .focused($focusedField, equals: Field(id: set.id, weight: false))
                                     .simultaneousGesture(TapGesture().onEnded {
                                         if isSetInputEnabled {
-                                            selectedField = Field(id: set.id, weight: true)
+                                            selectedField = Field(id: set.id, weight: false)
                                         }
                                     })
                                     .disabled(!isSetInputEnabled)
-                                    .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
-                                    .keyboardType(.decimalPad)
+                                    .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
+                                        + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
+                                    .keyboardType(.numberPad)
                                     .multilineTextAlignment(.center)
-                                    .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
+                                    .font(.app(size: 15, weight: .semibold))
                                     .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                                     .padding(.vertical, 8)
                                     .frame(maxWidth: .infinity)
@@ -242,66 +283,43 @@ public struct SetLoggingTable: View {
                                     .background(RoundedRectangle(cornerRadius: 8)
                                         .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
                                     .overlay(RoundedRectangle(cornerRadius: 8)
-                                        .stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
-                            }
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48)
+                                        .stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
 
-                            // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
-                            let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
-                            TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                                .focused($focusedField, equals: Field(id: set.id, weight: false))
-                                .simultaneousGesture(TapGesture().onEnded {
-                                    if isSetInputEnabled {
-                                        selectedField = Field(id: set.id, weight: false)
+                                Button(action: {
+                                    if set.isCompleted {
+                                        onToggleCompleteSet(index)
+                                        focusedField = nil
+                                        selectedField = nil
+                                    } else if canComplete {
+                                        validationSetId = nil
+                                        onToggleCompleteSet(index)
+                                        focusedField = nil
+                                        selectedField = nil
+                                    } else {
+                                        validationSetId = set.id
                                     }
-                                })
-                                .disabled(!isSetInputEnabled)
-                                .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
-                                    + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                                .font(.app(size: 15, weight: .semibold))
-                                .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                                .padding(.vertical, 8)
-                                .frame(maxWidth: .infinity)
-                                .frame(minHeight: 48)
-                                .background(RoundedRectangle(cornerRadius: 8)
-                                    .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
-                                .overlay(RoundedRectangle(cornerRadius: 8)
-                                    .stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
-
-                            Button(action: {
-                                if set.isCompleted {
-                                    onToggleCompleteSet(index)
-                                    focusedField = nil
-                                    selectedField = nil
-                                } else if canComplete {
-                                    validationSetId = nil
-                                    onToggleCompleteSet(index)
-                                    focusedField = nil
-                                    selectedField = nil
-                                } else {
-                                    validationSetId = set.id
+                                }) {
+                                    Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
+                                        .font(.system(size: 24))
+                                        .foregroundStyle(
+                                            set.isCompleted
+                                                ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
+                                                : (!isSetEnabled
+                                                    ? AppColors.muted.opacity(0.15)
+                                                    : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
+                                        )
+                                        .frame(width: 44, height: 44)
                                 }
-                            }) {
-                                Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
-                                    .font(.system(size: 24))
-                                    .foregroundStyle(
-                                        set.isCompleted
-                                            ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
-                                            : (!isSetEnabled
-                                                ? AppColors.muted.opacity(0.15)
-                                                : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
-                                    )
-                                    .frame(width: 44, height: 44)
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(LanguageManager.t("table.set")) \(set.setNumber)")
+                                .accessibilityIdentifier("set-complete-\(set.id)")
+                                .disabled(!isSetEnabled && !set.isCompleted)
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(LanguageManager.t("table.set")) \(set.setNumber)")
-                            .accessibilityIdentifier("set-complete-\(set.id)")
-                            .disabled(!isSetEnabled && !set.isCompleted)
+                            .padding(.horizontal, 14)
+                            if let intensity, !set.isWarmup {
+                                intensityRows(set: set, index: index, actions: intensity, inputEnabled: isSetInputEnabled, rowEnabled: isSetEnabled)
+                            }
                         }
-                        .padding(.horizontal, 14)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(
@@ -330,16 +348,20 @@ public struct SetLoggingTable: View {
                                     Label(LanguageManager.t("warmup.tab_plates"), systemImage: "square.stack.3d.up")
                                 }
                             }
+                            if let intensity, !set.isWarmup, set.isCompleted {
+                                Menu {
+                                    techniqueMenuItems(set: set, index: index, actions: intensity)
+                                } label: {
+                                    Label(LanguageManager.t("intensity.add"), systemImage: "plus")
+                                }
+                            }
                             if sets.count > 1 {
                                 Button(role: .destructive, action: { onRemoveSet(index) }) {
                                     Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
                                 }
                             }
                         }
-
-                        if let intensity, !set.isWarmup {
-                            intensityRows(set: set, index: index, actions: intensity, inputEnabled: isSetInputEnabled, rowEnabled: isSetEnabled)
-                        }
+                        .id(Self.groupId(set.id))
 
                         if validationSetId == set.id, !set.isCompleted,
                            let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
@@ -416,23 +438,20 @@ public struct SetLoggingTable: View {
                                     .buttonStyle(.plain)
                                 }
                                 .padding(.top, 4)
-
-                                if showsTechniqueRow, let intensity {
-                                    techniqueRow(set: set, index: index, actions: intensity).padding(.top, 4)
-                                }
                             }
                             .padding(.horizontal, 8).padding(.vertical, 4)
                             .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                             .accessibilityIdentifier("set-adjustments")
-                        } else if showsTechniqueRow, let intensity {
-                            techniqueRow(set: set, index: index, actions: intensity)
-                                .padding(8)
-                                .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        if showsTechniqueMenu, let intensity {
+                            techniqueMenu(set: set, index: index, actions: intensity)
                         }
                     }
                     .tourTarget("workout.sets.row.\(index + 2)", cornerRadius: 10)
                 }
             }
+
+            if let ratings { ratings }
 
             // Add Set and Remove Last Buttons
             HStack(spacing: 8) {
@@ -484,7 +503,10 @@ public struct SetLoggingTable: View {
         .tint(AppColors.accent)
         .onChange(of: focusedField) { _, value in
             if let value { selectedField = value }
+            updateNavigator()
         }
+        .onChange(of: selectedField) { _, value in reveal(value, scrollProxy) }
+        .onReceive(fieldNavigator.map { $0.commands.eraseToAnyPublisher() } ?? Empty().eraseToAnyPublisher()) { perform($0) }
         .onChange(of: sets.map(\.id)) { _, _ in
             if let selectedField, !sets.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil; focusedField = nil }
         }
@@ -500,12 +522,14 @@ public struct SetLoggingTable: View {
                 focusedField = Field(id: added, weight: wantsWeight)
             }
             knownExtensionIds = ids
+            updateNavigator()
         }
         .onChange(of: isRestActive) { _, active in
             if active {
                 self.selectedField = nil
                 self.focusedField = nil
             }
+        }
         }
     }
 
@@ -600,11 +624,7 @@ public struct SetLoggingTable: View {
         )
         let previous = previousPartText(set: set, index: index, extensionIndex: extensionIndex, actions: actions)
         return HStack(spacing: 8) {
-            Image(systemName: isDrop ? "arrow.down.right" : "pause")
-                .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
-                .frame(width: 32, alignment: .center)
-                .accessibilityHidden(true)
+            subRowMarker(isDrop ? "arrow.down.right" : "pause", enabled: rowEnabled)
             Text(previous)
                 .font(.app(size: 13, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText.opacity(part.isCompleted ? 0.6 : (rowEnabled ? 1 : 0.35)))
@@ -636,7 +656,7 @@ public struct SetLoggingTable: View {
                 }
             }) {
                 Image(systemName: part.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 22))
+                    .font(.system(size: 20))
                     .foregroundStyle(part.isCompleted ? AppColors.accent : (inputEnabled ? AppColors.muted.opacity(canTick ? 0.5 : 0.2) : AppColors.muted.opacity(0.15)))
                     .frame(width: 44, height: 44)
             }
@@ -646,11 +666,6 @@ public struct SetLoggingTable: View {
             .accessibilityIdentifier("extension-complete-\(part.id)")
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 4)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(part.isCompleted ? AppColors.positiveBg.opacity(0.4) : (rowEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
-        )
         .accessibilityIdentifier("extension-row-\(part.id)")
     }
 
@@ -666,11 +681,7 @@ public struct SetLoggingTable: View {
             }
         )
         return HStack(spacing: 8) {
-            Image(systemName: "circle.lefthalf.filled")
-                .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
-                .frame(width: 32, alignment: .center)
-                .accessibilityHidden(true)
+            subRowMarker("circle.lefthalf.filled", enabled: rowEnabled)
             Text(previousPartialsText(index: index, extensionIndex: extensionIndex, actions: actions))
                 .font(.app(size: 13, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText.opacity(rowEnabled ? 1 : 0.35))
@@ -686,54 +697,141 @@ public struct SetLoggingTable: View {
             Color.clear.frame(width: 44, height: 44)
         }
         .padding(.horizontal, 14)
-        .padding(.vertical, 4)
-        .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(rowEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
         .accessibilityIdentifier("partials-row-\(ownerId)")
     }
 
-    private func techniqueChip(icon: String, titleKey: String, enabled: Bool, identifier: String, hint: String? = nil,
-                               quiet: Bool = false, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 4) {
-                Image(systemName: icon).font(.system(size: 12, weight: .semibold))
-                Text(LanguageManager.t(titleKey)).font(.app(size: 12, weight: .medium)).lineLimit(1).fixedSize()
-            }
-            .foregroundStyle(quiet ? AppColors.muted : AppColors.purple)
-            .opacity(enabled ? 1 : 0.35)
-            .padding(.horizontal, 10)
-            .frame(maxWidth: quiet ? nil : .infinity, minHeight: 48)
-            .background(RoundedRectangle(cornerRadius: 8).stroke(quiet ? AppColors.muted.opacity(0.35) : AppColors.border))
-            .contentShape(Rectangle())
+    /// The SET column of a drop, rest-pause or partials row: a purple rule joining it to its set, then its glyph.
+    private func subRowMarker(_ systemName: String, enabled: Bool) -> some View {
+        ZStack(alignment: .leading) {
+            Rectangle().fill(AppColors.purple.opacity(enabled ? 0.35 : 0.15)).frame(width: 2).padding(.leading, 9)
+            Image(systemName: systemName)
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(AppColors.purple.opacity(enabled ? 1 : 0.35))
+                .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .buttonStyle(.plain)
-        .disabled(!enabled)
-        .accessibilityHint(hint ?? "")
-        .accessibilityIdentifier(identifier)
+        .frame(width: 32, height: 48)
+        .accessibilityHidden(true)
     }
 
-    /// Drop, Rest-pause, Partials and Remove last for the focused working set; one technique per set.
+    /// Drop, Rest-pause and Partials, then a remove action that names what it removes. One technique per set.
     @ViewBuilder
-    private func techniqueRow(set: ExerciseSetLog, index: Int, actions: IntensityActions) -> some View {
-        let current = IntensitySets.technique(of: set)
-        let oneTechnique = LanguageManager.t("intensity.oneTechnique")
-        let drop = techniqueChip(icon: "arrow.down.right", titleKey: "intensity.drop", enabled: IntensitySets.canAdd(.drop, to: set),
-                                 identifier: "technique-drop", hint: current == .restPause ? oneTechnique : nil) { actions.onAddExtension(index, .drop) }
-        let restPause = techniqueChip(icon: "pause", titleKey: "intensity.restPause", enabled: IntensitySets.canAdd(.restPause, to: set),
-                                      identifier: "technique-rest-pause", hint: current == .drop ? oneTechnique : nil) { actions.onAddExtension(index, .restPause) }
-        let partials = techniqueChip(icon: "circle.lefthalf.filled", titleKey: "intensity.partialsChip", enabled: IntensitySets.canAddPartials(to: set),
-                                     identifier: "technique-partials") { actions.onAddPartials(index) }
-        let remove = techniqueChip(icon: "minus", titleKey: "intensity.removeLast", enabled: true, identifier: "technique-remove-last",
-                                   quiet: true) { actions.onRemoveLastPart(index) }
-        let removable = IntensitySets.hasRemovablePart(set)
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: 8) { drop; restPause; partials; if removable { remove } }
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 8) { drop; restPause }
-                HStack(spacing: 8) { partials; if removable { remove } }
-            }
-            VStack(alignment: .leading, spacing: 8) { drop; restPause; partials; if removable { remove } }
+    private func techniqueMenuItems(set: ExerciseSetLog, index: Int, actions: IntensityActions) -> some View {
+        Button { actions.onAddExtension(index, .drop) } label: {
+            Label(LanguageManager.t("intensity.drop"), systemImage: "arrow.down.right")
         }
-        .accessibilityIdentifier("technique-row")
+        .disabled(!IntensitySets.canAdd(.drop, to: set))
+        Button { actions.onAddExtension(index, .restPause) } label: {
+            Label(LanguageManager.t("intensity.restPause"), systemImage: "pause")
+        }
+        .disabled(!IntensitySets.canAdd(.restPause, to: set))
+        Button { actions.onAddPartials(index) } label: {
+            Label(LanguageManager.t("intensity.partialsChip"), systemImage: "circle.lefthalf.filled")
+        }
+        .disabled(!IntensitySets.canAddPartials(to: set))
+        if let part = IntensitySets.lastRemovablePart(set) {
+            Divider()
+            Button(role: .destructive) { actions.onRemoveLastPart(index) } label: {
+                Label(LanguageManager.t(Self.removeKey(part)), systemImage: "minus.circle")
+            }
+        }
+    }
+
+    static func removeKey(_ part: IntensitySets.RemovablePart) -> String {
+        switch part {
+        case .drop: return "intensity.removeDrop"
+        case .restPause: return "intensity.removeRestPause"
+        case .partials: return "intensity.removePartials"
+        }
+    }
+
+    /// One quiet purple pill under the set; the menu holds the techniques.
+    private func techniqueMenu(set: ExerciseSetLog, index: Int, actions: IntensityActions) -> some View {
+        Menu {
+            techniqueMenuItems(set: set, index: index, actions: actions)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "plus").font(.system(size: 12, weight: .semibold))
+                Text(LanguageManager.t("intensity.add")).font(.app(size: 13, weight: .semibold)).lineLimit(1)
+            }
+            .foregroundStyle(AppColors.purple)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+            .frame(minHeight: 48)
+            .contentShape(Rectangle())
+        }
+        .menuStyle(.button)
+        .buttonStyle(.plain)
+        // The menu's glyphs use the focused-training-detail purple, like the sub-rows they add.
+        .tint(AppColors.purple)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.leading, 6)
+        .accessibilityIdentifier("technique-menu")
+    }
+
+    // MARK: Keyboard bar
+
+    static func groupId(_ setId: String) -> String { "set-group-" + setId }
+
+    /// Every field the table can focus, in reading order; locked future sets are skipped.
+    private var orderedFields: [Field] {
+        sets.enumerated().flatMap { index, set -> [Field] in
+            guard set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index) else { return [] }
+            var fields = [Field(id: set.id, weight: true), Field(id: set.id, weight: false)]
+            guard intensity != nil, !set.isWarmup else { return fields }
+            if set.partialRepsInput != nil { fields.append(Field(id: Self.partialsFieldId(set.id), weight: false)) }
+            let isDrop = IntensitySets.technique(of: set) != .restPause
+            for part in set.extensions ?? [] {
+                if isDrop { fields.append(Field(id: part.id, weight: true)) }
+                fields.append(Field(id: part.id, weight: false))
+                if part.partialRepsInput != nil { fields.append(Field(id: Self.partialsFieldId(part.id), weight: false)) }
+            }
+            return fields
+        }
+    }
+
+    private func neighbor(of field: Field?, by step: Int) -> Field? {
+        let fields = orderedFields
+        guard let field, let position = fields.firstIndex(of: field), fields.indices.contains(position + step) else { return nil }
+        return fields[position + step]
+    }
+
+    private func updateNavigator() {
+        fieldNavigator?.update(previous: neighbor(of: focusedField, by: -1) != nil, next: neighbor(of: focusedField, by: 1) != nil)
+    }
+
+    private func perform(_ command: SessionFieldNavigator.Command) {
+        switch command {
+        case .previous: if let field = neighbor(of: focusedField, by: -1) { focusedField = field }
+        case .next: if let field = neighbor(of: focusedField, by: 1) { focusedField = field }
+        case .done: focusedField = nil; selectedField = nil
+        }
+    }
+
+    /// Brings the edited set to the top of the visible area, so its adjustments and techniques stay above the keyboard.
+    private func reveal(_ field: Field?, _ proxy: ScrollViewProxy) {
+        guard let field, let set = sets.first(where: { Self.field(field, belongsTo: $0) }) else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo(Self.groupId(set.id), anchor: .top) }
+        }
+    }
+}
+
+/// Moves focus between the session table's fields from the bar above the keyboard.
+@MainActor
+public final class SessionFieldNavigator: ObservableObject {
+    public enum Command { case previous, next, done }
+    @Published public private(set) var canMovePrevious = false
+    @Published public private(set) var canMoveNext = false
+    let commands = PassthroughSubject<Command, Never>()
+
+    public init() {}
+
+    public func send(_ command: Command) { commands.send(command) }
+
+    func update(previous: Bool, next: Bool) {
+        if canMovePrevious != previous { canMovePrevious = previous }
+        if canMoveNext != next { canMoveNext = next }
     }
 }
 

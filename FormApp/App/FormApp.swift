@@ -7,6 +7,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         RestAlertScheduler.shared.install()
+        RestAlertScheduler.shared.shouldDeferPrompt = { MainActor.assumeIsolated { TourController.shared.progress.shouldStart(.restTimer) } }
         return true
     }
 

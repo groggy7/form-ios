@@ -101,6 +101,22 @@ final class HealthWeighInTests: XCTestCase {
         XCTAssertEqual(BodyLog.resolveForm(date: today, inputs: form("500"), stored: nil, healthKg: 80, unit: .kg), .invalid(.bodyweight))
     }
 
+    func testQuickLogChangesOnlyTheWeightAndKeepsMeasurements() {
+        let stored = BodyEntry(date: today, bodyweightKg: 80, waistCm: 85)
+        let inputs = BodyLog.quickLogInputs(shown: stored, weight: "79,5", unit: .kg)
+        XCTAssertEqual(BodyLog.resolveForm(date: today, inputs: inputs, stored: stored, healthKg: nil, unit: .kg),
+                       .save(stored: BodyEntry(date: today, bodyweightKg: 79.5, waistCm: 85), hideHealth: false))
+        // An untouched Health weight stays Health's, and the date's typed measurements stay stored.
+        let health = BodyEntry(date: today, bodyweightKg: 80, chestCm: 101)
+        let unchanged = BodyLog.quickLogInputs(shown: health, weight: "80", unit: .kg)
+        XCTAssertEqual(BodyLog.resolveForm(date: today, inputs: unchanged, stored: BodyEntry(date: today, chestCm: 101), healthKg: 80, unit: .kg),
+                       .save(stored: BodyEntry(date: today, chestCm: 101), hideHealth: false))
+        // In pounds, measurements are shown in inches and still resolve to their exact stored centimetres.
+        let lbs = BodyLog.quickLogInputs(shown: stored, weight: "176", unit: .lbs)
+        XCTAssertEqual(BodyLog.resolveForm(date: today, inputs: lbs, stored: stored, healthKg: nil, unit: .lbs),
+                       .save(stored: BodyEntry(date: today, bodyweightKg: BodyUnits.toCanonical(.bodyweight, 176, unit: .lbs), waistCm: 85), hideHealth: false))
+    }
+
     func testDeleteHidesTheHealthWeighInOnlyWhenThereIsOne() {
         let typed = BodyEntry(date: today, bodyweightKg: 80)
         var edit = BodyLog.applyEdit([typed], hidden: [], date: today, stored: nil, hideHealth: true)

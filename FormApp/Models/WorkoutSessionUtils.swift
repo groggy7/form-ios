@@ -933,6 +933,17 @@ public enum IntensitySets {
         !(set.extensions ?? []).isEmpty || set.partialRepsInput != nil
     }
 
+    /// What `removingLastPart` takes away, so the action can name it.
+    public enum RemovablePart: Equatable { case partials, drop, restPause }
+
+    public static func lastRemovablePart(_ set: ExerciseSetLog) -> RemovablePart? {
+        if let last = set.extensions?.last {
+            if last.partialRepsInput != nil { return .partials }
+            return technique(of: set) == .restPause ? .restPause : .drop
+        }
+        return set.partialRepsInput != nil ? .partials : nil
+    }
+
     /// Adds an empty drop or rest-pause effort. A drop may start from the previous occurrence's load.
     public static func addingExtension(_ technique: SetTechnique, to set: ExerciseSetLog, prefillWeightKg: Double? = nil,
                                        unit: WeightUnit, barbell: Bool = false) -> ExerciseSetLog {
