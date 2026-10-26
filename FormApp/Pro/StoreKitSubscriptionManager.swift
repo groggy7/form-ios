@@ -7,8 +7,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     public static let monthlyProductId = "com.perseverancesoftware.forcedrep.premium.monthly"
     public static let annualProductId = "com.perseverancesoftware.forcedrep.premium.annual"
-    public static let foundersProductId = "com.perseverancesoftware.forcedrep.founders"
-    public static let lifetimeProductId = "com.perseverancesoftware.forcedrep.lifetime"
+    // Retain the original store ID: the product is now sold as Lifetime Pro.
+    public static let lifetimeProductId = "com.perseverancesoftware.forcedrep.founders"
+    public static let legacyLifetimeProductId = "com.perseverancesoftware.forcedrep.lifetime"
 
     // Backward compatibility with legacy Pro IDs
     public static let legacyMonthlyProductId = "com.perseverancesoftware.forcedrep.pro.monthly"
@@ -19,8 +20,8 @@ public class StoreKitSubscriptionManager: ObservableObject {
         annualProductId,
         legacyMonthlyProductId,
         legacyAnnualProductId,
-        foundersProductId,
-        lifetimeProductId
+        lifetimeProductId,
+        legacyLifetimeProductId
     ]
 
     public static func isProProductId(_ productId: String) -> Bool {
@@ -34,14 +35,13 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     struct Entitlements: Equatable {
         let subscription: Bool
-        let founder: Bool
         let lifetime: Bool
-        var hasPro: Bool { subscription || founder || lifetime }
+        var hasPro: Bool { subscription || lifetime }
     }
 
     static func entitlements(for productIDs: Set<String>) -> Entitlements {
         Entitlements(subscription: !productIDs.intersection([monthlyProductId, annualProductId, legacyMonthlyProductId, legacyAnnualProductId]).isEmpty,
-                     founder: productIDs.contains(foundersProductId), lifetime: productIDs.contains(lifetimeProductId))
+                     lifetime: !productIDs.intersection([lifetimeProductId, legacyLifetimeProductId]).isEmpty)
     }
 
     static func cachedProductIDs(defaults: UserDefaults, now: Date = Date()) -> Set<String> {
@@ -49,7 +49,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let age = now.timeIntervalSince1970 - checked
         guard defaults.bool(forKey: keyCachedEntitlement), checked > 0,
               age >= -300, age <= offlineGracePeriodSeconds else { return [] }
-        // Existing caches came only from subscriptions. Never turn a legacy Pro flag into Founder status.
+        // Caches without product IDs came from subscriptions; never infer lifetime access from that flag.
         return Set(defaults.stringArray(forKey: keyCachedProductIds) ?? [monthlyProductId]).intersection(productIds)
     }
 
@@ -67,7 +67,6 @@ public class StoreKitSubscriptionManager: ObservableObject {
         products.first { $0.id == Self.annualProductId } ?? products.first { $0.id == Self.legacyAnnualProductId }
     }
 
-    public var foundersProduct: Product? { products.first { $0.id == Self.foundersProductId && $0.type == .nonConsumable } }
     public var lifetimeProduct: Product? { products.first { $0.id == Self.lifetimeProductId && $0.type == .nonConsumable } }
 
     public var annualPerMonthDisplayPrice: String? {
@@ -111,7 +110,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let cached = Self.cachedProductIDs(defaults: .standard)
         let entitlement = Self.entitlements(for: cached)
         purchasedProductIds = cached
-        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, founder: entitlement.founder, lifetime: entitlement.lifetime)
+        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, lifetime: entitlement.lifetime)
         if entitlement.hasPro {
             CloudMirrorManager.shared.retryPendingSyncIfAny()
         }
@@ -130,7 +129,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
     public func requestProducts() async {
         eligibleFreeTrialProductIds = []
         do {
-            let fetched = try await Product.products(for: Self.productIds)
+            let fetched = try await Product.products(for: Self.productIds.subtracting([Self.legacyLifetimeProductId]))
             var eligibleIds: Set<String> = []
             for product in fetched {
                 guard let subscription = product.subscription,
@@ -151,11 +150,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
         return try await purchaseProduct(id: id, type: .autoRenewable)
     }
 
-    public func purchaseLifetime(founder: Bool) async throws -> PurchaseStatus {
-        let productID = founder ? Self.foundersProductId : Self.lifetimeProductId
-        guard !purchasedProductIds.contains(productID),
-              founder || !ProAccessManager.shared.hasLifetimeAccess else { return .success }
-        return try await purchaseProduct(id: productID, type: .nonConsumable)
+    public func purchaseLifetime() async throws -> PurchaseStatus {
+        guard !ProAccessManager.shared.hasLifetimeAccess else { return .success }
+        return try await purchaseProduct(id: Self.lifetimeProductId, type: .nonConsumable)
     }
 
     private func purchaseProduct(id: String, type: Product.ProductType) async throws -> PurchaseStatus {
@@ -220,8 +217,8 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let entitlement = Self.entitlements(for: purchasedIds)
         let isPro = entitlement.hasPro
         UserDefaults.standard.set(Array(purchasedIds), forKey: Self.keyCachedProductIds)
-        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, founder: entitlement.founder, lifetime: entitlement.lifetime)
-        if !entitlement.founder, AppIconManager.shared.current != AppIcons.standard {
+        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, lifetime: entitlement.lifetime)
+        if !entitlement.hasPro, AppIconManager.shared.current != AppIcons.standard {
             _ = await AppIconManager.shared.select(AppIcons.standard)
         }
         guard revision == entitlementRevision else { return }

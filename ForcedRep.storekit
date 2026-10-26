@@ -18,33 +18,18 @@
       "internalID": "6826581506",
       "localizations": [
         {
-          "description": "Lifetime Pro and exclusive founder perks.",
-          "displayName": "Founders Pass",
+          "description": "Every Pro feature. One payment. No renewal.",
+          "displayName": "Lifetime Pro",
           "locale": "en_US"
         },
         {
-          "description": "Ömür boyu Pro ve kurucu üyelere özel ayrıcalıklar.",
-          "displayName": "Founders Pass",
+          "description": "Tüm Pro özellikleri. Tek ödeme. Yenileme yok.",
+          "displayName": "Ömür Boyu Pro",
           "locale": "tr"
         }
       ],
       "productID": "com.perseverancesoftware.forcedrep.founders",
-      "referenceName": "Founders Pass Lifetime",
-      "type": "NonConsumable"
-    },
-    {
-      "displayPrice": "119.99",
-      "familyShareable": false,
-      "internalID": "ForcedRepLifetimeFixture",
-      "localizations": [
-        {
-          "description": "Every current and future Pro feature for life.",
-          "displayName": "Lifetime Pro",
-          "locale": "en_US"
-        }
-      ],
-      "productID": "com.perseverancesoftware.forcedrep.lifetime",
-      "referenceName": "Regular Lifetime (future product, local testing only)",
+      "referenceName": "Lifetime Pro",
       "type": "NonConsumable"
     }
   ],

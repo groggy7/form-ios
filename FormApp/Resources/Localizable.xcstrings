@@ -11431,496 +11431,6 @@
         }
       }
     },
-    "founders.badge": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FOUNDERS PASS"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FOUNDERS PASS"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FOUNDERS PASS"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FOUNDERS PASS"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FOUNDERS PASS"
-          }
-        }
-      }
-    },
-    "founders.headline": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Become a Founder."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kurucu üye ol."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Werde Gründungsmitglied."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Devenez membre fondateur."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazte fundador."
-          }
-        }
-      }
-    },
-    "founders.subtitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "One payment unlocks every Premium feature for life, plus perks only founders get."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tek ödemeyle tüm Premium özellikleri ömür boyu açılır; üstüne yalnızca kurucu üyelere özel ayrıcalıklar."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eine Zahlung schaltet alle Premium-Funktionen dauerhaft frei, dazu Extras nur für Gründungsmitglieder."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un seul paiement débloque toutes les fonctionnalités Premium à vie, avec des avantages réservés aux membres fondateurs."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un solo pago desbloquea todas las funciones Premium de por vida, además de ventajas exclusivas para fundadores."
-          }
-        }
-      }
-    },
-    "founders.benefit1": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premium for life"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ömür boyu Premium"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premium auf Lebenszeit"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premium à vie"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premium de por vida"
-          }
-        }
-      }
-    },
-    "founders.benefit1_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Every current and future Premium feature, with no subscription to renew."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bugünkü ve gelecekteki tüm Premium özellikler; yenilenecek abonelik yok."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle heutigen und künftigen Premium-Funktionen, ohne Abo, das sich verlängert."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toutes les fonctionnalités Premium actuelles et futures, sans abonnement à renouveler."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Todas las funciones Premium actuales y futuras, sin suscripción que renovar."
-          }
-        }
-      }
-    },
-    "founders.benefit2": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founder app icons"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kurucu uygulama simgeleri"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gründer-App-Symbole"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icônes de fondateur"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iconos de fundador"
-          }
-        }
-      }
-    },
-    "founders.benefit2_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Give Forced Rep a founder-only icon on your Home Screen."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ana ekranında Forced Rep'e yalnızca kurucu üyelere özel bir simge ver."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gib Forced Rep auf deinem Startbildschirm ein Symbol, das nur Gründungsmitglieder haben."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Donnez à Forced Rep une icône réservée aux fondateurs sur votre écran d’accueil."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dale a Forced Rep un icono exclusivo para fundadores en tu pantalla de inicio."
-          }
-        }
-      }
-    },
-    "founders.benefit3": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First to try what’s next"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yenilikleri ilk sen dene"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neues zuerst testen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les nouveautés en avant-première"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prueba antes lo nuevo"
-          }
-        }
-      }
-    },
-    "founders.benefit3_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Join beta builds early. Founders are heard first when we plan new features."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Beta sürümlerine erkenden katıl. Yeni özellikleri planlarken önce kurucu üyeleri dinleriz."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nimm früh an Betaversionen teil. Bei der Planung neuer Funktionen hören wir zuerst auf Gründungsmitglieder."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Accédez tôt aux versions bêta. Nous écoutons d’abord les fondateurs quand nous planifions de nouvelles fonctionnalités."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Únete pronto a las versiones beta. Escuchamos primero a los fundadores al planear nuevas funciones."
-          }
-        }
-      }
-    },
-    "founders.plan": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lifetime"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ömür boyu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lebenslang"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À vie"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "De por vida"
-          }
-        }
-      }
-    },
-    "founders.planSubtitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "One-time payment · No subscription"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tek seferlik ödeme · Abonelik yok"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einmalzahlung · Kein Abo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paiement unique · Sans abonnement"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pago único · Sin suscripción"
-          }
-        }
-      }
-    },
-    "founders.cta": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Become a Founder"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kurucu üye ol"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gründungsmitglied werden"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Devenir membre fondateur"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hazte fundador"
-          }
-        }
-      }
-    },
-    "founders.notOnSale": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The Founders Pass is not currently available."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass şu anda satışta değil."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der Founders Pass ist derzeit nicht erhältlich."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le Founders Pass n’est pas disponible actuellement."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El Founders Pass no está disponible actualmente."
-          }
-        }
-      }
-    },
-    "founders.platformNote": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlocks Forced Rep for this Apple Account. The Android app is a separate purchase."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu Apple Hesabında Forced Rep'in kilidini açar. Android uygulaması ayrı bir satın alımdır."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schaltet Forced Rep für diesen Apple-Account frei. Die Android-App ist ein separater Kauf."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Débloque Forced Rep pour ce compte Apple. L’application Android est un achat séparé."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloquea Forced Rep en esta cuenta de Apple. La app de Android es una compra aparte."
-          }
-        }
-      }
-    },
     "settings.glowTiles": {
       "extractionState": "manual",
       "localizations": {
@@ -61789,181 +61299,6 @@
         }
       }
     },
-    "founders.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass"
-          }
-        }
-      }
-    },
-    "founders.footer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{price} · One-time payment. No subscription."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{price} · Tek seferlik ödeme. Abonelik yok."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{price} · Einmalzahlung. Kein Abo."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{price} · Paiement unique. Sans abonnement."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{price} · Pago único. Sin suscripción."
-          }
-        }
-      }
-    },
-    "founders.noPass": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Founders Pass found for this store account."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu mağaza hesabında Founders Pass bulunamadı."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Für dieses Store-Konto wurde kein Founders Pass gefunden."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun Founders Pass trouvé pour ce compte de boutique."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se encontró un Founders Pass para esta cuenta de la tienda."
-          }
-        }
-      }
-    },
-    "founders.subscriptionNotice": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A lifetime purchase does not cancel your subscription. Manage it to avoid future renewals."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ömür boyu satın alım aboneliğini iptal etmez. Yeni ücretlerden kaçınmak için aboneliğini yönet."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ein lebenslanger Kauf kündigt dein Abo nicht. Verwalte es, um weitere Verlängerungen zu vermeiden."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Un achat à vie ne résilie pas votre abonnement. Gérez-le pour éviter les prochains renouvellements."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La compra de por vida no cancela tu suscripción. Gestiónala para evitar próximas renovaciones."
-          }
-        }
-      }
-    },
-    "founders.active": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass active · Lifetime Pro"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass etkin · Ömür boyu Pro"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass aktiv · Pro auf Lebenszeit"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass actif · Pro à vie"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Founders Pass activo · Pro de por vida"
-          }
-        }
-      }
-    },
     "lifetime.active": {
       "extractionState": "manual",
       "localizations": {
@@ -64690,6 +64025,426 @@
           "stringUnit": {
             "state": "translated",
             "value": "Desemparejar ejercicios"
+          }
+        }
+      }
+    },
+    "lifetime.benefit1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium for life"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu Premium"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium auf Lebenszeit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium à vie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium de por vida"
+          }
+        }
+      }
+    },
+    "lifetime.benefit1_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every current and future Premium feature, with no subscription to renew."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugünkü ve gelecekteki tüm Premium özellikler; yenilenecek abonelik yok."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle heutigen und künftigen Premium-Funktionen, ohne Abo, das sich verlängert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les fonctionnalités Premium actuelles et futures, sans abonnement à renouveler."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las funciones Premium actuales y futuras, sin suscripción que renovar."
+          }
+        }
+      }
+    },
+    "lifetime.plan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebenslang"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À vie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De por vida"
+          }
+        }
+      }
+    },
+    "lifetime.planSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-time payment · No subscription"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek seferlik ödeme · Abonelik yok"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmalzahlung · Kein Abo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paiement unique · Sans abonnement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pago único · Sin suscripción"
+          }
+        }
+      }
+    },
+    "lifetime.platformNote": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlocks Forced Rep for this Apple Account. The Android app is a separate purchase."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Apple Hesabı için Forced Rep’in kilidini açar. Android uygulaması ayrı bir satın alımdır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schaltet Forced Rep für diesen Apple Account frei. Die Android-App ist ein separater Kauf."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloque Forced Rep pour ce compte Apple. L’application Android nécessite un achat séparé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea Forced Rep para esta cuenta de Apple. La aplicación Android se compra por separado."
+          }
+        }
+      }
+    },
+    "lifetime.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · One-time payment. No subscription."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Tek seferlik ödeme. Abonelik yok."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Einmalzahlung. Kein Abo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Paiement unique. Sans abonnement."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Pago único. Sin suscripción."
+          }
+        }
+      }
+    },
+    "lifetime.subscriptionNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A lifetime purchase does not cancel your subscription. Manage it to avoid future renewals."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu satın alım aboneliğini iptal etmez. Yeni ücretlerden kaçınmak için aboneliğini yönet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein lebenslanger Kauf kündigt dein Abo nicht. Verwalte es, um weitere Verlängerungen zu vermeiden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un achat à vie ne résilie pas votre abonnement. Gérez-le pour éviter les prochains renouvellements."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La compra de por vida no cancela tu suscripción. Gestiónala para evitar próximas renovaciones."
+          }
+        }
+      }
+    },
+    "lifetime.badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LIFETIME PRO"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ÖMÜR BOYU PRO"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEBENSLANG PRO"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO À VIE"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO DE POR VIDA"
+          }
+        }
+      }
+    },
+    "lifetime.benefit2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One payment"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek ödeme"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal zahlen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un seul paiement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un solo pago"
+          }
+        }
+      }
+    },
+    "lifetime.benefit2_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recurring charges or subscription to renew."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen ücret veya yenilenecek abonelik yok."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine wiederkehrenden Gebühren und kein Abo zum Verlängern."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun paiement récurrent ni abonnement à renouveler."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin cargos recurrentes ni suscripciones que renovar."
+          }
+        }
+      }
+    },
+    "lifetime.benefit3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore on your devices"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cihazlarında geri yükle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf deinen Geräten wiederherstellen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurer sur vos appareils"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaura en tus dispositivos"
+          }
+        }
+      }
+    },
+    "lifetime.benefit3_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Lifetime Pro with the same store account on another compatible device."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uyumlu başka bir cihazda aynı mağaza hesabıyla Ömür Boyu Pro’yu geri yükle."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle Pro auf einem anderen kompatiblen Gerät mit demselben Store-Konto wieder her."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurez Pro à vie sur un autre appareil compatible avec le même compte de boutique."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaura Pro de por vida en otro dispositivo compatible con la misma cuenta de la tienda."
           }
         }
       }

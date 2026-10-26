@@ -1,6 +1,6 @@
 import UIKit
 
-/// A Home Screen icon founders can choose. `alternateIconName` names its app icon set in
+/// A Home Screen icon Pro members can choose. `alternateIconName` names its app icon set in
 /// Assets.xcassets, nil for the primary AppIcon; docs/design/launcher-icon.md#alternate-app-icons
 /// explains how to add one.
 public struct AppIconOption: Identifiable, Equatable {

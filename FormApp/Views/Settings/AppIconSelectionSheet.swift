@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Founder app icon picker. A choice applies at once; iOS then shows its own confirmation.
+/// Pro app icon picker. A choice applies at once; iOS then shows its own confirmation.
 struct AppIconSelectionSheet: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject var manager: AppIconManager
@@ -80,7 +80,7 @@ struct AppIconSelectionSheet: View {
     }
 }
 
-/// The Appearance row that opens the picker; Settings shows it to founders only.
+/// The Appearance row that opens the picker; Settings opens it for every Pro member.
 struct SettingsAppIconRow: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     let current: AppIconOption

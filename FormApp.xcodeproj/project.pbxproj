@@ -146,7 +146,7 @@
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
 		AI0000000000000000000002 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000001 /* AppIcons.swift */; };
-		AI0000000000000000000008 /* FoundersPassPaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000007 /* FoundersPassPaywall.swift */; };
+		AI0000000000000000000008 /* LifetimePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000007 /* LifetimePaywall.swift */; };
 		AI0000000000000000000004 /* AppIconSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000003 /* AppIconSelectionSheet.swift */; };
 		AI0000000000000000000006 /* AppIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* AppIconTests.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
@@ -363,7 +363,7 @@
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
 		AI0000000000000000000001 /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
-		AI0000000000000000000007 /* FoundersPassPaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundersPassPaywall.swift; sourceTree = "<group>"; };
+		AI0000000000000000000007 /* LifetimePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywall.swift; sourceTree = "<group>"; };
 		AI0000000000000000000003 /* AppIconSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconSelectionSheet.swift; sourceTree = "<group>"; };
 		AI0000000000000000000005 /* AppIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconTests.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
@@ -758,7 +758,7 @@
 			isa = PBXGroup;
 			children = (
 				AI0000000000000000000001 /* AppIcons.swift */,
-				AI0000000000000000000007 /* FoundersPassPaywall.swift */,
+				AI0000000000000000000007 /* LifetimePaywall.swift */,
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
 				SP0000000000000000000001 /* SessionFeaturePaywall.swift */,
@@ -970,7 +970,7 @@
 				05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */,
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
 				AI0000000000000000000002 /* AppIcons.swift in Sources */,
-				AI0000000000000000000008 /* FoundersPassPaywall.swift in Sources */,
+				AI0000000000000000000008 /* LifetimePaywall.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
 				SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */,
 				PP0000000000000000000002 /* ProPreviewData.swift in Sources */,

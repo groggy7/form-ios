@@ -12,7 +12,7 @@ public struct SettingsView: View {
 
     @State private var showTrainingSetup = false
     @State private var showAppIconSheet: Bool = false
-    @State private var showFoundersPaywall: Bool = false
+    @State private var openAppIconAfterPaywall = false
     @State private var showLifetimePaywall = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
@@ -117,12 +117,8 @@ public struct SettingsView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
             }
-            // A new founder goes straight on to the icon they came for.
             .sheet(isPresented: $showLifetimePaywall) {
-                FoundersPassPaywallSheet(onDismiss: { showLifetimePaywall = false }, founder: false)
-            }
-            .sheet(isPresented: $showFoundersPaywall, onDismiss: { if proManager.isFounder { showAppIconSheet = true } }) {
-                FoundersPassPaywallSheet(onDismiss: { showFoundersPaywall = false })
+                LifetimePaywallSheet(onDismiss: { showLifetimePaywall = false })
             }
             .sheet(isPresented: $showAppIconSheet) {
                 AppIconSelectionSheet(manager: appIconManager, onDismiss: { showAppIconSheet = false })
@@ -140,7 +136,10 @@ public struct SettingsView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
             }
-            .sheet(isPresented: $showPaywall) {
+            .sheet(isPresented: $showPaywall, onDismiss: {
+                if openAppIconAfterPaywall && proManager.isProSubscribed { showAppIconSheet = true }
+                openAppIconAfterPaywall = false
+            }) {
                 ProPaywallSheet(feature: paywallFeature, onDismiss: {
                     showPaywall = false
                     paywallFeature = nil
@@ -179,13 +178,13 @@ public struct SettingsView: View {
                     .foregroundStyle(AppColors.text)
             }
 
-            Text(LanguageManager.t(proManager.isFounder ? "founders.active" : proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
+            Text(LanguageManager.t(proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
                 .font(.app(size: 12.5))
                 .foregroundStyle(AppColors.secondaryText)
                 .lineSpacing(2)
 
             if proManager.hasLifetimeAccess && proManager.hasActiveSubscription {
-                Text(LanguageManager.t("founders.subscriptionNotice"))
+                Text(LanguageManager.t("lifetime.subscriptionNotice"))
                     .font(.app(size: 12.5)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
             }
             if proManager.hasActiveSubscription {
@@ -219,12 +218,7 @@ public struct SettingsView: View {
                 }
                 .buttonStyle(.plain)
             }
-            if !proManager.isFounder, let price = storeKit.foundersProduct?.displayPrice {
-                Button { showFoundersPaywall = true } label: {
-                    Text(LanguageManager.t("founders.title") + " · " + price)
-                        .font(.app(size: 13, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 48)
-                }.buttonStyle(.plain).foregroundStyle(AppColors.accent).accessibilityIdentifier("settings-founders-purchase")
-            } else if !proManager.hasLifetimeAccess, let price = storeKit.lifetimeProduct?.displayPrice {
+            if !proManager.hasLifetimeAccess, let price = storeKit.lifetimeProduct?.displayPrice {
                 Button { showLifetimePaywall = true } label: {
                     Text(LanguageManager.t("lifetime.title") + " · " + price)
                         .font(.app(size: 13, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 48)
@@ -435,9 +429,9 @@ public struct SettingsView: View {
                 },
                 SettingsEntry("app-icon", terms: [LanguageManager.t("settings.appIcon"), LanguageManager.t("settings.appIconSubtitle"),
                                                   LanguageManager.t(appIconManager.current.nameKey)]) {
-                    // A Founders Pass perk: other users get the pass's paywall instead of the picker.
+                    // All Pro purchase options share the same customization access.
                     SettingsAppIconRow(current: appIconManager.current) {
-                        if proManager.isFounder { showAppIconSheet = true } else { showFoundersPaywall = true }
+                        if proManager.isProSubscribed { showAppIconSheet = true } else { openAppIconAfterPaywall = true; paywallFeature = nil; showPaywall = true }
                     }
                 },
                 SettingsEntry("glow-tiles", terms: [LanguageManager.t("settings.glowTiles"), LanguageManager.t("settings.glowTilesSubtitle")]) {
