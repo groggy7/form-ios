@@ -15,6 +15,8 @@ public struct HistoryDetailView: View {
     @ScaledMetric(relativeTo: .body) private var rowFont: CGFloat = 14
     @ScaledMetric(relativeTo: .caption) private var detailFont: CGFloat = 12
     @ScaledMetric(relativeTo: .headline) private var cardFont: CGFloat = 18
+    @ScaledMetric(relativeTo: .title2) private var workoutTitleFont: CGFloat = 24
+    @ScaledMetric(relativeTo: .headline) private var exerciseHeadingFont: CGFloat = 16
     @ScaledMetric(relativeTo: .title2) private var headingFont: CGFloat = 22
     @ScaledMetric(relativeTo: .caption) private var totalLabelFont: CGFloat = 11
     @ScaledMetric(relativeTo: .caption) private var totalUnitFont: CGFloat = 13
@@ -201,80 +203,90 @@ public struct HistoryDetailView: View {
         let statusText = section.isComplete ? "history.completed" : section.isLiveSession ? "history.inProgress"
             : section.sessionRecord != nil ? "history.unfinished" : past ? "history.missed" : "history.notStarted"
         let progress = min(1, max(0, Double(section.completedSets) / Double(max(1, section.plannedSets))))
-        return VStack(alignment: .leading, spacing: 10) {
+        return VStack(alignment: .leading, spacing: 16) {
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .center, spacing: 8) {
-                    contextLabel(section, index: index)
+                    workoutDate
                     Spacer(minLength: 0)
                     statusPill(statusText, color: statusColor, id: single ? "history-detail-status" : "history-section-status-\(section.id)")
                 }
-                VStack(alignment: .leading, spacing: 6) {
-                    contextLabel(section, index: index)
+                VStack(alignment: .leading, spacing: 10) {
+                    workoutDate
                     statusPill(statusText, color: statusColor, id: single ? "history-detail-status" : "history-section-status-\(section.id)")
                 }
             }
-            Text(section.workoutTitle).font(.app(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityIdentifier("history-section-title-\(section.id)")
-            SavedNote(text: section.sessionRecord?.note)
-            if let record = section.sessionRecord, !section.isLiveSession,
-               record.exerciseLogs.contains(where: { !RecordEngine.workingSets($0).isEmpty }) {
-                Button {
-                    let cards = SocialCards.workout(history: history, record: record, unit: weightUnit)
-                    if !cards.isEmpty { socialRequest = SocialShareRequest(cards: cards) }
-                } label: {
-                    HStack(spacing: 8) {
+            if !single { contextLabel(section, index: index) }
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(section.workoutTitle).font(.app(size: workoutTitleFont, weight: .bold)).foregroundStyle(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("history-section-title-\(section.id)")
+                    Text(LanguageManager.t(items.count == 1 ? "builder.exerciseCountOne" : "weekly.exerciseCount", ["count": items.count]) + " · "
+                        + (section.isComplete ? LanguageManager.shared.plural("exercise.history.setsCount", section.completedSets)
+                            : LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets)))
+                        .font(.app(size: rowFont)).foregroundStyle(AppColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                if let record = section.sessionRecord, !section.isLiveSession,
+                   record.exerciseLogs.contains(where: { !RecordEngine.workingSets($0).isEmpty }) {
+                    Button {
+                        let cards = SocialCards.workout(history: history, record: record, unit: weightUnit)
+                        if !cards.isEmpty { socialRequest = SocialShareRequest(cards: cards) }
+                    } label: {
                         Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: 18, weight: .regular))
-                            .frame(width: 18, height: 20)
-                        Text(LanguageManager.t("social.share"))
-                            .font(.app(size: rowFont, weight: .medium))
-                            .fixedSize(horizontal: false, vertical: true)
+                            .font(.system(size: 22, weight: .regular))
+                            .foregroundStyle(AppColors.accent)
+                            .frame(width: 48, height: 48)
+                            .background(AppColors.surfaceRaised)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                            .contentShape(Rectangle())
                     }
-                    .foregroundStyle(AppColors.accent)
-                    .padding(.horizontal, 12).padding(.vertical, 8)
-                    .frame(minHeight: 40)
-                    .background(AppColors.surfaceRaised)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-                    .frame(minHeight: 48)
-                    .contentShape(Rectangle())
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LanguageManager.t("social.share"))
+                    .accessibilityIdentifier("history-share-\(record.id)")
                 }
-                .buttonStyle(.plain).accessibilityIdentifier("history-share-\(record.id)")
             }
+            SavedNote(text: section.sessionRecord?.note)
             if let label = section.scheduleLabel(on: detail.date) {
                 Text(label).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier(section.scheduledDate == nil ? "history-section-schedule-unknown-\(section.id)" : "history-section-date-\(section.id)")
             }
-            Text(LanguageManager.t(items.count == 1 ? "builder.exerciseCountOne" : "weekly.exerciseCount", ["count": items.count]) + " · "
-                + LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets))
-                .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             if !single {
                 Text(formattedDuration(section.durationSeconds) + " · " + volumeText(section.totalVolumeKg, completedSets: section.completedSets))
                     .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             }
-            HStack(spacing: 10) {
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(AppColors.surfaceRaised)
-                        Capsule().fill(section.isComplete ? AppColors.completedGreen : AppColors.accent)
-                            .frame(width: geometry.size.width * CGFloat(progress))
-                    }
-                }.frame(height: 5)
-                Text(LanguageManager.formatPercent(Int(progress * 100)))
-                    .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
+            if !section.isComplete {
+                HStack(spacing: 10) {
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            Capsule().fill(AppColors.surfaceRaised)
+                            Capsule().fill(AppColors.accent)
+                                .frame(width: geometry.size.width * CGFloat(progress))
+                        }
+                    }.frame(height: 5)
+                    Text(LanguageManager.formatPercent(Int(progress * 100)))
+                        .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
+                }
             }
+            Rectangle().fill(AppColors.border).frame(height: 1)
             Button {
                 if expanded { collapsedSections.insert(key) } else { collapsedSections.remove(key) }
             } label: {
                 HStack(spacing: 8) {
-                    Text(LanguageManager.t("history.exerciseSummaries"))
+                    Image(systemName: "dumbbell.fill")
+                        .font(.system(size: 20)).frame(width: 22)
+                        .padding(.trailing, 4)
+                    Text(LanguageManager.t("history.exercises"))
+                        .font(.app(size: exerciseHeadingFont, weight: .semibold)).foregroundStyle(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: 0)
-                    Text("\(items.count)")
+                    Text("\(items.count)").font(.app(size: exerciseHeadingFont))
                     Image(systemName: expanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 16, weight: .medium))
                 }
-                .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .frame(maxWidth: .infinity, minHeight: 48).contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -323,12 +335,29 @@ public struct HistoryDetailView: View {
             .accessibilityIdentifier("history-section-context-\(section.id)")
     }
 
+    private var workoutDate: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "calendar").font(.system(size: 18))
+            Text(formattedWorkoutDate(detail.date)).font(.app(size: detailFont))
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .foregroundStyle(AppColors.secondaryText)
+        .padding(.vertical, 6)
+    }
+
     private func statusPill(_ key: String, color: Color, id: String) -> some View {
-        Text(LanguageManager.t(key)).font(.app(size: detailFont, weight: .medium)).foregroundStyle(color)
-            .padding(.horizontal, 8).padding(.vertical, 4)
-            .background(RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)))
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(color.opacity(0.3), lineWidth: 1))
-            .accessibilityIdentifier(id)
+        HStack(spacing: 6) {
+            Image(systemName: key == "history.completed" ? "checkmark.circle" :
+                ["history.unfinished", "history.inProgress"].contains(key) ? "clock" : "minus")
+                .font(.system(size: 16)).accessibilityHidden(true)
+            Text(LanguageManager.t(key)).font(.app(size: detailFont, weight: .semibold))
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier(id)
+        }
+        .foregroundStyle(color)
+        .padding(.horizontal, 10).padding(.vertical, 7)
+        .background(RoundedRectangle(cornerRadius: 12).fill(color.opacity(0.10)))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(color.opacity(0.3), lineWidth: 1))
     }
 
     private func exerciseRank(_ item: HistoryDayExerciseProgress) -> Int {
@@ -394,6 +423,15 @@ public struct HistoryDetailView: View {
             return tr ? "\(seconds / 3600)sa \(seconds % 3600 / 60)dk" : "\(seconds / 3600)h \(seconds % 3600 / 60)m"
         }
         return tr ? "\(seconds / 60)dk \(seconds % 60)sn" : "\(seconds / 60)m \(seconds % 60)s"
+    }
+
+    private func formattedWorkoutDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = LanguageManager.locale
+        formatter.dateStyle = .long
+        let dateText = formatter.string(from: date)
+        formatter.dateFormat = "EEEE"
+        return dateText + " · " + formatter.string(from: date)
     }
 
     private func formattedFullDate(_ date: Date) -> String {

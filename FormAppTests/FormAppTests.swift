@@ -10634,6 +10634,44 @@ final class HistoryBreakdownTests: XCTestCase {
     }
 
     @MainActor
+    func testCompletedWorkoutCardLocalizedLayouts() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        let date = WorkoutCalendar.parseDate("2026-10-19")!
+        var saved = record(bench, complete: true, scheduled: "2026-10-19")
+        saved.startedAt = "2026-10-19T09:00:00Z"
+        saved.completedAt = "2026-10-19T10:00:00Z"
+        saved.workoutSnapshot = bench
+        let detail = HistoryDayDetailData(date: date, dateString: "2026-10-19", status: .completed,
+            sessionRecord: saved, workout: bench)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for width: CGFloat in [393, 320] {
+                let view = HistoryDetailView(detail: detail, history: [saved], today: date, onBack: {})
+                    .environment(\.sizeCategory, width == 320 ? .extraExtraLarge : .large)
+                let controller = UIHostingController(rootView: view)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 850))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds: 200_000_000)
+                func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+                let scroll = try XCTUnwrap(descendants(controller.view).compactMap { $0 as? UIScrollView }.first)
+                XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { controller.view.layer.render(in: $0.cgContext) }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "ios-breakdown-completed-\(language)-\(Int(width))"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+        }
+    }
+
+    @MainActor
     func testCompactSingleWorkoutMixedProgressLocalizedSnapshots() async throws {
         let previousLanguage = LanguageManager.shared.currentLanguage
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
