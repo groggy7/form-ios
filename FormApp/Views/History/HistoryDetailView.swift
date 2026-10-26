@@ -11,10 +11,14 @@ public struct HistoryDetailView: View {
     var onActionSection: ((WorkoutDaySection) -> Void)? = nil
     @State private var socialRequest: SocialShareRequest?
     @State private var collapsedSections: Set<String> = []
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .body) private var rowFont: CGFloat = 14
     @ScaledMetric(relativeTo: .caption) private var detailFont: CGFloat = 12
     @ScaledMetric(relativeTo: .headline) private var cardFont: CGFloat = 18
     @ScaledMetric(relativeTo: .title2) private var headingFont: CGFloat = 22
+    @ScaledMetric(relativeTo: .caption) private var totalLabelFont: CGFloat = 11
+    @ScaledMetric(relativeTo: .caption) private var totalUnitFont: CGFloat = 13
+    @ScaledMetric(relativeTo: .headline) private var totalValueFont: CGFloat = 20
 
     public init(detail: HistoryDayDetailData, history: [WorkoutSessionRecord] = [], today: Date = Date(),
         onBack: @escaping () -> Void, onActionWorkout: (() -> Void)? = nil,
@@ -98,13 +102,14 @@ public struct HistoryDetailView: View {
                                 .accessibilityIdentifier("history-detail-status")
                         }
                     }
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: 12) {
                         Text(LanguageManager.t("history.dayTotals"))
-                            .font(.app(size: detailFont, weight: .medium)).foregroundStyle(AppColors.secondaryText)
-                        HStack(alignment: .top, spacing: 10) {
-                            metric(LanguageManager.t("history.sets"), "\(totalSections.reduce(0) { $0 + $1.completedSets }) / \(totalSections.reduce(0) { $0 + $1.plannedSets })")
-                            metric(LanguageManager.t("history.duration"), formattedDuration(sections.reduce(0) { $0 + $1.durationSeconds }))
-                            metric(LanguageManager.t("history.volume"), volumeText(sections.reduce(0.0) { $0 + $1.totalVolumeKg }, completedSets: sections.reduce(0) { $0 + $1.completedSets }))
+                            .font(.app(size: totalLabelFont, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                        if dynamicTypeSize >= .xxLarge {
+                            VStack(spacing: 6) { totalMetrics(sections, recorded: totalSections) }
+                        } else {
+                            HStack(spacing: 6) { totalMetrics(sections, recorded: totalSections) }
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     .padding(14).background(AppColors.surface)
@@ -133,12 +138,54 @@ public struct HistoryDetailView: View {
         .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
     }
 
-    private func metric(_ label: String, _ value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
-            Text(value).font(.app(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
-                .fixedSize(horizontal: false, vertical: true)
-        }.frame(maxWidth: .infinity, alignment: .leading)
+    @ViewBuilder
+    private func totalMetrics(_ sections: [WorkoutDaySection], recorded: [WorkoutDaySection]) -> some View {
+        let volume = sections.reduce(0.0) { $0 + $1.totalVolumeKg }
+        let bodyweight = WorkoutSessionUtils.bodyweightVolumeLabel(volume,
+            completedSets: sections.reduce(0) { $0 + $1.completedSets })
+        metric(LanguageManager.t("history.sets"),
+            Text("\(recorded.reduce(0) { $0 + $1.completedSets })")
+                + Text(" / \(recorded.reduce(0) { $0 + $1.plannedSets })")
+                    .font(.app(size: totalUnitFont)).foregroundColor(AppColors.secondaryText))
+        metric(LanguageManager.t("history.duration"),
+            formattedDuration(sections.reduce(0) { $0 + $1.durationSeconds }).reduce(Text("")) { result, character in
+                result + Text(String(character))
+                    .font(.app(size: character.isLetter ? totalUnitFont : totalValueFont,
+                        weight: character.isLetter ? .regular : .bold))
+                    .foregroundColor(character.isLetter ? AppColors.secondaryText : AppColors.text)
+            })
+        metric(LanguageManager.t("history.volume") + (bodyweight == nil ? " · \(weightUnit.label)" : ""),
+            Text(bodyweight ?? weightUnit.formatVolume(volume)))
+    }
+
+    private func metric(_ label: String, _ value: Text) -> some View {
+        let stacked = dynamicTypeSize >= .xxLarge
+        return Group {
+            if stacked {
+                HStack(spacing: 12) {
+                    Text(label).font(.app(size: totalLabelFont)).foregroundStyle(AppColors.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    value.font(.app(size: totalValueFont, weight: .bold)).foregroundStyle(AppColors.text)
+                        .monospacedDigit().multilineTextAlignment(.trailing)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }.padding(12)
+            } else {
+                VStack(spacing: 0) {
+                    Text(label).font(.app(size: totalLabelFont)).foregroundStyle(AppColors.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 8)
+                    value.font(.app(size: totalValueFont, weight: .bold)).foregroundStyle(AppColors.text)
+                        .monospacedDigit().fixedSize(horizontal: false, vertical: true)
+                }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 4).padding(.vertical, 12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+        .background(AppColors.surfaceRaised)
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .accessibilityElement(children: .combine)
     }
 
     private func workoutCard(_ section: WorkoutDaySection, index: Int, single: Bool) -> some View {
