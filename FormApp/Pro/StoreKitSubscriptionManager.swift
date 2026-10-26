@@ -218,9 +218,6 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let isPro = entitlement.hasPro
         UserDefaults.standard.set(Array(purchasedIds), forKey: Self.keyCachedProductIds)
         ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, lifetime: entitlement.lifetime)
-        if !entitlement.hasPro, AppIconManager.shared.current != AppIcons.standard {
-            _ = await AppIconManager.shared.select(AppIcons.standard)
-        }
         guard revision == entitlementRevision else { return }
         if isPro {
             eligibleFreeTrialProductIds = []

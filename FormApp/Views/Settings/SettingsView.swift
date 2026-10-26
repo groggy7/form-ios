@@ -7,12 +7,9 @@ public struct SettingsView: View {
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
-    @ObservedObject private var appIconManager = AppIconManager.shared
     var onDismiss: () -> Void
 
     @State private var showTrainingSetup = false
-    @State private var showAppIconSheet: Bool = false
-    @State private var openAppIconAfterPaywall = false
     @State private var showLifetimePaywall = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
@@ -120,13 +117,6 @@ public struct SettingsView: View {
             .sheet(isPresented: $showLifetimePaywall) {
                 LifetimePaywallSheet(onDismiss: { showLifetimePaywall = false })
             }
-            .sheet(isPresented: $showAppIconSheet) {
-                AppIconSelectionSheet(manager: appIconManager, onDismiss: { showAppIconSheet = false })
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(28)
-                    .presentationBackground(AppColors.background)
-            }
             .sheet(isPresented: $showImportExportSheet) {
                 ImportExportDataSheet(store: store, onDismiss: {
                     showImportExportSheet = false
@@ -136,10 +126,7 @@ public struct SettingsView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
             }
-            .sheet(isPresented: $showPaywall, onDismiss: {
-                if openAppIconAfterPaywall && proManager.isProSubscribed { showAppIconSheet = true }
-                openAppIconAfterPaywall = false
-            }) {
+            .sheet(isPresented: $showPaywall) {
                 ProPaywallSheet(feature: paywallFeature, onDismiss: {
                     showPaywall = false
                     paywallFeature = nil
@@ -426,13 +413,6 @@ public struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("settings-theme-row")
-                },
-                SettingsEntry("app-icon", terms: [LanguageManager.t("settings.appIcon"), LanguageManager.t("settings.appIconSubtitle"),
-                                                  LanguageManager.t(appIconManager.current.nameKey)]) {
-                    // All Pro purchase options share the same customization access.
-                    SettingsAppIconRow(current: appIconManager.current) {
-                        if proManager.isProSubscribed { showAppIconSheet = true } else { openAppIconAfterPaywall = true; paywallFeature = nil; showPaywall = true }
-                    }
                 },
                 SettingsEntry("glow-tiles", terms: [LanguageManager.t("settings.glowTiles"), LanguageManager.t("settings.glowTilesSubtitle")]) {
                     Toggle(isOn: $store.homeGlowTiles) {

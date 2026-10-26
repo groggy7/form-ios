@@ -94,7 +94,7 @@ struct LifetimePaywallContent: View {
                     header(width: geometry.size.width)
                     VStack(alignment: .leading, spacing: 0) {
                         // The real Classic icon, so the hero needs no artwork of its own.
-                        AppIconPreview(option: AppIcons.standard, size: 80).padding(.bottom, 18)
+                        LifetimeLauncherIcon(size: 80).padding(.bottom, 18)
                         Text(LanguageManager.t("lifetime.headline"))
                             .font(.app(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
                             .fixedSize(horizontal: false, vertical: true).padding(.bottom, 10)
@@ -249,5 +249,32 @@ struct LifetimePaywallContent: View {
         }
         .background(AppColors.progressionPaywallSurface)
         .accessibilityIdentifier("lifetime-paywall-footer")
+    }
+}
+
+/// A static preview of the primary launcher artwork, independent of icon selection.
+private struct LifetimeLauncherIcon: View {
+    let size: CGFloat
+
+    private var image: UIImage? {
+        let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any]
+        let primary = icons?["CFBundlePrimaryIcon"] as? [String: Any]
+        guard let file = (primary?["CFBundleIconFiles"] as? [String])?.last else { return nil }
+        return UIImage(named: file)
+    }
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: size * 0.2237, style: .continuous)
+        Group {
+            if let image {
+                Image(uiImage: image).resizable().interpolation(.high)
+            } else {
+                AppColors.surfaceRaised
+            }
+        }
+        .frame(width: size, height: size)
+        .clipShape(shape)
+        .overlay(shape.strokeBorder(AppColors.border, lineWidth: 1))
+        .accessibilityHidden(true)
     }
 }

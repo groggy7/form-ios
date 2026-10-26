@@ -145,10 +145,8 @@
 		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
-		AI0000000000000000000002 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000001 /* AppIcons.swift */; };
 		AI0000000000000000000008 /* LifetimePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000007 /* LifetimePaywall.swift */; };
-		AI0000000000000000000004 /* AppIconSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000003 /* AppIconSelectionSheet.swift */; };
-		AI0000000000000000000006 /* AppIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* AppIconTests.swift */; };
+		AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* LifetimePaywallTests.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
 		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
@@ -362,10 +360,8 @@
 		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
-		AI0000000000000000000001 /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
 		AI0000000000000000000007 /* LifetimePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywall.swift; sourceTree = "<group>"; };
-		AI0000000000000000000003 /* AppIconSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconSelectionSheet.swift; sourceTree = "<group>"; };
-		AI0000000000000000000005 /* AppIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconTests.swift; sourceTree = "<group>"; };
+		AI0000000000000000000005 /* LifetimePaywallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywallTests.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
 		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
@@ -489,7 +485,7 @@
 				TR0000000000000000000005 /* TourTests.swift */,
 				FD0000000000000000000003 /* FoldableLayoutTests.swift */,
 				TW0000000000000000000004 /* TextWidthScaleTests.swift */,
-				AI0000000000000000000005 /* AppIconTests.swift */,
+				AI0000000000000000000005 /* LifetimePaywallTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
 				HI0000000000000000000007 /* HistoryImportTests.swift */,
@@ -738,7 +734,6 @@
 		EC8D0E6B74180B62F042C537 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				AI0000000000000000000003 /* AppIconSelectionSheet.swift */,
 				DECFA8F5B27849C8BE2611AF /* SettingsView.swift */,
 				HI0000000000000000000003 /* HistoryImportSheet.swift */,
 			);
@@ -757,7 +752,6 @@
 		VM0000000000000000000000 /* Pro */ = {
 			isa = PBXGroup;
 			children = (
-				AI0000000000000000000001 /* AppIcons.swift */,
 				AI0000000000000000000007 /* LifetimePaywall.swift */,
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
@@ -969,7 +963,6 @@
 				3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */,
 				05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */,
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
-				AI0000000000000000000002 /* AppIcons.swift in Sources */,
 				AI0000000000000000000008 /* LifetimePaywall.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
 				SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */,
@@ -1045,7 +1038,6 @@
 				D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */,
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
 				HI0000000000000000000004 /* HistoryImportSheet.swift in Sources */,
-				AI0000000000000000000004 /* AppIconSelectionSheet.swift in Sources */,
 				9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */,
 				TR0000000000000000000004 /* TourOverlay.swift in Sources */,
 				0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */,
@@ -1097,7 +1089,7 @@
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
 				FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */,
 				TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */,
-				AI0000000000000000000006 /* AppIconTests.swift in Sources */,
+				AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1132,7 +1124,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -1216,7 +1207,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
