@@ -18,18 +18,18 @@
       "internalID": "6827288489",
       "localizations": [
         {
-          "description": "Every Pro feature. One payment. No renewal.",
-          "displayName": "Lifetime Pro",
+          "description": "Every Premium feature. One payment. No renewal.",
+          "displayName": "Lifetime Premium",
           "locale": "en_US"
         },
         {
-          "description": "Tüm Pro özellikleri. Tek ödeme. Yenileme yok.",
-          "displayName": "Ömür Boyu Pro",
+          "description": "Tüm Premium özellikleri. Tek ödeme. Yenileme yok.",
+          "displayName": "Ömür Boyu Premium",
           "locale": "tr"
         }
       ],
       "productID": "com.perseverancesoftware.forcedrep.lifetime",
-      "referenceName": "Lifetime Pro",
+      "referenceName": "Lifetime Premium",
       "type": "NonConsumable"
     }
   ],
