@@ -145,7 +145,6 @@
 		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
-		AI0000000000000000000008 /* LifetimePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000007 /* LifetimePaywall.swift */; };
 		AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* LifetimePaywallTests.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
@@ -360,7 +359,6 @@
 		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
-		AI0000000000000000000007 /* LifetimePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywall.swift; sourceTree = "<group>"; };
 		AI0000000000000000000005 /* LifetimePaywallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywallTests.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
@@ -752,7 +750,6 @@
 		VM0000000000000000000000 /* Pro */ = {
 			isa = PBXGroup;
 			children = (
-				AI0000000000000000000007 /* LifetimePaywall.swift */,
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
 				SP0000000000000000000001 /* SessionFeaturePaywall.swift */,
@@ -963,7 +960,6 @@
 				3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */,
 				05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */,
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
-				AI0000000000000000000008 /* LifetimePaywall.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
 				SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */,
 				PP0000000000000000000002 /* ProPreviewData.swift in Sources */,

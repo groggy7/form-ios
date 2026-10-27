@@ -3,6 +3,7 @@ import SwiftUI
 public enum PaywallPlan: String, CaseIterable {
     case annual
     case monthly
+    case lifetime
 }
 
 public struct ProPaywallSheet: View {
@@ -20,24 +21,23 @@ public struct ProPaywallSheet: View {
     @State private var restoreStatusMessage: String? = nil
     @State private var isRestoreError: Bool = false
     @State private var isRestoring: Bool = false
-    @State private var showLifetimeOffer = false
-    private var lifetimeOfferTitle: String? {
-        guard !proManager.hasLifetimeAccess else { return nil }
-        guard let product = storeKit.lifetimeProduct else { return nil }
-        return LanguageManager.t("lifetime.title") + " · " + product.displayPrice
-    }
+    @State private var isCompleting = false
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.openURL) private var openURL
 
     public init(
         feature: ProFeature? = nil,
         onDismiss: (() -> Void)? = nil,
-        onUnlocked: (() -> Void)? = nil
+        onUnlocked: (() -> Void)? = nil,
+        initialPlan: PaywallPlan? = nil
     ) {
         // Workout swaps have no dedicated paywall art or copy; they use the general one, as on Android.
         self.feature = feature == .exerciseSwaps || feature == .bodyTrends ? nil : feature
         self.onDismiss = onDismiss
         self.onUnlocked = onUnlocked
+        let preferredPlan = initialPlan ?? (ProAccessManager.shared.hasActiveSubscription ? .lifetime : .annual)
+        _selectedPlan = State(initialValue: preferredPlan)
+        _userInteractedWithPlan = State(initialValue: initialPlan != nil || preferredPlan == .lifetime)
     }
 
     private func dismissSelf() {
@@ -48,6 +48,13 @@ public struct ProPaywallSheet: View {
         }
     }
 
+    private func finishUnlock() {
+        guard !isCompleting else { return }
+        isCompleting = true
+        onUnlocked?()
+        dismissSelf()
+    }
+
     private func selectDefaultPlanIfNeeded() {
         if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
             selectedPlan = .monthly
@@ -55,16 +62,18 @@ public struct ProPaywallSheet: View {
     }
 
     private func performPurchase() {
-        guard !storeKit.isPurchasing else { return }
+        guard !storeKit.isPurchasing && !isRestoring && !proManager.hasLifetimeAccess &&
+            (selectedPlan == .lifetime || !proManager.hasActiveSubscription) else { return }
         purchaseErrorMessage = nil
+        restoreStatusMessage = nil
+        let purchasePlan = selectedPlan
         Task {
             do {
-                let status = try await storeKit.purchase(plan: selectedPlan)
+                let status = try await storeKit.purchase(plan: purchasePlan)
                 switch status {
                 case .success:
                     purchaseErrorMessage = nil
-                    onUnlocked?()
-                    dismissSelf()
+                    finishUnlock()
                 case .userCancelled:
                     purchaseErrorMessage = nil
                 case .pending:
@@ -77,7 +86,7 @@ public struct ProPaywallSheet: View {
     }
 
     private func performRestore() {
-        guard !isRestoring else { return }
+        guard !isRestoring && !storeKit.isPurchasing else { return }
         isRestoring = true
         restoreStatusMessage = nil
         Task {
@@ -87,8 +96,7 @@ public struct ProPaywallSheet: View {
                 if restored || proManager.isProSubscribed {
                     restoreStatusMessage = LanguageManager.t("paywall.restored_success")
                     isRestoreError = false
-                    onUnlocked?()
-                    dismissSelf()
+                    finishUnlock()
                 } else {
                     restoreStatusMessage = LanguageManager.t("paywall.restore_no_purchases")
                     isRestoreError = true
@@ -122,18 +130,19 @@ public struct ProPaywallSheet: View {
             onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
             onClose: dismissSelf,
             feature: feature, weightUnit: appStore.weightUnit,
-            lifetimeOfferTitle: lifetimeOfferTitle, onLifetimeOffer: { showLifetimeOffer = true }
+            lifetime: SessionPaywallOffer(price: storeKit.lifetimeProduct?.displayPrice),
+            hasActiveSubscription: proManager.hasActiveSubscription
         )
-        .sheet(isPresented: $showLifetimeOffer) {
-            LifetimePaywallSheet(onDismiss: {
-                showLifetimeOffer = false
-                if proManager.isProSubscribed { onUnlocked?(); dismissSelf() }
-            })
-        }
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(28)
         .presentationBackground(AppColors.progressionPaywallSurface)
-        .onAppear(perform: selectDefaultPlanIfNeeded)
+        .onAppear {
+            selectDefaultPlanIfNeeded()
+            if proManager.hasLifetimeAccess { finishUnlock() }
+        }
+        .onChange(of: proManager.hasLifetimeAccess) { if proManager.hasLifetimeAccess { finishUnlock() } }
+        .onChange(of: proManager.isProSubscribed) { if proManager.isProSubscribed { finishUnlock() } }
+        .task { await storeKit.requestProducts() }
         .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
         .onChange(of: storeKit.eligibleFreeTrialProductIds) { selectDefaultPlanIfNeeded() }
     }

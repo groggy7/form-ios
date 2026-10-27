@@ -41,7 +41,7 @@ final class LifetimePaywallTests: XCTestCase {
             LanguageManager.setLanguage(language)
             for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
                 for canPurchase in [true, false] {
-                    let paywall = render(LifetimePaywallContent(canPurchase: canPurchase, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}, price: canPurchase ? "$79.99" : nil),
+                    let paywall = render(paywall(price: canPurchase ? "$79.99" : nil),
                                          width: width, height: size == .large ? 900 : 1500, size: size)
                     XCTAssertEqual(paywall.size.width, width)
                     try XCTUnwrap(paywall.pngData()).write(to: outputDir.appendingPathComponent(
@@ -59,7 +59,7 @@ final class LifetimePaywallTests: XCTestCase {
         defer { LanguageManager.setLanguage(previous) }
         LanguageManager.setLanguage("en")
         let bounds = CGRect(x: 0, y: 0, width: 440, height: 956)
-        let image = render(LifetimePaywallContent(canPurchase: true, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}, price: product.displayPrice),
+        let image = render(paywall(price: product.displayPrice),
                            width: bounds.width, height: bounds.height, size: .large)
         let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/lifetime-review").standardized
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
@@ -67,7 +67,32 @@ final class LifetimePaywallTests: XCTestCase {
         try XCTUnwrap(image.jpegData(compressionQuality: 0.95)).write(to: output.appendingPathComponent("lifetime-pro-iphone.jpg"))
     }
 
-    private func render<V: View>(_ view: V, width: CGFloat, height: CGFloat, size: ContentSizeCategory) -> UIImage {
+    private func paywall(price: String?, plan: PaywallPlan = .lifetime, subscriber: Bool = false) -> some View {
+        SessionFeaturePaywallContent(
+            annual: SessionPaywallOffer(price: "$29.99", hasTrial: true),
+            monthly: SessionPaywallOffer(price: "$4.99"), selectedPlan: plan,
+            isPurchasing: false, isRestoring: false, purchaseError: nil, restoreMessage: nil, isRestoreError: false,
+            onSelectPlan: { _ in }, onPurchase: {}, onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {},
+            feature: nil, lifetime: SessionPaywallOffer(price: price), hasActiveSubscription: subscriber)
+    }
+
+    func testAllPlanStatesRenderInBothAppearances() throws {
+        let previous = ThemeManager.shared.currentTheme
+        defer { ThemeManager.shared.setThemeId(previous.id) }
+        let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/integrated-paywall-review").standardized
+        try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+        for theme in [AppThemes.default, AppThemes.oat] {
+            ThemeManager.shared.setThemeId(theme.id)
+            for plan in PaywallPlan.allCases {
+                for plans in [false, true] {
+                    let image = render(paywall(price: "$79.99", plan: plan), width: 393, height: 900, size: .large, plans: plans)
+                    try XCTUnwrap(image.pngData()).write(to: output.appendingPathComponent("\(theme.id)-\(plan.rawValue)-\(plans ? "plans" : "top").png"))
+                }
+            }
+        }
+    }
+
+    private func render<V: View>(_ view: V, width: CGFloat, height: CGFloat, size: ContentSizeCategory, plans: Bool = false) -> UIImage {
         // A fixed child canvas avoids foldable window-region offsets; UIKit-backed controls still render natively.
         let bounds = CGRect(x: 0, y: 0, width: width, height: height)
         let controller = UIHostingController(rootView: view
@@ -87,6 +112,16 @@ final class LifetimePaywallTests: XCTestCase {
         controller.view.frame = bounds
         controller.view.layoutIfNeeded()
         RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+        if plans {
+            func scrollView(_ view: UIView) -> UIScrollView? {
+                if let scroll = view as? UIScrollView { return scroll }
+                return view.subviews.lazy.compactMap { scrollView($0) }.first
+            }
+            if let scroll = scrollView(controller.view) {
+                scroll.setContentOffset(CGPoint(x: 0, y: max(0, scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)), animated: false)
+                RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+            }
+        }
         controller.view.frame = bounds
         controller.view.layoutIfNeeded()
         return UIGraphicsImageRenderer(size: bounds.size).image { _ in
@@ -168,10 +203,11 @@ final class LifetimeBillingTests: XCTestCase {
         await manager.requestProducts()
         await manager.updatePurchasedProducts()
         _ = try XCTUnwrap(manager.lifetimeProduct)
+        XCTAssertFalse(manager.hasFreeTrial(for: .lifetime))
         XCTAssertEqual(manager.products.filter { $0.type == .nonConsumable }.count, 1)
         _ = try await session.buyProduct(identifier: StoreKitSubscriptionManager.monthlyProductId)
         try await settle { access.hasActiveSubscription && !access.hasLifetimeAccess }
-        _ = try await manager.purchaseLifetime()
+        _ = try await manager.purchase(plan: .lifetime)
         try await settle { access.hasLifetimeAccess && access.hasActiveSubscription }
         XCTAssertTrue(access.isFeatureUnlocked(.customThemes))
         access.resetOverrides()

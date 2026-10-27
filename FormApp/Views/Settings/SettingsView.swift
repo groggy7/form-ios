@@ -5,12 +5,10 @@ public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
-    @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     var onDismiss: () -> Void
 
     @State private var showTrainingSetup = false
-    @State private var showLifetimePaywall = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
@@ -38,7 +36,7 @@ public struct SettingsView: View {
         let _ = themeManager.currentTheme
         let words = SettingsSearch.words(query)
         let showPremiumCard = SettingsSearch.matches(words, [
-            LanguageManager.t("settings.pro_membership"), "Premium",
+            LanguageManager.t("settings.pro_membership"), "Premium", LanguageManager.t("lifetime.title"),
             LanguageManager.t(proManager.isProSubscribed ? "settings.manage_subscription" : "settings.upgrade_to_pro")
         ])
         let visibleGroups = groups.compactMap { $0.matching(words) }
@@ -114,9 +112,6 @@ public struct SettingsView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
             }
-            .sheet(isPresented: $showLifetimePaywall) {
-                LifetimePaywallSheet(onDismiss: { showLifetimePaywall = false })
-            }
             .sheet(isPresented: $showImportExportSheet) {
                 ImportExportDataSheet(store: store, onDismiss: {
                     showImportExportSheet = false
@@ -130,7 +125,7 @@ public struct SettingsView: View {
                 ProPaywallSheet(feature: paywallFeature, onDismiss: {
                     showPaywall = false
                     paywallFeature = nil
-                })
+                }, initialPlan: proManager.hasActiveSubscription ? .lifetime : nil)
             }
             .sheet(isPresented: $showCloudBackupSheet) {
                 CloudBackupSheet(store: store)
@@ -153,16 +148,34 @@ public struct SettingsView: View {
         }
     }
 
+    private var premiumHeading: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "crown.fill")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
+            Text(LanguageManager.t("settings.pro_membership"))
+                .font(.app(size: 16, weight: .bold))
+                .foregroundStyle(AppColors.text)
+        }
+    }
+
     // Forced Rep Premium Membership Card
     private var premiumCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
-                Text(LanguageManager.t("settings.pro_membership"))
-                    .font(.app(size: 16, weight: .bold))
-                    .foregroundStyle(AppColors.text)
+            if proManager.hasActiveSubscription && !proManager.hasLifetimeAccess {
+                Button { showPaywall = true } label: {
+                    HStack {
+                        premiumHeading
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.right").foregroundStyle(AppColors.secondaryText)
+                    }
+                    .frame(minHeight: 48).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("settings-premium-plans")
+                .accessibilityHint(LanguageManager.t("lifetime.title"))
+            } else {
+                premiumHeading
             }
 
             Text(LanguageManager.t(proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
@@ -188,7 +201,7 @@ public struct SettingsView: View {
                     }
                     .foregroundStyle(Color.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 38)
+                    .frame(minHeight: 48)
                     .background(AppColors.purple)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
@@ -199,17 +212,11 @@ public struct SettingsView: View {
                         .font(.app(size: 13, weight: .semibold))
                         .foregroundStyle(AppColors.background)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 38)
+                        .frame(minHeight: 48)
                         .background(AppColors.accent)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 .buttonStyle(.plain)
-            }
-            if !proManager.hasLifetimeAccess, let price = storeKit.lifetimeProduct?.displayPrice {
-                Button { showLifetimePaywall = true } label: {
-                    Text(LanguageManager.t("lifetime.title") + " · " + price)
-                        .font(.app(size: 13, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 48)
-                }.buttonStyle(.plain).foregroundStyle(AppColors.accent)
             }
         }
         .padding(16)

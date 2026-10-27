@@ -27,8 +27,10 @@ struct SessionFeaturePaywallContent: View {
     let onClose: () -> Void
     var feature: ProFeature? = .autoProgression
     var weightUnit: WeightUnit = .kg
-    var lifetimeOfferTitle: String? = nil
-    var onLifetimeOffer: (() -> Void)? = nil
+    var lifetime: SessionPaywallOffer = SessionPaywallOffer(price: nil)
+    var hasActiveSubscription = false
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Environment(\.sizeCategory) private var textSize
     @ScaledMetric(relativeTo: .title) private var headlineSize = 26.0
@@ -41,7 +43,24 @@ struct SessionFeaturePaywallContent: View {
     private let headerTopPadding: CGFloat = 12
     private let headerRowHeight: CGFloat = 48
     private let headerBottomPadding: CGFloat = 10
-    private var accent: Color { AppColors.progressionPaywallAccent }
+    private var lifetimeSelected: Bool { selectedPlan == .lifetime }
+    private var accent: Color { lifetimeSelected ? AppColors.lifetimePaywallGold : AppColors.progressionPaywallAccent }
+    private var accentGradient: LinearGradient {
+        LinearGradient(colors: [accent, lifetimeSelected ? AppColors.lifetimePaywallPlatinum : accent, accent],
+                       startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+    private var selectedSurface: Color {
+        lifetimeSelected ? Color.mix(AppColors.progressionPaywallPlanSurface, AppColors.lifetimePaywallGold, 0.1)
+            : AppColors.progressionPaywallSelectedSurface
+    }
+    private var iconSurface: Color { lifetimeSelected ? AppColors.lifetimePaywallIconSurface : AppColors.progressionPaywallIconSurface }
+    private var photoAccent: Color { lifetimeSelected ? AppColors.lifetimePaywallPhotoAccent : accent }
+    private var buttonGradient: LinearGradient {
+        let gold = lifetimeSelected ? AppColors.lifetimePaywallButtonGold : accent
+        return LinearGradient(colors: [gold, lifetimeSelected ? AppColors.lifetimePaywallButtonPlatinum : accent, gold],
+                              startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+    private var buttonText: Color { lifetimeSelected ? AppColors.lifetimePaywallButtonText : AppColors.background }
     private var isWarmup: Bool { feature == .warmupCalculator }
     private var isVolumeMatrix: Bool { feature == .volumeMatrix }
     private var isRepLab: Bool { feature == .formLab }
@@ -78,7 +97,13 @@ struct SessionFeaturePaywallContent: View {
         default: return "progression.coach.locked_title"
         }
     }
-    private var selected: SessionPaywallOffer { selectedPlan == .annual ? annual : monthly }
+    private var selected: SessionPaywallOffer {
+        switch selectedPlan {
+        case .annual: return annual
+        case .monthly: return monthly
+        case .lifetime: return lifetime
+        }
+    }
 
     var body: some View {
         let _ = themeManager.currentTheme
@@ -103,8 +128,9 @@ struct SessionFeaturePaywallContent: View {
                             VStack(spacing: 8) {
                                 plan(.annual, offer: annual, width: geometry.size.width - 40)
                                 plan(.monthly, offer: monthly, width: geometry.size.width - 40)
+                                plan(.lifetime, offer: lifetime, width: geometry.size.width - 40)
                             }
-                            if annual.price == nil || monthly.price == nil {
+                            if annual.price == nil || monthly.price == nil || lifetime.price == nil {
                                 HStack {
                                     Text(LanguageManager.t("paywall.price_unavailable"))
                                         .font(.app(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
@@ -116,15 +142,18 @@ struct SessionFeaturePaywallContent: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        if let lifetimeOfferTitle, let onLifetimeOffer {
-                            Button(lifetimeOfferTitle, action: onLifetimeOffer)
-                                .font(.app(size: descriptionSize, weight: .semibold)).foregroundStyle(accent)
-                                .frame(maxWidth: .infinity, minHeight: 48)
-                                .background(AppColors.progressionPaywallPlanSurface, in: RoundedRectangle(cornerRadius: 12))
-                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-                                .padding(.horizontal, 20).padding(.top, 12)
-                                .disabled(isPurchasing || isRestoring)
-                                .accessibilityIdentifier("paywall-lifetime-offer")
+                        if lifetimeSelected {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(LanguageManager.t("lifetime.subtitle")).font(.app(size: descriptionSize))
+                                Text(LanguageManager.t("lifetime.platformNote")).font(.app(size: footnoteSize))
+                                if hasActiveSubscription {
+                                    Text(LanguageManager.t("lifetime.subscriptionNotice")).font(.app(size: descriptionSize))
+                                }
+                            }
+                            .foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 24).padding(.top, 12)
+                            .transaction { $0.animation = nil }
                         }
                         ViewThatFits(in: .horizontal) {
                             HStack(spacing: 0) { legalLinks(singleLine: true) }
@@ -143,6 +172,7 @@ struct SessionFeaturePaywallContent: View {
             .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         }
         .background(AppColors.progressionPaywallSurface.ignoresSafeArea())
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.12), value: lifetimeSelected)
     }
 
     private func header(width: CGFloat) -> some View {
@@ -153,7 +183,7 @@ struct SessionFeaturePaywallContent: View {
                     .font(.app(size: bodySize, weight: .bold)).tracking(1.3)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }
-            .foregroundStyle(accent).padding(.horizontal, 12).padding(.vertical, 9)
+            .foregroundStyle(accentGradient).padding(.horizontal, 12).padding(.vertical, 9)
             .background(accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(accent.opacity(0.4), lineWidth: 1))
             // Equal clearance on both sides keeps the badge centered and clear of Close.
@@ -246,12 +276,12 @@ struct SessionFeaturePaywallContent: View {
     private func benefitIcon(_ name: String, size: CGFloat = 34) -> some View {
         Group {
             if name == "paywall.plates" {
-                WarmupPlateStack().fill(accent).frame(width: 22, height: 22)
-                    .overlay(Ellipse().fill(AppColors.progressionPaywallIconSurface).frame(width: 6, height: 3).offset(y: -5))
+                WarmupPlateStack().fill(photoAccent).frame(width: 22, height: 22)
+                    .overlay(Ellipse().fill(iconSurface).frame(width: 6, height: 3).offset(y: -5))
             }
-            else { Image(systemName: name).font(.system(size: 19, weight: .semibold)).foregroundStyle(accent) }
+            else { Image(systemName: name).font(.system(size: 19, weight: .semibold)).foregroundStyle(photoAccent) }
         }
-            .frame(width: size, height: size).background(AppColors.progressionPaywallIconSurface, in: Circle())
+            .frame(width: size, height: size).background(iconSurface, in: Circle())
             .accessibilityHidden(true)
     }
 
@@ -268,10 +298,10 @@ struct SessionFeaturePaywallContent: View {
                     HStack(alignment: .top, spacing: 8) {
                         VStack(alignment: .leading, spacing: 5) {
                             ViewThatFits(in: .horizontal) {
-                                HStack(spacing: 6) { planTitle(isAnnual); planTags(offer) }
-                                VStack(alignment: .leading, spacing: 4) { planTitle(isAnnual); planTags(offer) }
+                                HStack(spacing: 6) { planTitle(plan); planTags(offer) }
+                                VStack(alignment: .leading, spacing: 4) { planTitle(plan); planTags(offer) }
                             }
-                            let terms = isAnnual ? (offer.hasTrial ? "paywall.auto_progression.annual_trial_subtitle" : "paywall.annual_subtitle")
+                            let terms = plan == .lifetime ? "lifetime.planSubtitle" : isAnnual ? (offer.hasTrial ? "paywall.auto_progression.annual_trial_subtitle" : "paywall.annual_subtitle")
                                 : (offer.hasTrial ? "paywall.auto_progression.monthly_trial_subtitle" : "paywall.auto_progression.monthly_subtitle")
                             Text(LanguageManager.t(terms)).font(.app(size: footnoteSize))
                                 .foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
@@ -283,17 +313,18 @@ struct SessionFeaturePaywallContent: View {
                 .fixedSize(horizontal: false, vertical: true)
             }
             .padding(16).frame(maxWidth: .infinity, alignment: .leading)
-            .background(isSelected ? AppColors.progressionPaywallSelectedSurface : AppColors.progressionPaywallPlanSurface,
+            .background(isSelected ? selectedSurface : AppColors.progressionPaywallPlanSurface,
                         in: RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(isSelected ? accent : AppColors.border,
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(isSelected ? accentGradient : LinearGradient(colors: [AppColors.border], startPoint: .leading, endPoint: .trailing),
                                                              lineWidth: isSelected ? 1.5 : 1))
         }
+        .disabled(isPurchasing || isRestoring || (plan != .lifetime && hasActiveSubscription))
         .buttonStyle(.plain).accessibilityAddTraits(isSelected ? [.isSelected] : [])
-        .accessibilityIdentifier(isAnnual ? "\(tagPrefix)-annual" : "\(tagPrefix)-monthly")
+        .accessibilityIdentifier("\(tagPrefix)-\(plan.rawValue)")
     }
 
-    private func planTitle(_ annual: Bool) -> some View {
-        Text(LanguageManager.t(annual ? "paywall.annual_plan" : "paywall.monthly_plan"))
+    private func planTitle(_ plan: PaywallPlan) -> some View {
+        Text(LanguageManager.t(plan == .lifetime ? "lifetime.plan" : plan == .annual ? "paywall.annual_plan" : "paywall.monthly_plan"))
             .font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -302,7 +333,7 @@ struct SessionFeaturePaywallContent: View {
         PaywallPriceWidth(maxWidth: maxWidth) {
             VStack(alignment: .trailing, spacing: 4) {
                 Text(offer.price ?? "—").font(.app(size: titleSize, weight: .bold))
-                    .foregroundStyle(selected ? accent : AppColors.text)
+                    .foregroundStyle(selected ? accentGradient : LinearGradient(colors: [AppColors.text], startPoint: .leading, endPoint: .trailing))
                 if let breakdown = offer.monthlyBreakdown {
                     Text(breakdown).font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                 }
@@ -330,7 +361,8 @@ struct SessionFeaturePaywallContent: View {
                 else { Text(LanguageManager.t("paywall.auto_progression.restore")).fixedSize(horizontal: singleLine, vertical: true) }
             }
             .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
-        }.disabled(isRestoring)
+        }.disabled(isRestoring || isPurchasing)
+            .accessibilityIdentifier("\(tagPrefix)-restore")
             .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
         Button(action: onTerms) {
             Text(LanguageManager.t("paywall.terms")).fixedSize(horizontal: singleLine, vertical: true)
@@ -348,21 +380,21 @@ struct SessionFeaturePaywallContent: View {
             VStack(spacing: 6) {
                 Button(action: onPurchase) {
                     HStack(spacing: 10) {
-                        if isPurchasing { ProgressView().tint(AppColors.background) }
+                        if isPurchasing { ProgressView().tint(buttonText) }
                         else {
                             Image(systemName: "lock.open").font(.system(size: 20, weight: .medium))
-                            Text(LanguageManager.t(selected.hasTrial ? "paywall.cta_trial" : "paywall.auto_progression.cta_continue"))
+                            Text(LanguageManager.t(lifetimeSelected ? "lifetime.cta" : selected.hasTrial ? "paywall.cta_trial" : "paywall.auto_progression.cta_continue"))
                                 .font(.app(size: titleSize + 1, weight: .bold))
                                 .fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center)
                         }
                     }
-                    .foregroundStyle(AppColors.background).padding(12).frame(maxWidth: .infinity, minHeight: 48)
-                    .background(accent, in: RoundedRectangle(cornerRadius: 12))
+                    .foregroundStyle(buttonText).padding(12).frame(maxWidth: .infinity, minHeight: 48)
+                    .background(buttonGradient, in: RoundedRectangle(cornerRadius: 12))
                     .opacity(selected.price == nil ? 0.4 : 1)
                 }
-                .buttonStyle(.plain).disabled(isPurchasing || selected.price == nil)
+                .buttonStyle(.plain).disabled(isPurchasing || isRestoring || selected.price == nil || (!lifetimeSelected && hasActiveSubscription))
                 .accessibilityIdentifier("\(tagPrefix)-purchase")
-                let footerTerms = selectedPlan == .annual
+                let footerTerms = lifetimeSelected ? "lifetime.footer" : selectedPlan == .annual
                     ? (selected.hasTrial ? "paywall.auto_progression.annual_trial_footer" : "paywall.auto_progression.annual_footer")
                     : (selected.hasTrial ? "paywall.auto_progression.monthly_trial_footer" : "paywall.auto_progression.monthly_footer")
                 Text(selected.price.map { LanguageManager.t(footerTerms, ["price": $0]) }

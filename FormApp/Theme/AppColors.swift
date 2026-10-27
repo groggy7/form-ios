@@ -18,6 +18,15 @@ public enum AppColors {
     public static var progressionPaywallPlanSurface: Color { presentationColor(Color(hex: 0x181F24), surfaceRaised) }
     public static var progressionPaywallSelectedSurface: Color { presentationColor(Color(hex: 0x13292A), positiveBg) }
 
+    // A local Lifetime selection treatment, with readable dark inks on Oat.
+    public static var lifetimePaywallGold: Color { lightThemeColor(Color(hex: 0xE9C98B), Color(hex: 0x75521E)) }
+    public static var lifetimePaywallPlatinum: Color { lightThemeColor(Color(hex: 0xF3F5F5), Color(hex: 0x43576A)) }
+    public static let lifetimePaywallPhotoAccent = Color(hex: 0xE9C98B)
+    public static let lifetimePaywallIconSurface = Color(hex: 0x30291F)
+    public static let lifetimePaywallButtonGold = Color(hex: 0xE9C98B)
+    public static let lifetimePaywallButtonPlatinum = Color(hex: 0xF3F5F5)
+    public static let lifetimePaywallButtonText = Color(hex: 0x15191C)
+
     public struct ProgressionRuleColors {
         public let accent: Color
         public let surface: Color

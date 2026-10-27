@@ -87,7 +87,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func hasFreeTrial(for plan: PaywallPlan) -> Bool {
-        guard purchasedProductIds.isEmpty else { return false }
+        guard plan != .lifetime, purchasedProductIds.isEmpty else { return false }
         let product = (plan == .annual) ? annualProduct : monthlyProduct
         guard let product else { return false }
         return eligibleFreeTrialProductIds.contains(product.id)
@@ -142,6 +142,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func purchase(plan: PaywallPlan) async throws -> PurchaseStatus {
+        if plan == .lifetime { return try await purchaseLifetime() }
         let product = plan == .annual ? annualProduct : monthlyProduct
         let id = product?.id ?? (plan == .annual ? Self.annualProductId : Self.monthlyProductId)
         return try await purchaseProduct(id: id, type: .autoRenewable)
