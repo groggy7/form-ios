@@ -208,10 +208,9 @@ public struct ActiveSessionView: View {
                                     // A substitute replaces the exercise only until one of its working sets is completed.
                                     let setupNote = exercise.setupNote ?? ""
                                     ExerciseTitleRow(name: (Supersets.label(activeDraft.workout, exercise.id).map { "\($0) · " } ?? "") + exercise.displayName,
-                                        action: HStack(spacing: 8) {
-                                            notesButton(for: exercise, hasNotes: !setupNote.isEmpty || !(activeDraft.note ?? "").isEmpty)
-                                            if !currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) { replaceButton(for: exercise) }
-                                        })
+                                        action: exerciseMenu(for: exercise,
+                                            hasNotes: !setupNote.isEmpty || !(activeDraft.note ?? "").isEmpty,
+                                            canReplace: !currentSets.contains(where: { $0.isCompleted && !$0.isWarmup })))
 
                                     if notesOpenFor == exercise.id {
                                         notesPanel(for: exercise)
@@ -739,35 +738,50 @@ public struct ActiveSessionView: View {
         }
     }
 
-    private func replaceButton(for exercise: Exercise) -> some View {
+    /// The title line's exercise menu: a compact outlined ⋯ pill inside a full 48pt touch target, so it can
+    /// share the exercise name's line. It holds Notes, mint once either note has text, and Replace exercise
+    /// until a working set is completed.
+    private func exerciseMenu(for exercise: Exercise, hasNotes: Bool, canReplace: Bool) -> some View {
         let unlocked = proManager.isFeatureUnlocked(.exerciseSwaps)
-        return Button {
-            if unlocked { swappingExercise = exercise } else { paywallFeature = .exerciseSwaps }
-        } label: {
-            // A compact pill inside a full 48pt touch target, so it can share the exercise name's line.
-            HStack(spacing: 6) {
-                Image(systemName: "arrow.left.arrow.right")
-                    .font(.system(size: 12, weight: .semibold))
-                Text(LanguageManager.t("session.replace.action"))
-                    .font(.app(size: 13, weight: .semibold))
-                    .lineLimit(1)
-                // Locked, the purple lock of the session's other locked cards keeps the pill compact.
-                if !unlocked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(AppColors.purple)
-                        .accessibilityLabel(LanguageManager.t("pro.premium_required"))
-                }
+        return Menu {
+            Button { openNotes(for: exercise) } label: {
+                Label { Text(LanguageManager.t("notes.button")) } icon: { menuGlyph("note.text", color: hasNotes ? AppColors.accent : nil) }
             }
-            .foregroundStyle(AppColors.text)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
-            .frame(minHeight: 48)
-            .contentShape(Rectangle())
+            .accessibilityIdentifier("session-notes")
+            if canReplace {
+                Button {
+                    if unlocked { swappingExercise = exercise } else { paywallFeature = .exerciseSwaps }
+                } label: {
+                    // Locked, the purple lock of the session's other locked cards stands in for the PREMIUM badge.
+                    Label { Text(LanguageManager.t("session.replace.title")) } icon: {
+                        unlocked ? menuGlyph("arrow.left.arrow.right") : menuGlyph("lock.fill", color: AppColors.purple)
+                    }
+                }
+                .accessibilityLabel(unlocked ? LanguageManager.t("session.replace.title")
+                    : "\(LanguageManager.t("session.replace.title")), \(LanguageManager.t("pro.premium_required"))")
+                .accessibilityIdentifier("session-replace-exercise")
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+                .frame(width: 16, height: 16)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+                .frame(minWidth: 48, minHeight: 48)
+                .contentShape(Rectangle())
         }
+        .menuStyle(.button)
         .buttonStyle(.plain)
-        .accessibilityIdentifier("session-replace-exercise")
+        .accessibilityLabel("\(LanguageManager.t("builder.exerciseActions")) \(exercise.displayName)")
+        .accessibilityIdentifier("session-exercise-menu")
+    }
+
+    /// Menus draw their glyphs in the label color; a colored glyph has to carry its own color.
+    private func menuGlyph(_ name: String, color: Color? = nil) -> Image {
+        guard let color, let symbol = UIImage(systemName: name) else { return Image(systemName: name) }
+        return Image(uiImage: symbol.withTintColor(UIColor(color), renderingMode: .alwaysOriginal))
     }
 
     /// The running rest under the exercise: the full bar, or one line while the keyboard is up.
@@ -844,30 +858,6 @@ public struct ActiveSessionView: View {
 
     private func openNotes(for exercise: Exercise) {
         withAnimation(.easeInOut(duration: 0.2)) { notesOpenFor = exercise.id }
-    }
-
-    /// The title line's notes action; it turns mint once either note has text.
-    private func notesButton(for exercise: Exercise, hasNotes: Bool) -> some View {
-        Button {
-            if notesOpenFor == exercise.id {
-                withAnimation(.easeInOut(duration: 0.2)) { notesOpenFor = nil }
-            } else {
-                openNotes(for: exercise)
-            }
-        } label: {
-            Image(systemName: "note.text")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(hasNotes ? AppColors.accent : AppColors.text)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
-                .frame(minWidth: 48, minHeight: 48)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(LanguageManager.t("notes.button"))
-        .accessibilityAddTraits(notesOpenFor == exercise.id ? .isSelected : [])
-        .accessibilityIdentifier("session-notes")
     }
 
     /// Both notes, opened from the title line: this occurrence's setup, then the note for the whole workout.
