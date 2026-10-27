@@ -15,7 +15,7 @@
     {
       "displayPrice": "79.99",
       "familyShareable": false,
-      "internalID": "6826581506",
+      "internalID": "6827288489",
       "localizations": [
         {
           "description": "Every Pro feature. One payment. No renewal.",
@@ -28,7 +28,7 @@
           "locale": "tr"
         }
       ],
-      "productID": "com.perseverancesoftware.forcedrep.founders",
+      "productID": "com.perseverancesoftware.forcedrep.lifetime",
       "referenceName": "Lifetime Pro",
       "type": "NonConsumable"
     }

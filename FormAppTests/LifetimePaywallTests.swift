@@ -98,10 +98,10 @@ final class LifetimePaywallTests: XCTestCase {
 
 @MainActor
 final class LifetimeBillingTests: XCTestCase {
-    func testOnlyOneProductIsSoldAndOldIdsRestoreTheSameAccess() {
+    func testOnlyTheConfiguredLifetimeProductGrantsPermanentAccess() {
         let current = StoreKitSubscriptionManager.entitlements(for: [StoreKitSubscriptionManager.lifetimeProductId])
-        let legacy = StoreKitSubscriptionManager.entitlements(for: [StoreKitSubscriptionManager.legacyLifetimeProductId])
-        XCTAssertEqual(current, legacy)
+        XCTAssertEqual(StoreKitSubscriptionManager.lifetimeProductId, "com.perseverancesoftware.forcedrep.lifetime")
+        XCTAssertEqual(StoreKitSubscriptionManager.productIds.filter { $0.hasSuffix(".lifetime") }.count, 1)
         XCTAssertTrue(current.hasPro); XCTAssertTrue(current.lifetime); XCTAssertFalse(current.subscription)
         XCTAssertFalse(StoreKitSubscriptionManager.entitlements(for: ["unrelated.lifetime"]).hasPro)
     }

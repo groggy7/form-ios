@@ -7,9 +7,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     public static let monthlyProductId = "com.perseverancesoftware.forcedrep.premium.monthly"
     public static let annualProductId = "com.perseverancesoftware.forcedrep.premium.annual"
-    // Retain the original store ID: the product is now sold as Lifetime Pro.
-    public static let lifetimeProductId = "com.perseverancesoftware.forcedrep.founders"
-    public static let legacyLifetimeProductId = "com.perseverancesoftware.forcedrep.lifetime"
+    public static let lifetimeProductId = "com.perseverancesoftware.forcedrep.lifetime"
 
     // Backward compatibility with legacy Pro IDs
     public static let legacyMonthlyProductId = "com.perseverancesoftware.forcedrep.pro.monthly"
@@ -20,8 +18,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         annualProductId,
         legacyMonthlyProductId,
         legacyAnnualProductId,
-        lifetimeProductId,
-        legacyLifetimeProductId
+        lifetimeProductId
     ]
 
     public static func isProProductId(_ productId: String) -> Bool {
@@ -41,7 +38,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     static func entitlements(for productIDs: Set<String>) -> Entitlements {
         Entitlements(subscription: !productIDs.intersection([monthlyProductId, annualProductId, legacyMonthlyProductId, legacyAnnualProductId]).isEmpty,
-                     lifetime: !productIDs.intersection([lifetimeProductId, legacyLifetimeProductId]).isEmpty)
+                     lifetime: productIDs.contains(lifetimeProductId))
     }
 
     static func cachedProductIDs(defaults: UserDefaults, now: Date = Date()) -> Set<String> {
@@ -129,7 +126,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
     public func requestProducts() async {
         eligibleFreeTrialProductIds = []
         do {
-            let fetched = try await Product.products(for: Self.productIds.subtracting([Self.legacyLifetimeProductId]))
+            let fetched = try await Product.products(for: Self.productIds)
             var eligibleIds: Set<String> = []
             for product in fetched {
                 guard let subscription = product.subscription,
