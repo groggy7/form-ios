@@ -372,12 +372,10 @@ public struct HistoryView: View {
 
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var tour = TourController.shared
-    @ObservedObject private var health = HealthWeights.shared
     @Environment(\.twoPageLayout) private var twoPageLayout
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var showBody = false
-    @State private var showQuickBodyLog = false
     @State private var displayedDate: Date = Date()
     @State private var selectedDateString: String? = ProcessInfo.processInfo.environment["SELECTED_HISTORY_DATE"]
 
@@ -400,33 +398,7 @@ public struct HistoryView: View {
             dayDetail(detail)
         } else {
             let mainPage = VStack(spacing: 16) {
-                // Header row
-                HStack(alignment: .center) {
-                    Text(LanguageManager.t("nav.progress"))
-                        .font(.app(size: 28, weight: .semibold))
-                        .foregroundStyle(AppColors.text)
-
-                    Spacer()
-
-                    if activeTab == .calendar && !Calendar.current.isDate(displayedDate, equalTo: Date(), toGranularity: .month) {
-                        Button(action: {
-                            displayedDate = Date()
-                            selectedDateString = nil
-                        }) {
-                            Text(LanguageManager.t("history.thisMonth"))
-                                .font(.app(size: 14, weight: .medium))
-                                .foregroundStyle(AppColors.secondaryText)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.trailing, 8)
-                    }
-
-                    FormHeaderIconButton(
-                        icon: "gearshape.fill",
-                        contentDescription: LanguageManager.t("settings.title"),
-                        onClick: onOpenSettings
-                    )
-                }
+                progressHeader
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
 
@@ -481,6 +453,23 @@ public struct HistoryView: View {
                     ScrollView {
                         ScrollViewReader { proxy in
                             VStack(spacing: 16) {
+                                if !isCurrentMonth {
+                                    HStack {
+                                        Spacer()
+                                        Button {
+                                            displayedDate = Date()
+                                            selectedDateString = nil
+                                        } label: {
+                                            Text(LanguageManager.t("history.thisMonth"))
+                                                .font(.app(size: 14, weight: .medium))
+                                                .foregroundStyle(AppColors.secondaryText)
+                                                .frame(minHeight: 48)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .accessibilityIdentifier("history-this-month")
+                                    }
+                                    .padding(.horizontal, 20)
+                                }
                                 if store.historyCalendarTiles {
                                     HistoryTileCalendarCard(
                                         monthTitle: monthYearString(from: displayedDate),
@@ -612,7 +601,7 @@ public struct HistoryView: View {
                                 }
 
 
-                    // Two pages show the day and the body log on the right page instead.
+                    // Two pages show the selected day on the right page instead.
                     if twoPageLayout == nil {
                         // Inline Preview Card
                         if let detail = currentSelectedDetail {
@@ -628,10 +617,6 @@ public struct HistoryView: View {
                             .padding(.horizontal, 20)
                         }
 
-                        // The day preview stays directly below the legend; the body log follows it.
-                        BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true },
-                                        onLog: { showQuickBodyLog = true })
-                            .padding(.horizontal, 20)
                     }
 
                     Spacer().frame(height: 24)
@@ -657,9 +642,6 @@ public struct HistoryView: View {
     .fullScreenCover(isPresented: $showBody) {
         BodyLogView(store: store)
     }
-    .sheet(isPresented: $showQuickBodyLog) {
-        BodyQuickLogSheet(store: store)
-    }
     // See Premium on a sample preview's last step opens that feature's paywall.
     .onChange(of: tour.paywallRequest) { _, request in
         switch request {
@@ -671,7 +653,7 @@ public struct HistoryView: View {
     }
 
     if let twoPageLayout {
-        // Open foldable: the calendar or analytics on the left; the chosen day and body log on the right.
+        // Open foldable: the calendar or analytics on the left; the chosen day on the right.
         TwoPageSpread(layout: twoPageLayout) {
             mainPage
         } trailing: {
@@ -696,7 +678,48 @@ public struct HistoryView: View {
         )
     }
 
-    /// The open foldable's right page: a day's full detail, or its preview above the body log.
+    private var progressTitle: some View {
+        Text(LanguageManager.t("nav.progress"))
+            .font(.app(size: 28, weight: .semibold))
+            .foregroundStyle(AppColors.text)
+            .fixedSize(horizontal: true, vertical: true)
+    }
+
+    private var progressActions: some View {
+        HStack(spacing: 8) {
+            Button { showBody = true } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "scalemass").font(.system(size: 18))
+                    Text(LanguageManager.t("body.title")).font(.app(size: 14, weight: .semibold))
+                }
+                .foregroundStyle(AppColors.secondaryText)
+                .padding(.horizontal, 12).frame(minHeight: 48)
+                .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                .fixedSize(horizontal: true, vertical: false)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("progress-body")
+            FormHeaderIconButton(icon: "gearshape.fill", contentDescription: LanguageManager.t("settings.title"), onClick: onOpenSettings)
+        }
+    }
+
+    private var progressHeader: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) {
+                progressTitle
+                Spacer(minLength: 8)
+                progressActions
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                progressTitle
+                HStack { Spacer(minLength: 0); progressActions }
+            }
+        }
+        .accessibilityIdentifier("progress-header")
+    }
+
+    /// The open foldable's right page: a day's full detail or its preview.
     @ViewBuilder
     private var dayPage: some View {
         if let detailDay = store.selectedHistoryDetailDay, let detail = resolveDayDetail(for: detailDay) {
@@ -715,10 +738,6 @@ public struct HistoryView: View {
                         )
                         .padding(.horizontal, 20)
                     }
-
-                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true },
-                                        onLog: { showQuickBodyLog = true })
-                        .padding(.horizontal, 20)
 
                     Spacer().frame(height: 24)
                 }

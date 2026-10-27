@@ -160,7 +160,7 @@ final class BodyAndJointJournalTests: XCTestCase {
     }
 
     /// Captures for review under forcedrep-ios/build/body-journal-review/: the ratings card, the Joints tab sample
-    /// and the Progress card at 393pt and at 320pt with the largest standard text, in every language.
+    /// and the Body overview at 393pt and at 320pt with the largest standard text, in every language.
     @MainActor func testRatingsCardJointsTabAndBodyCardRenderInEveryLanguage() throws {
         let previous = LanguageManager.shared.languagePreference
         defer { LanguageManager.setLanguage(previous) }
@@ -172,7 +172,7 @@ final class BodyAndJointJournalTests: XCTestCase {
             for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
                 let content = VStack(spacing: 16) {
                     ExerciseRatingsCard(effort: .easy, onEffort: { _ in }, jointStress: .high, onJointStress: { _ in })
-                    BodySummaryCard(entries: entries, weightUnit: .kg, onOpen: {})
+                    BodySummaryCard(entries: entries, weightUnit: .kg, onLog: {}, onMeasurements: {})
                     JointJournalView(history: [], weightUnit: .kg, isPreview: true, ratingsEnabled: true, onEnableRatings: {})
                 }
                 .padding(16).frame(width: width).frame(maxHeight: .infinity, alignment: .top).background(AppColors.background)
@@ -193,4 +193,46 @@ final class BodyAndJointJournalTests: XCTestCase {
             }
         }
     }
+    /// Render the real Progress header and Body screen for visual review, including narrow translated labels.
+    @MainActor func testProgressHeaderAndBodyScreenRenderInEveryLanguage() throws {
+        let previousLanguage = LanguageManager.shared.languagePreference
+        let previousTheme = ThemeManager.shared.selectedThemeId
+        defer { LanguageManager.setLanguage(previousLanguage); ThemeManager.shared.setThemeId(previousTheme) }
+        let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/body-navigation-review").standardized
+        try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertTrue(store.applyBodyEdit(date: BodyDay.today(), stored: BodyEntry(date: BodyDay.today(), bodyweightKg: 80.5, waistCm: 86), hideHealth: false))
+        func capture<V: View>(_ view: V, name: String, width: CGFloat, size: ContentSizeCategory) throws {
+            let controller = UIHostingController(rootView: view.environment(\.sizeCategory, size))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 1000))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            defer { window.isHidden = true }
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+            let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+            try XCTUnwrap(image.pngData()).write(to: output.appendingPathComponent(name + ".png"))
+        }
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for theme in ["default", "oat"] {
+                ThemeManager.shared.setThemeId(theme)
+                let suffix = "\(language)-\(theme)"
+                try capture(HistoryView(store: store, onOpenSettings: {}, onSelectRecord: { _ in }),
+                    name: "progress-\(suffix)-320-large", width: 320, size: .extraExtraExtraLarge)
+                try capture(BodyLogView(store: store), name: "body-\(suffix)-320-large", width: 320, size: .extraExtraExtraLarge)
+            }
+        }
+        LanguageManager.setLanguage("en")
+        ThemeManager.shared.setThemeId("default")
+        for (tab, name) in [(HistoryView.HistoryTab.calendar, "calendar"), (.volumeMatrix, "matrix"), (.formLab, "lab")] {
+            try capture(HistoryView(store: store, initialTab: tab, onOpenSettings: {}, onSelectRecord: { _ in }),
+                name: "progress-\(name)-393", width: 393, size: .large)
+        }
+        try capture(BodyLogView(store: store), name: "body-393", width: 393, size: .large)
+    }
+
 }

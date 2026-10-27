@@ -23,63 +23,55 @@ private func formatChange(_ metric: BodyMetric, _ canonicalChange: Double, _ uni
     return sign + display
 }
 
-/// Progress → Calendar's entry point: the latest bodyweight, or a prompt to log the first one. The card opens the
-/// Body screen; Log opens a short sheet for today's weight.
+/// Body's overview: the latest weigh-in, quick bodyweight logging and optional measurement entry.
 struct BodySummaryCard: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     let entries: [BodyEntry]
     let weightUnit: WeightUnit
-    let onOpen: () -> Void
-    var onLog: (() -> Void)? = nil
+    let onLog: () -> Void
+    let onMeasurements: () -> Void
 
     var body: some View {
         let _ = themeManager.currentTheme
         let latestWeight = entries.last { $0.bodyweightKg != nil }
-        HStack(spacing: 12) {
-            Button(action: onOpen) {
-                HStack(spacing: 12) {
-                    Image(systemName: "scalemass")
-                        .font(.system(size: 20)).foregroundStyle(AppColors.secondaryText)
-                        .frame(width: 24)
-                    VStack(alignment: .leading, spacing: 2) {
-                        HStack(spacing: 4) {
-                            Text(LanguageManager.t("body.title")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
-                            Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)).foregroundStyle(AppColors.muted)
-                        }
-                        if let latestWeight, let kg = latestWeight.bodyweightKg {
-                            Text(formatValue(.bodyweight, kg, weightUnit)).font(.app(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
-                            Text(LanguageManager.t("body.card.lastLogged", ["date": formatBodyDate(latestWeight.date)]))
-                                .font(.app(size: 12)).foregroundStyle(AppColors.muted)
-                        } else if let latest = entries.last {
-                            Text(LanguageManager.t("body.card.lastLogged", ["date": formatBodyDate(latest.date)]))
-                                .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
-                        } else {
-                            Text(LanguageManager.t("body.card.empty")).font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 12) {
+                Image(systemName: "scalemass")
+                    .font(.system(size: 20)).foregroundStyle(AppColors.secondaryText)
+                    .frame(width: 24).accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(LanguageManager.t("body.bodyweight")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+                    if let latestWeight, let kg = latestWeight.bodyweightKg {
+                        Text(formatValue(.bodyweight, kg, weightUnit)).font(.app(size: 28, weight: .semibold)).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t("body.card.lastLogged", ["date": formatBodyDate(latestWeight.date)]))
+                            .font(.app(size: 12)).foregroundStyle(AppColors.muted)
+                    } else {
+                        Text(LanguageManager.t("body.card.empty")).font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
+                .fixedSize(horizontal: false, vertical: true)
+            }
+            Button(action: onLog) {
+                Text(LanguageManager.t("body.quickLogTitle"))
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.background)
+                    .frame(maxWidth: .infinity, minHeight: 50).padding(.vertical, 4)
+                    .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
             }
             .buttonStyle(.plain)
-            .accessibilityIdentifier("body-card")
-            Button(action: onLog ?? onOpen) {
-                Text(LanguageManager.t("body.log"))
-                    .font(.app(size: 13, weight: .semibold)).foregroundStyle(AppColors.accent)
-                    .padding(.horizontal, 14).padding(.vertical, 8)
-                    .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-                    .frame(minWidth: 48, minHeight: 48)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(LanguageManager.t("body.quickLogTitle"))
             .accessibilityIdentifier("body-card-log")
+            Button(action: onMeasurements) {
+                Text(LanguageManager.t("body.showMeasurements"))
+                    .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("body-add-measurements")
         }
-        .padding(.horizontal, 16).padding(.vertical, 10)
+        .padding(16)
         .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .accessibilityIdentifier("body-card")
     }
 }
 
@@ -102,10 +94,11 @@ struct BodyDatePicker: View {
     }
 }
 
-/// Today's bodyweight in one step from the Progress card. Measurements stay on the Body screen and are kept.
+/// Today's bodyweight in one step from the Body overview. Measurements stay on the Body screen and are kept.
 struct BodyQuickLogSheet: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
+    var onSaved: (String) -> Void = { _ in }
     @ObservedObject private var health = HealthWeights.shared
     @Environment(\.dismiss) private var dismiss
     @State private var date = BodyDay.today()
@@ -143,7 +136,7 @@ struct BodyQuickLogSheet: View {
                 }
                 Button(action: save) {
                     Text(LanguageManager.t("body.save"))
-                        .font(.app(size: 14, weight: .semibold)).foregroundStyle(Color.black)
+                        .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.background)
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
                 }
@@ -185,6 +178,7 @@ struct BodyQuickLogSheet: View {
         case .save(let stored, let hideHealth):
             if store.applyBodyEdit(date: date, stored: stored, hideHealth: hideHealth) {
                 store.showNotice(LanguageManager.t("body.saved"))
+                onSaved(date)
                 dismiss()
             } else {
                 error = LanguageManager.t("body.saveFailed")
@@ -282,6 +276,8 @@ struct BodyLogView: View {
     /// The entry waiting for delete confirmation, from the Log card or an entry's menu.
     @State private var deleteDate: String?
     @State private var showPaywall = false
+    @State private var showQuickLog = false
+    @State private var showEditor = false
 
     private var today: String { BodyDay.today() }
     /// Typed entries joined with Apple Health weigh-ins (docs/design/body-and-joint-journal.md#merge-rules).
@@ -303,7 +299,13 @@ struct BodyLogView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
-                        logCard.id("log")
+                        BodySummaryCard(entries: entries, weightUnit: unit, onLog: { showQuickLog = true }, onMeasurements: {
+                            select(today)
+                            showMeasurements = true
+                            showEditor = true
+                            DispatchQueue.main.async { withAnimation { proxy.scrollTo("log", anchor: .top) } }
+                        })
+                        if showEditor { logCard.id("log") }
                         // Connecting is offered under the form; once reading, Health is a status line by the entries.
                         if health.isAvailable && !health.isEnabled { healthCard }
                         if let report {
@@ -321,7 +323,8 @@ struct BodyLogView: View {
                         ForEach(entries.reversed()) { entry in
                             entryRow(entry, fromHealth: shown.healthDates.contains(entry.date)) {
                                 select(entry.date)
-                                withAnimation { proxy.scrollTo("log", anchor: .top) }
+                                showEditor = true
+                                DispatchQueue.main.async { withAnimation { proxy.scrollTo("log", anchor: .top) } }
                             }
                         }
                     }
@@ -354,6 +357,14 @@ struct BodyLogView: View {
             Text(LanguageManager.t("body.deleteMessage", ["date": formatBodyDate(target)])
                  + (shown.health[target] != nil ? " " + LanguageManager.t("body.health.deleteNotice") : ""))
         }
+        .sheet(isPresented: $showQuickLog) {
+            BodyQuickLogSheet(store: store, onSaved: { loggedDate in
+                if loggedDate == date {
+                    inputs[.bodyweight] = existing?.bodyweightKg.map { BodyUnits.formatCanonical(.bodyweight, $0, unit: unit) } ?? ""
+                    loadedDate = date
+                }
+            })
+        }
         .sheet(isPresented: $showPaywall) {
             ProPaywallSheet(feature: .bodyTrends, onDismiss: { showPaywall = false })
         }
@@ -379,6 +390,9 @@ struct BodyLogView: View {
 
     private func select(_ newDate: String) {
         date = newDate
+        loadedDate = nil
+        inputs = [:]
+        syncForm()
         error = nil
         saved = false
     }
@@ -411,7 +425,8 @@ struct BodyLogView: View {
     }
 
     private var logCard: some View {
-        card(title: LanguageManager.t(existing != nil ? "body.editTitle" : "body.logTitle"), identifier: "body-log") {
+        card(title: LanguageManager.t(existing != nil ? "body.editTitle" : "body.logTitle"), identifier: "body-log",
+             trailing: AnyView(closeEditorButton)) {
             BodyDatePicker(date: Binding(get: { date }, set: { select($0) }))
             if storedEntry != nil {
                 Text(LanguageManager.t("body.replaceNotice", ["date": formatBodyDate(date)]))
@@ -445,7 +460,7 @@ struct BodyLogView: View {
             }
             Button(action: save) {
                 Text(LanguageManager.t("body.save"))
-                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(Color.black)
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.background)
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
             }
@@ -468,6 +483,16 @@ struct BodyLogView: View {
                 .buttonStyle(.plain)
             }
         }
+    }
+
+    private var closeEditorButton: some View {
+        Button { showEditor = false } label: {
+            Image(systemName: "xmark").font(.system(size: 16)).foregroundStyle(AppColors.secondaryText)
+                .frame(width: 48, height: 48).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(LanguageManager.t("common.close"))
+        .accessibilityIdentifier("body-editor-close")
     }
 
     private func field(_ metric: BodyMetric) -> some View {
@@ -676,7 +701,7 @@ struct BodyLogView: View {
         let measurements = BodyMetric.measurements.compactMap { metric in
             entry.value(metric).map { "\(LanguageManager.t(metric.labelKey)) \(BodyUnits.formatCanonical(metric, $0, unit: unit))" }
         }
-        let selected = entry.date == date
+        let selected = showEditor && entry.date == date
         return Button(action: onTap) {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
