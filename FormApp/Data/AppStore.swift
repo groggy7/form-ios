@@ -863,7 +863,10 @@ public final class AppStore: ObservableObject {
         if let draft = activeSession {
             let allSets = draft.setsByExercise.values.flatMap { $0 }
             let hasCompleted = allSets.contains { $0.isCompleted }
-            if hasCompleted {
+            let hasNote = !(draft.note ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            // Clearing a previously saved note must also replace its historical copy.
+            let hadSavedNote = state.history.contains { $0.id == draft.id && $0.note != nil }
+            if hasCompleted || hasNote || hadSavedNote {
                 let now = Int64(Date().timeIntervalSince1970 * 1000)
                 let rec = SessionProgress.from(draft: draft, nowEpochMillis: now)
                     .record(draft: draft, completedAtEpochMillis: now)
@@ -976,10 +979,11 @@ public final class AppStore: ObservableObject {
         let hasSets = finalRecord.totalCompletedSets > 0 || finalRecord.exerciseLogs.contains { log in
             log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
         }
+        let hasNote = !(finalRecord.note ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         var newHistory = state.history
         newHistory.removeAll { $0.id == adjustedRecord.id }
-        // Like Android, a workout finished with nothing logged is not history.
-        if hasSets || isComplete { newHistory.insert(adjustedRecord, at: 0) }
+        // A note is saved session content even before the first completed set.
+        if hasSets || hasNote || isComplete { newHistory.insert(adjustedRecord, at: 0) }
 
         var newCompleted = state.completed
         let key = "\(finalRecord.programId):\(finalRecord.workoutId)"
@@ -999,7 +1003,7 @@ public final class AppStore: ObservableObject {
         let entryStatus: WorkoutDayStatus?
         if isComplete {
             entryStatus = .completed
-        } else if hasSets {
+        } else if hasSets || hasNote {
             entryStatus = .unfinished
         } else if isPast {
             entryStatus = .missed

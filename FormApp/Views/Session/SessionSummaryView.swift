@@ -46,7 +46,9 @@ public struct SessionSummaryView: View {
             return working.count >= target && target > 0
         }.count
     }
-    private var isWorkoutEmpty: Bool { totalCompletedSets == 0 }
+    private var isWorkoutEmpty: Bool {
+        totalCompletedSets == 0 && (workoutNote?.wrappedValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
     private var isWorkoutComplete: Bool { !isWorkoutEmpty && totalExercises > 0 && completedExercisesCount == totalExercises }
     private var isWorkoutPartial: Bool { !isWorkoutEmpty && !isWorkoutComplete }
 

@@ -3,6 +3,188 @@ import SwiftUI
 import ActivityKit
 @testable import FormApp
 
+final class WorkoutNotePersistenceTests: XCTestCase {
+    private let note = "Different gym today.\nUse the quieter rack."
+
+    @MainActor
+    private func withSession(_ body: (AppStore, Workout) throws -> Void) throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        let access = ProAccessManager.shared
+        let cloudAccess = access.isFeatureUnlocked(.cloudBackup)
+        access.setFeatureOverride(.cloudBackup, unlocked: false)
+        defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
+        defaults.removeObject(forKey: "active_session_v1")
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let workout = Workout(id: "note-day", day: 1, title: "Notes regression", exercises: [
+            Exercise(id: "bench", name: "Bench Press", exerciseId: "barbell-bench-press", sets: 1)
+        ])
+        let program = Program(id: "note-plan", name: "Notes plan", workouts: [workout])
+        let store = AppStore(persistence: AppStatePersistence(databaseURL: directory.appendingPathComponent("state.sqlite")))
+        XCTAssertTrue(store.saveState(StoredAppState(programs: [program], activeProgramId: program.id,
+            currentWeekKey: store.state.currentWeekKey), durable: true))
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
+        try body(store, workout)
+    }
+
+    private func writeNote(_ store: AppStore, _ text: String?) {
+        store.updateActiveSession { current in
+            var copy = current
+            copy.note = text
+            return copy
+        }
+    }
+
+    private func save(_ store: AppStore) throws {
+        let draft = try XCTUnwrap(store.activeSession)
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        store.completeActiveSession(SessionProgress.from(draft: draft, nowEpochMillis: now)
+            .record(draft: draft, completedAtEpochMillis: now))
+    }
+
+    @MainActor func testNoteOnlyExitSurvivesRelaunchAndResume() throws {
+        try withSession { store, workout in
+            let id = try XCTUnwrap(store.activeSession?.id)
+            writeNote(store, note)
+            store.abandonActiveSession()
+            XCTAssertNil(store.activeSession)
+            let relaunched = AppStore(persistence: store.statePersistence)
+            XCTAssertEqual(relaunched.state.history.first?.note, note)
+            XCTAssertTrue(relaunched.startActiveSession(programId: "note-plan", workout: workout, allowPast: true))
+            XCTAssertEqual(relaunched.activeSession?.id, id)
+            XCTAssertEqual(relaunched.activeSession?.note, note)
+            XCTAssertEqual(relaunched.state.history.count, 1)
+        }
+    }
+
+    @MainActor func testNoteOnlySummarySaveStaysUnfinishedAndResumesWithoutDuplicateHistory() throws {
+        try withSession { store, workout in
+            writeNote(store, note)
+            try save(store)
+            let saved = try XCTUnwrap(store.state.history.first)
+            XCTAssertEqual(saved.note, note)
+            XCTAssertEqual(saved.isComplete, false)
+            XCTAssertEqual(saved.totalCompletedSets, 0)
+            XCTAssertEqual(saved.totalVolumeKg, 0)
+            XCTAssertTrue(store.state.completed.isEmpty)
+            XCTAssertEqual(store.state.calendarHistory?.entries.first { $0.id == "session:\(saved.id)" }?.status, .unfinished)
+            let persisted = try XCTUnwrap(store.statePersistence.load()?.history.first)
+            XCTAssertEqual(persisted.id, saved.id)
+            XCTAssertEqual(persisted.note, note)
+            XCTAssertEqual(persisted.exerciseLogs, saved.exerciseLogs)
+            let relaunched = AppStore(persistence: store.statePersistence)
+            XCTAssertEqual(relaunched.state.history.count, 1)
+            XCTAssertEqual(relaunched.state.history.first?.id, saved.id)
+            XCTAssertEqual(relaunched.state.history.first?.note, note)
+            XCTAssertTrue(relaunched.startActiveSession(programId: "note-plan", workout: workout, allowPast: true))
+            XCTAssertEqual(relaunched.activeSession?.note, note)
+            writeNote(relaunched, "Updated during review")
+            try save(relaunched)
+            XCTAssertEqual(relaunched.state.history.count, 1)
+            XCTAssertEqual(relaunched.state.history.first?.id, saved.id)
+            XCTAssertEqual(relaunched.state.history.first?.note, "Updated during review")
+        }
+    }
+
+    @MainActor func testNoteSurvivesLiveDraftRelaunchBeforeAnySetIsLogged() throws {
+        try withSession { store, _ in
+            writeNote(store, note)
+            let relaunched = AppStore(persistence: store.statePersistence)
+            XCTAssertEqual(relaunched.activeSession?.note, note)
+            XCTAssertEqual(relaunched.activeSession?.id, store.activeSession?.id)
+            relaunched.resumeActiveSession()
+            XCTAssertEqual(relaunched.activeSession?.note, note)
+        }
+    }
+
+    @MainActor func testCompletedWorkoutRetainsLatestNoteAndFreshSessionStartsWithoutIt() throws {
+        try withSession { store, workout in
+            writeNote(store, note)
+            store.updateActiveSession { current in
+                var copy = current
+                copy.setsByExercise["bench"] = [ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "8",
+                    weightKg: 50, completedReps: 8, isCompleted: true)]
+                return copy
+            }
+            writeNote(store, "Changed on the summary")
+            try save(store)
+            let relaunched = AppStore(persistence: store.statePersistence)
+            XCTAssertEqual(relaunched.state.history.first?.note, "Changed on the summary")
+            XCTAssertEqual(relaunched.state.history.first?.isComplete, true)
+            XCTAssertTrue(relaunched.startActiveSession(programId: "note-plan", workout: workout,
+                allowPast: true, startNewSession: true))
+            XCTAssertNil(relaunched.activeSession?.note)
+        }
+    }
+
+    @MainActor func testEmptyOrClearedNoteDoesNotCreateWorkoutHistory() throws {
+        for text in [nil, "", " \n\t "] as [String?] {
+            try withSession { store, _ in
+                writeNote(store, note)
+                writeNote(store, text)
+                store.abandonActiveSession()
+                XCTAssertNil(store.activeSession)
+                XCTAssertTrue(store.state.history.isEmpty)
+                XCTAssertTrue(AppStore(persistence: store.statePersistence).state.history.isEmpty)
+            }
+        }
+    }
+
+    @MainActor func testClearingTheOnlySavedNoteRemovesTheEmptySession() throws {
+        try withSession { store, workout in
+            writeNote(store, note)
+            try save(store)
+            let id = try XCTUnwrap(store.state.history.first?.id)
+            XCTAssertTrue(store.startActiveSession(programId: "note-plan", workout: workout, allowPast: true))
+            writeNote(store, nil)
+            store.abandonActiveSession()
+            XCTAssertTrue(store.state.history.isEmpty)
+            XCTAssertFalse(store.state.calendarHistory?.entries.contains { $0.id == "session:\(id)" } == true)
+            XCTAssertTrue(AppStore(persistence: store.statePersistence).state.history.isEmpty)
+        }
+    }
+
+    @MainActor func testNoteOnlySummaryKeepsTheNoteAndSaveLayoutAtNarrowLargeText() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        for language in ["en", "de"] {
+            LanguageManager.setLanguage(language)
+            let view = SessionSummaryView(workoutTitle: "Notes regression", durationSeconds: 60,
+                totalCompletedSets: 0, totalVolumeKg: 0,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Bench Press", sets: [], targetSets: 1)],
+                onBack: {}, onSaveAndClose: {}, workoutNote: .constant(note))
+                .environment(\.sizeCategory, .extraExtraExtraLarge)
+            let host = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
+            window.windowScene = previousWindow?.windowScene
+            window.frame = CGRect(x: 0, y: 0, width: 320, height: 800)
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            host.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 300_000_000)
+            func scrollViews(_ view: UIView) -> [UIScrollView] {
+                (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap(scrollViews)
+            }
+            let scroll = try XCTUnwrap(scrollViews(host.view).first,
+                "A note-only workout must show the scrollable summary with its note and Save action.")
+            XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "workout-note-summary-\(language)-320-large"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            window.isHidden = true
+        }
+    }
+}
+
 /// Executes the shared import contract (gym/docs/history-import-fixtures.json) against the captured and derived
 /// Strong/Hevy exports, plus behaviour beyond the fixtures. Android HistoryImportFixturesTest and HistoryImportTest
 /// run the same cases.
