@@ -252,11 +252,12 @@ public struct HistoryImportPlan {
     public let customExercises: Int
     public let firstDate: String?
     public let lastDate: String?
+    public let problems: [HistoryImportProblem]
     /// How many workouts history can still take when the import would exceed the limit; otherwise nil.
     public let roomLeft: Int?
 
     public var needsUnit: Bool { unit == nil }
-    public var canImport: Bool { !needsUnit && !records.isEmpty && roomLeft == nil }
+    public var canImport: Bool { !needsUnit && !records.isEmpty && roomLeft == nil && problems.isEmpty }
 }
 
 /// Strong and Hevy CSV history import; the rules are gym/docs/history-import.md. Android `HistoryImport` matches it.
@@ -275,8 +276,13 @@ public enum HistoryImport {
     private static let whole = try! NSRegularExpression(pattern: "^[0-9]+(\\.0+)?$")
     private static let clockDuration = try! NSRegularExpression(pattern: "^(?:([0-9]+)h)?\\s*(?:([0-9]+)m)?\\s*(?:([0-9]+)s)?$")
     private static let isoDate = try! NSRegularExpression(pattern: "^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2})(?::([0-9]{2}))?$")
-    private static let hevyDate = try! NSRegularExpression(pattern: "^([0-9]{1,2}) ([A-Za-z]{3}) ([0-9]{4}), ([0-9]{2}):([0-9]{2})$")
+    private static let hevyDate = try! NSRegularExpression(pattern: "^([0-9]{1,2}) ([\\p{L}]{3}) ([0-9]{4}), ([0-9]{2}):([0-9]{2})$")
     private static let months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    private static let turkishMonths = ["oca", "şub", "mar", "nis", "may", "haz", "tem", "ağu", "eyl", "eki", "kas", "ara"]
+    // Hevy escapes source linefeeds inside note fields as literal backslash-n.
+    private static func hevyNote(_ value: String) -> String {
+        value.replacingOccurrences(of: "\\n", with: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 
     private enum RowKind { case working, warmup, drop, rest, note }
 
@@ -315,7 +321,7 @@ public enum HistoryImport {
         var parts: (Int, Int, Int, Int, Int, Int)?
         if let m = matches(isoDate, text) {
             parts = (Int(m[1]!)!, Int(m[2]!)!, Int(m[3]!)!, Int(m[4]!)!, Int(m[5]!)!, m[6].flatMap { Int($0) } ?? 0)
-        } else if hevy, let m = matches(hevyDate, text), let month = months.firstIndex(of: m[2]!.lowercased()) {
+        } else if hevy, let m = matches(hevyDate, text), let month = months.firstIndex(of: m[2]!.lowercased()) ?? turkishMonths.firstIndex(of: m[2]!.lowercased()) {
             parts = (Int(m[3]!)!, month + 1, Int(m[1]!)!, Int(m[4]!)!, Int(m[5]!)!, 0)
         }
         guard let (y, mo, d, h, mi, s) = parts, (1...12).contains(mo), (0...23).contains(h), (0...59).contains(mi), (0...59).contains(s) else { return nil }
@@ -441,7 +447,7 @@ public enum HistoryImport {
                         key: workoutNumber.isEmpty ? dateText.trimmingCharacters(in: .whitespacesAndNewlines) + "\u{0}" + title : "#" + workoutNumber,
                         title: title, start: start, duration: duration,
                         description: field("workout notes").trimmingCharacters(in: .whitespacesAndNewlines),
-                        exercise: exercise, kind: kind, order: nil, weight: weight, reps: reps,
+                        exercise: exercise, kind: kind, order: Int(order), weight: weight, reps: reps,
                         seconds: seconds, distance: distance, rpe: rpe,
                         note: field("notes").trimmingCharacters(in: .whitespacesAndNewlines), superset: "", raw: record.fields
                     )
@@ -475,10 +481,10 @@ public enum HistoryImport {
                                field("end_time").trimmingCharacters(in: .whitespacesAndNewlines)].joined(separator: "\u{0}")
                     row = Row(
                         line: line, key: key, title: title, start: start, duration: duration,
-                        description: field("description").trimmingCharacters(in: .whitespacesAndNewlines),
+                        description: hevyNote(field("description")),
                         exercise: exercise, kind: kind, order: order, weight: weight, reps: reps,
                         seconds: seconds, distance: distance, rpe: rpe,
-                        note: field("exercise_notes").trimmingCharacters(in: .whitespacesAndNewlines),
+                        note: hevyNote(field("exercise_notes")),
                         superset: field("superset_id").trimmingCharacters(in: .whitespacesAndNewlines), raw: record.fields
                     )
                 }
@@ -525,7 +531,11 @@ public enum HistoryImport {
                 if entry.contains(where: { !$0.note.isEmpty }) { notes += 1 }
                 if entry.contains(where: { !$0.superset.isEmpty }) { supersets += 1 }
                 var sets = entry.filter(\.isSet)
-                if sets.allSatisfy({ $0.order != nil }) {
+                var numberedRows = Set<[String]>()
+                for row in sets where row.order != nil {
+                    if !numberedRows.insert(row.raw).inserted { problem("repeatedSetRow", row.line) }
+                }
+                if source == .hevy && sets.allSatisfy({ $0.order != nil }) {
                     // A stable sort keeps rows with the same index in file order, as Android's sortedBy does.
                     sets = sets.enumerated().sorted { ($0.element.order!, $0.offset) < ($1.element.order!, $1.offset) }.map(\.element)
                 }
@@ -552,8 +562,14 @@ public enum HistoryImport {
             let title = head.title.isEmpty ? untitled : head.title
             let note = uniqueNotes(run.map(\.description))
             if (note?.utf16.count ?? 0) > 10_000 { problem("notesTooLong", head.line) }
-            sessions.append(ImportedSession(line: head.line, title: String(title.prefix(maxText)), start: head.start,
+            sessions.append(ImportedSession(line: head.line, title: title, start: head.start,
                                             durationSeconds: head.duration, exercises: exercises, note: note))
+        }
+        var identities = Set<String>()
+        for session in sessions where !session.exercises.isEmpty {
+            if !identities.insert(recordId(start: session.start, title: session.title)).inserted {
+                problem("identityConflict", session.line)
+            }
         }
         if !problems.isEmpty { throw HistoryImportError(problems) }
         return HistoryImportFile(
@@ -568,7 +584,7 @@ public enum HistoryImport {
                             includeOverlaps: Bool, catalog: HistoryImportCatalog) -> HistoryImportPlan {
         let chosen = file.fileUnit ?? unit
         let factor = chosen == .lbs ? WeightUnit.lbsToKg : 1.0
-        let existingIds = Set(existing.map(\.id))
+        let existingById = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { _, last in last })
         let native: [(date: String?, start: Date, end: Date)] = existing.filter { !$0.id.hasPrefix(idPrefix) }.compactMap { record in
             guard let start = WorkoutCalendar.parseIsoTimestamp(record.startedAt) else { return nil }
             let end = WorkoutCalendar.parseIsoTimestamp(record.completedAt) ?? start
@@ -577,9 +593,25 @@ public enum HistoryImport {
         }
         var alreadyImported = 0, overlapping = 0, attached = 0, separate = 0
         var records: [WorkoutSessionRecord] = []
+        var problems: [HistoryImportProblem] = []
         for session in file.sessions where !session.exercises.isEmpty {
+            if chosen != nil {
+                for row in session.exercises.flatMap(\.rows) where row.weight * factor > 9_999 {
+                    if problems.count < maxProblems { problems.append(HistoryImportProblem(code: "weight", line: row.line, detail: String(row.weight))) }
+                }
+            }
             let built = build(session, factor: factor, catalog: catalog, zone: file.zone)
-            if existingIds.contains(built.record.id) { alreadyImported += 1; continue }
+            if existingById[built.record.id] == nil && session.title.count > maxText &&
+                existingById[recordId(start: session.start, title: String(session.title.prefix(maxText)))] != nil {
+                if problems.count < maxProblems { problems.append(HistoryImportProblem(code: "identityConflict", line: session.line)) }
+                continue
+            }
+            if let earlier = existingById[built.record.id] {
+                if chosen != nil && !sameImportedWorkout(earlier, built.record, zone: file.zone) {
+                    if problems.count < maxProblems { problems.append(HistoryImportProblem(code: "identityConflict", line: session.line)) }
+                } else { alreadyImported += 1 }
+                continue
+            }
             let start = built.start
             let end = max(start.addingTimeInterval(TimeInterval(session.durationSeconds)), start.addingTimeInterval(60))
             if native.contains(where: { $0.date == built.record.performedDate && $0.start < end && start < $0.end }) {
@@ -603,6 +635,7 @@ public enum HistoryImport {
             libraryExercises: Set(logs.compactMap(\.exerciseId)).count,
             customExercises: Set(logs.filter { $0.exerciseId == nil }.map { HistoryImportCatalog.normalize($0.exerciseName) }).count,
             firstDate: dates.first, lastDate: dates.last,
+            problems: problems,
             roomLeft: records.count > room ? max(room, 0) : nil
         )
     }
@@ -619,7 +652,7 @@ public enum HistoryImport {
         for exercise in session.exercises {
             let match = catalog.match(exercise.sourceName)
             let id = match?.id
-            let name = match?.name ?? String(exercise.sourceName.prefix(maxText))
+            let name = match?.name ?? boundedText(exercise.sourceName)
             let assisted = WorkoutSessionUtils.isAssisted(exerciseId: id, name: name)
             let allowsZero = WorkoutSessionUtils.allowsZeroWeight(Exercise(name: name, exerciseId: id))
             var sets: [SessionSetLog] = []
@@ -649,7 +682,7 @@ public enum HistoryImport {
             id: recordId(start: session.start, title: session.title),
             programId: programId,
             workoutId: "imported-" + sha256(session.title.trimmingCharacters(in: .whitespacesAndNewlines)).prefix(16),
-            workoutTitle: session.title,
+            workoutTitle: boundedText(session.title),
             startedAt: iso.string(from: started),
             completedAt: iso.string(from: started.addingTimeInterval(TimeInterval(session.durationSeconds))),
             durationSeconds: session.durationSeconds,
@@ -670,11 +703,51 @@ public enum HistoryImport {
         return result.isEmpty ? nil : result
     }
 
+    /// Keep existing minute IDs replayable, while refusing different workouts with a colliding identity.
+    private static func sameImportedWorkout(_ a: WorkoutSessionRecord, _ b: WorkoutSessionRecord, zone: TimeZone) -> Bool {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = zone
+        let aSecond = WorkoutCalendar.parseIsoTimestamp(a.startedAt).map { calendar.component(.second, from: $0) }
+        let bSecond = WorkoutCalendar.parseIsoTimestamp(b.startedAt).map { calendar.component(.second, from: $0) }
+        if let aSecond, let bSecond, aSecond != 0, bSecond != 0, aSecond != bSecond { return false }
+        guard a.performedDate == b.performedDate, abs(Int64(a.durationSeconds) - Int64(b.durationSeconds)) <= 60,
+              (a.note ?? "") == (b.note ?? ""), a.exerciseLogs.count == b.exerciseLogs.count else { return false }
+        func weight(_ x: Double?, _ y: Double?) -> Bool {
+            if x == y { return true }
+            guard let x, let y else { return false }
+            return abs(x - y) <= loadTolerance
+        }
+        return zip(a.exerciseLogs, b.exerciseLogs).allSatisfy { x, y in
+            x.exerciseId == y.exerciseId && HistoryImportCatalog.normalize(x.exerciseName) == HistoryImportCatalog.normalize(y.exerciseName) &&
+                (x.setupNote ?? "") == (y.setupNote ?? "") && x.sets.count == y.sets.count && zip(x.sets, y.sets).allSatisfy { s, t in
+                    s.reps == t.reps && s.isWarmup == t.isWarmup && s.technique == t.technique && s.partialReps == t.partialReps &&
+                        weight(s.weightKg, t.weightKg) && s.setExtensions.count == t.setExtensions.count &&
+                        zip(s.setExtensions, t.setExtensions).allSatisfy { u, v in
+                            u.reps == v.reps && u.partialReps == v.partialReps && weight(u.weightKg, v.weightKg)
+                        }
+                }
+        }
+    }
+
     private static func clockSeconds(_ value: String) -> Int? {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty { return 0 }
         guard let m = matches(clockDuration, trimmed), !trimmed.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
-        return (m[1].flatMap { Int($0) } ?? 0) * 3600 + (m[2].flatMap { Int($0) } ?? 0) * 60 + (m[3].flatMap { Int($0) } ?? 0)
+        var total = 0
+        for (digits, multiplier) in zip(m.dropFirst(), [3600, 60, 1]) {
+            guard let digits else { continue }
+            guard let value = Int(digits), value <= maxSessionSeconds / multiplier else { return nil }
+            total += value * multiplier
+            guard total <= maxSessionSeconds else { return nil }
+        }
+        return total
+    }
+
+    /// Match the stored UTF-16 limit without splitting a surrogate pair. IDs use the full source title.
+    private static func boundedText(_ value: String) -> String {
+        var prefix = Array(value.utf16.prefix(maxText))
+        if let last = prefix.last, (0xD800...0xDBFF).contains(last) { prefix.removeLast() }
+        return String(decoding: prefix, as: UTF16.self)
     }
 
     private static func sha256(_ value: String) -> String {
@@ -707,6 +780,7 @@ extension AppStore {
     public func importHistory(_ plan: HistoryImportPlan) throws -> Int {
         try checkHistoryImportAllowed()
         let fresh = planHistoryImport(plan.file, unit: plan.unit, includeOverlaps: plan.includeOverlaps)
+        if !fresh.problems.isEmpty { throw HistoryImportError(fresh.problems) }
         guard fresh.canImport else { throw HistoryImportError(fresh.roomLeft != nil ? "historyFull" : "nothingNew", line: 0) }
         try writeImportSafetyBackup()
         var next = state

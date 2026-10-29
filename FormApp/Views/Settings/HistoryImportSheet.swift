@@ -26,12 +26,13 @@ struct HistoryImportPreviewSheet: View {
                     Text(LanguageManager.t("import.history.title"))
                         .font(.app(size: 17, weight: .bold))
                         .foregroundStyle(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true)
                     Text(LanguageManager.t("import.preview.subtitle", ["source": file.source.displayName, "file": fileName]))
                         .font(.app(size: 12))
                         .foregroundStyle(AppColors.muted)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                Spacer()
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 FormCloseButton(action: onDismiss)
                     .disabled(importing)
                     .accessibilityIdentifier("history-import-close")
@@ -61,7 +62,7 @@ struct HistoryImportPreviewSheet: View {
                                 count + ((record.note ?? "").isEmpty ? 0 : 1) + record.exerciseLogs.filter { !($0.setupNote ?? "").isEmpty }.count
                             }
                             if noteCount > 0 { countRow("notes.preserved", noteCount) }
-                        } else if !plan.needsUnit && plan.overlapping == 0 {
+                        } else if !plan.needsUnit && plan.overlapping == 0 && plan.problems.isEmpty {
                             Text(LanguageManager.t("import.preview.noneNew"))
                                 .font(.app(size: 13))
                                 .foregroundStyle(AppColors.secondaryText)
@@ -135,6 +136,14 @@ struct HistoryImportPreviewSheet: View {
 
                     if let room = plan.roomLeft {
                         Text(LanguageManager.t("import.preview.historyFull", ["count": room]))
+                            .font(.app(size: 13))
+                            .foregroundStyle(AppColors.danger)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    ForEach(Array(plan.problems.enumerated()), id: \.offset) { _, problem in
+                        Text(historyImportProblemText(problem))
                             .font(.app(size: 13))
                             .foregroundStyle(AppColors.danger)
                             .frame(maxWidth: .infinity, alignment: .leading)

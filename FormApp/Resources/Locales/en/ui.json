@@ -1869,5 +1869,7 @@
   "lifetime.benefit2": "One payment",
   "lifetime.benefit2_desc": "No recurring charges or subscription to renew.",
   "lifetime.benefit3": "Restore on your devices",
-  "lifetime.benefit3_desc": "Restore Lifetime Premium with the same store account on another compatible device."
+  "lifetime.benefit3_desc": "Restore Lifetime Premium with the same store account on another compatible device.",
+  "import.error.identityConflict": "This workout shares a title and start minute with different workout details. Review the source history before importing.",
+  "import.error.repeatedSetRow": "This row repeats an exported set number and its values. Export the original history again without combining rows."
 }

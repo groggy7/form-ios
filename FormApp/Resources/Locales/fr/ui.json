@@ -1869,5 +1869,7 @@
   "lifetime.benefit2": "Un seul paiement",
   "lifetime.benefit2_desc": "Aucun paiement récurrent ni abonnement à renouveler.",
   "lifetime.benefit3": "Restaurer sur vos appareils",
-  "lifetime.benefit3_desc": "Restaurez Premium à vie sur un autre appareil compatible avec le même compte de boutique."
+  "lifetime.benefit3_desc": "Restaurez Premium à vie sur un autre appareil compatible avec le même compte de boutique.",
+  "import.error.identityConflict": "Cette séance a le même titre et la même minute de début qu’une séance aux détails différents. Vérifiez l’historique source avant l’importation.",
+  "import.error.repeatedSetRow": "Cette ligne répète un numéro de série exporté et ses valeurs. Exportez à nouveau l’historique original sans combiner les lignes."
 }

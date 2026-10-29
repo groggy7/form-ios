@@ -1869,5 +1869,7 @@
   "lifetime.benefit2": "Un solo pago",
   "lifetime.benefit2_desc": "Sin cargos recurrentes ni suscripciones que renovar.",
   "lifetime.benefit3": "Restaura en tus dispositivos",
-  "lifetime.benefit3_desc": "Restaura Premium de por vida en otro dispositivo compatible con la misma cuenta de la tienda."
+  "lifetime.benefit3_desc": "Restaura Premium de por vida en otro dispositivo compatible con la misma cuenta de la tienda.",
+  "import.error.identityConflict": "Este entrenamiento tiene el mismo título y minuto de inicio que otro con datos diferentes. Revisa el historial de origen antes de importarlo.",
+  "import.error.repeatedSetRow": "Esta fila repite un número de serie exportado y sus valores. Exporta de nuevo el historial original sin combinar filas."
 }

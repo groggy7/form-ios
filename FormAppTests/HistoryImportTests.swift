@@ -1,6 +1,7 @@
 import XCTest
 import SwiftUI
 import ActivityKit
+import CryptoKit
 @testable import FormApp
 
 final class WorkoutNotePersistenceTests: XCTestCase {
@@ -197,7 +198,11 @@ final class HistoryImportTests: XCTestCase {
     private lazy var zone = TimeZone(identifier: fixtures["timeZone"] as! String)!
     private lazy var today = fixtures["today"] as! String
     private let catalog = HistoryImportCatalog.bundled()
-    private var cases: [[String: Any]] { fixtures["cases"] as! [[String: Any]] }
+    private lazy var current: [String: Any] = {
+        let data = try! Data(contentsOf: gym.appendingPathComponent("scripts/history-import-audit/fixtures/current/manifest.json"))
+        return try! JSONSerialization.jsonObject(with: data) as! [String: Any]
+    }()
+    private var cases: [[String: Any]] { (fixtures["cases"] as! [[String: Any]]) + (current["cases"] as! [[String: Any]]) }
 
     private func expectOf(_ testCase: [String: Any]) -> [String: Any] {
         var merged: [String: Any] = [:]
@@ -209,8 +214,8 @@ final class HistoryImportTests: XCTestCase {
     }
 
     private func plan(_ data: Data, existing: [WorkoutSessionRecord] = [], unit: WeightUnit? = nil,
-                      includeOverlaps: Bool = false, zone: TimeZone? = nil) throws -> HistoryImportPlan {
-        let file = try HistoryImport.read(data, zone: zone ?? self.zone, today: today, untitled: "Workout")
+                      includeOverlaps: Bool = false, zone: TimeZone? = nil, today: String? = nil) throws -> HistoryImportPlan {
+        let file = try HistoryImport.read(data, zone: zone ?? self.zone, today: today ?? self.today, untitled: "Workout")
         return HistoryImport.plan(file, unit: unit, existing: existing, includeOverlaps: includeOverlaps, catalog: catalog)
     }
 
@@ -244,6 +249,31 @@ final class HistoryImportTests: XCTestCase {
             host.view.layoutIfNeeded(); try await Task.sleep(nanoseconds: 300_000_000)
             let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
             let attachment = XCTAttachment(image: image); attachment.name = "notes-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            XCTAssertEqual(host.view.bounds.width, 320)
+            window.isHidden = true; previous?.makeKeyAndVisible()
+        }
+    }
+
+    @MainActor func testConflictingImportPreviewAt320PointsWithLargeText() async throws {
+        let oldLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(oldLanguage) }
+        let first = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"))
+        let conflict = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;85;5;;;;;"), existing: first.records)
+        XCTAssertFalse(conflict.canImport)
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            let host = UIHostingController(rootView: HistoryImportPreviewSheet(plan: conflict, fileName: "Strong.csv", importing: false,
+                onChooseUnit: { _ in }, onIncludeOverlaps: { _ in }, onImport: {}, onDismiss: {})
+                .environment(\.sizeCategory, .extraExtraExtraLarge))
+            let previous = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
+            window.windowScene = previous?.windowScene
+            window.frame = CGRect(x: 0, y: 0, width: 320, height: 800)
+            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+            host.view.layoutIfNeeded(); try await Task.sleep(nanoseconds: 300_000_000)
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "import-conflict-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
             XCTAssertEqual(host.view.bounds.width, 320)
             window.isHidden = true; previous?.makeKeyAndVisible()
         }
@@ -285,10 +315,13 @@ final class HistoryImportTests: XCTestCase {
             let id = testCase["id"] as! String
             let expect = expectOf(testCase)
             let data = try Data(contentsOf: gym.appendingPathComponent(testCase["file"] as! String))
+            if let expected = testCase["sha256"] as? String {
+                XCTAssertEqual(SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(), expected, "\(id) untouched bytes")
+            }
             checked += 1
             if let error = expect["error"] as? String {
                 do {
-                    _ = try plan(data)
+                    _ = try plan(data, today: testCase["today"] as? String)
                     XCTFail("\(id) should be refused")
                 } catch let failure as HistoryImportError {
                     XCTAssertEqual(failure.problems.first?.code, error, "\(id) error")
@@ -296,7 +329,8 @@ final class HistoryImportTests: XCTestCase {
                 }
                 continue
             }
-            let plan = try plan(data)
+            let plan = try plan(data, today: testCase["today"] as? String)
+            XCTAssertTrue(plan.problems.isEmpty, "\(id) plan problems: \(plan.problems)")
             let file = plan.file
             XCTAssertEqual(file.source.rawValue, expect["source"] as? String, "\(id) source")
             XCTAssertEqual(file.fileUnit?.rawValue, expect["fileUnit"] as? String, "\(id) unit")
@@ -329,6 +363,7 @@ final class HistoryImportTests: XCTestCase {
                 for (want, got) in zip(workouts, records) {
                     XCTAssertEqual(got.id, want["id"] as? String, "\(id) record id")
                     XCTAssertEqual(got.workoutTitle, want["title"] as? String, "\(id) title")
+                    if let note = want["note"] as? String { XCTAssertEqual(got.note, note, "\(id) workout note") }
                     XCTAssertEqual(got.performedDate, want["performedDate"] as? String, "\(id) performedDate")
                     XCTAssertEqual(instant(got.startedAt), instant(want["startedAt"] as! String), "\(id) startedAt")
                     XCTAssertEqual(instant(got.completedAt), instant(want["completedAt"] as! String), "\(id) completedAt")
@@ -341,6 +376,7 @@ final class HistoryImportTests: XCTestCase {
                     for (e, log) in zip(exercises, got.exerciseLogs) {
                         XCTAssertEqual(log.exerciseId, e["id"] as? String, "\(id) \(log.exerciseName) id")
                         XCTAssertEqual(log.sets.map(describe), e["sets"] as? [String], "\(id) \(log.exerciseName) sets")
+                        if let note = e["note"] as? String { XCTAssertEqual(log.setupNote, note, "\(id) \(log.exerciseName) note") }
                     }
                 }
             }
@@ -351,7 +387,7 @@ final class HistoryImportTests: XCTestCase {
                 XCTAssertEqual(log.sets.map(\.setNumber), Array(1..<(log.sets.count + 1)), "\(id) set numbers")
             }
         }
-        XCTAssertEqual(checked, 62, "all 62 captured and derived exports")
+        XCTAssertEqual(checked, 62 + (current["cases"] as! [[String: Any]]).count, "all captured and derived exports")
     }
 
     // MARK: Behaviour
@@ -370,6 +406,81 @@ final class HistoryImportTests: XCTestCase {
     private func native(_ start: String, _ end: String, _ date: String, id: String? = nil) -> WorkoutSessionRecord {
         WorkoutSessionRecord(id: id ?? "native-\(start)", programId: "p", workoutId: "w", workoutTitle: "Push", startedAt: start,
                              completedAt: end, durationSeconds: 3600, isComplete: true, performedDate: date)
+    }
+
+    func testOverflowingTextDurationsRefuseTheFile() throws {
+        let header = "Date;Workout Name;Duration;Exercise Name;Set Order;Weight (kg);Reps"
+        for duration in ["2147483647h", "9223372036854775807h", "999999999999999999999h", "2147483647m", "169h", "168h 1s"] {
+            let error = refusal(Data("\(header)\n2026-10-01 18:00:00;Push;\(duration);Bench Press (Barbell);1;80;5".utf8))
+            XCTAssertEqual(error.problems.first?.code, "duration", duration)
+            XCTAssertEqual(error.problems.first?.line, 2, duration)
+        }
+        for duration in ["168h", "10080m", "604800s", "167h 59m 60s"] {
+            let accepted = try plan(Data("\(header)\n2026-10-01 18:00:00;Push;\(duration);Bench Press (Barbell);1;80;5".utf8))
+            XCTAssertEqual(accepted.records[0].durationSeconds, 604800, duration)
+        }
+    }
+
+    func testAdjacentCopiesOfOneExportDoNotDoubleItsSets() {
+        let rows = [
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);W;20;10;;;;;",
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;",
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);2;80;5;;;;;"
+        ]
+        let header = "Workout #;Date;Workout Name;Duration (sec);Exercise Name;Set Order;Weight (kg);Reps;RPE;Distance (meters);Seconds;Notes;Workout Notes"
+        XCTAssertEqual(refusal(Data(([header] + rows + rows).joined(separator: "\n").utf8)).problems.first?.code, "repeatedSetRow")
+        let hevyRows = [
+            hevyRow("Push", "1 Oct 2026, 10:00", "1 Oct 2026, 11:00", "Bench Press (Barbell)", 0, "normal", "80", "5"),
+            hevyRow("Push", "1 Oct 2026, 10:00", "1 Oct 2026, 11:00", "Bench Press (Barbell)", 1, "normal", "80", "5")
+        ]
+        let hevyHeader = "title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe"
+        XCTAssertEqual(refusal(Data(([hevyHeader] + hevyRows + hevyRows).joined(separator: "\n").utf8)).problems.first?.code, "repeatedSetRow")
+    }
+
+    func testCollidingMinuteIdentitiesAreReportedInsteadOfSilentlySkipped() throws {
+        let firstRow = "1;2026-10-01 18:00:05;Push;600;Bench Press (Barbell);1;80;5;;;;;"
+        let secondRow = "2;2026-10-01 18:00:50;Push;600;Bench Press (Barbell);1;80;5;;;;;"
+        XCTAssertEqual(refusal(strong(firstRow, secondRow)).problems.first?.code, "identityConflict")
+        let first = try plan(strong(firstRow)).records
+        let later = try plan(strong(secondRow), existing: first)
+        XCTAssertEqual(later.problems.first?.code, "identityConflict")
+        XCTAssertEqual(later.alreadyImported, 0)
+        XCTAssertFalse(later.canImport)
+        let changed = try plan(strong(firstRow.replacingOccurrences(of: ";80;5;", with: ";85;5;")), existing: first)
+        XCTAssertEqual(changed.problems.first?.code, "identityConflict")
+        XCTAssertFalse(changed.canImport)
+    }
+
+    func testReplayAllowsSourceMinutePrecisionAndAChangedDeviceZone() throws {
+        let csv = strong("1;2026-10-01 18:00:45;Push;353;Bench Press (Barbell);1;80;5;;;;;")
+        let first = try plan(csv).records
+        XCTAssertEqual(try plan(csv, existing: first, zone: TimeZone(identifier: "America/New_York")!).alreadyImported, 1)
+        let rounded = hevy([hevyRow("Push", "1 Oct 2026, 18:00", "1 Oct 2026, 18:06", "Bench Press (Barbell)", 0, "normal", "80", "5")])
+        let replay = try plan(rounded, existing: first)
+        XCTAssertEqual(replay.alreadyImported, 1)
+        XCTAssertTrue(replay.problems.isEmpty)
+    }
+
+    func testTitleTruncationDoesNotChangeWorkoutIdentity() throws {
+        let prefix = String(repeating: "A", count: 100)
+        let imported = try plan(strong(
+            "1;2026-10-01 18:00:00;\(prefix)x;600;Bench Press (Barbell);1;80;5;;;;;",
+            "2;2026-10-01 18:00:00;\(prefix)y;600;Bench Press (Barbell);1;80;5;;;;;"
+        ))
+        XCTAssertEqual(Set(imported.records.map(\.id)).count, 2)
+        XCTAssertEqual(imported.records.map(\.workoutTitle), [prefix, prefix])
+        var legacy = imported.records[0]
+        legacy.id = HistoryImport.recordId(start: ImportedDateTime(year: 2026, month: 10, day: 1, hour: 18, minute: 0, second: 0), title: prefix)
+        let replay = try plan(strong("1;2026-10-01 18:00:00;\(prefix)x;600;Bench Press (Barbell);1;80;5;;;;;"), existing: [legacy])
+        XCTAssertEqual(replay.problems.first?.code, "identityConflict")
+        XCTAssertFalse(replay.canImport)
+    }
+
+    func testDisplayLimitsNeverSplitUnicodeSurrogates() throws {
+        let source = String(repeating: "A", count: 99) + "🎉tail"
+        let record = try plan(strong("1;2026-10-01 18:00:00;\(source);600;\(source);1;80;5;;;;;")).records[0]
+        XCTAssertEqual(record.workoutTitle, String(repeating: "A", count: 99))
+        XCTAssertEqual(record.exerciseLogs[0].exerciseName, String(repeating: "A", count: 99))
     }
 
     func testIdenticalReplayImportsNothing() throws {
@@ -440,6 +551,11 @@ final class HistoryImportTests: XCTestCase {
         XCTAssertEqual(pounds.records.first!.exerciseLogs.first!.sets.first!.weightKg!, 225 * WeightUnit.lbsToKg, accuracy: 1e-9)
         XCTAssertEqual(pounds.records.first!.durationSeconds, 3900)
         XCTAssertEqual(try plan(csv, unit: .kg).records.first!.exerciseLogs.first!.sets.first!.weightKg!, 225, accuracy: 1e-9)
+        let large = Data(String(decoding: csv, as: UTF8.self).replacingOccurrences(of: ";225;5;", with: ";10000;5;").utf8)
+        XCTAssertTrue(try plan(large, unit: .lbs).canImport)
+        let kilograms = try plan(large, unit: .kg)
+        XCTAssertFalse(kilograms.canImport)
+        XCTAssertEqual(kilograms.problems.first?.code, "weight")
     }
 
     func testTheDeviceTimeZoneNeverMovesTheExportedDate() throws {
@@ -546,6 +662,104 @@ final class HistoryImportTests: XCTestCase {
     }
 
     // MARK: Store
+
+    @MainActor func testDiskImportFailurePreservesHistoryAndRetrySurvivesReopen() throws {
+        struct InjectedFailure: Error {}
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("history.sqlite")
+        var fail = false
+        let persistence = AppStatePersistence(databaseURL: url, beforeCommit: { if fail { throw InjectedFailure() } })
+        var store = AppStore(persistence: persistence)
+        let first = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"))
+        XCTAssertEqual(try store.importHistory(first), 1)
+        let before = store.state.history
+        let later = try plan(strong("2;2026-10-03 18:00:00;Pull;600;Pull Up;1;0;12;;;;;"))
+        fail = true
+        XCTAssertThrowsError(try store.importHistory(later)) { error in
+            XCTAssertEqual((error as? HistoryImportError)?.problems.first?.code, "saveFailed")
+        }
+        XCTAssertEqual(store.state.history, before)
+        XCTAssertEqual(try persistence.load()?.history, before)
+        fail = false
+        store = AppStore(persistence: AppStatePersistence(databaseURL: url))
+        XCTAssertEqual(store.state.history, before)
+        XCTAssertEqual(try store.importHistory(later), 1)
+        let reopened = AppStore(persistence: AppStatePersistence(databaseURL: url))
+        XCTAssertEqual(reopened.state.history.count, before.count + 1)
+        XCTAssertEqual(reopened.planHistoryImport(later.file, unit: nil, includeOverlaps: false).alreadyImported, 1)
+    }
+
+    @MainActor func testCurrentSourceExportsSurviveDiskReopenBackupRestoreAndReplay() throws {
+        let captures = (current["cases"] as! [[String: Any]]).filter {
+            $0["capture"] != nil || ($0["id"] as? String)?.hasSuffix("1000-sessions") == true
+        }
+        XCTAssertFalse(captures.isEmpty)
+        for testCase in captures {
+            let id = testCase["id"] as! String
+            let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            defer { try? FileManager.default.removeItem(at: directory) }
+            let url = directory.appendingPathComponent("history.sqlite")
+            var store = AppStore(persistence: AppStatePersistence(databaseURL: url))
+            let data = try Data(contentsOf: gym.appendingPathComponent(testCase["file"] as! String))
+            let incoming = try plan(data, today: testCase["today"] as? String)
+            XCTAssertTrue(incoming.canImport, id)
+            XCTAssertEqual(try store.importHistory(incoming), incoming.records.count, id)
+            let wanted = incoming.records.sorted { $0.id < $1.id }
+            store = AppStore(persistence: AppStatePersistence(databaseURL: url))
+            XCTAssertEqual(store.state.history.sorted { $0.id < $1.id }, wanted, "\(id) reopened")
+            let replay = store.planHistoryImport(incoming.file, unit: nil, includeOverlaps: false)
+            XCTAssertEqual(replay.alreadyImported, wanted.count, "\(id) replay")
+            XCTAssertFalse(replay.canImport, id)
+            XCTAssertTrue(store.restoreBackupJson(store.exportBackupJson()), "\(id) restore")
+            store = AppStore(persistence: AppStatePersistence(databaseURL: url))
+            XCTAssertEqual(store.state.history.sorted { $0.id < $1.id }, wanted, "\(id) restored")
+        }
+    }
+
+    @MainActor func testBackupWriteFailurePreservesHistoryAndCanBeRetried() throws {
+        let manager = FileManager.default
+        let directory = manager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try manager.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? manager.removeItem(at: directory) }
+        let persistence = AppStatePersistence(databaseURL: directory.appendingPathComponent("history.sqlite"))
+        let store = AppStore(persistence: persistence)
+        let first = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"))
+        XCTAssertEqual(try store.importHistory(first), 1)
+        let before = store.state.history
+        let later = try plan(strong("2;2026-10-03 18:00:00;Pull;600;Pull Up;1;0;12;;;;;"))
+        let support = try manager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let backups = support.appendingPathComponent("import-backups")
+        let saved = directory.appendingPathComponent("saved-backups")
+        try manager.moveItem(at: backups, to: saved)
+        defer {
+            if manager.fileExists(atPath: saved.path) {
+                try? manager.removeItem(at: backups)
+                try? manager.moveItem(at: saved, to: backups)
+            }
+        }
+        try Data("A file blocks the backup directory".utf8).write(to: backups)
+        XCTAssertThrowsError(try store.importHistory(later))
+        XCTAssertEqual(store.state.history, before)
+        XCTAssertEqual(try persistence.load()?.history, before)
+        try manager.removeItem(at: backups)
+        try manager.moveItem(at: saved, to: backups)
+        XCTAssertEqual(try store.importHistory(later), 1)
+    }
+
+    @MainActor func testStalePreviewRefusesConflictingHistoryBeforeSaving() throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let pending = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"))
+        let changed = try plan(strong("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;85;5;;;;;"))
+        XCTAssertEqual(try store.importHistory(changed), 1)
+        let before = store.state.history
+        XCTAssertThrowsError(try store.importHistory(pending)) { error in
+            XCTAssertEqual((error as? HistoryImportError)?.problems.first?.code, "identityConflict")
+        }
+        XCTAssertEqual(store.state.history, before)
+    }
 
     @MainActor func testImportPersistsAndAReplayAddsNothing() throws {
         let persistence = AppStatePersistence(inMemory: true)

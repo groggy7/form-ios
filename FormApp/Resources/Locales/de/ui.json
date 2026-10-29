@@ -1869,5 +1869,7 @@
   "lifetime.benefit2": "Einmal zahlen",
   "lifetime.benefit2_desc": "Keine wiederkehrenden Gebühren und kein Abo zum Verlängern.",
   "lifetime.benefit3": "Auf deinen Geräten wiederherstellen",
-  "lifetime.benefit3_desc": "Stelle Premium auf einem anderen kompatiblen Gerät mit demselben Store-Konto wieder her."
+  "lifetime.benefit3_desc": "Stelle Premium auf einem anderen kompatiblen Gerät mit demselben Store-Konto wieder her.",
+  "import.error.identityConflict": "Dieses Training hat denselben Titel und dieselbe Startminute wie ein Training mit anderen Details. Prüfe den Quellverlauf vor dem Import.",
+  "import.error.repeatedSetRow": "Diese Zeile wiederholt eine exportierte Satznummer und deren Werte. Exportiere den ursprünglichen Verlauf erneut, ohne Zeilen zusammenzufügen."
 }

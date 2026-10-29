@@ -64274,6 +64274,76 @@
         }
       }
     },
+    "import.error.identityConflict": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This workout shares a title and start minute with different workout details. Review the source history before importing."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu antrenmanın adı ve başlangıç dakikası, ayrıntıları farklı bir antrenmanla aynı. İçe aktarmadan önce kaynak geçmişi gözden geçirin."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Training hat denselben Titel und dieselbe Startminute wie ein Training mit anderen Details. Prüfe den Quellverlauf vor dem Import."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette séance a le même titre et la même minute de début qu’une séance aux détails différents. Vérifiez l’historique source avant l’importation."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este entrenamiento tiene el mismo título y minuto de inicio que otro con datos diferentes. Revisa el historial de origen antes de importarlo."
+          }
+        }
+      }
+    },
+    "import.error.repeatedSetRow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This row repeats an exported set number and its values. Export the original history again without combining rows."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu satır dışa aktarılan bir set numarasını ve değerlerini tekrarlıyor. Satırları birleştirmeden özgün geçmişi yeniden dışa aktarın."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Zeile wiederholt eine exportierte Satznummer und deren Werte. Exportiere den ursprünglichen Verlauf erneut, ohne Zeilen zusammenzufügen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette ligne répète un numéro de série exporté et ses valeurs. Exportez à nouveau l’historique original sans combiner les lignes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta fila repite un número de serie exportado y sus valores. Exporta de nuevo el historial original sin combinar filas."
+          }
+        }
+      }
+    },
     "counts.setsLeft": {
       "extractionState": "manual",
       "localizations": {

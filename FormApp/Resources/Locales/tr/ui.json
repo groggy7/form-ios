@@ -1869,5 +1869,7 @@
   "lifetime.benefit2": "Tek ödeme",
   "lifetime.benefit2_desc": "Yinelenen ücret veya yenilenecek abonelik yok.",
   "lifetime.benefit3": "Cihazlarında geri yükle",
-  "lifetime.benefit3_desc": "Uyumlu başka bir cihazda aynı mağaza hesabıyla Ömür Boyu Premium’u geri yükle."
+  "lifetime.benefit3_desc": "Uyumlu başka bir cihazda aynı mağaza hesabıyla Ömür Boyu Premium’u geri yükle.",
+  "import.error.identityConflict": "Bu antrenmanın adı ve başlangıç dakikası, ayrıntıları farklı bir antrenmanla aynı. İçe aktarmadan önce kaynak geçmişi gözden geçirin.",
+  "import.error.repeatedSetRow": "Bu satır dışa aktarılan bir set numarasını ve değerlerini tekrarlıyor. Satırları birleştirmeden özgün geçmişi yeniden dışa aktarın."
 }
