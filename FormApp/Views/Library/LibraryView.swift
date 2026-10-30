@@ -12,6 +12,7 @@ public struct LibraryView: View {
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
     @Environment(\.twoPageLayout) private var twoPageLayout
+    @ScaledMetric(relativeTo: .caption) private var muscleNoteSize: CGFloat = 13
     var onSelectExercise: (Exercise) -> Void
     var onOpenSettings: () -> Void
 
@@ -418,60 +419,78 @@ public struct LibraryView: View {
     private func muscleModalView() -> some View {
         VStack(spacing: 0) {
             modalHeader(title: LanguageManager.t("library.muscles"))
+            Text(LanguageManager.t("library.muscle_filter_note"))
+                .font(.app(size: muscleNoteSize)).foregroundStyle(AppColors.secondaryText)
+                .padding(.horizontal, 20).padding(.bottom, 12)
             ScrollView {
-                VStack(spacing: 8) {
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
-                        ForEach(MuscleGroupFilter.allCases) { muscle in
-                            let isSelected = selectedMuscle == muscle.rawValue
-                            Button(action: {
-                                selectedMuscle = isSelected ? nil : muscle.rawValue
-                                activeModal = nil
-                            }) {
-                                VStack(spacing: 0) {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(Color.black)
-                                        if muscle == .cardio {
-                                            Image("library_filter_cardio")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .padding(.horizontal, 4)
-                                                .padding(.vertical, 2)
-                                                .accessibilityHidden(true)
-                                        } else {
-                                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
-                                                .padding(4)
-                                        }
-                                    }
-                                    .frame(height: 90)
-                                    .frame(maxWidth: .infinity)
-
-                                    Text(LanguageManager.t(muscle.translationKey))
-                                        .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
-                                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 6)
-                                        .padding(.top, 2)
-                                        .padding(.bottom, 8)
-                                }
-                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
-                                )
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("muscle-\(muscle.rawValue)")
-                        }
-                    }
-                }
-                .padding(.horizontal, 18)
-                .padding(.bottom, 18)
+                LibraryMuscleFilterGrid(selectedMuscle: $selectedMuscle) { activeModal = nil }
+                    .padding(.horizontal, 18).padding(.bottom, 18)
             }
         }
         .accessibilityIdentifier("library-muscle-modal")
     }
+
+}
+
+struct LibraryMuscleFilterGrid: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    @ScaledMetric(relativeTo: .body) private var labelSize: CGFloat = 13
+    @Binding var selectedMuscle: String?
+    let onSelect: () -> Void
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(spacing: 8) {
+            let muscles = MuscleGroupFilter.allCases
+            ForEach(Array(stride(from: 0, to: muscles.count, by: 2)), id: \.self) { start in
+                HStack(alignment: .top, spacing: 8) {
+                    muscleFilterCard(muscles[start])
+                    if start + 1 < muscles.count {
+                        muscleFilterCard(muscles[start + 1])
+                    } else {
+                        Spacer(minLength: 0).frame(maxWidth: .infinity)
+                    }
+                }
+                .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private func muscleFilterCard(_ muscle: MuscleGroupFilter) -> some View {
+        let isSelected = selectedMuscle == muscle.rawValue
+        return Button(action: {
+            selectedMuscle = isSelected ? nil : muscle.rawValue
+            onSelect()
+        }) {
+            VStack(spacing: 0) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.black)
+                    if muscle == .cardio {
+                        Image("library_filter_cardio").resizable().scaledToFit()
+                            .padding(.horizontal, 4).padding(.vertical, 2).accessibilityHidden(true)
+                    } else {
+                        MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
+                            .padding(4)
+                    }
+                }
+                .frame(height: 90).frame(maxWidth: .infinity)
+                Text(LanguageManager.t(muscle.translationKey))
+                    .font(.app(size: labelSize, weight: isSelected ? .semibold : .medium))
+                    .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 6).padding(.top, 2).padding(.bottom, 8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("muscle-\(muscle.rawValue)")
+    }
+
 }
 
 struct LibraryFilterPill: View {

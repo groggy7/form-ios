@@ -3,10 +3,10 @@ import Foundation
 struct VolumeMatrixEngine {
 
     static let frontMuscles: [String] = [
-        "chest", "front-delts", "side-delts", "biceps", "forearms", "abs", "obliques", "quads", "adductors", "tibialis"
+        "chest", "front-delts", "side-delts", "biceps", "forearms", "abs", "obliques", "quads", "adductors", "tibialis", "hip-flexors", "serratus", "neck", "deep-core"
     ]
     static let backMuscles: [String] = [
-        "upper-back", "lats", "lower-back", "triceps", "rear-delts", "glutes", "hamstrings", "calves"
+        "upper-back", "lats", "lower-back", "triceps", "rear-delts", "glutes", "hamstrings", "calves", "hip-abductors", "rotator-cuff"
     ]
     static let canonicalMuscles: [String] = frontMuscles + backMuscles
 

@@ -24,6 +24,7 @@ struct ExerciseMuscleCatalog: Decodable {
     let height: CGFloat
     let views: [String: ExerciseAnatomyView]
     let muscles: [String: [String: String]]
+    let textOnlyMuscles: [String]?
     let exercises: [String: ExerciseMuscleProfile]
 
     static let shared: ExerciseMuscleCatalog? = {
@@ -131,6 +132,10 @@ struct ExerciseMusclesCard: View {
                         }
                     }
                     alsoInvolved(profile)
+                    if profile.shown.contains(where: { (catalog.textOnlyMuscles ?? []).contains($0) }) {
+                        Text(LanguageManager.t("anatomy.deep_note"))
+                            .font(.app(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                    }
                     Text(LanguageManager.t("anatomy.note"))
                         .font(.app(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 } else {
@@ -271,6 +276,10 @@ struct ExerciseMusclesCard: View {
             for (muscle, path) in paths {
                 let color = profile.primary.contains(muscle) ? primaryColor
                     : profile.secondary.contains(muscle) ? secondaryColor : involvedColor
+                var visibility = context
+                visibility.blendMode = .screen
+                visibility.opacity = 0.12
+                visibility.fill(Path(path), with: .color(color))
                 context.fill(Path(path), with: .color(color))
             }
         }.accessibilityLabel(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))

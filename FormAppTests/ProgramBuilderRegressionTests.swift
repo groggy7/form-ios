@@ -36,7 +36,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
             exercise("barbell-bench-press", 4), exercise("pec-deck-fly", 3), exercise("lat-pulldown", 6),
             exercise("dumbbell-lateral-raise", 5), exercise("leg-extension", 4), exercise("standing-machine-calf-raise", 3)
         ], targetMuscles: ["abs"])
-        XCTAssertEqual(workout.resolvedMuscles, [.chest, .lats, .shoulders, .quadriceps])
+        XCTAssertEqual(workout.resolvedMuscles, [.chest, .lats, .sideDelts, .quadriceps])
         XCTAssertEqual(workout.exercises.count, 6)
         var changed = workout
         changed.exercises.reverse()
@@ -46,7 +46,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         changed.exercises = Array(workout.exercises.dropFirst(2))
         XCTAssertFalse(changed.resolvedMuscles.contains(.chest))
         changed.exercises = [exercise("barbell-row", 4), exercise("standing-barbell-overhead-press", 3)]
-        XCTAssertEqual(changed.resolvedMuscles, [.trapezius, .lats, .shoulders])
+        XCTAssertEqual(changed.resolvedMuscles, [.lats, .upperBack, .frontDelts])
     }
 
     func testFocusIgnoresSecondaryMusclesAndLegacyOverrides() {
@@ -59,7 +59,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         workout.exercises = [Exercise(name: "Bench", exerciseId: "barbell-bench-press")]
         XCTAssertEqual(workout.resolvedMuscles, [.chest])
         workout.exercises = [Exercise(name: "Press", exerciseId: "standing-barbell-overhead-press")]
-        XCTAssertEqual(workout.resolvedMuscles, [.shoulders])
+        XCTAssertEqual(workout.resolvedMuscles, [.frontDelts])
     }
 
     @MainActor

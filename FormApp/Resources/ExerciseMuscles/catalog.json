@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "width": 480,
   "height": 1024,
   "views": {
@@ -7,30 +7,36 @@
       "offsetX": 278,
       "regions": {
         "chest": "M 515 216 C 488 206 456 207 437 225 C 425 244 428 274 443 292 C 467 309 496 303 515 285 Z M 525 216 C 552 206 584 207 603 225 C 615 244 612 274 597 292 C 573 309 544 303 525 285 Z",
-        "front-delts": "M 419 213 C 404 215 391 227 388 243 L 390 268 L 407 265 C 413 249 419 237 424 224 Z M 621 213 C 636 215 649 227 652 243 L 650 268 L 633 265 C 627 249 621 237 616 224 Z",
-        "side-delts": "M 387 222 C 377 235 373 254 378 275 L 386 276 C 383 257 387 238 392 226 Z M 653 222 C 663 235 667 254 662 275 L 654 276 C 657 257 653 238 648 226 Z",
+        "front-delts": "M 419 213 C 406 215 399 226 398 240 L 399 263 L 407 265 C 413 249 419 237 424 224 Z M 621 213 C 634 215 641 226 642 240 L 641 263 L 633 265 C 627 249 621 237 616 224 Z",
+        "side-delts": "M 396 216 C 382 224 374 246 378 275 L 392 276 C 390 257 394 236 400 224 Z M 644 216 C 658 224 666 246 662 275 L 648 276 C 650 257 646 236 640 224 Z",
         "biceps": "M 394 279 C 383 287 369 309 365 329 C 363 342 366 353 376 354 C 388 340 402 311 407 285 Z M 641 279 C 652 287 666 309 670 329 C 674 344 671 357 660 360 C 648 344 636 313 632 287 Z",
         "abs": "M 489 309 C 500 315 507 315 515 312 L 515 414 L 495 419 C 484 391 481 342 489 309 Z M 551 309 C 540 315 533 315 525 312 L 525 414 L 545 419 C 556 391 559 342 551 309 Z",
         "obliques": "M 448 323 L 476 342 C 476 373 480 401 488 416 L 472 426 L 455 418 C 444 386 443 351 448 323 Z M 592 323 L 564 342 C 564 373 560 401 552 416 L 568 426 L 585 418 C 596 386 597 351 592 323 Z",
-        "quads": "M 425 538 C 447 527 468 534 479 553 L 482 612 C 479 642 472 668 457 690 C 443 679 429 676 424 668 C 412 630 411 584 425 538 Z M 561 552 C 577 533 597 532 619 552 C 632 592 628 631 615 655 L 587 681 L 572 689 C 561 666 556 643 556 614 Z",
+        "quads": "M 428 496 C 447 484 469 493 479 513 L 482 612 C 479 642 472 668 457 690 C 443 679 429 676 424 668 C 412 630 411 547 428 496 Z M 612 496 C 593 484 571 493 561 513 L 558 612 C 561 642 568 668 583 690 C 597 679 611 676 616 668 C 628 630 629 547 612 496 Z",
         "forearms": "M 340 384 C 352 378 376 378 388 386 C 386 404 378 424 368 442 C 362 454 354 466 345 474 C 337 470 330 460 328 448 C 326 424 330 400 340 384 Z M 695 384 C 683 378 659 378 647 386 C 649 404 657 424 667 442 C 673 454 681 466 690 474 C 698 470 705 460 707 448 C 709 424 705 400 695 384 Z",
-        "adductors": "M 485 552 C 493 549 503 549 510 553 L 508 578 C 506 590 501 602 494 614 C 492 624 490 632 489 640 C 487 632 485 624 485 614 L 484 558 Z M 553 550 C 545 548 537 549 530 553 L 532 578 C 534 590 537 602 542 616 C 545 626 548 634 550 640 C 552 630 553 622 553 612 L 553 558 Z",
+        "adductors": "M 484 489 C 493 484 503 485 511 493 L 510 553 C 507 588 497 618 489 640 C 486 630 485 621 485 608 L 483 542 Z M 556 489 C 547 484 537 485 529 493 L 530 553 C 533 588 543 618 551 640 C 554 630 555 621 555 608 L 557 542 Z",
         "tibialis": "M 418 716 C 428 712 438 716 440 726 C 441 760 438 800 433 846 C 430 856 426 858 424 850 C 418 815 410 780 408 752 C 406 734 408 720 418 716 Z M 619 716 C 609 712 599 716 597 726 C 596 760 599 800 604 846 C 607 856 611 858 613 850 C 619 815 627 780 629 752 C 631 734 629 720 619 716 Z",
-        "calves": "M 452 734 C 461 730 467 738 469 754 C 469 776 463 798 455 814 C 453 804 452 788 452 770 C 451 754 451 742 452 734 Z M 585 734 C 576 730 570 738 568 754 C 568 776 574 798 582 814 C 584 804 585 788 585 770 C 586 754 586 742 585 734 Z"
+        "calves": "M 452 734 C 461 730 467 738 469 754 C 469 776 463 798 455 814 C 453 804 452 788 452 770 C 451 754 451 742 452 734 Z M 585 734 C 576 730 570 738 568 754 C 568 776 574 798 582 814 C 584 804 585 788 585 770 C 586 754 586 742 585 734 Z",
+        "serratus": "M 435 296 C 438 303 443 308 450 312 L 478 330 L 479 320 L 451 301 L 441 289 Z M 605 296 C 602 303 597 308 590 312 L 562 330 L 561 320 L 589 301 L 599 289 Z",
+        "neck": "M 489 174 C 494 184 500 193 509 201 L 499 206 C 491 199 483 190 478 183 Z M 551 174 C 546 184 540 193 531 201 L 541 206 C 549 199 557 190 562 183 Z"
       }
     },
     "back": {
       "offsetX": 790,
       "regions": {
-        "upper-back": "M 1031 154 C 1012 171 987 182 964 196 L 989 235 L 1016 278 L 1031 306 Z M 1043 154 C 1062 171 1087 182 1110 196 L 1085 235 L 1058 278 L 1043 306 Z",
-        "lats": "M 940 276 C 954 289 971 293 983 288 L 1013 315 L 1027 331 L 1023 386 C 995 383 969 360 954 332 Z M 1134 276 C 1120 289 1103 293 1091 288 L 1061 315 L 1047 331 L 1051 386 C 1079 383 1105 360 1120 332 Z",
+        "upper-back": "M 1031 154 C 1012 171 987 182 964 196 L 978 218 C 994 233 1010 252 1017 276 L 1031 306 Z M 1043 154 C 1062 171 1087 182 1110 196 L 1096 218 C 1080 233 1064 252 1057 276 L 1043 306 Z",
+        "lats": "M 936 266 C 933 285 938 311 954 340 C 968 361 987 376 999 383 L 1006 371 L 1009 331 C 1000 315 992 300 984 289 C 966 290 950 279 936 266 Z M 1138 266 C 1141 285 1136 311 1120 340 C 1106 361 1087 376 1075 383 L 1068 371 L 1065 331 C 1074 315 1082 300 1090 289 C 1108 290 1124 279 1138 266 Z",
         "triceps": "M 898 281 L 924 284 C 925 310 911 342 900 359 C 891 371 879 364 878 351 C 876 329 888 297 898 281 Z M 1176 281 L 1150 284 C 1149 310 1163 342 1174 359 C 1183 371 1195 364 1196 351 C 1198 329 1186 297 1176 281 Z",
-        "rear-delts": "M 943 207 C 918 207 896 221 890 245 L 897 273 L 920 274 C 931 256 936 236 947 223 Z M 1131 207 C 1156 207 1178 221 1184 245 L 1177 273 L 1154 274 C 1143 256 1138 236 1127 223 Z",
-        "glutes": "M 967 446 C 989 440 1010 445 1029 457 L 1029 552 C 1003 571 971 568 944 552 C 935 514 948 472 967 446 Z M 1107 446 C 1085 440 1064 445 1045 457 L 1045 552 C 1071 571 1103 568 1130 552 C 1139 514 1126 472 1107 446 Z",
+        "rear-delts": "M 943 207 C 935 207 926 211 921 218 C 916 233 915 251 918 268 L 920 270 C 931 256 936 236 947 223 Z M 1131 207 C 1139 207 1148 211 1153 218 C 1158 233 1159 251 1156 268 L 1154 270 C 1143 256 1138 236 1127 223 Z",
+        "glutes": "M 979 466 C 994 454 1013 454 1029 463 L 1029 552 C 1003 571 971 568 944 552 C 940 530 947 508 957 493 Z M 1095 466 C 1080 454 1061 454 1045 463 L 1045 552 C 1071 571 1103 568 1130 552 C 1134 530 1127 508 1117 493 Z",
         "hamstrings": "M 944 579 C 969 586 997 580 1017 570 L 1013 608 C 1001 657 984 690 967 710 L 945 699 C 931 665 932 620 944 579 Z M 1130 579 C 1105 586 1077 580 1057 570 L 1061 608 C 1073 657 1090 690 1107 710 L 1129 699 C 1143 665 1142 620 1130 579 Z",
-        "calves": "M 933 735 C 943 719 960 719 971 735 C 988 763 977 811 962 840 L 948 851 C 929 834 914 804 916 776 C 917 758 925 742 933 735 Z M 1104 733 C 1115 718 1131 722 1141 740 C 1160 772 1159 811 1140 839 L 1123 851 C 1106 830 1097 798 1097 768 C 1097 751 1099 740 1104 733 Z",
-        "lower-back": "M 1033 350 L 1033 436 C 1022 437 1011 435 1003 430 C 1001 418 1003 404 1008 396 C 1014 391 1022 391 1027 389 L 1028 360 C 1029 355 1031 351 1033 350 Z M 1041 350 L 1041 436 C 1052 437 1063 435 1071 430 C 1073 418 1071 404 1066 396 C 1060 391 1052 391 1047 389 L 1046 360 C 1045 355 1043 351 1041 350 Z",
-        "forearms": "M 856 392 C 868 386 892 386 900 394 C 898 412 890 432 880 448 C 874 460 868 470 862 478 C 852 474 846 462 846 446 C 844 424 848 404 856 392 Z M 1213 392 C 1201 386 1177 386 1169 394 C 1171 412 1179 432 1189 448 C 1195 460 1201 470 1207 478 C 1217 474 1223 462 1223 446 C 1225 424 1221 404 1213 392 Z"
+        "calves": "M 933 735 C 943 719 960 719 971 735 C 985 762 976 796 964 828 C 959 848 956 868 953 882 L 945 882 C 942 857 929 833 921 810 C 910 780 918 754 933 735 Z M 1104 733 C 1115 718 1131 722 1141 740 C 1160 772 1159 811 1140 839 C 1133 857 1130 870 1129 882 L 1120 882 C 1117 857 1107 831 1102 807 C 1095 779 1097 749 1104 733 Z",
+        "lower-back": "M 1029 324 C 1023 350 1018 371 1014 390 C 1006 400 996 409 994 418 L 997 430 C 1008 436 1020 438 1032 436 L 1032 325 Z M 1045 324 C 1051 350 1056 371 1060 390 C 1068 400 1078 409 1080 418 L 1077 430 C 1066 436 1054 438 1042 436 L 1042 325 Z",
+        "forearms": "M 856 392 C 868 386 892 386 900 394 C 898 412 890 432 880 448 C 874 460 868 470 862 478 C 852 474 846 462 846 446 C 844 424 848 404 856 392 Z M 1213 392 C 1201 386 1177 386 1169 394 C 1171 412 1179 432 1189 448 C 1195 460 1201 470 1207 478 C 1217 474 1223 462 1223 446 C 1225 424 1221 404 1213 392 Z",
+        "rotator-cuff": "M 966 225 C 953 228 947 240 944 252 C 957 266 974 277 991 281 L 1005 288 C 1001 269 991 245 978 231 Z M 1108 225 C 1121 228 1127 240 1130 252 C 1117 266 1100 277 1083 281 L 1069 288 C 1073 269 1083 245 1096 231 Z",
+        "side-delts": "M 910 216 C 900 224 890 243 895 263 L 899 273 L 913 274 C 909 253 913 233 919 222 Z M 1164 216 C 1174 224 1184 243 1179 263 L 1175 273 L 1161 274 C 1165 253 1161 233 1155 222 Z",
+        "hip-abductors": "M 968 440 C 979 434 994 435 1006 441 L 1007 448 C 986 453 968 467 956 487 L 947 482 C 951 462 958 447 968 440 Z M 1106 440 C 1095 434 1080 435 1068 441 L 1067 448 C 1088 453 1106 467 1118 487 L 1127 482 C 1123 462 1116 447 1106 440 Z",
+        "neck": "M 1021 136 L 1031 141 L 1031 149 L 1008 164 L 1004 159 Z M 1053 136 L 1043 141 L 1043 149 L 1066 164 L 1070 159 Z"
       }
     }
   },
@@ -106,12 +112,40 @@
     "tibialis": {
       "en": "Shins",
       "tr": "Kaval kası"
+    },
+    "hip-flexors": {
+      "en": "Hip flexors",
+      "tr": "Kalça fleksörleri"
+    },
+    "hip-abductors": {
+      "en": "Hip abductors",
+      "tr": "Kalça abdüktörleri"
+    },
+    "serratus": {
+      "en": "Serratus anterior",
+      "tr": "Serratus anterior"
+    },
+    "rotator-cuff": {
+      "en": "Rotator cuff",
+      "tr": "Rotator manşet"
+    },
+    "neck": {
+      "en": "Neck",
+      "tr": "Boyun"
+    },
+    "deep-core": {
+      "en": "Deep core",
+      "tr": "Derin merkez kasları"
     }
   },
   "sources": {
     "rp-side-delts": "https://rpstrength.com/blogs/articles/side-delt-hypertrophy-training-tips",
     "nasm": "https://www.nasm.org/workout-exercise-guidance",
-    "ace-chest": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/"
+    "ace-chest": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/",
+    "gymvisual": "local:assets/gymvisual_300_exercises_metadata.json",
+    "openstax-upper": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-5-muscles-of-the-pectoral-girdle-and-upper-limbs",
+    "openstax-lower": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-6-appendicular-muscles-of-the-pelvic-girdle-and-lower-limbs",
+    "openstax-core": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax"
   },
   "exercises": {
     "ab-wheel-rollout": {
@@ -120,18 +154,22 @@
       ],
       "secondary": [
         "lats",
-        "obliques"
+        "obliques",
+        "serratus",
+        "deep-core"
       ],
       "involved": [
         "chest",
         "rear-delts",
         "adductors"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper",
+        "openstax-core"
       ]
     },
     "barbell-back-squat": {
@@ -216,7 +254,7 @@
         "calves",
         "adductors"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -248,7 +286,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-abductors"
+      ],
       "involved": [
         "calves",
         "adductors"
@@ -257,7 +297,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "nasm",
+        "openstax-lower"
       ]
     },
     "cable-lateral-raise": {
@@ -320,17 +361,21 @@
         "abs"
       ],
       "secondary": [
-        "obliques"
+        "obliques",
+        "hip-flexors",
+        "deep-core"
       ],
       "involved": [
         "quads",
         "glutes"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "nasm",
+        "openstax-lower",
+        "openstax-core"
       ]
     },
     "dumbbell-bench-press": {
@@ -374,7 +419,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-lateral-raise": {
@@ -407,7 +453,7 @@
         "quads",
         "calves"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -451,7 +497,9 @@
         "rear-delts",
         "upper-back"
       ],
-      "secondary": [],
+      "secondary": [
+        "rotator-cuff"
+      ],
       "involved": [
         "side-delts",
         "biceps",
@@ -461,7 +509,8 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "farmer-carry": {
@@ -471,7 +520,8 @@
       ],
       "secondary": [
         "abs",
-        "obliques"
+        "obliques",
+        "deep-core"
       ],
       "involved": [
         "quads",
@@ -481,7 +531,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-core"
       ]
     },
     "goblet-squat": {
@@ -504,7 +555,8 @@
     },
     "hanging-knee-raise": {
       "primary": [
-        "abs"
+        "abs",
+        "hip-flexors"
       ],
       "secondary": [
         "obliques"
@@ -512,11 +564,12 @@
       "involved": [
         "quads"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "incline-barbell-bench-press": {
@@ -577,7 +630,7 @@
         "glutes",
         "adductors"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -719,12 +772,15 @@
         "abs",
         "obliques"
       ],
-      "secondary": [],
+      "secondary": [
+        "deep-core"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-core"
       ]
     },
     "pec-deck-fly": {
@@ -791,7 +847,8 @@
         "quads",
         "triceps",
         "side-delts",
-        "glutes"
+        "glutes",
+        "serratus"
       ],
       "involved": [
         "chest",
@@ -801,7 +858,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "push-ups": {
@@ -810,13 +868,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "nasm",
+        "openstax-upper"
       ]
     },
     "rope-triceps-pressdown": {
@@ -862,13 +922,17 @@
         "obliques"
       ],
       "secondary": [
-        "abs"
+        "abs",
+        "hip-abductors",
+        "deep-core"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "nasm",
+        "openstax-lower",
+        "openstax-core"
       ]
     },
     "single-leg-calf-raise": {
@@ -890,7 +954,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -899,7 +964,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "standing-machine-calf-raise": {
@@ -974,7 +1040,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -983,7 +1050,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "lever-chest-press": {
@@ -1008,7 +1076,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -1017,7 +1086,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "bodyweight-rear-lunge": {
@@ -1080,13 +1150,15 @@
         "upper-back"
       ],
       "involved": [
-        "side-delts"
+        "side-delts",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "cable-curl": {
@@ -1163,7 +1235,8 @@
         "abs"
       ],
       "secondary": [
-        "obliques"
+        "obliques",
+        "deep-core"
       ],
       "involved": [
         "front-delts",
@@ -1173,7 +1246,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "nasm",
+        "openstax-core"
       ]
     },
     "cable-standing-fly": {
@@ -1303,7 +1377,7 @@
         "quads",
         "calves"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -1424,7 +1498,7 @@
       "involved": [
         "adductors"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -1437,16 +1511,18 @@
         "glutes"
       ],
       "secondary": [
-        "lower-back"
+        "lower-back",
+        "hip-abductors"
       ],
       "involved": [
         "calves"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "dumbbell-45-deg-back-extension": {
@@ -1457,7 +1533,7 @@
       "secondary": [
         "hamstrings"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -1503,7 +1579,7 @@
       "involved": [
         "lower-back"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -1526,15 +1602,17 @@
     },
     "lever-seated-hip-abduction": {
       "primary": [
-        "glutes"
+        "hip-abductors"
       ],
       "secondary": [],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
-      ]
+        "gymvisual",
+        "openstax-lower"
+      ],
+      "involved": []
     },
     "lever-seated-hip-adduction": {
       "primary": [
@@ -1925,13 +2003,15 @@
         "upper-back"
       ],
       "involved": [
-        "side-delts"
+        "side-delts",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "barbell-shrug": {
@@ -1977,13 +2057,15 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "barbell-seated-overhead-press": {
@@ -1993,13 +2075,15 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-one-arm-shoulder-press": {
@@ -2009,7 +2093,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -2018,7 +2103,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "landmine-press": {
@@ -2027,13 +2113,15 @@
         "chest"
       ],
       "secondary": [
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "lever-lateral-raise": {
@@ -2062,13 +2150,15 @@
         "upper-back"
       ],
       "involved": [
-        "side-delts"
+        "side-delts",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "barbell-upright-row": {
@@ -2161,7 +2251,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "cable-incline-biceps-curl": {
@@ -2256,7 +2347,8 @@
     },
     "hanging-leg-raise": {
       "primary": [
-        "abs"
+        "abs",
+        "hip-flexors"
       ],
       "secondary": [
         "obliques"
@@ -2264,11 +2356,12 @@
       "involved": [
         "adductors"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "reverse-crunch": {
@@ -2290,15 +2383,18 @@
         "abs",
         "obliques"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-flexors"
+      ],
       "involved": [
         "quads"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "cable-woodchopper": {
@@ -2311,7 +2407,7 @@
       "involved": [
         "adductors"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -2337,17 +2433,19 @@
         "glutes"
       ],
       "secondary": [
-        "abs"
+        "abs",
+        "deep-core"
       ],
       "involved": [
         "front-delts",
         "hamstrings"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-core"
       ]
     },
     "mountain-climber": {
@@ -2356,18 +2454,20 @@
       ],
       "secondary": [
         "quads",
-        "front-delts"
+        "front-delts",
+        "hip-flexors"
       ],
       "involved": [
         "chest",
         "obliques",
         "glutes"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "burpee": {
@@ -2500,7 +2600,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -2509,7 +2610,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "kettlebell-one-arm-snatch": {
@@ -2542,7 +2644,8 @@
       ],
       "secondary": [
         "forearms",
-        "upper-back"
+        "upper-back",
+        "deep-core"
       ],
       "involved": [
         "quads",
@@ -2552,7 +2655,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-core"
       ]
     },
     "barbell-standing-calf-raise": {
@@ -2849,13 +2953,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "decline-push-up": {
@@ -2864,13 +2970,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "diamond-push-up": {
@@ -2879,13 +2987,15 @@
         "chest"
       ],
       "secondary": [
-        "front-delts"
+        "front-delts",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "archer-push-up": {
@@ -2894,13 +3004,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "weighted-push-up-with-vest": {
@@ -2909,13 +3021,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "lever-seated-wide-lat-pulldown": {
@@ -3322,7 +3436,8 @@
       ],
       "secondary": [
         "biceps",
-        "abs"
+        "abs",
+        "deep-core"
       ],
       "involved": [
         "chest",
@@ -3333,7 +3448,8 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-core"
       ]
     },
     "dumbbell-kroc-row": {
@@ -3537,13 +3653,16 @@
       ],
       "secondary": [
         "rear-delts",
-        "front-delts"
+        "front-delts",
+        "serratus",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-incline-y-raise": {
@@ -3553,13 +3672,16 @@
       ],
       "secondary": [
         "rear-delts",
-        "front-delts"
+        "front-delts",
+        "serratus",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-front-raise": {
@@ -3641,7 +3763,11 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
+      ],
+      "involved": [
+        "rotator-cuff"
       ]
     },
     "head-supported-dumbbell-rear-lateral-raise": {
@@ -3652,13 +3778,15 @@
         "upper-back"
       ],
       "involved": [
-        "side-delts"
+        "side-delts",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-incline-rear-fly": {
@@ -3670,13 +3798,15 @@
       ],
       "involved": [
         "front-delts",
-        "side-delts"
+        "side-delts",
+        "rotator-cuff"
       ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "lever-seated-rear-delt-row": {
@@ -3691,7 +3821,11 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
+      ],
+      "involved": [
+        "rotator-cuff"
       ]
     },
     "barbell-wide-grip-upright-row": {
@@ -3742,7 +3876,8 @@
         "triceps",
         "side-delts",
         "upper-back",
-        "abs"
+        "abs",
+        "serratus"
       ],
       "involved": [
         "obliques"
@@ -3751,7 +3886,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "landmine-single-arm-press": {
@@ -3760,13 +3896,15 @@
         "chest"
       ],
       "secondary": [
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "lever-viking-press": {
@@ -3776,13 +3914,15 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "pike-push-up": {
@@ -3792,7 +3932,8 @@
       "secondary": [
         "triceps",
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest"
@@ -3801,7 +3942,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "ez-barbell-preacher-curl": {
@@ -3844,7 +3986,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "cable-preacher-curl": {
@@ -3925,7 +4068,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-seated-curl": {
@@ -4069,21 +4213,22 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-incline-hammer-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "dumbbell-skull-crusher": {
@@ -4420,7 +4565,7 @@
       "secondary": [
         "lower-back"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -4514,7 +4659,9 @@
         "glutes",
         "adductors"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-abductors"
+      ],
       "involved": [
         "calves"
       ],
@@ -4522,7 +4669,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "side-lunge": {
@@ -4531,7 +4679,9 @@
         "glutes",
         "adductors"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-abductors"
+      ],
       "involved": [
         "calves"
       ],
@@ -4539,7 +4689,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "dumbbell-curtsey-lunge": {
@@ -4547,17 +4698,20 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-abductors"
+      ],
       "involved": [
         "abs",
         "calves",
         "adductors"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "dumbbell-deficit-reverse-lunge": {
@@ -4633,7 +4787,9 @@
         "glutes",
         "adductors"
       ],
-      "secondary": [],
+      "secondary": [
+        "hip-abductors"
+      ],
       "involved": [
         "calves"
       ],
@@ -4641,7 +4797,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "lever-standing-single-leg-curl": {
@@ -4736,7 +4893,8 @@
         "glutes"
       ],
       "secondary": [
-        "hamstrings"
+        "hamstrings",
+        "hip-abductors"
       ],
       "involved": [
         "quads"
@@ -4745,7 +4903,8 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "barbell-kas-glute-bridge": {
@@ -4767,15 +4926,17 @@
     },
     "cable-hip-abduction": {
       "primary": [
-        "glutes"
+        "hip-abductors"
       ],
       "secondary": [],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
-      ]
+        "gymvisual",
+        "openstax-lower"
+      ],
+      "involved": []
     },
     "reverse-hyperextension-on-box": {
       "primary": [
@@ -4785,7 +4946,7 @@
       "secondary": [
         "lower-back"
       ],
-      "focus": "lower",
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -4799,7 +4960,8 @@
       ],
       "secondary": [
         "side-delts",
-        "upper-back"
+        "upper-back",
+        "serratus"
       ],
       "involved": [
         "chest",
@@ -4809,7 +4971,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "ring-dip": {
@@ -4833,13 +4996,15 @@
       ],
       "secondary": [
         "front-delts",
-        "triceps"
+        "triceps",
+        "serratus"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "bench-dip": {
@@ -4916,7 +5081,9 @@
         "rear-delts",
         "upper-back"
       ],
-      "secondary": [],
+      "secondary": [
+        "rotator-cuff"
+      ],
       "involved": [
         "side-delts",
         "biceps",
@@ -4926,7 +5093,8 @@
       "initialView": "back",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-upper"
       ]
     },
     "band-biceps-curl": {
@@ -4991,7 +5159,8 @@
     },
     "hanging-toes-to-bar": {
       "primary": [
-        "abs"
+        "abs",
+        "hip-flexors"
       ],
       "secondary": [
         "obliques",
@@ -5000,11 +5169,12 @@
       "involved": [
         "quads"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "openstax-lower"
       ]
     },
     "battling-ropes-high-waves": {
@@ -5019,7 +5189,7 @@
       "involved": [
         "chest"
       ],
-      "focus": "upper",
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -5042,6 +5212,117 @@
         "gymvisual"
       ]
     }
+  },
+  "textOnlyMuscles": [
+    "hip-flexors",
+    "deep-core"
+  ],
+  "groupMembers": {
+    "chest": [
+      "pectoralis major (clavicular and sternocostal portions)"
+    ],
+    "upper-back": [
+      "trapezius",
+      "rhomboids",
+      "levator scapulae"
+    ],
+    "lats": [
+      "latissimus dorsi",
+      "teres major"
+    ],
+    "biceps": [
+      "biceps brachii",
+      "brachialis"
+    ],
+    "forearms": [
+      "brachioradialis",
+      "wrist and finger flexors and extensors",
+      "pronators and supinators"
+    ],
+    "calves": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "glutes": [
+      "gluteus maximus"
+    ],
+    "hip-abductors": [
+      "gluteus medius",
+      "gluteus minimus",
+      "tensor fasciae latae"
+    ],
+    "hip-flexors": [
+      "iliopsoas",
+      "rectus femoris (hip-flexion role)",
+      "sartorius"
+    ],
+    "rotator-cuff": [
+      "supraspinatus",
+      "infraspinatus",
+      "teres minor",
+      "subscapularis"
+    ],
+    "deep-core": [
+      "transversus abdominis",
+      "multifidus",
+      "quadratus lumborum"
+    ],
+    "neck": [
+      "cervical flexors and extensors",
+      "sternocleidomastoid"
+    ],
+    "front-delts": [
+      "anterior deltoid"
+    ],
+    "side-delts": [
+      "lateral deltoid"
+    ],
+    "rear-delts": [
+      "posterior deltoid"
+    ],
+    "triceps": [
+      "triceps brachii (all heads)"
+    ],
+    "abs": [
+      "rectus abdominis"
+    ],
+    "obliques": [
+      "external and internal obliques"
+    ],
+    "quads": [
+      "rectus femoris",
+      "vastus lateralis",
+      "vastus medialis",
+      "vastus intermedius"
+    ],
+    "hamstrings": [
+      "biceps femoris",
+      "semitendinosus",
+      "semimembranosus"
+    ],
+    "adductors": [
+      "adductor magnus",
+      "adductor longus",
+      "adductor brevis",
+      "gracilis",
+      "pectineus"
+    ],
+    "tibialis": [
+      "tibialis anterior"
+    ],
+    "serratus": [
+      "serratus anterior"
+    ],
+    "lower-back": [
+      "lumbar erector spinae"
+    ]
+  },
+  "review": {
+    "date": "2026-10-30",
+    "method": "Editorial movement-role review against OpenStax anatomy; vendor highlights are supporting evidence, not an activation measurement. Primary = intended target; secondary = meaningful assistance; involved = display-only participation. Deep muscles are listed without fabricated surface outlines.",
+    "geometry": "Registered area illustrations, not complete muscle boundaries. Rotator cuff depicts its posterior area; glutes, abductors and proximal thighs are illustrative over clothing.",
+    "unrepresentedExercises": "No dedicated neck or wrist exercise was invented or assigned a substitute animation. Neck remains available for explicit custom exercise labels.",
+    "credits": "Primary 1, secondary 0.5 per set; display-only 0. These are counting conventions, including isometric work, not equivalent measured stimulus."
   },
   "hashes": {
     "front.png": "2fbddba8a662bc7c6bba8e1c6754ae3ae1c25ddb3c09eefcc73822ac036daa93",

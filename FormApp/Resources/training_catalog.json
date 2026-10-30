@@ -662,7 +662,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -682,7 +682,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -701,7 +701,7 @@
       "compound": true,
       "perSide": true,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -720,7 +720,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -740,7 +740,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -760,7 +760,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -780,7 +780,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -800,7 +800,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     },
@@ -1116,7 +1116,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1135,7 +1135,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1153,7 +1153,7 @@
       "compound": true,
       "perSide": true,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1171,7 +1171,7 @@
       "compound": true,
       "perSide": true,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1192,7 +1192,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1208,7 +1208,7 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "front-delts"
       ]
     },
     {
@@ -1226,7 +1226,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "side-delts"
       ]
     },
     {
@@ -1244,7 +1244,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "side-delts"
       ]
     },
     {
@@ -1262,7 +1262,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "side-delts"
       ]
     },
     {
@@ -1280,7 +1280,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "rear-delts"
       ]
     },
     {
@@ -1299,7 +1299,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "shoulders"
+        "rear-delts"
       ]
     },
     {
@@ -1318,8 +1318,8 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "shoulders",
-        "trapezius"
+        "rear-delts",
+        "upper-back"
       ]
     },
     {
@@ -1630,7 +1630,8 @@
       "compound": true,
       "perSide": false,
       "muscles": [
-        "abs"
+        "abs",
+        "hip-flexors"
       ]
     },
     {
@@ -1803,7 +1804,7 @@
       "compound": false,
       "perSide": false,
       "muscles": [
-        "trapezius",
+        "upper-back",
         "lats"
       ]
     }

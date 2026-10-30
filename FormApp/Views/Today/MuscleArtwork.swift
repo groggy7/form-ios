@@ -19,7 +19,14 @@ public struct MuscleArtwork: View {
     }
 
     public var body: some View {
-        let matchingPaths = MuscleMasks.paths(for: view).filter { muscles.contains($0.key) }
+        let expandedMuscles = Set(muscles.flatMap { muscle -> [MuscleGroup] in
+            switch muscle {
+            case .shoulders: return [.frontDelts, .sideDelts, .rearDelts]
+            case .trapezius: return [.upperBack]
+            default: return [muscle]
+            }
+        })
+        let matchingPaths = MuscleMasks.paths(for: view).filter { expandedMuscles.contains($0.key) }
         let isLegs = (view == .legsFront || view == .legsBack)
         let tint = isLegs ? Color(hex: 0x8EA9F4) : Color(hex: 0xBD9CF2)
 
@@ -35,7 +42,7 @@ public struct MuscleArtwork: View {
             }
 
             let athleteCenterY: CGFloat
-            if muscles.contains(.glutes) {
+            if muscles.contains(.glutes) || muscles.contains(.hipAbductors) {
                 athleteCenterY = 240
             } else if muscles.contains(.calves) || muscles.contains(.tibialis) {
                 athleteCenterY = 750
@@ -45,14 +52,18 @@ public struct MuscleArtwork: View {
                 athleteCenterY = 560
             } else if muscles.contains(.forearms) {
                 athleteCenterY = 800
-            } else if muscles.contains(.quadriceps) || muscles.contains(.adductors) {
+            } else if muscles.contains(.quadriceps) || muscles.contains(.adductors) || muscles.contains(.hipFlexors) {
                 athleteCenterY = 430
             } else if muscles.contains(.hamstrings) {
                 athleteCenterY = 490
-            } else if muscles.contains(.chest) || muscles.contains(.shoulders) {
+            } else if muscles.contains(.chest) || muscles.contains(.shoulders) || muscles.contains(.frontDelts) || muscles.contains(.sideDelts) || muscles.contains(.rearDelts) {
                 athleteCenterY = 450
-            } else if muscles.contains(.trapezius) || muscles.contains(.lats) {
+            } else if muscles.contains(.trapezius) || muscles.contains(.upperBack) || muscles.contains(.rotatorCuff) || muscles.contains(.lats) {
                 athleteCenterY = 490
+            } else if muscles.contains(.neck) {
+                athleteCenterY = 300
+            } else if muscles.contains(.lowerBack) {
+                athleteCenterY = 720
             } else {
                 athleteCenterY = 520
             }
@@ -96,6 +107,10 @@ public struct MuscleArtwork: View {
 
             for (_, cgPath) in matchingPaths {
                 let p = Path(cgPath)
+
+                var visibility = rootContext
+                visibility.blendMode = .screen
+                visibility.fill(p, with: .color(tint.opacity(0.12)))
 
                 // Hue/saturation tint retaining original photo luminance
                 var fillContext = rootContext

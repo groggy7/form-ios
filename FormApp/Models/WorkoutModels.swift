@@ -75,23 +75,35 @@ public enum MuscleGroup: String, Codable, CaseIterable {
     case calves = "calves"
     case tibialis = "tibialis"
     case glutes = "glutes"
+    case frontDelts = "front-delts"
+    case sideDelts = "side-delts"
+    case rearDelts = "rear-delts"
+    case upperBack = "upper-back"
+    case hipFlexors = "hip-flexors"
+    case hipAbductors = "hip-abductors"
+    case serratus = "serratus"
+    case rotatorCuff = "rotator-cuff"
+    case neck = "neck"
+    case deepCore = "deep-core"
 
     public var views: [BodyView] {
         switch self {
-        case .chest, .abs, .obliques, .biceps:
+        case .chest, .abs, .obliques, .biceps, .frontDelts, .serratus, .deepCore:
             return [.front]
-        case .triceps, .trapezius, .lats, .lowerBack:
+        case .triceps, .trapezius, .lats, .lowerBack, .upperBack, .rearDelts, .rotatorCuff:
             return [.back]
         case .shoulders:
             return [.back, .front]
-        case .forearms:
+        case .forearms, .sideDelts, .neck:
             return [.front, .back]
-        case .quadriceps, .adductors, .tibialis:
+        case .quadriceps, .adductors, .tibialis, .hipFlexors:
             return [.legsFront]
-        case .hamstrings, .calves, .glutes:
+        case .hamstrings, .calves, .glutes, .hipAbductors:
             return [.legsBack]
         }
     }
+
+    public var hasSurfaceRegion: Bool { self != .hipFlexors && self != .deepCore }
 
     public static func fromKey(_ key: String?) -> MuscleGroup? {
         guard let key = key else { return nil }
@@ -388,8 +400,6 @@ public struct Workout: Identifiable, Codable, Hashable {
             let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)
             let muscles = (catalog?.profile(id)?.primary ?? []).compactMap { key -> MuscleGroup? in
                 switch key {
-                case "front-delts", "side-delts", "rear-delts": return .shoulders
-                case "upper-back": return .trapezius
                 case "quads": return .quadriceps
                 default: return MuscleGroup.fromKey(key)
                 }
@@ -1421,6 +1431,12 @@ public struct ExerciseMetadata {
             case "front-delts", "side-delts", "rear-delts": return "exercise.muscle.shoulders"
             case "biceps": return "exercise.muscle.biceps"
             case "forearms": return "exercise.muscle.forearms"
+            case "hip-flexors": return "exercise.muscle.hip-flexors"
+            case "hip-abductors": return "exercise.muscle.hip-abductors"
+            case "serratus": return "exercise.muscle.serratus"
+            case "rotator-cuff": return "exercise.muscle.rotator-cuff"
+            case "neck": return "exercise.muscle.neck"
+            case "deep-core": return "exercise.muscle.deep-core"
             case "triceps": return "exercise.muscle.triceps"
             case "quads": return "exercise.muscle.quads"
             case "adductors": return "exercise.muscle.adductors"
@@ -1496,6 +1512,15 @@ public struct ExerciseMetadata {
     /// Specific exercise names outrank the coarse movement type (a leg curl is not a biceps curl).
     private static func customNameMuscleKey(_ lowerName: String) -> String? {
         func has(_ terms: String...) -> Bool { terms.contains { lowerName.contains($0) } }
+        if has("behind neck press", "behind-the-neck press") { return "exercise.muscle.shoulders" }
+        if has("hip flexor", "iliopsoas", "psoas") { return "exercise.muscle.hip-flexors" }
+        if has("hip abduction", "hip abductor", "glute med", "glute min") { return "exercise.muscle.hip-abductors" }
+        if has("serratus", "scapular push") { return "exercise.muscle.serratus" }
+        if has("rotator cuff", "shoulder external rotation", "shoulder internal rotation") { return "exercise.muscle.rotator-cuff" }
+        if has("neck flexion", "neck extension", "neck curl", "neck bridge", "neck harness", "neck rotation", "neck isometric", "cervical flexion", "cervical extension") { return "exercise.muscle.neck" }
+        if has("transversus", "multifidus", "quadratus lumborum", "deep core") { return "exercise.muscle.deep-core" }
+        if has("reverse hyper") { return "exercise.muscle.glutes" }
+        if has("back extension", "hyperextension") { return "exercise.muscle.back" }
         if has("calf") { return "exercise.muscle.calves" }
         if has("tibialis", "shin raise", "shins") { return "exercise.muscle.shins" }
         if has("adductor", "adduction") { return "exercise.muscle.adductors" }
@@ -1505,7 +1530,7 @@ public struct ExerciseMetadata {
         }
         if has("leg press", "hack squat") { return "exercise.muscle.quads" }
         if has("hip thrust", "glute bridge", "pull-through", "pull through", "glute kickback",
-               "hip abduction", "back extension", "hyperextension", "kettlebell swing") {
+               "kettlebell swing") {
             return "exercise.muscle.glutes"
         }
         if has("upright row", "face pull", "lateral raise", "front raise", "rear delt", "reverse fly", "rear fly") {
@@ -1633,11 +1658,25 @@ public struct ExerciseMetadata {
             "glutes": ["glutes"],
             "calves": ["calves"],
             "shins": ["tibialis"],
-            "core": ["abs", "obliques"]
+            "core": ["abs", "obliques", "deep-core"],
+            "front-delts": ["front-delts"],
+            "side-delts": ["side-delts"],
+            "rear-delts": ["rear-delts"],
+            "upper-back": ["upper-back"],
+            "lats": ["lats"],
+            "lower-back": ["lower-back"],
+            "abs": ["abs"],
+            "obliques": ["obliques"],
+            "hip-flexors": ["hip-flexors"],
+            "hip-abductors": ["hip-abductors"],
+            "serratus": ["serratus"],
+            "rotator-cuff": ["rotator-cuff"],
+            "neck": ["neck"],
+            "deep-core": ["deep-core"]
         ]
         let targetMuscles = muscleMap[muscleKey] ?? [muscleKey]
         if let profile = ExerciseMuscleCatalog.shared?.profile(exercise.exerciseId),
-           profile.primary.contains(where: { targetMuscles.contains($0) }) {
+           profile.all.contains(where: { targetMuscles.contains($0) }) {
             return true
         }
         let fallbackKey = resolveMuscleKey(exerciseId: exercise.exerciseId, name: exercise.name, movementType: exercise.resolvedMovement)
@@ -1655,6 +1694,20 @@ public struct ExerciseMetadata {
         case "adductors": return fallbackKey == "exercise.muscle.adductors"
         case "shins": return fallbackKey == "exercise.muscle.shins"
         case "core": return fallbackKey == "exercise.muscle.core"
+        case "front-delts": return fallbackKey == "exercise.muscle.front-delts"
+        case "side-delts": return fallbackKey == "exercise.muscle.side-delts"
+        case "rear-delts": return fallbackKey == "exercise.muscle.rear-delts"
+        case "upper-back": return fallbackKey == "exercise.muscle.upper-back"
+        case "lats": return fallbackKey == "exercise.muscle.lats"
+        case "lower-back": return fallbackKey == "exercise.muscle.lower-back"
+        case "abs": return fallbackKey == "exercise.muscle.abs"
+        case "obliques": return fallbackKey == "exercise.muscle.obliques"
+        case "hip-flexors": return fallbackKey == "exercise.muscle.hip-flexors"
+        case "hip-abductors": return fallbackKey == "exercise.muscle.hip-abductors"
+        case "serratus": return fallbackKey == "exercise.muscle.serratus"
+        case "rotator-cuff": return fallbackKey == "exercise.muscle.rotator-cuff"
+        case "neck": return fallbackKey == "exercise.muscle.neck"
+        case "deep-core": return fallbackKey == "exercise.muscle.deep-core"
         case "cardio": return fallbackKey == "exercise.muscle.cardio"
         default: return false
         }
@@ -1675,6 +1728,20 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     case calves = "calves"
     case shins = "shins"
     case core = "core"
+    case frontDelts = "front-delts"
+    case sideDelts = "side-delts"
+    case rearDelts = "rear-delts"
+    case upperBack = "upper-back"
+    case lats = "lats"
+    case lowerBack = "lower-back"
+    case abs = "abs"
+    case obliques = "obliques"
+    case hipFlexors = "hip-flexors"
+    case hipAbductors = "hip-abductors"
+    case serratus = "serratus"
+    case rotatorCuff = "rotator-cuff"
+    case neck = "neck"
+    case deepCore = "deep-core"
     case cardio = "cardio"
 
     public var id: String { rawValue }
@@ -1685,13 +1752,13 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
 
     public var bodyView: BodyView {
         switch self {
-        case .chest, .shoulders, .biceps, .forearms, .core, .cardio:
+        case .chest, .shoulders, .biceps, .forearms, .core, .cardio, .frontDelts, .sideDelts, .abs, .obliques, .serratus, .deepCore, .neck:
             return .front
-        case .back, .triceps:
+        case .back, .triceps, .rearDelts, .upperBack, .lats, .lowerBack, .rotatorCuff:
             return .back
-        case .quads, .adductors, .shins:
+        case .quads, .adductors, .shins, .hipFlexors:
             return .legsFront
-        case .hamstrings, .glutes, .calves:
+        case .hamstrings, .glutes, .calves, .hipAbductors:
             return .legsBack
         }
     }
@@ -1699,7 +1766,7 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     public var muscleGroups: [MuscleGroup] {
         switch self {
         case .chest: return [.chest]
-        case .back: return [.lats, .trapezius, .lowerBack]
+        case .back: return [.lats, .upperBack, .lowerBack]
         case .shoulders: return [.shoulders]
         case .biceps: return [.biceps]
         case .triceps: return [.triceps]
@@ -1710,7 +1777,21 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
         case .glutes: return [.glutes]
         case .calves: return [.calves]
         case .shins: return [.tibialis]
-        case .core: return [.abs, .obliques]
+        case .core: return [.abs, .obliques, .deepCore]
+        case .frontDelts: return [.frontDelts]
+        case .sideDelts: return [.sideDelts]
+        case .rearDelts: return [.rearDelts]
+        case .upperBack: return [.upperBack]
+        case .lats: return [.lats]
+        case .lowerBack: return [.lowerBack]
+        case .abs: return [.abs]
+        case .obliques: return [.obliques]
+        case .hipFlexors: return [.hipFlexors]
+        case .hipAbductors: return [.hipAbductors]
+        case .serratus: return [.serratus]
+        case .rotatorCuff: return [.rotatorCuff]
+        case .neck: return [.neck]
+        case .deepCore: return [.deepCore]
         case .cardio: return []
         }
     }

@@ -2147,8 +2147,8 @@ final class FormAppTests: XCTestCase {
     }
 
     func testTodayShoulderAndUpperArmContoursAreBilateral() throws {
-        for (view, muscle, centerX) in [(BodyView.front, MuscleGroup.shoulders, 873.0),
-            (.front, .biceps, 876.0), (.back, .shoulders, 868.0), (.back, .triceps, 878.0)] {
+        for (view, muscle, centerX) in [(BodyView.front, MuscleGroup.frontDelts, 873.0),
+            (.front, .biceps, 876.0), (.back, .rearDelts, 868.0), (.back, .triceps, 878.0)] {
             assertMirroredChestPath(try XCTUnwrap(MuscleMasks.rawPathStrings[view]?[muscle]), centerX: centerX)
         }
     }
@@ -2338,63 +2338,29 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testAllMuscleArtworkThumbnails() {
-        let contactSheet = VStack(spacing: 12) {
-            LazyVGrid(columns: [GridItem(.fixed(160), spacing: 10), GridItem(.fixed(160), spacing: 10)], spacing: 10) {
-                ForEach(MuscleGroupFilter.allCases) { muscle in
-                    VStack(spacing: 4) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color.black)
-                            if muscle == .cardio {
-                                Image("library_filter_cardio")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .padding(.horizontal, 4)
-                                    .padding(.vertical, 2)
-                            } else {
-                                MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
-                                    .padding(4)
-                            }
-                        }
-                        .frame(width: 160, height: 84)
-
-                        Text(LanguageManager.t(muscle.translationKey))
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(AppColors.text)
-                    }
-                }
-            }
-        }
-        .padding(20)
-        .background(AppColors.background)
-
-        let controller = UIHostingController(rootView: contactSheet)
-        let targetSize = controller.sizeThatFits(in: CGSize(width: 400, height: 1400))
-        controller.view.frame = CGRect(origin: .zero, size: targetSize)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-
-        let window = UIWindow(frame: CGRect(origin: .zero, size: targetSize))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        let image = renderer.image { _ in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
-
-        if let data = image.pngData() {
-            let path = "/private/tmp/ios_all_muscle_groups_contact_sheet.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote contact sheet to \(path)")
-        }
-        let cardioArtwork = UIImage(named: "library_filter_cardio")
-        XCTAssertEqual(cardioArtwork?.size, CGSize(width: 1254, height: 1254))
-        if let alphaInfo = cardioArtwork?.cgImage?.alphaInfo {
-            XCTAssertFalse(alphaInfo == .none || alphaInfo == .noneSkipFirst || alphaInfo == .noneSkipLast)
-        } else {
-            XCTFail("Cardio artwork has no decoded CGImage")
+    func testAllMuscleArtworkThumbnails() throws {
+        let cardioArtwork = try XCTUnwrap(UIImage(named: "library_filter_cardio"))
+        XCTAssertEqual(cardioArtwork.size, CGSize(width: 1254, height: 1254))
+        let alphaInfo = try XCTUnwrap(cardioArtwork.cgImage).alphaInfo
+        XCTAssertFalse(alphaInfo == .none || alphaInfo == .noneSkipFirst || alphaInfo == .noneSkipLast)
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for lang in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(lang)
+            let content = LibraryMuscleFilterGrid(selectedMuscle: .constant(nil), onSelect: {})
+                .padding(18).frame(width: 320)
+                .environment(\.dynamicTypeSize, .xxxLarge)
+                .background(AppColors.background)
+            let renderer = ImageRenderer(content: content)
+            renderer.scale = 2
+            let image = try XCTUnwrap(renderer.uiImage)
+            XCTAssertGreaterThan(image.size.height, 1400)
+            XCTAssertLessThan(image.size.height, 5000)
+            try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/muscle-filter-grid-\(lang).png"))
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "Muscle filters 320pt large \(lang)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
         }
     }
 
@@ -3851,6 +3817,71 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(store.noticeMessage, LanguageManager.t("video.youtubeOnly"))
     }
 
+    func testFunctionalMuscleGroupsAndDeepAnatomy() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        XCTAssertEqual(catalog.muscles.count, 24)
+        let kneeRaise = try XCTUnwrap(ExerciseCatalog.canonicalExercises["hanging-knee-raise"]).toExercise()
+        XCTAssertEqual(Workout(day: 1, title: "Deep muscles", exercises: [kneeRaise]).bodyViews(), [.front])
+        XCTAssertEqual(Set(catalog.textOnlyMuscles ?? []), ["hip-flexors", "deep-core"])
+        for muscle in catalog.textOnlyMuscles ?? [] {
+            XCTAssertFalse(catalog.views.values.contains { $0.regions[muscle] != nil })
+        }
+        for id in ["hanging-leg-raise", "hanging-knee-raise", "hanging-toes-to-bar"] {
+            XCTAssertTrue(try XCTUnwrap(catalog.profile(id)).primary.contains("hip-flexors"))
+        }
+        for id in ["lever-seated-hip-abduction", "cable-hip-abduction"] {
+            XCTAssertEqual(try XCTUnwrap(catalog.profile(id)).primary, ["hip-abductors"])
+            let exercise = try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise()
+            XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: exercise, muscleKey: "hip-abductors"))
+            XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: exercise, muscleKey: "glutes"))
+        }
+        XCTAssertTrue(try XCTUnwrap(catalog.profile("dumbbell-incline-hammer-curl")).primary.contains("forearms"))
+        XCTAssertEqual(ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: "Back Extension", movementType: nil), "exercise.muscle.back")
+        let pushup = try XCTUnwrap(ExerciseCatalog.canonicalExercises["push-ups"]).toExercise()
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: pushup, muscleKey: "serratus"))
+        XCTAssertNotNil(ExerciseSearch.score(ExerciseSearch.Query("serratus"), exercise: pushup))
+        let curl = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-curl"]).toExercise()
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: curl, muscleKey: "forearms"))
+        let bench = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-bench-press"]).toExercise()
+        let pressdown = try XCTUnwrap(ExerciseCatalog.canonicalExercises["rope-triceps-pressdown"]).toExercise()
+        let query = ExerciseSearch.Query("triceps")
+        XCTAssertLessThan(try XCTUnwrap(ExerciseSearch.score(query, exercise: pressdown)), try XCTUnwrap(ExerciseSearch.score(query, exercise: bench)))
+        XCTAssertEqual(ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: "Behind Neck Press", movementType: nil), "exercise.muscle.shoulders")
+        let latQuery = ExerciseSearch.Query("lat")
+        XCTAssertNil(ExerciseSearch.score(latQuery, exercise: try XCTUnwrap(ExerciseCatalog.canonicalExercises["dumbbell-lateral-raise"]).toExercise()))
+        XCTAssertNotNil(ExerciseSearch.score(latQuery, exercise: try XCTUnwrap(ExerciseCatalog.canonicalExercises["lat-pulldown"]).toExercise()))
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for (muscle, id) in ["hip-flexors": "hanging-knee-raise", "hip-abductors": "cable-hip-abduction",
+                                 "serratus": "push-ups", "rotator-cuff": "face-pull", "deep-core": "front-plank",
+                                 "side-delts": "dumbbell-lateral-raise", "upper-back": "barbell-row",
+                                 "front-delts": "standing-barbell-overhead-press", "rear-delts": "face-pull", "lats": "lat-pulldown",
+                                 "lower-back": "dumbbell-45-deg-back-extension", "abs": "front-plank", "obliques": "side-plank"] {
+                let label = LanguageManager.t("anatomy.muscle.\(muscle)")
+                let exercise = try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise()
+                XCTAssertNotNil(ExerciseSearch.score(ExerciseSearch.Query(label), exercise: exercise), "\(language)/\(muscle)")
+            }
+        }
+    }
+
+    func testExerciseCardCropsContainEveryShownSurfaceRegion() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        for (id, profile) in catalog.exercises {
+            let top: CGFloat = profile.focus != "lower" ? 0 : (profile.shown.contains("lower-back") ? 340 : 410)
+            let bottom: CGFloat = profile.focus == "upper" ? 620 : catalog.height
+            for muscle in profile.shown where !(catalog.textOnlyMuscles ?? []).contains(muscle) {
+                for view in catalog.views.values {
+                    guard let d = view.regions[muscle] else { continue }
+                    let bounds = SVGPathParser.parse(d).boundingBoxOfPath
+                    XCTAssertGreaterThanOrEqual(bounds.minY, top, "\(id)/\(muscle)")
+                    XCTAssertLessThanOrEqual(bounds.maxY, bottom, "\(id)/\(muscle)")
+                }
+            }
+        }
+    }
+
     func testExerciseMuscleCatalog() throws {
         let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
         XCTAssertEqual(catalog.exercises.count, 300)
@@ -3865,7 +3896,7 @@ final class FormAppTests: XCTestCase {
             for muscle in profile.all {
                 XCTAssertNotNil(catalog.muscles[muscle]?["en"])
                 XCTAssertNotNil(catalog.muscles[muscle]?["tr"])
-                XCTAssertTrue(catalog.views.values.contains { $0.regions[muscle] != nil })
+                XCTAssertTrue((catalog.textOnlyMuscles ?? []).contains(muscle) || catalog.views.values.contains { $0.regions[muscle] != nil })
             }
         }
         XCTAssertEqual(ExerciseMuscleCatalog.images.count, 2)
@@ -3914,7 +3945,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("barbell-reverse-curl"), muscleKey: "forearms"))
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("barbell-reverse-curl"), muscleKey: "biceps"))
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("dumbbell-45-deg-back-extension"), muscleKey: "back"))
-        XCTAssertEqual(MuscleGroupFilter.back.muscleGroups, [.lats, .trapezius, .lowerBack])
+        XCTAssertEqual(MuscleGroupFilter.back.muscleGroups, [.lats, .upperBack, .lowerBack])
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("bird-dog"), muscleKey: "back"))
     }
 
@@ -3943,7 +3974,7 @@ final class FormAppTests: XCTestCase {
         for (id, profile) in catalog.exercises {
             XCTAssertTrue(Set(profile.alsoInvolved).isDisjoint(with: profile.all), id)
             for muscle in profile.alsoInvolved {
-                XCTAssertTrue(catalog.views.values.contains { $0.regions[muscle] != nil }, muscle)
+                XCTAssertTrue((catalog.textOnlyMuscles ?? []).contains(muscle) || catalog.views.values.contains { $0.regions[muscle] != nil }, muscle)
                 XCTAssertNotNil(catalog.muscles[muscle]?["tr"], muscle)
             }
         }
@@ -4029,6 +4060,11 @@ final class FormAppTests: XCTestCase {
             ("barbell-reverse-curl", "reverse-curl", "es", 350.0, DynamicTypeSize.large),
             ("jumping-jack", "jumping-jack", "en", 350.0, DynamicTypeSize.large),
             ("barbell-curl", "curl-tr-large", "tr", 280.0, DynamicTypeSize.xxxLarge),
+            ("hanging-knee-raise", "hip-flexors-de-large", "de", 280.0, DynamicTypeSize.xxxLarge),
+            ("cable-hip-abduction", "abductors-fr", "fr", 350.0, DynamicTypeSize.large),
+            ("jump-rope", "jump-rope-full", "en", 280.0, DynamicTypeSize.xxxLarge),
+            ("bird-dog", "bird-dog-full", "en", 280.0, DynamicTypeSize.xxxLarge),
+            ("dumbbell-curtsey-lunge", "curtsey-full", "en", 280.0, DynamicTypeSize.xxxLarge),
             ("unknown", "unknown", "en", 280.0, DynamicTypeSize.large)
         ] {
             LanguageManager.setLanguage(language)
@@ -4037,7 +4073,7 @@ final class FormAppTests: XCTestCase {
             renderer.scale = 2
             let image = try XCTUnwrap(renderer.uiImage)
             XCTAssertGreaterThan(image.size.height, 60)
-            XCTAssertLessThan(image.size.height, 750)
+            XCTAssertLessThan(image.size.height, 1200)
             try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/form-muscles-ios-\(name).png"))
             let attachment = XCTAttachment(image: image)
             attachment.name = "Muscle panel \(name)"
@@ -6956,7 +6992,7 @@ final class FormAppTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 18)
+        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 24)
         let squatSession = WorkoutSessionRecord(
             id: "squat", programId: "p", workoutId: "w", workoutTitle: "Legs",
             startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z",
