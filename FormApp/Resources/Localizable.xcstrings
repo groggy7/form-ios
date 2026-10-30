@@ -153,7 +153,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Teknik tükeniş"
+            "value": "Teknik tükenme"
           }
         },
         "de": {
@@ -818,7 +818,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isınma & plaka hesaplayıcı"
+            "value": "Isınma ve plaka hesabı"
           }
         },
         "de": {
@@ -853,7 +853,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman ekranında ısınma setlerini ve plaka hesaplayıcıyı göster"
+            "value": "Antrenman ekranında ısınma setlerini ve plaka hesabını göster"
           }
         },
         "de": {
@@ -1728,7 +1728,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Veri ve depolama"
+            "value": "Veri ve yedekleme"
           }
         },
         "de": {
@@ -1903,7 +1903,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman verilerinizi cihazlar arasında dosya ile aktarın veya çevrimdışı yedek alın."
+            "value": "Antrenman verilerini cihazlar arasında dosyayla aktar veya çevrimdışı yedek al."
           }
         },
         "de": {
@@ -1973,7 +1973,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedek dosyasını cihazınıza kaydedin veya başka bir telefona/platforma aktarmak için paylaşın."
+            "value": "Yedek dosyasını cihazına kaydet veya başka bir telefona/platforma aktarmak için paylaş."
           }
         },
         "de": {
@@ -2043,7 +2043,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Daha önce kaydedilmiş bir yedek dosyasından antrenmanları ve geçmişi geri yükleyin."
+            "value": "Daha önce kaydedilmiş bir yedek dosyasından antrenmanları ve geçmişi geri yükle."
           }
         },
         "de": {
@@ -2113,7 +2113,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep; antrenmanlarınızı kaydetmek, hareket animasyonları ve teknik ipuçlarıyla formunuzu geliştirmek ve güç gelişiminizi sürdürmek için tasarlanmış, sade ve temiz bir güç antrenmanı yardımcısıdır."
+            "value": "Forced Rep; antrenmanlarını kaydetmen, hareket animasyonları ve teknik ipuçlarıyla formunu geliştirmen ve güç gelişimini sürdürmen için tasarlanmış, sade ve temiz bir güç antrenmanı yardımcısıdır."
           }
         },
         "de": {
@@ -3373,7 +3373,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En fazla 3 video bağlanabilir. Yeni eklemek için mevcut bir videoyu kaldırın."
+            "value": "En fazla 3 video bağlanabilir. Yeni eklemek için mevcut bir videoyu kaldır."
           }
         },
         "de": {
@@ -3408,7 +3408,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu egzersize henüz video bağlanmadı. Aşağıdan bir YouTube bağlantısı ekleyin."
+            "value": "Bu egzersize henüz video bağlanmadı. Aşağıdan bir YouTube bağlantısı ekle."
           }
         },
         "de": {
@@ -4528,7 +4528,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Başka bir antrenmana başlamadan önce aktif antrenmanınızı bitirin veya kaydedin."
+            "value": "Başka bir antrenmana başlamadan önce aktif antrenmanını bitir veya kaydet."
           }
         },
         "de": {
@@ -6257,7 +6257,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hacim Matrisi"
+            "value": "Hacim Haritası"
           }
         },
         "de": {
@@ -6292,7 +6292,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Biyomekanik Hacim Matrisi"
+            "value": "Hacim Haritası"
           }
         },
         "de": {
@@ -6362,7 +6362,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haftalık setlerinize rehberlik eden genel referans hedefleridir; kişisel toparlanma sınırı veya tıbbi tanı niteliği taşımaz."
+            "value": "Haftalık setlerine rehberlik eden genel referans hedefleridir; kişisel toparlanma sınırı veya tıbbi tanı niteliği taşımaz."
           }
         },
         "de": {
@@ -6517,13 +6517,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld set, kas grubu tanımlanmamış özel egzersizlerden oluşuyor. Toplam setinize eklenir ancak kas dağılımı haritasında görünmez."
+                  "value": "%lld set, kas grubu tanımlanmamış özel egzersizlerden oluşuyor. Toplam setine eklenir ancak kas dağılımı haritasında görünmez."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld set, kas grubu tanımlanmamış özel egzersizlerden oluşuyor. Toplam setinize eklenir ancak kas dağılımı haritasında görünmez."
+                  "value": "%lld set, kas grubu tanımlanmamış özel egzersizlerden oluşuyor. Toplam setine eklenir ancak kas dağılımı haritasında görünmez."
                 }
               }
             }
@@ -6679,7 +6679,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Program döngüsü başına: her antrenman bir kez sayılır; haftalık takviminiz kullanılmaz. Haftalık referans değerlendirmesi uygulanmaz."
+            "value": "Program döngüsü başına: her antrenman bir kez sayılır; haftalık takvimin kullanılmaz. Haftalık referans değerlendirmesi uygulanmaz."
           }
         },
         "de": {
@@ -7449,7 +7449,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hacim hedeflerini incelemek için vücut veya listeden bir kas seçin."
+            "value": "Hacim hedeflerini incelemek için vücuttan veya listeden bir kas seç."
           }
         },
         "de": {
@@ -7764,7 +7764,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedef aralığın üzerinde. Odak dönemleri için etkilidir, yorgunluğunuzu takip edin."
+            "value": "Hedef aralığın üzerinde. Odak dönemleri için etkilidir, yorgunluğunu takip et."
           }
         },
         "de": {
@@ -7834,7 +7834,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedef aralığın oldukça üzerinde. Bu kas grubuna ekstra dinlenme tanımayı düşünebilirsiniz."
+            "value": "Hedef aralığın oldukça üzerinde. Bu kas grubuna ekstra dinlenme tanımayı düşünebilirsin."
           }
         },
         "de": {
@@ -7904,7 +7904,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu Matris Ne Gösterir?"
+            "value": "Bu Harita Ne Gösterir?"
           }
         },
         "de": {
@@ -7939,7 +7939,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "18 kas grubundaki haftalık çalışma setlerinizi genel kabul gören hacim hedefleriyle karşılaştırır. Hangi kasları ne kadar çalıştırdığınızı gösteren pratik bir rehberdir; toparlanma uykunuza ve beslenmenize de bağlı olduğundan tıbbi tanı niteliği taşımaz."
+            "value": "18 kas grubundaki haftalık çalışma setlerini genel kabul gören hacim hedefleriyle karşılaştırır. Hangi kasları ne kadar çalıştırdığını gösteren pratik bir rehberdir; toparlanma uykuna ve beslenmene de bağlı olduğundan tıbbi tanı niteliği taşımaz."
           }
         },
         "de": {
@@ -8044,7 +8044,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Harekette birincil çalışan kas tam puan (1,0 set) alır. Örneğin bench press yaparken göğüs kasınız tam set sayılır."
+            "value": "Harekette birincil çalışan kas tam puan (1,0 set) alır. Örneğin bench press yaparken göğüs kasın tam set sayılır."
           }
         },
         "de": {
@@ -8184,7 +8184,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenmanınızı planlamaya yardımcı referanslar"
+            "value": "Antrenmanını planlamana yardımcı referanslar"
           }
         },
         "de": {
@@ -8394,7 +8394,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temel hacim eşiğinin altında. Hafif (deload) haftalar veya dinlenme için uygundur; bu kası büyütmek istiyorsanız birkaç set daha ekleyebilirsiniz."
+            "value": "Temel hacim eşiğinin altında. Hafif (deload) haftalar veya dinlenme için uygundur; bu kası büyütmek istiyorsan birkaç set daha ekleyebilirsin."
           }
         },
         "de": {
@@ -8499,7 +8499,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yüksek çalışma hacmi. Odaklandığınız kasları zorlamak için iyidir; ancak uzun süre bu aralıkta kalırsanız toparlanmanıza ve uykunuza dikkat edin."
+            "value": "Yüksek çalışma hacmi. Odaklandığın kasları zorlamak için iyidir; ancak uzun süre bu aralıkta kalırsan toparlanmana ve uykuna dikkat et."
           }
         },
         "de": {
@@ -8534,7 +8534,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çok yüksek hacim. Bu seviyenin üzerindeki setler genellikle gelişime katkı sağlamaktan çok yorgunluk biriktirir; yakında hafif bir hafta planlayabilirsiniz."
+            "value": "Çok yüksek hacim. Bu seviyenin üzerindeki setler genellikle gelişime katkı sağlamaktan çok yorgunluk biriktirir; yakında hafif bir hafta planlayabilirsin."
           }
         },
         "de": {
@@ -8604,7 +8604,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu aralıkları vücudunuzun nasıl hissettiğine göre esnek bir rehber olarak kullanın. Devam eden bir hafta geride görünebilir veya öncelikli bir kasınız yüksek bölgede olabilir; kararlarınızı yalnızca renkleri tutturmak için değil, hedeflerinize ve enerjinize göre verin."
+            "value": "Bu aralıkları vücudunun nasıl hissettiğine göre esnek bir rehber olarak kullan. Devam eden bir hafta geride görünebilir veya öncelikli bir kasın yüksek bölgede olabilir; kararlarını yalnızca renkleri tutturmak için değil, hedeflerine ve enerjine göre ver."
           }
         },
         "de": {
@@ -8639,7 +8639,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Biyomekanik Hacim Matrisi"
+            "value": "Hacim Haritası"
           }
         },
         "de": {
@@ -8674,7 +8674,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anatomik ısı haritasında doğrudan ve dolaylı set tahminlerini sabit hacim referans aralıklarıyla karşılaştırın. Toparlanma değerlendirmesi değildir."
+            "value": "Anatomik ısı haritasında doğrudan ve dolaylı set tahminlerini sabit hacim referans aralıklarıyla karşılaştır. Toparlanma değerlendirmesi değildir."
           }
         },
         "de": {
@@ -8744,7 +8744,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı Ağırlık Artış Koçu"
+            "value": "İlerleme Koçu"
           }
         },
         "de": {
@@ -8849,7 +8849,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı Isınma & Plaka Hesaplayıcı"
+            "value": "Isınma ve Plaka Hesabı"
           }
         },
         "de": {
@@ -8989,7 +8989,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı Isınma & Plakalar"
+            "value": "Isınma ve Plaka Hesabı"
           }
         },
         "de": {
@@ -9024,7 +9024,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isınma Rampası"
+            "value": "Kademeli Isınma"
           }
         },
         "de": {
@@ -9059,7 +9059,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plaka Hesaplayıcı"
+            "value": "Plaka Hesabı"
           }
         },
         "de": {
@@ -9129,7 +9129,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı İlerleme"
+            "value": "İlerleme Koçu"
           }
         },
         "de": {
@@ -9269,7 +9269,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isınma & Plakalar"
+            "value": "Isınma ve Plaka Hesabı"
           }
         },
         "de": {
@@ -9339,7 +9339,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bar ısınmasını planlamak için çalışma ağırlığı girin."
+            "value": "Bar ısınmasını planlamak için çalışma ağırlığı gir."
           }
         },
         "de": {
@@ -9374,7 +9374,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çalışma ağırlığı seçilen bardan düşük. Daha hafif bir bar seçin veya hedefi değiştirin."
+            "value": "Çalışma ağırlığı seçilen bardan düşük. Daha hafif bir bar seç veya hedefi değiştir."
           }
         },
         "de": {
@@ -9726,7 +9726,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Önerilen Isınma Dizilimi"
+            "value": "Önerilen Isınma Setleri"
           }
         },
         "de": {
@@ -10428,7 +10428,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab İleri Düzey Analizler"
+            "value": "Rep Lab – Güç Analizi"
           }
         },
         "de": {
@@ -10463,7 +10463,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çoklu tekrar maksimum matrisi, boylamsal güç eğrileri ve antrenman dağılımı karşılaştırmaları."
+            "value": "Tahmini RM tablosu, zaman içindeki güç gelişimi ve antrenman dağılımı karşılaştırmaları."
           }
         },
         "de": {
@@ -10498,7 +10498,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güç gelişim eğrileri ve maksimum tekrar analizi"
+            "value": "Güç gelişimi ve tahmini RM analizi"
           }
         },
         "de": {
@@ -10673,7 +10673,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep uygulamasını Espresso & Bej, Monokrom Stealth, Gece Yarısı Kobalt ve daha fazla özel koyu temayla kişiselleştirin."
+            "value": "Forced Rep'i Espresso & Bej, Monokrom Stealth, Gece Yarısı Kobalt ve daha fazla özel koyu temayla kişiselleştir."
           }
         },
         "de": {
@@ -10708,7 +10708,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Özel koyu temalar ve estetikler"
+            "value": "Özel koyu temalar"
           }
         },
         "de": {
@@ -11233,7 +11233,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Görsel renk temasını kişiselleştirin"
+            "value": "Görsel renk temasını kişiselleştir"
           }
         },
         "de": {
@@ -12038,7 +12038,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verilerinizi yedeklemek için Google hesabınızı bağlayın."
+            "value": "Verilerini yedeklemek için Google hesabını bağla."
           }
         },
         "de": {
@@ -12843,7 +12843,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güç Eğrileri"
+            "value": "Güç Gelişimi"
           }
         },
         "de": {
@@ -13298,7 +13298,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini Tekrar Maksimum Matrisi"
+            "value": "Tahmini RM Tablosu"
           }
         },
         "de": {
@@ -13403,7 +13403,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu seçimde uygun 1–10 tekrarlı çalışma seti yok. Daha yüksek tekrarlı setler geçmişinizde korunur."
+            "value": "Bu seçimde uygun 1–10 tekrarlı çalışma seti yok. Daha yüksek tekrarlı setler geçmişinde korunur."
           }
         },
         "de": {
@@ -13683,7 +13683,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini 1TM Eğilimi"
+            "value": "Tahmini 1RM Trendi"
           }
         },
         "de": {
@@ -13718,7 +13718,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini 1RM gücünüzün zaman içindeki gelişimini takip edin"
+            "value": "Tahmini 1RM değerinin zaman içindeki gelişimini takip et"
           }
         },
         "de": {
@@ -13753,7 +13753,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İlk tahmini 1TM"
+            "value": "İlk tahmini 1RM"
           }
         },
         "de": {
@@ -13823,7 +13823,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu zaman aralığındaki ikinci uygun antrenman, eğiliminizi ve tahmin farkını gösterecek."
+            "value": "Bu zaman aralığındaki ikinci uygun antrenman, trendini ve tahmin farkını gösterecek."
           }
         },
         "de": {
@@ -14140,7 +14140,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenmanınızın dengeli ilerlemesini sağlamak için karşıt hareket setlerinizi karşılaştırır; eklem sağlığı veya tıbbi tanı niteliği taşımaz."
+            "value": "Antrenmanının dengeli ilerlemesi için karşıt hareket setlerini karşılaştırır; eklem sağlığı veya tıbbi tanı niteliği taşımaz."
           }
         },
         "de": {
@@ -14420,7 +14420,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekişe kıyasla daha fazla itiş seti yapıyorsunuz."
+            "value": "Çekişe kıyasla daha fazla itiş seti yapıyorsun."
           }
         },
         "de": {
@@ -14455,7 +14455,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtişe kıyasla daha fazla çekiş seti yapıyorsunuz."
+            "value": "İtişe kıyasla daha fazla çekiş seti yapıyorsun."
           }
         },
         "de": {
@@ -14525,7 +14525,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücut dengesini korumak için programınıza birkaç set kürek (row) veya barfiks eklemeyi düşünebilirsiniz."
+            "value": "Üst vücut dengesini korumak için programına birkaç set kürek (row) veya barfiks eklemeyi düşünebilirsin."
           }
         },
         "de": {
@@ -14560,7 +14560,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dengeli bir gelişim hedefliyorsanız bench press ve omuz presi gibi itiş hareketlerinizi ihmal etmeyin."
+            "value": "Dengeli bir gelişim hedefliyorsan bench press ve omuz presi gibi itiş hareketlerini ihmal etme."
           }
         },
         "de": {
@@ -14595,7 +14595,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mevcut programınızla devam edin; itiş ve çekiş hacminiz gayet iyi bir dengede."
+            "value": "Mevcut programınla devam et; itiş ve çekiş hacmin gayet iyi bir dengede."
           }
         },
         "de": {
@@ -14735,7 +14735,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacağa kıyasla daha fazla ön bacak (quad) seti yapıyorsunuz."
+            "value": "Arka bacağa kıyasla daha fazla ön bacak (quad) seti yapıyorsun."
           }
         },
         "de": {
@@ -14770,7 +14770,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacağa kıyasla daha fazla arka bacak (hamstring) seti yapıyorsunuz."
+            "value": "Ön bacağa kıyasla daha fazla arka bacak (hamstring) seti yapıyorsun."
           }
         },
         "de": {
@@ -14840,7 +14840,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacaklarınızın arka kısmını dengelemek için RDL (Romanian deadlift) veya leg curl ekleyebilirsiniz."
+            "value": "Bacaklarının arka kısmını dengelemek için RDL (Romanian deadlift) veya leg curl ekleyebilirsin."
           }
         },
         "de": {
@@ -14875,7 +14875,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak hacmini dengelemek isterseniz squat, leg press veya lunge gibi hareketleri artırabilirsiniz."
+            "value": "Ön bacak hacmini dengelemek istersen squat, leg press veya lunge gibi hareketleri artırabilirsin."
           }
         },
         "de": {
@@ -14910,7 +14910,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Squat/pres hareketleri ile arka bacak egzersizleriniz arasındaki bu dengeyi koruyun."
+            "value": "Squat/pres hareketleri ile arka bacak egzersizlerin arasındaki bu dengeyi koru."
           }
         },
         "de": {
@@ -15050,7 +15050,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alt vücuda kıyasla belirgin şekilde daha fazla üst vücut seti yapıyorsunuz."
+            "value": "Alt vücuda kıyasla belirgin şekilde daha fazla üst vücut seti yapıyorsun."
           }
         },
         "de": {
@@ -15085,7 +15085,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücuda kıyasla daha fazla bacak/alt vücut seti yapıyorsunuz."
+            "value": "Üst vücuda kıyasla daha fazla bacak/alt vücut seti yapıyorsun."
           }
         },
         "de": {
@@ -15120,7 +15120,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst ve alt vücut antrenman hacminiz gayet dengeli dağılmış."
+            "value": "Üst ve alt vücut antrenman hacmin gayet dengeli dağılmış."
           }
         },
         "de": {
@@ -15155,7 +15155,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm vücudun dengeli gelişmesini istiyorsanız bacak antrenmanlarınızı ihmal etmeyin."
+            "value": "Tüm vücudun dengeli gelişmesini istiyorsan bacak antrenmanlarını ihmal etme."
           }
         },
         "de": {
@@ -15190,7 +15190,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm vücutta eşit bir dağılım istiyorsanız üst vücut hareketlerinizi artırmayı düşünebilirsiniz."
+            "value": "Tüm vücutta eşit bir dağılım istiyorsan üst vücut hareketlerini artırmayı düşünebilirsin."
           }
         },
         "de": {
@@ -15225,7 +15225,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programınız iş yükünü üst ve alt vücut arasında eşit şekilde paylaştırıyor."
+            "value": "Programın iş yükünü üst ve alt vücut arasında eşit şekilde paylaştırıyor."
           }
         },
         "de": {
@@ -15647,7 +15647,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Set dağılımını görmek için daha fazla antrenman kaydedin."
+            "value": "Set dağılımını görmek için daha fazla antrenman kaydet."
           }
         },
         "de": {
@@ -15752,7 +15752,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedeklemeler için kullanmak istediğiniz Google hesabını seçin."
+            "value": "Yedeklemeler için kullanmak istediğin Google hesabını seç."
           }
         },
         "de": {
@@ -15787,7 +15787,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedeğiniz özel bir uygulama verisi alanında saklanır ve normal Drive dosyalarınız arasında görünmez."
+            "value": "Yedeğin özel bir uygulama verisi alanında saklanır ve normal Drive dosyaların arasında görünmez."
           }
         },
         "de": {
@@ -15892,7 +15892,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı Google hesabını seçerek yeni bir cihazda verilerinizi geri yükleyebilirsiniz."
+            "value": "Aynı Google hesabını seçerek yeni bir cihazda verilerini geri yükleyebilirsin."
           }
         },
         "de": {
@@ -16452,7 +16452,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedek başarıyla kişisel bulut alanınıza kaydedildi!"
+            "value": "Yedek başarıyla kişisel bulut alanına kaydedildi!"
           }
         },
         "de": {
@@ -16487,7 +16487,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yerel güvenlik kopyası güncellendi. Cihaz dışı yedekleme için Google Drive'ı bağlayın."
+            "value": "Yerel güvenlik kopyası güncellendi. Cihaz dışı yedekleme için Google Drive'ı bağla."
           }
         },
         "de": {
@@ -16557,7 +16557,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu işlem programlarınızı ve geçmişinizi mevcut en yeni yerel veya iCloud yedeğinden geri yükler. Aktif canlı antrenmanınız korunur."
+            "value": "Bu işlem programlarını ve geçmişini mevcut en yeni yerel veya iCloud yedeğinden geri yükler. Devam eden antrenmanın korunur."
           }
         },
         "de": {
@@ -16942,7 +16942,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedekleri geri yüklemek için lütfen bir Google hesabı bağlayın."
+            "value": "Yedekleri geri yüklemek için lütfen bir Google hesabı bağla."
           }
         },
         "de": {
@@ -17572,7 +17572,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep kullanıcı veritabanı tutmaz. Android'de cihaz dışı yedekleme için bulut destekli bir klasör seçin; eşitlemeyi depolama sağlayıcınız yönetir."
+            "value": "Forced Rep kullanıcı veritabanı tutmaz. Android'de cihaz dışı yedekleme için bulut destekli bir klasör seç; eşitlemeyi depolama sağlayıcın yönetir."
           }
         },
         "de": {
@@ -17712,7 +17712,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı İlerleme’yi aç"
+            "value": "İlerleme Koçu’nu aç"
           }
         },
         "de": {
@@ -18132,7 +18132,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isınma & Plakalar’ı aç"
+            "value": "Isınma ve Plaka Hesabı’nı aç"
           }
         },
         "de": {
@@ -18412,7 +18412,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mağaza fiyatı alınamadı. Yeniden deneyin."
+            "value": "Mağaza fiyatı alınamadı. Yeniden dene."
           }
         },
         "de": {
@@ -18517,7 +18517,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yıllık faturalandırılır. İstediğiniz zaman iptal edin."
+            "value": "Yıllık faturalandırılır. İstediğin zaman iptal et."
           }
         },
         "de": {
@@ -18867,7 +18867,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Satın alımlar geri yüklenemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin."
+            "value": "Satın alımlar geri yüklenemedi. Lütfen internet bağlantını kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -18902,7 +18902,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google Play satın alımları şu anda doğrulayamadı. Önbellekteki Premium erişimi geçicidir; çevrimiçiyken tekrar deneyin."
+            "value": "Google Play satın alımları şu anda doğrulayamadı. Önbellekteki Premium erişimi geçicidir; çevrimiçiyken tekrar dene."
           }
         },
         "de": {
@@ -18937,7 +18937,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Satın alma tamamlanamadı. Lütfen bağlantınızı veya ödeme yönteminizi kontrol edip tekrar deneyin."
+            "value": "Satın alma tamamlanamadı. Lütfen bağlantını veya ödeme yöntemini kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -18972,7 +18972,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google Play Store şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin."
+            "value": "Google Play Store şu anda kullanılamıyor. Lütfen daha sonra tekrar dene."
           }
         },
         "de": {
@@ -19042,7 +19042,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Satın alma doğrulanamadı. Premium erişimi verilmedi. Tekrar deneyin veya destekle iletişime geçin."
+            "value": "Satın alma doğrulanamadı. Premium erişimi verilmedi. Tekrar dene veya destekle iletişime geç."
           }
         },
         "de": {
@@ -19077,7 +19077,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google Play etkin bir Premium satın alımını doğrulamadı. Tekrar deneyin veya satın alımları geri yükleyin."
+            "value": "Google Play etkin bir Premium satın alımını doğrulamadı. Tekrar dene veya satın alımları geri yükle."
           }
         },
         "de": {
@@ -19147,7 +19147,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hacim Matrisi"
+            "value": "Hacim Haritası"
           }
         },
         "de": {
@@ -19462,7 +19462,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hacim Matrisi’ni aç"
+            "value": "Hacim Haritası’nı aç"
           }
         },
         "de": {
@@ -19567,7 +19567,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı setlerinden tahmini tekrar maksimumlarını, kuvvet eğilimlerini ve antrenman dağılımını gör."
+            "value": "Kayıtlı setlerinden tahmini tekrar maksimumlarını, kuvvet trendini ve antrenman dağılımını gör."
           }
         },
         "de": {
@@ -19672,7 +19672,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kuvvet eğilimini takip et"
+            "value": "Kuvvet trendini takip et"
           }
         },
         "de": {
@@ -19917,7 +19917,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman sonrası yedekler yerel olarak, klasör seçtiyseniz oraya da kaydedilir; cihaz dışı eşitleme sağlayıcıya bağlıdır."
+            "value": "Antrenman sonrası yedekler yerel olarak, klasör seçtiysen oraya da kaydedilir; cihaz dışı eşitleme sağlayıcıya bağlıdır."
           }
         },
         "de": {
@@ -20582,7 +20582,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kişisel ilerleme hedefleri, hacim haritaları, tekrar maks analitikleri ve plaka hesaplayıcı."
+            "value": "Kişisel ilerleme hedefleri, hacim haritası, RM analizleri ve plaka hesabı."
           }
         },
         "de": {
@@ -20617,7 +20617,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı İlerleme Koçu"
+            "value": "İlerleme Koçu"
           }
         },
         "de": {
@@ -20687,7 +20687,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hacim Matrisi"
+            "value": "Hacim Haritası"
           }
         },
         "de": {
@@ -20792,7 +20792,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini tekrar maks eğrileri ve halter plaka dizilimleri."
+            "value": "Tahmini RM gelişimi ve bara takılacak plakaların tam dizilimi."
           }
         },
         "de": {
@@ -21107,7 +21107,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "PREMIUM KOÇ"
+            "value": "İLERLEME KOÇU"
           }
         },
         "de": {
@@ -23277,7 +23277,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı İlerleme Rehberi"
+            "value": "İlerleme Koçu Rehberi"
           }
         },
         "de": {
@@ -23557,7 +23557,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akıllı Ağırlık Artış Koçu"
+            "value": "İlerleme Koçu"
           }
         },
         "de": {
@@ -26534,7 +26534,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini 1TM"
+            "value": "Tahmini 1RM"
           }
         },
         "de": {
@@ -26569,7 +26569,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini 1TM"
+            "value": "Tahmini 1RM"
           }
         },
         "de": {
@@ -27518,7 +27518,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "PR, tahmini 1TM ve hacim istatistiklerini takip etmek için bu egzersizi kaydedin."
+            "value": "PR, tahmini 1RM ve hacim istatistiklerini takip etmek için bu egzersizi bir antrenmanda kaydet."
           }
         },
         "de": {
@@ -28078,7 +28078,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neyin yanlış veya eksik olduğunu açıklayın…"
+            "value": "Neyin yanlış veya eksik olduğunu açıkla…"
           }
         },
         "de": {
@@ -28148,7 +28148,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bildiriminiz iletildi. Geri bildiriminiz için teşekkürler!"
+            "value": "Bildirimin iletildi. Geri bildirimin için teşekkürler!"
           }
         },
         "de": {
@@ -28183,7 +28183,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bildiriminiz alındı. Geri bildiriminiz için teşekkürler!"
+            "value": "Bildirimin alındı. Geri bildirimin için teşekkürler!"
           }
         },
         "de": {
@@ -28253,7 +28253,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bildirim kaydedilemedi. Lütfen yer açıp tekrar deneyin."
+            "value": "Bildirim kaydedilemedi. Lütfen yer açıp tekrar dene."
           }
         },
         "de": {
@@ -28288,7 +28288,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bildirim gönderilemedi. Lütfen kontrol edip tekrar deneyin."
+            "value": "Bildirim gönderilemedi. Lütfen kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -28358,7 +28358,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir saatte yalnızca bir rapor gönderebilirsiniz. Bu veya başka bir egzersiz için {time} sonrasında yeniden rapor gönderebilirsiniz."
+            "value": "Saatte yalnızca bir rapor gönderebilirsin. Bu veya başka bir egzersiz için {time} sonrasında yeniden rapor gönderebilirsin."
           }
         },
         "de": {
@@ -28428,7 +28428,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bugün 3 rapor gönderdiniz. {dateTime} sonrasında yeni bir rapor gönderebilirsiniz."
+            "value": "Bugün 3 rapor gönderdin. {dateTime} sonrasında yeni bir rapor gönderebilirsin."
           }
         },
         "de": {
@@ -28533,7 +28533,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güvenlikle ilgili acil durumlar için desteğe başvurun."
+            "value": "Güvenlikle ilgili acil durumlar için desteğe başvur."
           }
         },
         "de": {
@@ -28603,7 +28603,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu cihazda iletilmeyi bekleyen kaydedilmiş bir bildiriminiz var."
+            "value": "Bu cihazda iletilmeyi bekleyen kaydedilmiş bir bildirimin var."
           }
         },
         "de": {
@@ -28743,7 +28743,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gönderildiğinde egzersiz bilgisi, kategori, açıklama, uygulama sürümü, dil ve rastgele bir cihaz kimliği iletilir. Lütfen ad, iletişim veya tıbbi geçmişinizi eklemeyin."
+            "value": "Gönderildiğinde egzersiz bilgisi, kategori, açıklama, uygulama sürümü, dil ve rastgele bir cihaz kimliği iletilir. Lütfen ad, iletişim bilgisi veya tıbbi geçmişini ekleme."
           }
         },
         "de": {
@@ -28778,7 +28778,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yeni bir rapor göndermek için {time} sonrasını bekleyin."
+            "value": "Yeni bir rapor göndermek için {time} sonrasını bekle."
           }
         },
         "de": {
@@ -28813,7 +28813,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Günlük 3 rapor sınırına ulaştınız. {dateTime} sonrasında tekrar deneyin."
+            "value": "Günlük 3 rapor sınırına ulaştın. {dateTime} sonrasında tekrar dene."
           }
         },
         "de": {
@@ -28988,7 +28988,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Set tamamlanmasını geri al"
+            "value": "Tamamlanan seti geri al"
           }
         },
         "de": {
@@ -30110,7 +30110,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gerçek gelişim, toparlanma emeğinize denk olduğunda şekillenir. Derin uyuyun, onarım için beslenin ve vücudunuzun adapte olmasına izin verin."
+            "value": "Gerçek gelişim, toparlanma emeğine denk olduğunda şekillenir. Derin uyu, onarım için beslen ve vücudunun adapte olmasına izin ver."
           }
         },
         "de": {
@@ -30145,7 +30145,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dinlenme antrenmanın yokluğu değil, gelişimin katalizörüdür. Kaslarınıza onarılmaları ve güçlenmeleri için gereken zamanı tanıyın."
+            "value": "Dinlenme antrenmanın yokluğu değil, gelişimin katalizörüdür. Kaslarına onarılmaları ve güçlenmeleri için gereken zamanı tanı."
           }
         },
         "de": {
@@ -30180,7 +30180,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kaslar salonda değil, dinlenirken inşa edilir. Bugün geri adım atmak, yarın ağırlığa tam yoğunlukla girmenizi sağlar."
+            "value": "Kaslar salonda değil, dinlenirken inşa edilir. Bugün geri adım atmak, yarın ağırlığa tam yoğunlukla girmeni sağlar."
           }
         },
         "de": {
@@ -30215,7 +30215,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yorgunluk performansı perdeler. Merkezi sinir sisteminizin yenilenmesine izin vermek, ağır hacmi kalıcı güce dönüştürür."
+            "value": "Yorgunluk performansı perdeler. Merkezi sinir sisteminin yenilenmesine izin vermek, ağır hacmi kalıcı güce dönüştürür."
           }
         },
         "de": {
@@ -30285,7 +30285,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adaptasyon, seanslar arasındaki sessiz saatlerde gerçekleşir. Hidrasyonu koruyun, toparlanın ve vücudunuzu bir sonraki mücadeleye hazırlayın."
+            "value": "Adaptasyon, seanslar arasındaki sessiz saatlerde gerçekleşir. Bol su iç, toparlan ve vücudunu bir sonraki mücadeleye hazırla."
           }
         },
         "de": {
@@ -30320,7 +30320,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Büyüme, toparlanma disiplinle buluştuğunda gerçekleşir. Yeni antrenman haftasına kararlılıkla başlamak için bugün enerjinizi tazeleyin."
+            "value": "Büyüme, toparlanma disiplinle buluştuğunda gerçekleşir. Yeni antrenman haftasına kararlılıkla başlamak için bugün enerjini tazele."
           }
         },
         "de": {
@@ -30952,7 +30952,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "ÇEKİŞ"
+            "value": "ROW / KÜREK"
           }
         },
         "de": {
@@ -31197,7 +31197,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "KALF"
+            "value": "BALDIR"
           }
         },
         "de": {
@@ -34283,7 +34283,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İsteğe bağlı. İlk seçim başlangıç görünümünü belirler. Vurgusuz görsel için boş bırakın."
+            "value": "İsteğe bağlı. İlk seçim başlangıç görünümünü belirler. Vurgusuz görsel için boş bırak."
           }
         },
         "de": {
@@ -35578,7 +35578,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{weight} girdiniz (önceki en yüksek: {previous}). Bu değer doğru mu?"
+            "value": "{weight} girdin (önceki en yüksek: {previous}). Bu değer doğru mu?"
           }
         },
         "de": {
@@ -35613,7 +35613,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{weight} girdiniz. Bu olağandışı yüksek bir ağırlık. Bu değer doğru mu?"
+            "value": "{weight} girdin. Bu olağandışı yüksek bir ağırlık. Bu değer doğru mu?"
           }
         },
         "de": {
@@ -35928,7 +35928,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "GERÇEKLEŞEN TEKRAR"
+            "value": "YAPILAN TEKRAR"
           }
         },
         "de": {
@@ -37157,7 +37157,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu antrenmanı hiç set kaydetmeden bitirdiniz."
+            "value": "Bu antrenmanı hiç set kaydetmeden bitirdin."
           }
         },
         "de": {
@@ -37542,7 +37542,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenmanı başlatmadan önce lütfen en az bir egzersiz ekleyin."
+            "value": "Antrenmanı başlatmadan önce lütfen en az bir egzersiz ekle."
           }
         },
         "de": {
@@ -37997,7 +37997,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktif programı silemezsiniz."
+            "value": "Aktif programı silemezsin."
           }
         },
         "de": {
@@ -38242,7 +38242,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Size en uygun programı bulmak için 5 hızlı soruyu yanıtlayın"
+            "value": "Sana en uygun programı bulmak için 5 hızlı soruyu yanıtla"
           }
         },
         "de": {
@@ -38417,7 +38417,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Birincil hedefiniz nedir?"
+            "value": "Ana hedefin ne?"
           }
         },
         "de": {
@@ -38452,7 +38452,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Şu anda sizin için en önemli olan hedefi seçin."
+            "value": "Şu anda senin için en önemli olan hedefi seç."
           }
         },
         "de": {
@@ -38522,7 +38522,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kas büyümesini, dolgunluğunu ve fizik gelişimini maksimize edin."
+            "value": "Kas büyümesini, dolgunluğunu ve fizik gelişimini en üst düzeye çıkar."
           }
         },
         "de": {
@@ -38592,7 +38592,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vücut yağını azaltırken mevcut kas kütlenizi ve kondisyonunuzu koruyun."
+            "value": "Vücut yağını azaltırken mevcut kas kütleni ve kondisyonunu koru."
           }
         },
         "de": {
@@ -38627,7 +38627,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Saf Güç Kazan"
+            "value": "Kuvvetini Artır"
           }
         },
         "de": {
@@ -38662,7 +38662,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temel kaldırışlarda (squat, bench, deadlift) kaldırılan ağırlıkları artırın."
+            "value": "Temel kaldırışlarda (squat, bench, deadlift) kaldırdığın ağırlıkları artır."
           }
         },
         "de": {
@@ -38732,7 +38732,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kondisyonunuzu koruyun, sağlıklı kalın ve kalıcı bir antrenman rutini oluşturun."
+            "value": "Kondisyonunu koru, sağlıklı kal ve kalıcı bir antrenman rutini oluştur."
           }
         },
         "de": {
@@ -38767,7 +38767,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman tecrübeniz nedir?"
+            "value": "Antrenman tecrüben ne kadar?"
           }
         },
         "de": {
@@ -38802,7 +38802,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Egzersiz çeşitliliği ve set hacmini seviyenize göre ayarlayacağız."
+            "value": "Egzersiz çeşitliliğini ve set hacmini seviyene göre ayarlayacağız."
           }
         },
         "de": {
@@ -39047,7 +39047,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nerede antrenman yapacaksınız?"
+            "value": "Nerede antrenman yapacaksın?"
           }
         },
         "de": {
@@ -39082,7 +39082,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Düzenli olarak erişebildiğiniz ekipmanı seçin."
+            "value": "Düzenli olarak erişebildiğin ekipmanı seç."
           }
         },
         "de": {
@@ -39677,7 +39677,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Planınız hazır."
+            "value": "Planın hazır."
           }
         },
         "de": {
@@ -39712,7 +39712,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedeflerinize, ekipmanınıza ve zamanınıza göre en uygun program eşleştirildi."
+            "value": "Hedeflerine, ekipmanına ve zamanına göre en uygun program eşleştirildi."
           }
         },
         "de": {
@@ -40552,7 +40552,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedeğiniz bu cihazın iCloud hesabında saklanıyor. Hesabı Ayarlar → adınız bölümünden kontrol edebilirsiniz.\n\nDosyayı Dosyalar → Göz At → iCloud Drive → Forced Rep → CloudMirror → {file} yolunda bulabilirsiniz."
+            "value": "Yedeğin bu cihazın iCloud hesabında saklanıyor. Hesabı Ayarlar → adın bölümünden kontrol edebilirsin.\n\nDosyayı Dosyalar → Göz At → iCloud Drive → Forced Rep → CloudMirror → {file} yolunda bulabilirsin."
           }
         },
         "de": {
@@ -40622,7 +40622,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mevcut yedekleri ücretsiz geri yükleyin. Yedek kaydetmek için Premium gerekir."
+            "value": "Mevcut yedekleri ücretsiz geri yükle. Yedek kaydetmek için Premium gerekir."
           }
         },
         "de": {
@@ -40937,7 +40937,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bulut yedeği için Apple Hesabı ayarlarından iCloud Drive’ı açın."
+            "value": "Bulut yedeği için Apple Hesabı ayarlarından iCloud Drive’ı aç."
           }
         },
         "de": {
@@ -41077,7 +41077,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bulut yedeği kaydetmek için Forced Rep Premium gerekir. Mevcut yedekleri ücretsiz geri yükleyebilirsiniz."
+            "value": "Bulut yedeği kaydetmek için Forced Rep Premium gerekir. Mevcut yedekleri ücretsiz geri yükleyebilirsin."
           }
         },
         "de": {
@@ -41112,7 +41112,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yedek kaydetmeden önce otomatik eşitlemeyi açın."
+            "value": "Yedek kaydetmeden önce otomatik eşitlemeyi aç."
           }
         },
         "de": {
@@ -41182,7 +41182,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud yedekleri kontrol edilemedi. Bağlantınızı kontrol edip tekrar deneyin."
+            "value": "iCloud yedekleri kontrol edilemedi. Bağlantını kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -41217,7 +41217,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud yedeği indirilemedi. Bağlantınızı kontrol edip tekrar deneyin."
+            "value": "iCloud yedeği indirilemedi. Bağlantını kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -41252,7 +41252,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple hesabınız değişti. Bu cihazı mevcut hesaba yedeklemek için Şimdi Eşitle’yi kullanın."
+            "value": "Apple hesabın değişti. Bu cihazı mevcut hesaba yedeklemek için Şimdi Eşitle’yi kullan."
           }
         },
         "de": {
@@ -41287,7 +41287,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Daha yeni bir iCloud yedeği var. Geri yükleyin veya bu cihazın verilerini kaydetmek için Şimdi Eşitle’yi kullanın."
+            "value": "Daha yeni bir iCloud yedeği var. Geri yükle veya bu cihazın verilerini kaydetmek için Şimdi Eşitle’yi kullan."
           }
         },
         "de": {
@@ -41462,7 +41462,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programlarınızın ve geçmişinizin yerel kopyasını kaydeder. iCloud Drive kullanılabiliyorsa özel alanınıza da kopyalar; cihaz dışı yüklemeyi iCloud yönetir."
+            "value": "Programlarının ve geçmişinin yerel kopyasını kaydeder. iCloud Drive kullanılabiliyorsa özel alanına da kopyalar; cihaz dışı yüklemeyi iCloud yönetir."
           }
         },
         "de": {
@@ -41987,7 +41987,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu dosya okunamadı. Dosyayı kontrol edip tekrar deneyin."
+            "value": "Bu dosya okunamadı. Dosyayı kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -42022,7 +42022,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rapor gönderilemedi. Lütfen tekrar deneyin."
+            "value": "Rapor gönderilemedi. Lütfen tekrar dene."
           }
         },
         "de": {
@@ -42932,7 +42932,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dosya kaydedilemedi. Hedef konumu kontrol edip tekrar deneyin."
+            "value": "Dosya kaydedilemedi. Hedef konumu kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -42967,7 +42967,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dosya uygulanamadı. Dosyayı yeniden açıp önizlemeyi kontrol ederek tekrar deneyin."
+            "value": "Dosya uygulanamadı. Dosyayı yeniden açıp önizlemeyi kontrol ederek tekrar dene."
           }
         },
         "de": {
@@ -43037,7 +43037,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bağlantı açılamadı. Bir tarayıcının yüklü olduğundan emin olun."
+            "value": "Bağlantı açılamadı. Bir tarayıcının yüklü olduğundan emin ol."
           }
         },
         "de": {
@@ -43072,7 +43072,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman verileri kaydedilemedi. Mevcut verileriniz korundu. Boş depolama alanını kontrol edip tekrar deneyin."
+            "value": "Antrenman verileri kaydedilemedi. Mevcut verilerin korundu. Boş depolama alanını kontrol edip tekrar dene."
           }
         },
         "de": {
@@ -43142,7 +43142,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "1–100 karakterlik bir ad girin."
+            "value": "1–100 karakterlik bir ad gir."
           }
         },
         "de": {
@@ -43212,7 +43212,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her biri en fazla 500 karakter olan en çok 50 not kullanın."
+            "value": "Her biri en fazla 500 karakter olan en çok 50 not kullan."
           }
         },
         "de": {
@@ -43247,7 +43247,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her antrenman için farklı bir gün seçin."
+            "value": "Her antrenman için farklı bir gün seç."
           }
         },
         "de": {
@@ -43387,7 +43387,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En fazla 100 program kaydedebilirsiniz."
+            "value": "En fazla 100 program kaydedebilirsin."
           }
         },
         "de": {
@@ -43457,7 +43457,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Egzersiz hedeflerini, notları ve kas seçimlerini kontrol edin."
+            "value": "Egzersiz hedeflerini, notları ve kas seçimlerini kontrol et."
           }
         },
         "de": {
@@ -43527,7 +43527,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En fazla 3 geçerli video bağlantısı kullanın."
+            "value": "En fazla 3 geçerli video bağlantısı kullan."
           }
         },
         "de": {
@@ -43632,7 +43632,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu programda henüz egzersiz yok. Antrenmana başlamadan önce egzersiz ekleyin."
+            "value": "Bu programda henüz egzersiz yok. Antrenmana başlamadan önce egzersiz ekle."
           }
         },
         "de": {
@@ -43702,7 +43702,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Daha sonra devam etmek için taslağı saklayın veya değişiklikleri silin."
+            "value": "Daha sonra devam etmek için taslağı sakla veya değişiklikleri sil."
           }
         },
         "de": {
@@ -43842,7 +43842,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tamamlanmamış programınız geri yüklendi."
+            "value": "Tamamlanmamış programın geri yüklendi."
           }
         },
         "de": {
@@ -43877,7 +43877,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Düzenleme başladığından beri program değişti. Güncel sürümü incelemek için yeniden açın; taslağınız saklandı."
+            "value": "Düzenleme başladığından beri program değişti. Güncel sürümü incelemek için yeniden aç; taslağın saklandı."
           }
         },
         "de": {
@@ -45067,7 +45067,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu taslak önceki bir sürüme dayanıyor. Yeni program olarak saklayın veya güncel sürümü düzenlemek için taslağı silin."
+            "value": "Bu taslak önceki bir sürüme dayanıyor. Yeni program olarak sakla veya güncel sürümü düzenlemek için taslağı sil."
           }
         },
         "de": {
@@ -45907,7 +45907,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu setler nasıl hissettirdi?"
+            "value": "Bu setler nasıl geçti?"
           }
         },
         "de": {
@@ -46012,7 +46012,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yerinde"
+            "value": "Kararında"
           }
         },
         "de": {
@@ -46502,7 +46502,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Salonundaki dambıllar arasındaki en küçük ağırlık farkı; Akıllı İlerleme hedeflerinde kullanılır"
+            "value": "Salonundaki dambıllar arasındaki en küçük ağırlık farkı; İlerleme Koçu hedeflerinde kullanılır"
           }
         },
         "de": {
@@ -46607,7 +46607,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu ayar Akıllı İlerleme’nin bir parçasıdır ve Premium ile kullanılabilir."
+            "value": "Bu ayar İlerleme Koçu’nun bir parçasıdır ve Premium ile kullanılabilir."
           }
         },
         "de": {
@@ -46642,7 +46642,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu ayar Isınma & Plakalar’ın bir parçasıdır ve Premium ile kullanılabilir."
+            "value": "Bu ayar Isınma ve Plaka Hesabı’nın bir parçasıdır ve Premium ile kullanılabilir."
           }
         },
         "de": {
@@ -46677,7 +46677,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep'e hoş geldiniz"
+            "value": "Forced Rep'e hoş geldin"
           }
         },
         "de": {
@@ -46852,7 +46852,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programlarınızı ve antrenman geçmişinizi başka bir telefondan geri getirin."
+            "value": "Programlarını ve antrenman geçmişini başka bir telefondan geri getir."
           }
         },
         "de": {
@@ -46922,7 +46922,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dosyalarınızda kayıtlı bir Forced Rep yedeği."
+            "value": "Dosyalarında kayıtlı bir Forced Rep yedeği."
           }
         },
         "de": {
@@ -46992,7 +46992,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep'in iCloud'unuzda tuttuğu yedek."
+            "value": "Forced Rep'in iCloud'unda tuttuğu yedek."
           }
         },
         "de": {
@@ -47027,7 +47027,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hangi günler antrenman yapabilirsiniz?"
+            "value": "Hangi günler antrenman yapabilirsin?"
           }
         },
         "de": {
@@ -47062,7 +47062,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haftada kaç gün çalışacağınızı seçin, sonra günleri haftanıza göre ayarlayın."
+            "value": "Haftada kaç gün çalışacağını seç, sonra günleri haftana göre ayarla."
           }
         },
         "de": {
@@ -47517,7 +47517,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu örnek veriydi. Premium ile {feature} kendi kayıtlı setlerinizi kullanır."
+            "value": "Bu örnek veriydi. Premium ile {feature} kendi kayıtlı setlerini kullanır."
           }
         },
         "de": {
@@ -47552,7 +47552,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman günleriniz"
+            "value": "Antrenman günlerin"
           }
         },
         "de": {
@@ -47587,7 +47587,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her kutu bu haftaki bir antrenman günü. O antrenmanı görmek için birine dokunun."
+            "value": "Her kutu bu haftaki bir antrenman günü. O antrenmanı görmek için birine dokun."
           }
         },
         "de": {
@@ -47622,7 +47622,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her kutu bu haftaki bir antrenman günü. O antrenmanı görmek için birine dokunun ya da diğer günler için kaydırın."
+            "value": "Her kutu bu haftaki bir antrenman günü. O antrenmanı görmek için birine dokun ya da diğer günler için kaydır."
           }
         },
         "de": {
@@ -47972,7 +47972,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenmanınız"
+            "value": "Antrenmanın"
           }
         },
         "de": {
@@ -48007,7 +48007,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vurgulanan kaslar bu antrenmanın neyi çalıştırdığını gösterir. {start} düğmesi setlerinizi kaydetmeye başlar."
+            "value": "Vurgulanan kaslar bu antrenmanın neyi çalıştırdığını gösterir. {start} düğmesi setlerini kaydetmeye başlar."
           }
         },
         "de": {
@@ -48042,7 +48042,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vurgulanan kaslar bu antrenmanın neyi çalıştırdığını gösterir; {front} ve {back} görünümü değiştirir. {start} düğmesi setlerinizi kaydetmeye başlar."
+            "value": "Vurgulanan kaslar bu antrenmanın neyi çalıştırdığını gösterir; {front} ve {back} görünümü değiştirir. {start} düğmesi setlerini kaydetmeye başlar."
           }
         },
         "de": {
@@ -48112,7 +48112,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu gün için planlanmış bir şey yok. Antrenmanını görmek için yukarıdan bir antrenman gününe dokunun."
+            "value": "Bu gün için planlanmış bir şey yok. Antrenmanını görmek için yukarıdan bir antrenman gününe dokun."
           }
         },
         "de": {
@@ -48147,7 +48147,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haftanız"
+            "value": "Haftan"
           }
         },
         "de": {
@@ -48182,7 +48182,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Planınıza göre tamamlanan antrenmanlar; bu haftanın hacmi, aktif süresi ve rekorlarıyla birlikte."
+            "value": "Planına göre tamamlanan antrenmanlar; bu haftanın hacmi, aktif süresi ve rekorlarıyla birlikte."
           }
         },
         "de": {
@@ -48252,7 +48252,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günün antrenmanındaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini açın."
+            "value": "Bu günün antrenmanındaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini aç."
           }
         },
         "de": {
@@ -48322,7 +48322,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programınız için {plan}, egzersiz rehberi için {library}, kaydettiğiniz antrenmanlar için {progress} bölümünü kullanın."
+            "value": "Programın için {plan}, egzersiz rehberi için {library}, kaydettiğin antrenmanlar için {progress} bölümünü kullan."
           }
         },
         "de": {
@@ -48357,7 +48357,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haftanız"
+            "value": "Haftan"
           }
         },
         "de": {
@@ -48392,7 +48392,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktif programınızın yedi günü. {home} sayfasında açmak için bir antrenman gününe dokunun."
+            "value": "Aktif programının yedi günü. {home} sayfasında açmak için bir antrenman gününe dokun."
           }
         },
         "de": {
@@ -48427,7 +48427,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Başka bir programa geçin, kendi programınızı oluşturun ya da bir program içe aktarın."
+            "value": "Başka bir programa geç, kendi programını oluştur ya da bir program içe aktar."
           }
         },
         "de": {
@@ -48497,7 +48497,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ada ya da yaygın bir takma ada göre arayın. Yanındaki düğme kart ve liste görünümü arasında geçiş yapar."
+            "value": "Ada ya da yaygın bir takma ada göre ara. Yanındaki düğme kart ve liste görünümü arasında geçiş yapar."
           }
         },
         "de": {
@@ -48567,7 +48567,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Listeyi ekipmana ya da kasa göre daraltın."
+            "value": "Listeyi ekipmana ya da kasa göre daralt."
           }
         },
         "de": {
@@ -48637,7 +48637,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gösterimi, kasları, tekniği ve o egzersizdeki geçmişiniz için herhangi bir egzersizi açın."
+            "value": "Gösterimi, kasları, tekniği ve o egzersizdeki geçmişin için herhangi bir egzersizi aç."
           }
         },
         "de": {
@@ -48777,7 +48777,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{technique} sekmesinde ipuçları ve kaçınılacak hatalar var. {history} sekmesi bu egzersizde kaydettiğiniz her seti gösterir."
+            "value": "{technique} sekmesinde ipuçları ve kaçınılacak hatalar var. {history} sekmesi bu egzersizde kaydettiğin her seti gösterir."
           }
         },
         "de": {
@@ -48812,7 +48812,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kaydettiğiniz her antrenman burada görünür. Ne yaptığınızı görmek için bir güne dokunun."
+            "value": "Kaydettiğin her antrenman burada görünür. Ne yaptığını görmek için bir güne dokun."
           }
         },
         "de": {
@@ -48882,7 +48882,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini maksimumlar, zaman içindeki güç ve antrenmanınızın dağılımı."
+            "value": "Tahmini maksimumlar, zaman içindeki güç ve antrenmanının dağılımı."
           }
         },
         "de": {
@@ -48917,7 +48917,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programlarınız"
+            "value": "Programların"
           }
         },
         "de": {
@@ -48952,7 +48952,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Etkinleştirmek için bir programa dokunun. Menüsünden düzenleyebilir, kopyalayabilir, paylaşabilir ya da silebilirsiniz."
+            "value": "Etkinleştirmek için bir programa dokun. Menüsünden düzenleyebilir, kopyalayabilir, paylaşabilir ya da silebilirsin."
           }
         },
         "de": {
@@ -49022,7 +49022,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sıfırdan ya da bir şablondan program oluşturun veya bir program dosyası içe aktarın."
+            "value": "Sıfırdan ya da bir şablondan program oluştur veya bir program dosyası içe aktar."
           }
         },
         "de": {
@@ -49092,7 +49092,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geçmek için bir egzersize dokunun. Gösterimi için geçerli egzersize yeniden dokunun."
+            "value": "Geçmek için bir egzersize dokun. Gösterimi için geçerli egzersize yeniden dokun."
           }
         },
         "de": {
@@ -49127,7 +49127,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Setlerinizi kaydedin"
+            "value": "Setlerini kaydet"
           }
         },
         "de": {
@@ -49162,7 +49162,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ağırlığı {weight_unit} cinsinden ve tekrar sayısını girip seti işaretleyerek kaydedin. Dinlenme sayacı setler veya süperset turları arasında çalışır. {weight_unit} size uygun değilse ağırlık birimini uygulama ayarlarından değiştirebilirsiniz."
+            "value": "Ağırlığı {weight_unit} cinsinden ve tekrar sayısını girip seti işaretleyerek kaydet. Dinlenme sayacı setler veya süperset turları arasında çalışır. {weight_unit} sana uygun değilse ağırlık birimini uygulama ayarlarından değiştirebilirsin."
           }
         },
         "de": {
@@ -49197,7 +49197,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bitirdiğinizde antrenmanı buradan gözden geçirip kaydedin."
+            "value": "Bitirdiğinde antrenmanı buradan gözden geçirip kaydet."
           }
         },
         "de": {
@@ -49407,7 +49407,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seçin."
+            "value": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seç."
           }
         },
         "de": {
@@ -49477,7 +49477,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Önceki haftalara dönün ya da programınızın öngördüğü hacmi görmek için {cycle} görünümüne geçin."
+            "value": "Önceki haftalara dön ya da programının öngördüğü hacmi görmek için {cycle} görünümüne geç."
           }
         },
         "de": {
@@ -49512,7 +49512,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab, en iyi setlerinizden farklı tekrar sayılarında kaldırabileceğiniz ağırlıkları tahmin eder."
+            "value": "Rep Lab, en iyi setlerinden farklı tekrar sayılarında kaldırabileceğin ağırlıkları tahmin eder."
           }
         },
         "de": {
@@ -49547,7 +49547,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her hareketin tahmini maksimumunu antrenmandan antrenmana izleyin."
+            "value": "Her hareketin tahmini maksimumunu antrenmandan antrenmana izle."
           }
         },
         "de": {
@@ -49582,7 +49582,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtişi çekişle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştırın."
+            "value": "İtişi çekişle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştır."
           }
         },
         "de": {
@@ -49722,7 +49722,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dinlenmenizi geri sayar. Süre eklemek, duraklatmak ya da sesini kapatmak için açın; sonraki sete geçmek için {skip} düğmesini kullanın."
+            "value": "Dinlenmeni geri sayar. Süre eklemek, duraklatmak ya da sesini kapatmak için aç; sonraki sete geçmek için {skip} düğmesini kullan."
           }
         },
         "de": {
@@ -52456,7 +52456,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vücut ağırlığı eğilimi"
+            "value": "Kilo trendi"
           }
         },
         "de": {
@@ -52526,7 +52526,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eğilim"
+            "value": "Trend"
           }
         },
         "de": {
@@ -52666,7 +52666,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eğilimi görmek için vücut ağırlığını kaydet."
+            "value": "Trendi görmek için vücut ağırlığını kaydet."
           }
         },
         "de": {
@@ -52771,7 +52771,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 90 gündeki vücut ağırlığı: noktalar tartılar, çizgi eğilimdir."
+            "value": "Son 90 gündeki vücut ağırlığı: noktalar tartımlar, çizgi trenddir."
           }
         },
         "de": {
@@ -52841,7 +52841,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 90 gündeki en iyi tahmini 1TM’nin vücut ağırlığı eğilimine bölümü."
+            "value": "Son 90 gündeki en iyi tahmini 1RM’nin kilo trendine bölümü."
           }
         },
         "de": {
@@ -52911,7 +52911,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini 1TM {weight}"
+            "value": "Tahmini 1RM {weight}"
           }
         },
         "de": {
@@ -53016,7 +53016,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Premium; vücut ağırlığı eğilimini, haftalık değişimi ve göreli gücü gösterir."
+            "value": "Premium; kilo trendini, haftalık değişimi ve göreli gücü gösterir."
           }
         },
         "de": {
@@ -53051,7 +53051,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eğilimlerin kilidini aç"
+            "value": "Trendlerin kilidini aç"
           }
         },
         "de": {
@@ -53156,7 +53156,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vücut Eğilimleri"
+            "value": "Kilo Trendi"
           }
         },
         "de": {
@@ -53191,7 +53191,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yumuşatılmış vücut ağırlığı eğilimi, haftalık değişim, ölçü değişimleri ve göreli güç."
+            "value": "Günlük dalgalanmalardan arındırılmış kilo trendi, haftalık değişim, ölçü değişimleri ve göreli güç."
           }
         },
         "de": {
@@ -53226,7 +53226,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vücut ağırlığı kaydından eğilimler"
+            "value": "Kilo kaydından trendler"
           }
         },
         "de": {
@@ -53401,7 +53401,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eğilim ve göreli güç"
+            "value": "Kilo trendi ve vücut ağırlığına göre güç"
           }
         },
         "de": {
@@ -61381,7 +61381,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Strong veya Hevy CSV dışa aktarımından antrenman geçmişinizi getirin. Hiçbir şey kaydedilmeden önce neyin aktarılacağını görürsünüz."
+            "value": "Strong veya Hevy CSV dışa aktarımından antrenman geçmişini getir. Hiçbir şey kaydedilmeden önce neyin aktarılacağını görürsün."
           }
         },
         "de": {
@@ -61766,7 +61766,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu dışa aktarım ağırlık birimini belirtmiyor. {source} uygulamasında kullandığınız birimi seçin."
+            "value": "Bu dışa aktarım ağırlık birimini belirtmiyor. {source} uygulamasında kullandığın birimi seç."
           }
         },
         "de": {
@@ -61941,7 +61941,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bunlar Forced Rep'te kaydettiğiniz antrenmanlarla çakışıyor."
+            "value": "Bunlar Forced Rep'te kaydettiğin antrenmanlarla çakışıyor."
           }
         },
         "de": {
@@ -62606,7 +62606,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dosya UTF-8 metin değil. Strong veya Hevy'den yeniden dışa aktarın."
+            "value": "Dosya UTF-8 metin değil. Strong veya Hevy'den yeniden dışa aktar."
           }
         },
         "de": {
@@ -63341,7 +63341,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geçmişi içe aktarmadan önce mevcut antrenmanı bitirin veya silin."
+            "value": "Geçmişi içe aktarmadan önce mevcut antrenmanı bitir veya sil."
           }
         },
         "de": {
@@ -63411,7 +63411,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu antrenmanlar zaten geçmişinizde."
+            "value": "Bu antrenmanlar zaten geçmişinde."
           }
         },
         "de": {
@@ -63761,7 +63761,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden deneyin."
+            "value": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden dene."
           }
         },
         "de": {
@@ -64286,7 +64286,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu antrenmanın adı ve başlangıç dakikası, ayrıntıları farklı bir antrenmanla aynı. İçe aktarmadan önce kaynak geçmişi gözden geçirin."
+            "value": "Bu antrenmanın adı ve başlangıç dakikası, ayrıntıları farklı bir antrenmanla aynı. İçe aktarmadan önce kaynak geçmişi gözden geçir."
           }
         },
         "de": {
@@ -64321,7 +64321,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu satır dışa aktarılan bir set numarasını ve değerlerini tekrarlıyor. Satırları birleştirmeden özgün geçmişi yeniden dışa aktarın."
+            "value": "Bu satır dışa aktarılan bir set numarasını ve değerlerini tekrarlıyor. Satırları birleştirmeden özgün geçmişi yeniden dışa aktar."
           }
         },
         "de": {
@@ -64881,7 +64881,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Derin merkez kasları"
+            "value": "Derin karın kasları"
           }
         },
         "de": {
@@ -64916,7 +64916,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Derin merkez kasları"
+            "value": "Derin karın kasları"
           }
         },
         "de": {
@@ -64951,7 +64951,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Derin merkez kasları"
+            "value": "Derin karın kasları"
           }
         },
         "de": {
