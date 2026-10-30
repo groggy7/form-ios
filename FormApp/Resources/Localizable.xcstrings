@@ -28422,31 +28422,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You've sent 3 reports in the last 24 hours. You can send another after {dateTime}."
+            "value": "You've sent 3 reports today. You can send another after {dateTime}."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 24 saatte 3 rapor gönderdiniz. {dateTime} sonrasında yeni bir rapor gönderebilirsiniz."
+            "value": "Bugün 3 rapor gönderdiniz. {dateTime} sonrasında yeni bir rapor gönderebilirsiniz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du hast in den letzten 24 Stunden 3 Berichte gesendet. Nach {dateTime} kannst du einen weiteren senden."
+            "value": "Du hast heute 3 Berichte gesendet. Nach {dateTime} kannst du einen weiteren senden."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous avez envoyé 3 rapports au cours des dernières 24 heures. Vous pouvez en envoyer un autre après {dateTime}."
+            "value": "Vous avez envoyé 3 rapports aujourd'hui. Vous pouvez en envoyer un autre après {dateTime}."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Has enviado 3 informes en las últimas 24 horas. Puedes enviar otro después de {dateTime}."
+            "value": "Has enviado 3 informes hoy. Puedes enviar otro después de {dateTime}."
           }
         }
       }
@@ -28492,31 +28492,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Remaining in 24h: {remaining} of 3"
+            "value": "Remaining today: {remaining} of 3"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "24 saatlik kalan hak: {remaining} / 3"
+            "value": "Bugün kalan hak: {remaining} / 3"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verbleibend in 24 Stunden: {remaining} von 3"
+            "value": "Heute verbleibend: {remaining} von 3"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Restants sur 24 h : {remaining} sur 3"
+            "value": "Restants aujourd'hui : {remaining} sur 3"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Restantes en 24 h: {remaining} de 3"
+            "value": "Restantes hoy: {remaining} de 3"
           }
         }
       }
@@ -28807,31 +28807,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You've reached 3 reports in 24 hours. Try again at {dateTime}."
+            "value": "You've reached 3 reports today. Try again at {dateTime}."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 24 saatteki 3 rapor sınırına ulaştınız. {dateTime} sonrasında tekrar deneyin."
+            "value": "Günlük 3 rapor sınırına ulaştınız. {dateTime} sonrasında tekrar deneyin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du hast in 24 Stunden 3 Meldungen gesendet. Versuche es ab {dateTime} erneut."
+            "value": "Du hast heute 3 Meldungen gesendet. Versuche es ab {dateTime} erneut."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous avez atteint 3 rapports en 24 heures. Réessayez après {dateTime}."
+            "value": "Vous avez atteint la limite de 3 rapports aujourd'hui. Réessayez après {dateTime}."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Has llegado a 3 informes en 24 horas. Vuelve a intentarlo después de {dateTime}."
+            "value": "Has llegado al límite de 3 informes hoy. Vuelve a intentarlo después de {dateTime}."
           }
         }
       }
