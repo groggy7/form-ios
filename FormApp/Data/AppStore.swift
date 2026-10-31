@@ -770,6 +770,8 @@ public final class AppStore: ObservableObject {
             } else {
                 updatedCal = WorkoutCalendar.remove(history: cal, id: "session:\(updated.id)")
             }
+            // Most edits leave the day unchanged; saving would re-encode every program per keystroke.
+            guard updatedCal != cal else { return }
             var nextSt = state
             nextSt.calendarHistory = updatedCal
             saveState(nextSt)
