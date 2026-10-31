@@ -25,6 +25,7 @@ public final class AppStore: ObservableObject {
     private let showProgressionTargetsKey = "show_progression_targets"
     private let showIntensityTechniquesKey = "show_intensity_techniques"
     private let jointStressRatingsKey = "joint_stress_ratings"
+    private let recordWatchWorkoutsKey = "record_watch_workouts"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
     private static let dumbbellStepLbsKey = "progression_dumbbell_step_lbs"
     private static let machineStepKgKey = "progression_machine_step_kg"
@@ -77,6 +78,8 @@ public final class AppStore: ObservableObject {
     @Published public var socialShareRequest: SocialShareRequest?
     /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
     @Published public var jointStressRatings: Bool
+    /// Starts the Apple Watch app with each workout and records it in Apple Health there (docs/apple-watch.md).
+    @Published public var recordWatchWorkouts: Bool
     /// Reference day tiles are the default; switching off retains the optional Calm material.
     @Published public var homeGlowTiles: Bool
     /// Progress calendar style: lit tiles by default; switching off restores the classic satin pills.
@@ -223,6 +226,7 @@ public final class AppStore: ObservableObject {
         self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
+        self.recordWatchWorkouts = UserDefaults.standard.object(forKey: recordWatchWorkoutsKey) as? Bool ?? true
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
         self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? true
         self.sessionStripCollapsed = UserDefaults.standard.bool(forKey: sessionStripCollapsedKey)
@@ -414,6 +418,10 @@ public final class AppStore: ObservableObject {
         $jointStressRatings
             .dropFirst()
             .sink { [jointStressRatingsKey] in UserDefaults.standard.set($0, forKey: jointStressRatingsKey) }
+            .store(in: &cancellables)
+        $recordWatchWorkouts
+            .dropFirst()
+            .sink { [recordWatchWorkoutsKey] in UserDefaults.standard.set($0, forKey: recordWatchWorkoutsKey) }
             .store(in: &cancellables)
 
         $homeGlowTiles

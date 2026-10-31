@@ -27,6 +27,17 @@ struct WatchSnapshot: Codable, Equatable {
     var access: Access
     /// Nil without an active workout, and always nil while locked.
     var session: Session?
+    /// The iPhone setting that records each workout as an Apple Health workout on the watch.
+    var recordsWorkouts: Bool? = nil
+    /// The iPhone's last workout that ended, so the watch saves or discards its Health workout to match.
+    var finished: Finished? = nil
+
+    struct Finished: Codable, Equatable {
+        var sessionId: String
+        /// Saved to history (completed or unfinished); false when discarded.
+        var saved: Bool
+        var endedAt: Int64
+    }
 
     struct Session: Codable, Equatable {
         var id: String
@@ -119,5 +130,40 @@ struct WatchCommand: Codable, Equatable, Identifiable {
         case .completeSet, .undoSet, .selectExercise: return true
         case .pauseRest, .resumeRest, .addRest, .skipRest, .refresh: return false
         }
+    }
+}
+
+/// The watch's Apple Health workout, as the planner sees it.
+struct RunningWorkout: Equatable {
+    /// The iPhone workout it records; nil while a workout started from the iPhone waits for its first snapshot.
+    var sessionId: String?
+    var startedAt: Int64
+}
+
+/// One change to the watch's Apple Health workout (docs/apple-watch.md, phase 2). The watch applies one step,
+/// then asks again, so a workout that ends and another that starts take two steps.
+enum WatchWorkoutStep: Equatable {
+    case start(sessionId: String)
+    /// Ties a workout the iPhone started before any snapshot arrived to that snapshot's workout.
+    case adopt(sessionId: String)
+    /// Saves the Health workout when the iPhone saved its workout, and discards it otherwise.
+    case finish(save: Bool, endedAt: Int64?)
+}
+
+extension WatchSnapshot {
+    /// - Parameter skipped: workouts the watch could not record, for example without Health access; never retried.
+    func workoutStep(running: RunningWorkout?, skipped: Set<String>) -> WatchWorkoutStep? {
+        if let running {
+            if let finished, finished.sessionId == running.sessionId || (running.sessionId == nil && finished.endedAt >= running.startedAt) {
+                return .finish(save: finished.saved, endedAt: finished.endedAt)
+            }
+            guard let id = running.sessionId else { return session.map { .adopt(sessionId: $0.id) } }
+            if access == .premium, session?.id == id { return nil }
+            // Its workout ended without word from the iPhone (cleared data or Premium ended): write nothing.
+            return .finish(save: false, endedAt: nil)
+        }
+        guard access == .premium, recordsWorkouts == true, let session, finished?.sessionId != session.id,
+              !skipped.contains(session.id) else { return nil }
+        return .start(sessionId: session.id)
     }
 }

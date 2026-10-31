@@ -67,9 +67,13 @@ struct SetPage: View {
                     .foregroundStyle(WatchColors.text)
                     .lineLimit(2)
                     .minimumScaleFactor(0.8)
-                Text(set.isWarmup ? store.t("watch.warmup") : store.t("watch.set", ["number": set.number, "count": workingCount]))
-                    .font(.caption2)
-                    .foregroundStyle(WatchColors.purple)
+                HStack {
+                    Text(set.isWarmup ? store.t("watch.warmup") : store.t("watch.set", ["number": set.number, "count": workingCount]))
+                        .font(.caption2)
+                        .foregroundStyle(WatchColors.purple)
+                    Spacer(minLength: 4)
+                    HeartRateLabel(store: store)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

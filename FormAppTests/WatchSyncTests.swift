@@ -171,6 +171,61 @@ final class WatchSyncTests: XCTestCase {
         XCTAssertNil(apply(command(.skipRest, set: "b1"), to: draft()), "No rest")
     }
 
+    // MARK: Apple Health workout (phase 2)
+
+    private func record(completedAt: String, sets: Int = 1) -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: "s", programId: "p", workoutId: "w", workoutTitle: "Push", startedAt: "2026-10-31T10:00:00.000Z",
+                             completedAt: completedAt, durationSeconds: 1800, totalCompletedSets: sets)
+    }
+
+    func testFinishedMarkerTellsASaveFromADiscard() {
+        let saved = record(completedAt: "2026-10-31T10:30:00.000Z")
+        let savedAt = Int64(WorkoutCalendar.parseIsoTimestamp(saved.completedAt)!.timeIntervalSince1970 * 1000)
+        XCTAssertEqual(WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: nil, history: [saved], now: now),
+                       WatchSnapshot.Finished(sessionId: "s", saved: true, endedAt: savedAt))
+        XCTAssertEqual(WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: nil, history: [], now: now),
+                       WatchSnapshot.Finished(sessionId: "s", saved: false, endedAt: now), "Discarded")
+        XCTAssertFalse(WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: saved, history: [saved], now: now).saved,
+                       "A resumed workout that is discarded leaves its earlier record")
+        XCTAssertTrue(WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: saved, history: [record(completedAt: "2026-10-31T11:00:00.000Z", sets: 2)],
+                                                    now: now).saved, "Saving a resumed workout changes its record")
+        let future = record(completedAt: "2099-01-01T00:00:00.000Z")
+        XCTAssertEqual(WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: nil, history: [future], now: now).endedAt, now)
+    }
+
+    func testWorkoutPlanStartsAdoptsAndEndsWithTheIphoneWorkout() {
+        let active = WatchSnapshotBuilder.build(draft: draft(), unit: .kg, language: "en", isPremium: true, steps: steps,
+                                                recordsWorkouts: true, now: now)
+        XCTAssertEqual(active.workoutStep(running: nil, skipped: []), .start(sessionId: "s"))
+        var off = active
+        off.recordsWorkouts = false
+        XCTAssertNil(off.workoutStep(running: nil, skipped: []), "The iPhone setting is off")
+        XCTAssertNil(snapshot(draft(), premium: false).workoutStep(running: nil, skipped: []), "Locked")
+        XCTAssertNil(active.workoutStep(running: nil, skipped: ["s"]), "Health access was declined for it")
+
+        let launched = RunningWorkout(sessionId: nil, startedAt: now)
+        XCTAssertEqual(active.workoutStep(running: launched, skipped: []), .adopt(sessionId: "s"))
+        var idle = WatchSnapshotBuilder.build(draft: nil, unit: .kg, language: "en", isPremium: true, steps: steps, recordsWorkouts: true,
+                                              finished: WatchSnapshot.Finished(sessionId: "old", saved: true, endedAt: now - 60_000), now: now)
+        XCTAssertNil(idle.workoutStep(running: launched, skipped: []), "Waits for its workout; an older one's end is not its own")
+        idle.finished = WatchSnapshot.Finished(sessionId: "quick", saved: false, endedAt: now + 5_000)
+        XCTAssertEqual(idle.workoutStep(running: launched, skipped: []), .finish(save: false, endedAt: now + 5_000),
+                       "Discarded before its first snapshot arrived")
+
+        let recording = RunningWorkout(sessionId: "s", startedAt: now)
+        XCTAssertNil(active.workoutStep(running: recording, skipped: []))
+        var done = idle
+        done.finished = WatchSnapshot.Finished(sessionId: "s", saved: true, endedAt: now + 1_800_000)
+        XCTAssertEqual(done.workoutStep(running: recording, skipped: []), .finish(save: true, endedAt: now + 1_800_000))
+        done.finished = nil
+        XCTAssertEqual(done.workoutStep(running: recording, skipped: []), .finish(save: false, endedAt: nil),
+                       "Its workout vanished without word from the iPhone")
+        XCTAssertEqual(snapshot(draft(), premium: false).workoutStep(running: recording, skipped: []), .finish(save: false, endedAt: nil))
+        var next = active
+        next.finished = WatchSnapshot.Finished(sessionId: "s", saved: true, endedAt: now)
+        XCTAssertNil(next.workoutStep(running: nil, skipped: []), "A workout that already ended is not started again")
+    }
+
     func testRestTransitionsMatchTheWorkoutScreen() {
         let rest = RestTimerState(exerciseName: "Bench", totalSeconds: 60, isRunning: true, endsAtEpochMillis: now + 20_000)
         XCTAssertEqual(rest.adjusted(by: 30, nowEpochMillis: now).totalSeconds, 60, "50 s remain, within the original total")

@@ -86,6 +86,8 @@ final class WatchStore: NSObject, ObservableObject, WCSessionDelegate {
             guard awaitingReply == nil, incoming.revision >= lastCommandAt, incoming.revision >= (snapshot?.revision ?? 0) else { return }
         }
         set(incoming)
+        // Only the iPhone's own snapshots move the Health workout; a cached or guessed one never starts it.
+        WorkoutRecorder.shared.update(for: incoming)
     }
 
     private func set(_ next: WatchSnapshot) {
@@ -95,14 +97,16 @@ final class WatchStore: NSObject, ObservableObject, WCSessionDelegate {
         scheduleRestEnd()
     }
 
-    /// A rest that ends while the app is in front taps the wrist; otherwise the iPhone's notification is the alert.
+    /// A rest that ends while the app is in front, or while it records a Health workout, taps the wrist;
+    /// otherwise the iPhone's notification is the alert.
     private func scheduleRestEnd() {
         restEndTimer?.invalidate()
         guard let rest = session?.rest, rest.isRunning, let end = rest.endsAt, end > WatchSync.nowMillis() else { return }
         let timer = Timer(fire: Date(timeIntervalSince1970: Double(end) / 1000), interval: 0, repeats: false) { [weak self] _ in
             guard let self, var current = self.session, current.rest == rest else { return }
             // A timer that fires late, as the app returns, does not tap for a rest that ended long ago.
-            if WatchSync.nowMillis() - end < 3000, WKApplication.shared().applicationState == .active {
+            if WatchSync.nowMillis() - end < 3000,
+               WKApplication.shared().applicationState == .active || WorkoutRecorder.shared.isRecording {
                 WKInterfaceDevice.current().play(.notification)
             }
             current.rest = nil

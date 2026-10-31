@@ -12,6 +12,7 @@
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
+		08E598A08DCBF8484C4CCEB9 /* WorkoutRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB933CE72743E0DB762A249 /* WorkoutRecorder.swift */; };
 		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
@@ -117,6 +118,7 @@
 		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
 		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
 		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
+		C4E403A767A6FEA37E58A25E /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1A8164C21EAD37CD1950100 /* InfoPlist.xcstrings */; };
 		C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */; };
 		C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */; };
 		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
@@ -282,6 +284,7 @@
 		53F83778D712B708C519860F /* 06_athletic_performance.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 06_athletic_performance.json; sourceTree = "<group>"; };
 		59698B516FEB62A85A77468E /* SocialCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests/SocialCardsTests.swift; sourceTree = SOURCE_ROOT; };
 		5F5CFF3B812D4D36B51EE587 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5FB933CE72743E0DB762A249 /* WorkoutRecorder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorkoutRecorder.swift; sourceTree = "<group>"; };
 		5FDB776F7C560B9D033E151E /* WatchStrings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchStrings.swift; sourceTree = "<group>"; };
 		60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Models/SocialCards.swift; sourceTree = SOURCE_ROOT; };
 		64EC7FECC3025404609CAC61 /* FormWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormWatchApp.swift; sourceTree = "<group>"; };
@@ -293,6 +296,7 @@
 		7313EB1A985DE2618624D1C3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76805C2F08B45E364BEF8AB9 /* form_set_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_complete.wav; sourceTree = "<group>"; };
 		77203A709542614D89DFF819 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7B39DC6C005ACEFA26F8D15B /* FormWatch.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = FormWatch.entitlements; sourceTree = "<group>"; };
 		829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionUtils.swift; sourceTree = "<group>"; };
 		8F9D49F60A156CF9D9EC2925 /* FormWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FormWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
@@ -332,6 +336,7 @@
 		AI0000000000000000000005 /* LifetimePaywallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywallTests.swift; sourceTree = "<group>"; };
 		B08C92EC1680CB75F1D27FDE /* WatchColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchColors.swift; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		B1A8164C21EAD37CD1950100 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestWidget.swift; sourceTree = "<group>"; };
 		B877632D9E711DF4D1BB888F /* RecordEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Models/RecordEngine.swift; sourceTree = SOURCE_ROOT; };
 		BABA00000000000000000001 /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data/ReviewPrompt.swift; sourceTree = "<group>"; };
@@ -470,6 +475,8 @@
 				4F23A29077521D35B98962BC /* Views */,
 				7313EB1A985DE2618624D1C3 /* Info.plist */,
 				6D6A004F2EDA3E53BCEFAAF6 /* Resources */,
+				5FB933CE72743E0DB762A249 /* WorkoutRecorder.swift */,
+				7B39DC6C005ACEFA26F8D15B /* FormWatch.entitlements */,
 			);
 			name = FormWatch;
 			path = FormWatch;
@@ -664,6 +671,7 @@
 			children = (
 				02EE77A6A64E55AF6343B32B /* Assets.xcassets */,
 				BAFBBCFD438458B3CD95A318 /* Localizable.xcstrings */,
+				B1A8164C21EAD37CD1950100 /* InfoPlist.xcstrings */,
 			);
 			name = Resources;
 			path = Resources;
@@ -1021,6 +1029,7 @@
 			files = (
 				7BA91B7F36130D7B7D9BD771 /* Assets.xcassets in Resources */,
 				F9CBEE26096DE86716477AAA /* Localizable.xcstrings in Resources */,
+				C4E403A767A6FEA37E58A25E /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1239,6 +1248,7 @@
 				CE1DE50C21C8ABE0C992F033 /* RestPage.swift in Sources */,
 				B663BD2A9F31F59A7FA64A9E /* ExercisesPage.swift in Sources */,
 				7E4A44F244ABBBD9E9B416AF /* WatchSync.swift in Sources */,
+				08E598A08DCBF8484C4CCEB9 /* WorkoutRecorder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1477,6 +1487,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FormWatch/FormWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D38SU6U4FN;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1568,6 +1579,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FormWatch/FormWatch.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D38SU6U4FN;
 				GENERATE_INFOPLIST_FILE = NO;

@@ -77,3 +77,22 @@ struct MessagePage: View {
         }
     }
 }
+
+/// The live heart rate while a Health workout records. Neutral text color: red and coral mean warning or media.
+struct HeartRateLabel: View {
+    @ObservedObject private var recorder = WorkoutRecorder.shared
+    let store: WatchStore
+
+    var body: some View {
+        if let bpm = recorder.heartRate {
+            HStack(spacing: 2) {
+                Image(systemName: "heart.fill").font(.system(size: 9))
+                Text("\(bpm)").monospacedDigit()
+            }
+            .font(.caption2)
+            .foregroundStyle(WatchColors.secondaryText)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(store.t("watch.heartRate", ["bpm": bpm]))
+        }
+    }
+}

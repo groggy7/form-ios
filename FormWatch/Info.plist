@@ -20,8 +20,16 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>3</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Forced Rep reads your heart rate and active energy during a workout to show them on your wrist and include them in the workout it saves.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Forced Rep saves each strength workout you follow on your watch to Apple Health, with its heart rate and active energy.</string>
 	<key>WKApplication</key>
 	<true/>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>workout-processing</string>
+	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>com.perseverancesoftware.forcedrep</string>
 	<key>WKRunsIndependentlyOfCompanionApp</key>

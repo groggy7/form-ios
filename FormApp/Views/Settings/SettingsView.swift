@@ -5,6 +5,7 @@ public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var watchBridge = WatchSessionBridge.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     var onDismiss: () -> Void
 
@@ -230,7 +231,7 @@ public struct SettingsView: View {
     }
 
     private var groups: [SettingsGroup] {
-        [
+        let all: [SettingsGroup?] = [
             SettingsGroup(id: "workout", title: LanguageManager.t("settings.workout"), entries: [
                 SettingsEntry("weight-unit", terms: [LanguageManager.t("settings.weightUnit"), LanguageManager.t("settings.weightUnitSubtitle"),
                                                      LanguageManager.t("settings.unitKg"), LanguageManager.t("settings.unitLbs")]) {
@@ -361,6 +362,7 @@ public struct SettingsView: View {
                     )
                 }
             ]),
+            watchGroup,
             SettingsGroup(id: "alerts", title: LanguageManager.t("settings.alertsPrompts"), entries: [
                 SettingsEntry("rest-alerts", terms: [LanguageManager.t("settings.lockedScreenAlerts")]) {
                     Toggle(isOn: $store.soundEnabled) {
@@ -594,6 +596,25 @@ public struct SettingsView: View {
                 linkEntry("support", titleKey: "settings.support", url: LegalUrls.support)
             ])
         ]
+        return all.compactMap { $0 }
+    }
+
+    /// Shown only when a paired watch has the app (docs/apple-watch.md).
+    private var watchGroup: SettingsGroup? {
+        guard watchBridge.isWatchAppInstalled else { return nil }
+        return SettingsGroup(id: "apple-watch", title: LanguageManager.t("settings.appleWatch"), premium: true, entries: [
+            SettingsEntry("watch-workouts", terms: [LanguageManager.t("settings.watchWorkouts"), LanguageManager.t("settings.watchWorkoutsSubtitle")]) {
+                SettingsPremiumToggle(
+                    titleKey: "settings.watchWorkouts",
+                    subtitleKey: "settings.watchWorkoutsSubtitle",
+                    preference: $store.recordWatchWorkouts,
+                    isUnlocked: proManager.isProSubscribed,
+                    identifier: "toggle-watch-workouts",
+                    lockedNoticeKey: "settings.premiumNotice.appleWatch",
+                    onLockedNotice: showPremiumNotice
+                )
+            }
+        ])
     }
 
     private func linkEntry(_ id: String, titleKey: String, url: String) -> SettingsEntry {

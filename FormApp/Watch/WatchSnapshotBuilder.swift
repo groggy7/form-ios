@@ -8,14 +8,29 @@ enum WatchSnapshotBuilder {
         language: String,
         isPremium: Bool,
         steps: ProgressionLoadSteps,
+        recordsWorkouts: Bool = false,
+        finished: WatchSnapshot.Finished? = nil,
         now: Int64
     ) -> WatchSnapshot {
         WatchSnapshot(
             revision: now,
             language: language,
             access: isPremium ? .premium : .locked,
-            session: isPremium ? draft.map { session($0, unit: unit, steps: steps, now: now) } : nil
+            session: isPremium ? draft.map { session($0, unit: unit, steps: steps, now: now) } : nil,
+            recordsWorkouts: recordsWorkouts,
+            // Sent even while locked: it only tells the watch how to end a Health workout it is recording.
+            finished: finished
         )
+    }
+
+    /// How a workout that left the iPhone ended. It was saved when its history record appeared or changed
+    /// while it ran; a resumed workout that is discarded leaves its earlier record untouched.
+    static func finished(sessionId: String, recordAtStart: WorkoutSessionRecord?, history: [WorkoutSessionRecord],
+                         now: Int64) -> WatchSnapshot.Finished {
+        let record = history.first { $0.id == sessionId }
+        let saved = record != nil && record != recordAtStart
+        let completedAt = saved ? WorkoutCalendar.parseIsoTimestamp(record?.completedAt).map { Int64($0.timeIntervalSince1970 * 1000) } : nil
+        return WatchSnapshot.Finished(sessionId: sessionId, saved: saved, endedAt: min(now, completedAt ?? now))
     }
 
     private static func session(_ draft: ActiveSessionDraft, unit: WeightUnit, steps: ProgressionLoadSteps, now: Int64) -> WatchSnapshot.Session {

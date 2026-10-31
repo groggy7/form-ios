@@ -58,6 +58,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.forcedrep.watchkitapp
         PRODUCT_NAME: FormWatch
         INFOPLIST_FILE: FormWatch/Info.plist
+        CODE_SIGN_ENTITLEMENTS: FormWatch/FormWatch.entitlements
         GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SKIP_INSTALL: YES

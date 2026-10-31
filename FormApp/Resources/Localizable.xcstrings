@@ -50834,6 +50834,146 @@
         }
       }
     },
+    "settings.appleWatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        }
+      }
+    },
+    "settings.watchWorkouts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record on Apple Watch"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch'ta kaydet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf der Apple Watch aufzeichnen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer sur l’Apple Watch"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrar en el Apple Watch"
+          }
+        }
+      }
+    },
+    "settings.watchWorkoutsSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens Forced Rep on your watch when a workout starts and saves the workout to Apple Health with heart rate."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman başladığında Forced Rep'i saatinde açar ve antrenmanı nabızla birlikte Apple Sağlık'a kaydeder."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet Forced Rep auf deiner Watch, sobald ein Training beginnt, und sichert das Training mit Herzfrequenz in Apple Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre Forced Rep sur votre montre au début d’un entraînement et l’enregistre dans Apple Santé avec la fréquence cardiaque."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre Forced Rep en tu reloj al empezar un entrenamiento y lo guarda en Apple Salud con la frecuencia cardiaca."
+          }
+        }
+      }
+    },
+    "settings.premiumNotice.appleWatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This setting is part of the Apple Watch app, available with Premium."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu ayar Apple Watch uygulamasının bir parçasıdır ve Premium ile kullanılabilir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einstellung gehört zur Premium-Funktion „Apple Watch-App“."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce paramètre fait partie de la fonctionnalité Premium « App Apple Watch »."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este ajuste forma parte de la función Premium «App de Apple Watch»."
+          }
+        }
+      }
+    },
     "joint.title": {
       "extractionState": "manual",
       "localizations": {

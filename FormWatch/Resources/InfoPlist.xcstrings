@@ -1,0 +1,76 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSHealthShareUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep reads your heart rate and active energy during a workout to show them on your wrist and include them in the workout it saves."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep, antrenman sırasında nabzını ve aktif enerjini bileğinde göstermek ve kaydettiği antrenmana eklemek için okur."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep liest während eines Trainings deine Herzfrequenz und aktive Energie, um sie am Handgelenk anzuzeigen und im gesicherten Training festzuhalten."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lit votre fréquence cardiaque et votre énergie active pendant un entraînement pour les afficher à votre poignet et les inclure dans l’entraînement enregistré."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lee tu frecuencia cardiaca y tu energía activa durante un entrenamiento para mostrarlas en tu muñeca e incluirlas en el entrenamiento que guarda."
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep saves each strength workout you follow on your watch to Apple Health, with its heart rate and active energy."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep, saatinde takip ettiğin her kuvvet antrenmanını nabız ve aktif enerjiyle birlikte Apple Sağlık'a kaydeder."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep sichert jedes Krafttraining, dem du auf deiner Watch folgst, mit Herzfrequenz und aktiver Energie in Apple Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep enregistre dans Apple Santé chaque entraînement de musculation suivi sur votre montre, avec sa fréquence cardiaque et son énergie active."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep guarda en Apple Salud cada entrenamiento de fuerza que sigues en tu reloj, con su frecuencia cardiaca y energía activa."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

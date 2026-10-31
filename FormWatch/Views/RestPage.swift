@@ -26,10 +26,13 @@ struct RestPage: View {
             .padding(4)
             .frame(maxHeight: .infinity)
             .accessibilityElement(children: .combine)
-            Text(rest.exerciseName)
-                .font(.caption2)
-                .foregroundStyle(WatchColors.secondaryText)
-                .lineLimit(1)
+            HStack(spacing: 6) {
+                Text(rest.exerciseName)
+                    .font(.caption2)
+                    .foregroundStyle(WatchColors.secondaryText)
+                    .lineLimit(1)
+                HeartRateLabel(store: store)
+            }
             HStack(spacing: 6) {
                 control(label: store.t(rest.isRunning ? "watch.rest.pause" : "watch.rest.resume")) {
                     Image(systemName: rest.isRunning ? "pause.fill" : "play.fill")
