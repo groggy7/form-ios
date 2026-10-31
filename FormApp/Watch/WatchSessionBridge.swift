@@ -35,7 +35,7 @@ final class WatchSessionBridge: NSObject, ObservableObject, WCSessionDelegate {
         WCSession.default.delegate = self
         WCSession.default.activate()
         let changes: [AnyPublisher<Void, Never>] = [
-            store.$activeSession.map { _ in () }.eraseToAnyPublisher(),
+            store.liveSession.$draft.map { _ in () }.eraseToAnyPublisher(),
             store.$weightUnit.map { _ in () }.eraseToAnyPublisher(),
             store.$barType.map { _ in () }.eraseToAnyPublisher(),
             store.$availablePlatesKg.map { _ in () }.eraseToAnyPublisher(),

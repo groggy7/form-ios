@@ -4,6 +4,35 @@ import Combine
 import UIKit
 #endif
 
+/// The workout in progress. Its publisher emits on every set edit, like a `@Published` property.
+public final class LiveSession: ObservableObject {
+    @Published public fileprivate(set) var draft: ActiveSessionDraft? {
+        didSet { if let draft { lastDraft = draft } }
+    }
+    /// The last draft, which the workout screen keeps showing while it closes after the workout ends.
+    public private(set) var lastDraft: ActiveSessionDraft?
+}
+
+/// What the tabs show of a workout while the workout cover hides them.
+private struct CoveredSessionFacts: Equatable {
+    let id: String
+    let programId: String
+    let workoutId: String
+    let hasCompletedSets: Bool
+    let assignedCalendarDate: String?
+    let scheduledDate: String?
+
+    init?(_ draft: ActiveSessionDraft?) {
+        guard let draft else { return nil }
+        id = draft.id
+        programId = draft.programId
+        workoutId = draft.workout.id
+        hasCompletedSets = draft.setsByExercise.values.contains { $0.contains(where: \.isCompleted) }
+        assignedCalendarDate = draft.assignedCalendarDate
+        scheduledDate = draft.scheduledDate
+    }
+}
+
 public final class AppStore: ObservableObject {
     public static let shared = AppStore()
 
@@ -36,7 +65,20 @@ public final class AppStore: ObservableObject {
     private let calendarStartMonthKey = "calendar_start_month"
 
     @Published public var state: StoredAppState
-    @Published public var activeSession: ActiveSessionDraft?
+    /// The workout screen, rest alerts, Live Activity and Apple Watch observe the draft here.
+    public let liveSession = LiveSession()
+    /// The four tabs stay alive under the workout cover and redraw whenever the store changes.
+    /// While the cover is up, a set edit reaches them only when it changes something they show
+    /// before it closes; closing the cover redraws them from the current draft.
+    public var activeSession: ActiveSessionDraft? {
+        get { liveSession.draft }
+        set {
+            if !isSessionPresented || CoveredSessionFacts(newValue) != CoveredSessionFacts(liveSession.draft) {
+                objectWillChange.send()
+            }
+            liveSession.draft = newValue
+        }
+    }
     @Published var reviewPromptState = ReviewPromptState.load()
     @Published public var isSessionPresented: Bool = false
     public private(set) var isSceneBackgrounded = false
@@ -391,7 +433,7 @@ public final class AppStore: ObservableObject {
             .store(in: &cancellables)
 
         // The emitted values already include an in-progress rest restored at launch.
-        Publishers.CombineLatest($activeSession, $soundEnabled)
+        Publishers.CombineLatest(liveSession.$draft, $soundEnabled)
             .sink { draft, soundEnabled in
                 RestAlertScheduler.shared.update(for: draft, soundEnabled: soundEnabled)
                 DispatchQueue.main.async { RestLiveActivityCoordinator.shared.sync(draft) }

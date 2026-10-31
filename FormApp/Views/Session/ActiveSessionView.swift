@@ -4,6 +4,8 @@ import Combine
 public struct ActiveSessionView: View {
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
+    /// Set edits publish here rather than on the store, which would redraw the tabs under this cover.
+    @ObservedObject private var liveSession: LiveSession
     let draft: ActiveSessionDraft
 
     // Event handlers read actual time; ticking display state belongs to child views.
@@ -49,11 +51,13 @@ public struct ActiveSessionView: View {
 
     public init(store: AppStore, draft: ActiveSessionDraft) {
         self.store = store
+        self.liveSession = store.liveSession
         self.draft = draft
     }
 
     private var currentDraft: ActiveSessionDraft {
-        store.activeSession ?? draft
+        // After the workout ends, the closing screen keeps its latest draft rather than the one it opened with.
+        liveSession.draft ?? liveSession.lastDraft.flatMap { $0.id == draft.id ? $0 : nil } ?? draft
     }
 
     public var body: some View {

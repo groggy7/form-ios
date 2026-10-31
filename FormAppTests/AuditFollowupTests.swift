@@ -1,3 +1,4 @@
+import Combine
 import XCTest
 @testable import FormApp
 
@@ -119,6 +120,55 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertNil(ProPaywallSheet(feature: .exerciseSwaps).feature)
         XCTAssertEqual(ProPaywallSheet(feature: .formLab).feature, .formLab)
         XCTAssertEqual(LanguageManager.t(ProFeature.exerciseSwaps.titleKey), "Machine Taken? Swaps")
+    }
+
+    // MARK: - Tabs under the workout cover
+
+    func testSetEditsUnderTheWorkoutCoverPublishOnlyTheLiveSession() throws {
+        try preservingDefaults {
+            let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            let press = swapFixture("lever-chest-press", instance: "w-press")
+            let workout = Workout(id: "w", day: 1, title: "W", exercises: [press])
+            store.activeSession = ActiveSessionDraft(programId: "p", workout: workout, startedAt: "2026-10-16T10:00:00.000Z",
+                startedAtEpochMillis: 0, setsByExercise: WorkoutSessionUtils.initialSets(for: workout), assignedCalendarDate: "2026-10-16")
+            store.isSessionPresented = true
+            var storeChanges = 0
+            var sessionChanges = 0
+            let subscriptions = [store.objectWillChange.sink { storeChanges += 1 },
+                                 store.liveSession.objectWillChange.sink { sessionChanges += 1 }]
+            defer { subscriptions.forEach { $0.cancel() } }
+            func edit(_ change: (inout ExerciseSetLog) -> Void) {
+                store.updateActiveSession { draft in
+                    var copy = draft
+                    change(&copy.setsByExercise[press.id]![0])
+                    return copy
+                }
+            }
+
+            // The hidden tabs don't redraw for a keystroke; the workout screen does.
+            edit { $0.weightInput = "60" }
+            XCTAssertEqual(storeChanges, 0)
+            XCTAssertEqual(sessionChanges, 1)
+            XCTAssertEqual(store.activeSession?.setsByExercise[press.id]?[0].weightInput, "60")
+
+            // A first completed set changes History's calendar and Home's resume state, so the tabs hear it.
+            edit { $0.isCompleted = true }
+            XCTAssertGreaterThan(storeChanges, 0)
+
+            // Closing the cover redraws the tabs from the current draft, and they then follow every edit,
+            // such as a set logged on Apple Watch.
+            storeChanges = 0
+            store.isSessionPresented = false
+            XCTAssertEqual(storeChanges, 1)
+            edit { $0.repsInput = "8" }
+            XCTAssertEqual(storeChanges, 2)
+
+            // Ending the workout keeps its last draft for the closing workout screen.
+            let last = store.activeSession
+            store.activeSession = nil
+            XCTAssertEqual(storeChanges, 3)
+            XCTAssertEqual(store.liveSession.lastDraft, last)
+        }
     }
 
     // MARK: - Full-backup restore bounds
