@@ -7,26 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BABA00000000000000000004 /* ReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000003 /* ReviewPromptTests.swift */; };
-		BABA00000000000000000002 /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000001 /* ReviewPrompt.swift */; };
-		AABB01234567890123450002 /* NoteField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB01234567890123450001 /* NoteField.swift */; };
-		76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04F575F9A44E88B7095902; };
-		B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */; };
-		C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */; };
-		6A06B66FDDD4DF6F6E3A2F09 /* TrainingPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */; };
-		AB02000000000000000000001 /* BundledPNGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB02000000000000000000002; };
-		AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000002; };
-		AB01000000000000000000003 /* ExerciseBackdrops in Resources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000004; };
-		A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A41A7C6F20EF4E568EBC0E02; };
-		A11000000000000000000001 /* TranslationTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000002; };
-		A11000000000000000000003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000004; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
+		05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877632D9E711DF4D1BB888F /* RecordEngine.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
-		RA0000000000000000000002 /* RestAlertScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = RA0000000000000000000001 /* RestAlertScheduler.swift */; };
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
 		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
+		109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
+		177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */; };
 		1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90A44CC582072D671FF45DE4 /* form_rest_complete.wav */; };
 		20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
@@ -34,36 +23,40 @@
 		2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */; };
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
-		TH0000000000000000000001 /* AppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = TH0000000000000000000002 /* AppThemes.swift */; };
-		TW0000000000000000000001 /* TextWidthScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000002 /* TextWidthScale.swift */; };
-		TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000004 /* TextWidthScaleTests.swift */; };
 		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
+		3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
+		44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
 		45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97FA7035F2317DFBE57498 /* MovementIcon.swift */; };
 		48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
+		547A7665E5800F49B508918F /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
 		5ADDC53EC8EAFFB482F36B20 /* WeeklyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */; };
 		5D41713C889C9CD0DA0DB048 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CE78AD9510C658344F7888 /* WorkoutModels.swift */; };
 		5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2282260300C11D1B7F29AE /* FormAppTests.swift */; };
 		64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D279DACF295D9BB86905005 /* HistoryView.swift */; };
-		CT0000000000000000000002 /* HistoryTileCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT0000000000000000000001 /* HistoryTileCalendar.swift */; };
+		665B88F2317C85FE5538CC90 /* SocialCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59698B516FEB62A85A77468E /* SocialCardsTests.swift */; };
+		6A06B66FDDD4DF6F6E3A2F09 /* TrainingPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */; };
 		6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
 		6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFA8F5B27849C8BE2611AF /* SettingsView.swift */; };
-		HI0000000000000000000004 /* HistoryImportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000003 /* HistoryImportSheet.swift */; };
 		6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89F4479A1065BF741953378 /* RestTimerBar.swift */; };
+		76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */; };
 		8CE7A1BF601A16FFB8419C60 /* Translations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F76831712F5D29B631895CD /* Translations.swift */; };
 		90CC3E5D0E555C597ED91ABB /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */; };
 		947A3D0C40441B9379ABD063 /* FormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3493C594E48AD17563A8CC2 /* FormApp.swift */; };
 		9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76805C2F08B45E364BEF8AB9 /* form_set_complete.wav */; };
 		9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */; };
 		9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */; };
-		TR0000000000000000000004 /* TourOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000003 /* TourOverlay.swift */; };
 		9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08997E0EACD6176BFF508687 /* ToastOverlay.swift */; };
 		A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
+		A11000000000000000000001 /* TranslationTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000002 /* TranslationTables.swift */; };
+		A11000000000000000000003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000004 /* Localizable.xcstrings */; };
 		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
 		A1B2C3D4E5F60718293A4B02 /* HistoryDayPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */; };
 		A1B2C3D4E5F60718293A4B04 /* HistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */; };
 		A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
+		A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */; };
 		A4BDFEAE4E7AC75AF6DFA3A1 /* ProgramExerciseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */; };
+		A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */; };
 		A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */; };
 		A7A3F0240CBA5F2AEF5EB481 /* form_set_undo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 13527F9CECF51E5936498509 /* form_set_undo.wav */; };
 		A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* 07_upper_lower.json */; };
@@ -76,6 +69,12 @@
 		A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000A /* 10_bar_floor_calisthenics.json */; };
 		A9000000000000000000000E /* 11_essentials_two_day.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000D /* 11_essentials_two_day.json */; };
 		A9000000000000000000000F /* 11_essentials_two_day.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000D /* 11_essentials_two_day.json */; };
+		AABB01234567890123450002 /* NoteField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB01234567890123450001 /* NoteField.swift */; };
+		AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */; };
+		AB01000000000000000000003 /* ExerciseBackdrops in Resources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000004 /* ExerciseBackdrops */; };
+		AB02000000000000000000001 /* BundledPNGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB02000000000000000000002 /* BundledPNGImage.swift */; };
+		AD790E6DDD6274008A7D56FF /* FormRestWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* LifetimePaywallTests.swift */; };
 		B10000000000000000000001 /* YouTubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* YouTubeVideo.swift */; };
 		B10000000000000000000002 /* YouTubeEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* YouTubeEmbed.swift */; };
 		B10000000000000000000003 /* VideoMetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* VideoMetadataStore.swift */; };
@@ -83,14 +82,36 @@
 		B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* VideoPlayerSheet.swift */; };
 		B10000000000000000000006 /* ExerciseVideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ExerciseVideosView.swift */; };
 		B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */; };
+		B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */; };
+		B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
+		BABA00000000000000000002 /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000001 /* ReviewPrompt.swift */; };
+		BABA00000000000000000004 /* ReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000003 /* ReviewPromptTests.swift */; };
+		BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5CFF3B812D4D36B51EE587 /* Foundation.framework */; };
 		BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA4284A1943107F23B87DCD /* MuscleMasks.swift */; };
+		BJ0000000000000000000002 /* BodyTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000001 /* BodyTracking.swift */; };
+		BJ0000000000000000000004 /* BodyTrends.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000003 /* BodyTrends.swift */; };
+		BJ0000000000000000000006 /* JointJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000005 /* JointJournalView.swift */; };
+		BJ0000000000000000000008 /* BodyLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000007 /* BodyLogView.swift */; };
+		BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */; };
+		C011A0000000000000000002 /* AppStatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C011A0000000000000000001 /* AppStatePersistence.swift */; };
 		C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */; };
 		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
 		C10000000000000000000002 /* ContentLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ContentLocalizer.swift */; };
-		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
 		C105E0000000000000000001 /* FormCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C105E0000000000000000002 /* FormCloseButton.swift */; };
+		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
+		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
+		C15000000000000000000002 /* ProgramEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000001 /* ProgramEditing.swift */; };
+		C15000000000000000000004 /* ProgramBuilderComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000003 /* ProgramBuilderComponents.swift */; };
+		C15000000000000000000006 /* ProgramFileCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000005 /* ProgramFileCodec.swift */; };
+		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
+		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
+		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
+		C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */; };
+		C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */; };
 		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
+		CT0000000000000000000002 /* HistoryTileCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT0000000000000000000001 /* HistoryTileCalendar.swift */; };
 		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
+		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
 		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
 		DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */; };
 		E10000000000000000000002 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
@@ -99,35 +120,33 @@
 		E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004 /* equipment_catalog.json */; };
 		E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
 		E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */; };
-		FD0000000000000000000002 /* FoldableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000001 /* FoldableLayout.swift */; };
 		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
 		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
+		ECFEB80B3B0890A60B49074C /* RestLiveActivityCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */; };
 		F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
+		FB0000000000000000000001 /* ForcedRep.storekit in Resources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000003 /* ForcedRep.storekit */; };
+		FD0000000000000000000002 /* FoldableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000001 /* FoldableLayout.swift */; };
+		FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000003 /* FoldableLayoutTests.swift */; };
 		FL0000000000000000000002 /* FormLabModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000001 /* FormLabModels.swift */; };
 		FL0000000000000000000004 /* FormLabEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000003 /* FormLabEngine.swift */; };
 		FL0000000000000000000006 /* CloudMirrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000005 /* CloudMirrorManager.swift */; };
 		FL0000000000000000000008 /* FormLabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000007 /* FormLabView.swift */; };
 		FL0000000000000000000010 /* FormLabInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000009 /* FormLabInfoSheet.swift */; };
+		HI0000000000000000000002 /* HistoryImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000001 /* HistoryImport.swift */; };
+		HI0000000000000000000004 /* HistoryImportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000003 /* HistoryImportSheet.swift */; };
+		HI0000000000000000000006 /* history_import_aliases.json in Resources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000005 /* history_import_aliases.json */; };
+		HI0000000000000000000008 /* HistoryImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000007 /* HistoryImportTests.swift */; };
+		HW0000000000000000000002 /* HealthWeights.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000001 /* HealthWeights.swift */; };
+		HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000003 /* HealthWeighInTests.swift */; };
+		HW0000000000000000000006 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000005 /* InfoPlist.xcstrings */; };
+		IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IS0000000000000000000001 /* IntensityFixtureTests.swift */; };
 		L100000000000000000000002 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
 		L100000000000000000000003 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
 		M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000002 /* ExerciseMusclesCard.swift */; };
 		M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
-		TR0000000000000000000002 /* TourModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000001 /* TourModels.swift */; };
 		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
 		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
 		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
-		S70000000000000000000002 /* ExerciseSwaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000001 /* ExerciseSwaps.swift */; };
-		S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000003 /* ExerciseSwapSheet.swift */; };
-		BJ0000000000000000000002 /* BodyTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000001 /* BodyTracking.swift */; };
-		BJ0000000000000000000004 /* BodyTrends.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000003 /* BodyTrends.swift */; };
-		HW0000000000000000000002 /* HealthWeights.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000001 /* HealthWeights.swift */; };
-		HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000003 /* HealthWeighInTests.swift */; };
-		HW0000000000000000000006 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000005 /* InfoPlist.xcstrings */; };
-		BJ0000000000000000000006 /* JointJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000005 /* JointJournalView.swift */; };
-		BJ0000000000000000000008 /* BodyLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000007 /* BodyLogView.swift */; };
-		BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */; };
-		S70000000000000000000006 /* exercise_swaps.json in Resources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000005 /* exercise_swaps.json */; };
-		HI0000000000000000000006 /* history_import_aliases.json in Resources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000005 /* history_import_aliases.json */; };
 		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
 		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
 		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
@@ -135,17 +154,25 @@
 		PP0000000000000000000002 /* ProPreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = PP0000000000000000000001 /* ProPreviewData.swift */; };
 		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
 		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
+		RA0000000000000000000002 /* RestAlertScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = RA0000000000000000000001 /* RestAlertScheduler.swift */; };
 		RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000002 /* ExerciseReportStore.swift */; };
 		RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000004 /* ExerciseReportSheet.swift */; };
 		S10000000000000000000001 /* ExerciseSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = S10000000000000000000002 /* ExerciseSearch.swift */; };
+		S70000000000000000000002 /* ExerciseSwaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000001 /* ExerciseSwaps.swift */; };
+		S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000003 /* ExerciseSwapSheet.swift */; };
+		S70000000000000000000006 /* exercise_swaps.json in Resources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000005 /* exercise_swaps.json */; };
 		SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */; };
 		SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = SP0000000000000000000001 /* SessionFeaturePaywall.swift */; };
 		T10000000000000000000003 /* ExerciseThumbnails in Resources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000004 /* ExerciseThumbnails */; };
+		TH0000000000000000000001 /* AppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = TH0000000000000000000002 /* AppThemes.swift */; };
+		TR0000000000000000000002 /* TourModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000001 /* TourModels.swift */; };
+		TR0000000000000000000004 /* TourOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000003 /* TourOverlay.swift */; };
+		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
+		TW0000000000000000000001 /* TextWidthScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000002 /* TextWidthScale.swift */; };
+		TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000004 /* TextWidthScaleTests.swift */; };
 		V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
-		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
-		AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* LifetimePaywallTests.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
 		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
@@ -157,49 +184,22 @@
 		WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000007 /* WarmupPlateSheet.swift */; };
 		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
 		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
-		C011A0000000000000000002 /* AppStatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C011A0000000000000000001 /* AppStatePersistence.swift */; };
-		C15000000000000000000002 /* ProgramEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000001 /* ProgramEditing.swift */; };
-		C15000000000000000000004 /* ProgramBuilderComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000003 /* ProgramBuilderComponents.swift */; };
-		C15000000000000000000006 /* ProgramFileCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000005 /* ProgramFileCodec.swift */; };
-		HI0000000000000000000002 /* HistoryImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000001 /* HistoryImport.swift */; };
-		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
-		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
-		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
-		FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000003 /* FoldableLayoutTests.swift */; };
-		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
-		IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IS0000000000000000000001 /* IntensityFixtureTests.swift */; };
-		HI0000000000000000000008 /* HistoryImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HI0000000000000000000007 /* HistoryImportTests.swift */; };
-		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
-		05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B877632D9E711DF4D1BB888F; };
-		3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F1B2C71C2BAB561B4D7051; };
-		665B88F2317C85FE5538CC90 /* SocialCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59698B516FEB62A85A77468E; };
-		C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164A58B28631F1A8F02469B; };
-		177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA283146D3F72346C8B57CB9; };
-		FB0000000000000000000001 /* ForcedRep.storekit in Resources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000003 /* ForcedRep.storekit */; };
-		109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
-		44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
-		547A7665E5800F49B508918F /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
-		A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */; };
-		AD790E6DDD6274008A7D56FF /* FormRestWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
-		BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5CFF3B812D4D36B51EE587 /* Foundation.framework */; };
-		ECFEB80B3B0890A60B49074C /* RestLiveActivityCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2F12F6E1BC76F2DD434A06DC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8BE7676ED5FD31CDF696A7D9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 368EC54BCB656899BFC1C90B;
-			remoteInfo = FormApp;
-		};
 		1A6CFEEA33701697646E7C30 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BE7676ED5FD31CDF696A7D9 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 518CBE7B8A8873D904C82E2D;
 			remoteInfo = FormRestWidget;
+		};
+		2F12F6E1BC76F2DD434A06DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BE7676ED5FD31CDF696A7D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 368EC54BCB656899BFC1C90B;
+			remoteInfo = FormApp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -217,33 +217,9 @@
 		};
 /* End PBXCopyFilesBuildPhase section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		E217E87F2D45C4BE47633738 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXFileReference section */
-		BABA00000000000000000003 /* ReviewPromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests/ReviewPromptTests.swift; sourceTree = SOURCE_ROOT; };
-		BABA00000000000000000001 /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data/ReviewPrompt.swift; sourceTree = "<group>"; };
-		AABB01234567890123450001 /* NoteField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/NoteField.swift; sourceTree = "<group>"; };
-		CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGeneratorTests.swift; sourceTree = "<group>"; };
-		49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = training_catalog.json; sourceTree = "<group>"; };
-		D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSetupView.swift; sourceTree = "<group>"; };
-		4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGenerator.swift; sourceTree = "<group>"; };
-		AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaBackdrop.swift; sourceTree = "<group>"; };
-		AB02000000000000000000002 /* BundledPNGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledPNGImage.swift; sourceTree = "<group>"; };
-		AB01000000000000000000004 /* ExerciseBackdrops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseBackdrops; sourceTree = "<group>"; };
-		A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
-		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Views/Components/SocialCardRenderer.swift; sourceTree = SOURCE_ROOT; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
-		TR0000000000000000000003 /* TourOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourOverlay.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		13527F9CECF51E5936498509 /* form_set_undo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_undo.wav; sourceTree = "<group>"; };
@@ -251,6 +227,7 @@
 		1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
 		26BB808F3B2A565E934878C4 /* FormAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29875CA77E7BA2C02CDFFA36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityAttributes.swift; path = Models/RestActivityAttributes.swift; sourceTree = "<group>"; };
 		2D97FA7035F2317DFBE57498 /* MovementIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementIcon.swift; sourceTree = "<group>"; };
 		303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLoggingTable.swift; sourceTree = "<group>"; };
 		35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderView.swift; sourceTree = "<group>"; };
@@ -258,9 +235,14 @@
 		3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 05_home_forge_dumbbells.json; sourceTree = "<group>"; };
 		3F76831712F5D29B631895CD /* Translations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translations.swift; sourceTree = "<group>"; };
 		400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_start.wav; sourceTree = "<group>"; };
+		407042E495C0435AE551A27C /* RestActivityContent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityContent.swift; path = Views/Components/RestActivityContent.swift; sourceTree = "<group>"; };
+		49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = training_catalog.json; sourceTree = "<group>"; };
 		4D279DACF295D9BB86905005 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		CT0000000000000000000001 /* HistoryTileCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTileCalendar.swift; sourceTree = "<group>"; };
+		4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGenerator.swift; sourceTree = "<group>"; };
 		53F83778D712B708C519860F /* 06_athletic_performance.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 06_athletic_performance.json; sourceTree = "<group>"; };
+		59698B516FEB62A85A77468E /* SocialCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests/SocialCardsTests.swift; sourceTree = SOURCE_ROOT; };
+		5F5CFF3B812D4D36B51EE587 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Models/SocialCards.swift; sourceTree = SOURCE_ROOT; };
 		685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayHeroCard.swift; sourceTree = "<group>"; };
 		68CE78AD9510C658344F7888 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
 		6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekStripView.swift; sourceTree = "<group>"; };
@@ -270,9 +252,6 @@
 		829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionUtils.swift; sourceTree = "<group>"; };
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
 		91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		TH0000000000000000000002 /* AppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppThemes.swift; sourceTree = "<group>"; };
-		TW0000000000000000000002 /* TextWidthScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScale.swift; sourceTree = "<group>"; };
-		TW0000000000000000000004 /* TextWidthScaleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScaleTests.swift; sourceTree = "<group>"; };
 		92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 01_aesthetic_hypertrophy.json; sourceTree = "<group>"; };
 		955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		9A2948074308DABA9A07E42E /* 04_full_body_classic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 04_full_body_classic.json; sourceTree = "<group>"; };
@@ -285,9 +264,12 @@
 		A10000000000000000000005 /* VideoPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerSheet.swift; sourceTree = "<group>"; };
 		A10000000000000000000006 /* ExerciseVideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideosView.swift; sourceTree = "<group>"; };
 		A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideoLinksSheet.swift; sourceTree = "<group>"; };
+		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
+		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDayPreviewCard.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailView.swift; sourceTree = "<group>"; };
+		A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramExerciseEditorSheet.swift; sourceTree = "<group>"; };
 		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
@@ -295,14 +277,41 @@
 		A90000000000000000000007 /* 09_bodyweight_base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 09_bodyweight_base.json; sourceTree = "<group>"; };
 		A9000000000000000000000A /* 10_bar_floor_calisthenics.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 10_bar_floor_calisthenics.json; sourceTree = "<group>"; };
 		A9000000000000000000000D /* 11_essentials_two_day.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 11_essentials_two_day.json; sourceTree = "<group>"; };
+		AABB01234567890123450001 /* NoteField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/NoteField.swift; sourceTree = "<group>"; };
+		AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaBackdrop.swift; sourceTree = "<group>"; };
+		AB01000000000000000000004 /* ExerciseBackdrops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseBackdrops; sourceTree = "<group>"; };
+		AB02000000000000000000002 /* BundledPNGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledPNGImage.swift; sourceTree = "<group>"; };
+		AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FormRestWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AI0000000000000000000005 /* LifetimePaywallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywallTests.swift; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
-		RA0000000000000000000001 /* RestAlertScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAlertScheduler.swift; sourceTree = "<group>"; };
+		B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestWidget.swift; sourceTree = "<group>"; };
+		B877632D9E711DF4D1BB888F /* RecordEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Models/RecordEngine.swift; sourceTree = SOURCE_ROOT; };
+		BABA00000000000000000001 /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data/ReviewPrompt.swift; sourceTree = "<group>"; };
+		BABA00000000000000000003 /* ReviewPromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests/ReviewPromptTests.swift; sourceTree = SOURCE_ROOT; };
+		BJ0000000000000000000001 /* BodyTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTracking.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000003 /* BodyTrends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTrends.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000005 /* JointJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointJournalView.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000007 /* BodyLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyLogView.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyAndJointJournalTests.swift; sourceTree = "<group>"; };
+		C011A0000000000000000001 /* AppStatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatePersistence.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
-		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
-		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
 		C105E0000000000000000002 /* FormCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCloseButton.swift; sourceTree = "<group>"; };
+		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
+		C15000000000000000000001 /* ProgramEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramEditing.swift; sourceTree = "<group>"; };
+		C15000000000000000000003 /* ProgramBuilderComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderComponents.swift; sourceTree = "<group>"; };
+		C15000000000000000000005 /* ProgramFileCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramFileCodec.swift; sourceTree = "<group>"; };
+		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
+		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "android-builder-v5.json"; sourceTree = "<group>"; };
+		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
+		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
+		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
+		CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGeneratorTests.swift; sourceTree = "<group>"; };
+		CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestLiveActivityCoordinator.swift; path = Data/RestLiveActivityCoordinator.swift; sourceTree = "<group>"; };
+		CT0000000000000000000001 /* HistoryTileCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTileCalendar.swift; sourceTree = "<group>"; };
+		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
+		D90000000000000000000001 /* AuditFollowupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFollowupTests.swift; sourceTree = "<group>"; };
+		D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSetupView.swift; sourceTree = "<group>"; };
 		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		HI0000000000000000000003 /* HistoryImportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportSheet.swift; sourceTree = "<group>"; };
 		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
 		E10000000000000000000001 /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
@@ -314,33 +323,32 @@
 		ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionView.swift; sourceTree = "<group>"; };
 		F733A913348412862B8CDF1E /* BottomDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDock.swift; sourceTree = "<group>"; };
 		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
+		FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp/Views/Components/SocialCardComposer.swift; sourceTree = SOURCE_ROOT; };
+		FA8D7C5D27311AEF90855B90 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAENT0000000000000000001 /* FormApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FormApp.entitlements; sourceTree = "<group>"; };
 		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		FD0000000000000000000001 /* FoldableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldableLayout.swift; sourceTree = "<group>"; };
+		FD0000000000000000000003 /* FoldableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldableLayoutTests.swift; sourceTree = "<group>"; };
 		FL0000000000000000000001 /* FormLabModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabModels.swift; sourceTree = "<group>"; };
 		FL0000000000000000000003 /* FormLabEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabEngine.swift; sourceTree = "<group>"; };
 		FL0000000000000000000005 /* CloudMirrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirrorManager.swift; sourceTree = "<group>"; };
 		FL0000000000000000000007 /* FormLabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabView.swift; sourceTree = "<group>"; };
 		FL0000000000000000000009 /* FormLabInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabInfoSheet.swift; sourceTree = "<group>"; };
-		L100000000000000000000001 /* Locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Locales; sourceTree = "<group>"; };
-		M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
-		M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
-		TR0000000000000000000001 /* TourModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourModels.swift; sourceTree = "<group>"; };
-		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
-		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
-		S70000000000000000000001 /* ExerciseSwaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwaps.swift; sourceTree = "<group>"; };
-		S70000000000000000000003 /* ExerciseSwapSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwapSheet.swift; sourceTree = "<group>"; };
-		BJ0000000000000000000001 /* BodyTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTracking.swift; sourceTree = "<group>"; };
-		BJ0000000000000000000003 /* BodyTrends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTrends.swift; sourceTree = "<group>"; };
+		HI0000000000000000000001 /* HistoryImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImport.swift; sourceTree = "<group>"; };
+		HI0000000000000000000003 /* HistoryImportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportSheet.swift; sourceTree = "<group>"; };
+		HI0000000000000000000005 /* history_import_aliases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = history_import_aliases.json; sourceTree = "<group>"; };
+		HI0000000000000000000007 /* HistoryImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportTests.swift; sourceTree = "<group>"; };
 		HW0000000000000000000001 /* HealthWeights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWeights.swift; sourceTree = "<group>"; };
 		HW0000000000000000000003 /* HealthWeighInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWeighInTests.swift; sourceTree = "<group>"; };
 		HW0000000000000000000005 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
-		BJ0000000000000000000005 /* JointJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointJournalView.swift; sourceTree = "<group>"; };
-		BJ0000000000000000000007 /* BodyLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyLogView.swift; sourceTree = "<group>"; };
-		BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyAndJointJournalTests.swift; sourceTree = "<group>"; };
-		S70000000000000000000005 /* exercise_swaps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercise_swaps.json; sourceTree = "<group>"; };
-		HI0000000000000000000005 /* history_import_aliases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = history_import_aliases.json; sourceTree = "<group>"; };
+		IS0000000000000000000001 /* IntensityFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityFixtureTests.swift; sourceTree = "<group>"; };
+		IS0000000000000000000003 /* intensity-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "intensity-fixtures.json"; sourceTree = "<group>"; };
+		L100000000000000000000001 /* Locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Locales; sourceTree = "<group>"; };
+		M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
+		M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
+		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
+		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
 		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
 		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
 		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
@@ -348,18 +356,26 @@
 		PP0000000000000000000001 /* ProPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPreviewData.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
 		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
+		RA0000000000000000000001 /* RestAlertScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAlertScheduler.swift; sourceTree = "<group>"; };
 		RP0000000000000000000002 /* ExerciseReportStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportStore.swift; sourceTree = "<group>"; };
 		RP0000000000000000000004 /* ExerciseReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportSheet.swift; sourceTree = "<group>"; };
 		S10000000000000000000002 /* ExerciseSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearch.swift; sourceTree = "<group>"; };
+		S70000000000000000000001 /* ExerciseSwaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwaps.swift; sourceTree = "<group>"; };
+		S70000000000000000000003 /* ExerciseSwapSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwapSheet.swift; sourceTree = "<group>"; };
+		S70000000000000000000005 /* exercise_swaps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercise_swaps.json; sourceTree = "<group>"; };
 		SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitSubscriptionManager.swift; sourceTree = "<group>"; };
 		SK0000000000000000000003 /* ForcedRep.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForcedRep.storekit; sourceTree = "<group>"; };
 		SP0000000000000000000001 /* SessionFeaturePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFeaturePaywall.swift; sourceTree = "<group>"; };
 		T10000000000000000000004 /* ExerciseThumbnails */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseThumbnails; sourceTree = "<group>"; };
+		TH0000000000000000000002 /* AppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppThemes.swift; sourceTree = "<group>"; };
+		TR0000000000000000000001 /* TourModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourModels.swift; sourceTree = "<group>"; };
+		TR0000000000000000000003 /* TourOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourOverlay.swift; sourceTree = "<group>"; };
+		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
+		TW0000000000000000000002 /* TextWidthScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScale.swift; sourceTree = "<group>"; };
+		TW0000000000000000000004 /* TextWidthScaleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScaleTests.swift; sourceTree = "<group>"; };
 		V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
-		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
-		AI0000000000000000000005 /* LifetimePaywallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimePaywallTests.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
 		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
@@ -371,36 +387,28 @@
 		WP0000000000000000000007 /* WarmupPlateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateSheet.swift; sourceTree = "<group>"; };
 		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
 		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
-		C011A0000000000000000001 /* AppStatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatePersistence.swift; sourceTree = "<group>"; };
-		C15000000000000000000001 /* ProgramEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramEditing.swift; sourceTree = "<group>"; };
-		C15000000000000000000003 /* ProgramBuilderComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderComponents.swift; sourceTree = "<group>"; };
-		C15000000000000000000005 /* ProgramFileCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramFileCodec.swift; sourceTree = "<group>"; };
-		HI0000000000000000000001 /* HistoryImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImport.swift; sourceTree = "<group>"; };
-		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
-		D90000000000000000000001 /* AuditFollowupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFollowupTests.swift; sourceTree = "<group>"; };
-		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
-		FD0000000000000000000003 /* FoldableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldableLayoutTests.swift; sourceTree = "<group>"; };
-		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
-		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
-		IS0000000000000000000001 /* IntensityFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityFixtureTests.swift; sourceTree = "<group>"; };
-		HI0000000000000000000007 /* HistoryImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportTests.swift; sourceTree = "<group>"; };
-		IS0000000000000000000003 /* intensity-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "intensity-fixtures.json"; sourceTree = "<group>"; };
-		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = android-builder-v5.json; sourceTree = "<group>"; };
-		B877632D9E711DF4D1BB888F /* RecordEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Models/RecordEngine.swift"; sourceTree = SOURCE_ROOT; };
-		60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Models/SocialCards.swift"; sourceTree = SOURCE_ROOT; };
-		59698B516FEB62A85A77468E /* SocialCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAppTests/SocialCardsTests.swift"; sourceTree = SOURCE_ROOT; };
-		0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Views/Components/SocialCardRenderer.swift"; sourceTree = SOURCE_ROOT; };
-		FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Views/Components/SocialCardComposer.swift"; sourceTree = SOURCE_ROOT; };
-		2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityAttributes.swift; path = Models/RestActivityAttributes.swift; sourceTree = "<group>"; };
-		407042E495C0435AE551A27C /* RestActivityContent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityContent.swift; path = Views/Components/RestActivityContent.swift; sourceTree = "<group>"; };
-		5F5CFF3B812D4D36B51EE587 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FormRestWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestWidget.swift; sourceTree = "<group>"; };
-		CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestLiveActivityCoordinator.swift; path = Data/RestLiveActivityCoordinator.swift; sourceTree = "<group>"; };
-		FA8D7C5D27311AEF90855B90 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		E217E87F2D45C4BE47633738 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		115604D978C2351331CE2950 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9F8E0B20D6A34394746D919 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		12E39561EAB2ACA42229972D = {
 			isa = PBXGroup;
 			children = (
@@ -696,6 +704,16 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		CA104B96E99B214CBA9C6ED6 /* FormRestWidget */ = {
+			isa = PBXGroup;
+			children = (
+				B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */,
+				FA8D7C5D27311AEF90855B90 /* Info.plist */,
+			);
+			name = FormRestWidget;
+			path = FormRestWidget;
+			sourceTree = "<group>";
+		};
 		CB9935388CB380F0691B3A5D /* Today */ = {
 			isa = PBXGroup;
 			children = (
@@ -738,6 +756,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		F9F8E0B20D6A34394746D919 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5F5CFF3B812D4D36B51EE587 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		OB0000000000000000000000 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -759,32 +785,6 @@
 			path = Pro;
 			sourceTree = "<group>";
 		};
-		115604D978C2351331CE2950 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F9F8E0B20D6A34394746D919 /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CA104B96E99B214CBA9C6ED6 /* FormRestWidget */ = {
-			isa = PBXGroup;
-			children = (
-				B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */,
-				FA8D7C5D27311AEF90855B90 /* Info.plist */,
-			);
-			name = FormRestWidget;
-			path = FormRestWidget;
-			sourceTree = "<group>";
-		};
-		F9F8E0B20D6A34394746D919 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				5F5CFF3B812D4D36B51EE587 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -802,8 +802,6 @@
 				EA9FE8EBD2465DD66C7A51CF /* PBXTargetDependency */,
 			);
 			name = FormApp;
-			packageProductDependencies = (
-			);
 			productName = FormApp;
 			productReference = E898602344E70BEEF05AB8B3 /* FormApp.app */;
 			productType = "com.apple.product-type.application";
@@ -821,8 +819,6 @@
 				4FDE5E810F8E8FE326D6B462 /* PBXTargetDependency */,
 			);
 			name = FormAppTests;
-			packageProductDependencies = (
-			);
 			productName = FormAppTests;
 			productReference = 26BB808F3B2A565E934878C4 /* FormAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -917,6 +913,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8DD2AB5B9406749A8718D14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBCDC68E972D19B9363879DB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -939,16 +942,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D8DD2AB5B9406749A8718D14 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B3E284C7ECD09DE7388AA35C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */,
+				B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */,
+				44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C0588F6DBE87FC8476A9F330 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1089,16 +1095,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B3E284C7ECD09DE7388AA35C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */,
-				B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */,
-				44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1133,8 +1129,8 @@
 				PRODUCT_NAME = FormApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
 				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1193,9 +1189,9 @@
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 			};
 			name = Release;
 		};
@@ -1216,8 +1212,8 @@
 				PRODUCT_NAME = FormApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
 				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1235,10 +1231,30 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
 				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormApp.app/FormApp";
+			};
+			name = Release;
+		};
+		847ED27C4DDC169A9CCD3903 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D38SU6U4FN;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FormRestWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
+				PRODUCT_NAME = FormRestWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -1255,10 +1271,29 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
 				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormApp.app/FormApp";
+			};
+			name = Debug;
+		};
+		BCB0F1CF9682A6444BA208B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D38SU6U4FN;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FormRestWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
+				PRODUCT_NAME = FormRestWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1323,48 +1358,9 @@
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
-			};
-			name = Debug;
-		};
-		847ED27C4DDC169A9CCD3903 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = FormRestWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
-				PRODUCT_NAME = FormRestWidget;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		BCB0F1CF9682A6444BA208B1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = FormRestWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
-				PRODUCT_NAME = FormRestWidget;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
