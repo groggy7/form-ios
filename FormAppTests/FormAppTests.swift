@@ -5528,9 +5528,9 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.en["settings.showProgressionTargetsSubtitle"], "Show progression advice and suggested targets in session")
         XCTAssertEqual(Translations.tr["settings.showProgressionTargetsSubtitle"], "Antrenman ekranında ağırlık artış ve hedef önerilerini göster")
         XCTAssertEqual(Translations.en["settings.showWarmupCalculator"], "Warmup & plate calculator")
-        XCTAssertEqual(Translations.tr["settings.showWarmupCalculator"], "Isınma & plaka hesaplayıcı")
+        XCTAssertEqual(Translations.tr["settings.showWarmupCalculator"], "Isınma ve plaka hesabı")
         XCTAssertEqual(Translations.en["settings.showWarmupCalculatorSubtitle"], "Show warm-up sets and plate calculator in session")
-        XCTAssertEqual(Translations.tr["settings.showWarmupCalculatorSubtitle"], "Antrenman ekranında ısınma setlerini ve plaka hesaplayıcıyı göster")
+        XCTAssertEqual(Translations.tr["settings.showWarmupCalculatorSubtitle"], "Antrenman ekranında ısınma setlerini ve plaka hesabını göster")
     }
 
     func testWarmupTranslationsParity() {
