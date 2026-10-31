@@ -33,6 +33,12 @@ enum WatchSnapshotBuilder {
         return WatchSnapshot.Finished(sessionId: sessionId, saved: saved, endedAt: min(now, completedAt ?? now))
     }
 
+    /// The marker once `openedId` opens: a workout resumed from History keeps its ID and has not finished any more.
+    /// Kept, its old marker would end the new watch recording at once.
+    static func stillFinished(_ marker: WatchSnapshot.Finished?, openedId: String) -> WatchSnapshot.Finished? {
+        marker?.sessionId == openedId ? nil : marker
+    }
+
     private static func session(_ draft: ActiveSessionDraft, unit: WeightUnit, steps: ProgressionLoadSteps, now: Int64) -> WatchSnapshot.Session {
         let exercises = draft.workout.exercises
         return WatchSnapshot.Session(

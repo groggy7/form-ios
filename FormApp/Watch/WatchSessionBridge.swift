@@ -70,7 +70,12 @@ final class WatchSessionBridge: NSObject, ObservableObject, WCSessionDelegate {
         trackedSessionId = id
         recordAtStart = id.flatMap { id in store.state.history.first { $0.id == id } }
         // The draft restored at launch is not a new workout; the watch already follows it or chose not to.
-        if isTracking, id != nil { startWatchWorkout() }
+        if isTracking, let id {
+            // A workout resumed from History first drops its finished marker, so the watch records this bout too.
+            let marker = finished
+            if WatchSnapshotBuilder.stillFinished(marker, openedId: id) != marker { finished = nil }
+            startWatchWorkout()
+        }
         isTracking = true
     }
 

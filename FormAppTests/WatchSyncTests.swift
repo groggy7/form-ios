@@ -242,6 +242,24 @@ final class WatchSyncTests: XCTestCase {
         XCTAssertNil(next.workoutStep(running: nil, skipped: []), "A workout that already ended is not started again")
     }
 
+    func testAWorkoutResumedFromHistoryKeepsItsNewRecording() {
+        let marker = WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: nil,
+                                                   history: [record(completedAt: "2026-10-31T10:30:00.000Z")], now: now)
+        func resumed(_ finished: WatchSnapshot.Finished?) -> WatchSnapshot {
+            WatchSnapshotBuilder.build(draft: draft(), unit: .kg, language: "en", isPremium: true, steps: steps,
+                                       recordsWorkouts: true, finished: finished, now: now)
+        }
+        let opened = RunningWorkout(sessionId: nil, startedAt: now - 5_000)
+        let adopted = RunningWorkout(sessionId: "s", startedAt: now - 5_000)
+        XCTAssertEqual(resumed(marker).workoutStep(running: adopted, skipped: []), .finish(save: true, endedAt: marker.endedAt),
+                       "The old marker would end the new recording")
+        let cleared = resumed(WatchSnapshotBuilder.stillFinished(marker, openedId: "s"))
+        XCTAssertEqual(cleared.workoutStep(running: opened, skipped: []), .adopt(sessionId: "s"))
+        XCTAssertNil(cleared.workoutStep(running: adopted, skipped: []), "Keeps recording")
+        XCTAssertEqual(cleared.workoutStep(running: nil, skipped: []), .start(sessionId: "s"))
+        XCTAssertEqual(WatchSnapshotBuilder.stillFinished(marker, openedId: "other"), marker, "Another workout's marker stays")
+    }
+
     func testRestTransitionsMatchTheWorkoutScreen() {
         let rest = RestTimerState(exerciseName: "Bench", totalSeconds: 60, isRunning: true, endsAtEpochMillis: now + 20_000)
         XCTAssertEqual(rest.adjusted(by: 30, nowEpochMillis: now).totalSeconds, 60, "50 s remain, within the original total")
