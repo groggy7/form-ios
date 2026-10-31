@@ -760,6 +760,39 @@ public struct RestTimerState: Codable, Hashable {
         let diff = end - nowEpochMillis
         return max(0, Int((diff + 999) / 1000))
     }
+
+    /// Holds a running rest at its remaining time; the workout screen and the watch share these transitions.
+    public func paused(nowEpochMillis: Int64) -> RestTimerState {
+        guard isRunning else { return self }
+        var copy = self
+        copy.pausedSecondsRemaining = secondsRemaining(nowEpochMillis: nowEpochMillis)
+        copy.isRunning = false
+        copy.endsAtEpochMillis = nil
+        return copy
+    }
+
+    public func resumed(nowEpochMillis: Int64) -> RestTimerState {
+        guard !isRunning, pausedSecondsRemaining > 0 else { return self }
+        var copy = self
+        copy.isRunning = true
+        copy.endsAtEpochMillis = nowEpochMillis + Int64(pausedSecondsRemaining * 1000)
+        return copy
+    }
+
+    /// Adds (or with a negative value removes) seconds; a rest reduced to zero stops.
+    public func adjusted(by seconds: Int, nowEpochMillis: Int64) -> RestTimerState {
+        var copy = self
+        let remaining = max(0, secondsRemaining(nowEpochMillis: nowEpochMillis) + seconds)
+        copy.totalSeconds = max(totalSeconds, remaining)
+        copy.pausedSecondsRemaining = remaining
+        if isRunning && remaining > 0 {
+            copy.endsAtEpochMillis = nowEpochMillis + Int64(remaining * 1000)
+        } else {
+            copy.isRunning = false
+            copy.endsAtEpochMillis = nil
+        }
+        return copy
+    }
 }
 
 public struct ActiveSessionDraft: Identifiable, Codable, Hashable {

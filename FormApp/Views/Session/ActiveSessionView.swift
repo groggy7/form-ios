@@ -1117,17 +1117,8 @@ public struct ActiveSessionView: View {
     private func toggleRest() {
         store.updateActiveSession { d in
             var copy = d
-            guard var timer = copy.restTimer else { return copy }
-            if timer.isRunning {
-                let remaining = timer.secondsRemaining(nowEpochMillis: nowEpochMillis)
-                timer.isRunning = false
-                timer.endsAtEpochMillis = nil
-                timer.pausedSecondsRemaining = remaining
-            } else if timer.pausedSecondsRemaining > 0 {
-                timer.isRunning = true
-                timer.endsAtEpochMillis = nowEpochMillis + Int64(timer.pausedSecondsRemaining * 1000)
-            }
-            copy.restTimer = timer
+            guard let timer = copy.restTimer else { return copy }
+            copy.restTimer = timer.isRunning ? timer.paused(nowEpochMillis: nowEpochMillis) : timer.resumed(nowEpochMillis: nowEpochMillis)
             return copy
         }
     }
@@ -1135,17 +1126,7 @@ public struct ActiveSessionView: View {
     private func adjustRest(seconds: Int) {
         store.updateActiveSession { d in
             var copy = d
-            guard var timer = copy.restTimer else { return copy }
-            let remaining = max(0, timer.secondsRemaining(nowEpochMillis: nowEpochMillis) + seconds)
-            timer.totalSeconds = max(timer.totalSeconds, remaining)
-            timer.pausedSecondsRemaining = remaining
-            if timer.isRunning && remaining > 0 {
-                timer.endsAtEpochMillis = nowEpochMillis + Int64(remaining * 1000)
-            } else {
-                timer.isRunning = false
-                timer.endsAtEpochMillis = nil
-            }
-            copy.restTimer = timer
+            copy.restTimer = copy.restTimer?.adjusted(by: seconds, nowEpochMillis: nowEpochMillis)
             return copy
         }
     }

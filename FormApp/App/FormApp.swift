@@ -8,6 +8,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         RestAlertScheduler.shared.install()
         RestAlertScheduler.shared.shouldDeferPrompt = { MainActor.assumeIsolated { TourController.shared.progress.shouldStart(.restTimer) } }
+        // Here rather than in a view: a watch command can wake the app in the background without a scene.
+        WatchSessionBridge.shared.start(store: AppStore.shared)
         return true
     }
 
