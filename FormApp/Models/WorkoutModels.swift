@@ -996,34 +996,63 @@ public struct WorkoutCalendarHistory: Codable, Hashable {
 }
 
 public enum WorkoutCalendar {
-    public static func formatDate(_ date: Date, timeZone: TimeZone = .current) -> String {
+    // History scans call these per record. Creating a formatter per call made calendar and
+    // weekly totals scale with history on every redraw, so formatters are cached.
+    // DateFormatter is thread safe once configured; ISO8601DateFormatter is not documented so.
+    private static let formatterLock = NSLock()
+    private static var dayFormatters: [TimeZone: DateFormatter] = [:]
+    private static let isoFormatterWithFractionalSeconds: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f
+    }()
+    private static let isoFormatter: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
+    private static func dayFormatter(_ timeZone: TimeZone) -> DateFormatter {
+        formatterLock.lock()
+        defer { formatterLock.unlock() }
+        if let cached = dayFormatters[timeZone] { return cached }
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
         f.calendar = Calendar(identifier: .gregorian)
         f.locale = Locale(identifier: "en_US_POSIX")
         f.timeZone = timeZone
-        return f.string(from: date)
+        dayFormatters[timeZone] = f
+        return f
+    }
+
+    public static func formatDate(_ date: Date, timeZone: TimeZone = .current) -> String {
+        dayFormatter(timeZone).string(from: date)
     }
 
     public static func parseDate(_ string: String, timeZone: TimeZone = .current) -> Date? {
         guard string.count == 10 else { return nil }
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        f.calendar = Calendar(identifier: .gregorian)
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.timeZone = timeZone
-        return f.date(from: string)
+        return dayFormatter(timeZone).date(from: string)
     }
+
+    /// The fractional-second form records store; Home builds the live workout's record on every redraw.
+    public static func formatIsoTimestamp(_ date: Date) -> String {
+        formatterLock.lock()
+        defer { formatterLock.unlock() }
+        return isoFormatterWithFractionalSeconds.string(from: date)
+    }
+
+    /// Parsed history timestamps. An ISO parse costs tens of microseconds and redraws reread the same records.
+    private static var parsedTimestamps: [String: Date?] = [:]
 
     public static func parseIsoTimestamp(_ timestamp: String?) -> Date? {
         guard let ts = timestamp, !ts.isEmpty else { return nil }
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        if let d = isoFormatter.date(from: ts) {
-            return d
-        }
-        isoFormatter.formatOptions = [.withInternetDateTime]
-        return isoFormatter.date(from: ts)
+        formatterLock.lock()
+        defer { formatterLock.unlock() }
+        if let cached = parsedTimestamps[ts] { return cached }
+        let date = isoFormatterWithFractionalSeconds.date(from: ts) ?? isoFormatter.date(from: ts)
+        if parsedTimestamps.count >= 20_000 { parsedTimestamps.removeAll(keepingCapacity: true) }
+        parsedTimestamps[ts] = date
+        return date
     }
 
     public static func localDate(from timestamp: String?, timeZone: TimeZone = .current) -> String? {

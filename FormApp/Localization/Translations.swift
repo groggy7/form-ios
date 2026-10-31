@@ -64,16 +64,26 @@ public final class LanguageManager: ObservableObject {
         default: return "ic_flag_en"
         }
     }
-    public static var workoutDays: [String] {
+    private static let weekdayLock = NSLock()
+    private static var weekdayNames: [String: [String]] = [:]
+
+    /// Monday-first weekday names for the locale. Views read these on every redraw, so one formatter's symbols are kept per locale.
+    private static func weekdayNames(short: Bool) -> [String] {
+        let locale = locale
+        let key = "\(short ? "short" : "full"):\(locale.identifier)"
+        weekdayLock.lock()
+        defer { weekdayLock.unlock() }
+        if let cached = weekdayNames[key] { return cached }
         let formatter = DateFormatter(); formatter.locale = locale
-        let names = formatter.weekdaySymbols!
-        return [1,2,3,4,5,6,0].map { names[$0] }
+        let names = (short ? formatter.shortWeekdaySymbols : formatter.weekdaySymbols)!
+        let days = [1,2,3,4,5,6,0].map { short ? names[$0].trimmingCharacters(in: CharacterSet(charactersIn: ".")).uppercased(with: locale) : names[$0] }
+        weekdayNames[key] = days
+        return days
     }
+    public static var workoutDays: [String] { weekdayNames(short: false) }
     public static var dayLabels: [String] {
         if shared.translationLanguage == "tr" { return ["PZT","SAL","ÇAR","PER","CUM","CTS","PAZ"] }
-        let formatter = DateFormatter(); formatter.locale = locale
-        let names = formatter.shortWeekdaySymbols!
-        return [1,2,3,4,5,6,0].map { names[$0].trimmingCharacters(in: CharacterSet(charactersIn: ".")).uppercased(with: locale) }
+        return weekdayNames(short: true)
     }
     public static func t(_ key: String, _ params: [String: Any] = [:]) -> String { shared.translate(key, params: params) }
     public static func content(_ text: String) -> String { ContentDictionary.localize(text, lang: shared.translationLanguage) }

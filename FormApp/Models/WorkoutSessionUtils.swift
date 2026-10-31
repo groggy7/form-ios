@@ -104,9 +104,7 @@ public struct SessionProgress {
     }
 
     public func record(draft: ActiveSessionDraft, completedAtEpochMillis: Int64) -> WorkoutSessionRecord {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let completedAt = formatter.string(from: Date(timeIntervalSince1970: Double(completedAtEpochMillis) / 1000.0))
+        let completedAt = WorkoutCalendar.formatIsoTimestamp(Date(timeIntervalSince1970: Double(completedAtEpochMillis) / 1000.0))
 
         return WorkoutSessionRecord(
             id: draft.id,
