@@ -190,12 +190,12 @@ struct SetPage: View {
     /// Starts the editor from the set's own values, else the previous set's, as the iPhone prefills.
     /// A set the user is already adjusting keeps the crown values when an unrelated snapshot arrives.
     private func reset(force: Bool) {
-        guard let open, let index = exercise.sets.firstIndex(where: { $0.id == open.id }) else { editingSetId = nil; return }
+        guard let preview = exercise.openSet else { editingSetId = nil; return }
+        let open = preview.set
         guard force || open.id != editingSetId || !touched else { return }
-        let previous = exercise.sets[..<index].last { $0.isCompleted }
-        baseLoad = open.load ?? previous?.load ?? 0
+        baseLoad = preview.load ?? 0
         loadSteps = 0
-        reps = Double(open.reps ?? open.suggestedReps ?? previous?.reps ?? 0)
+        reps = Double(preview.reps ?? 0)
         initialReps = reps
         editingSetId = open.id
         if focus == nil { focus = .load }

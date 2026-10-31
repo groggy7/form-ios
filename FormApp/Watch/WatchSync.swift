@@ -167,3 +167,35 @@ extension WatchSnapshot {
         return .start(sessionId: session.id)
     }
 }
+
+/// A set the watch is about to show, with the values the iPhone would prefill.
+struct WatchSetPreview: Equatable {
+    var exercise: WatchSnapshot.Exercise
+    var set: WatchSnapshot.SetRow
+    var load: Double?
+    var reps: Int?
+}
+
+extension WatchSnapshot.Exercise {
+    /// The open set's own values, else the previous completed set's, as the iPhone prefills; reps fall back to the target.
+    var openSet: WatchSetPreview? {
+        guard let index = sets.firstIndex(where: { !$0.isCompleted }) else { return nil }
+        let set = sets[index]
+        let previous = sets[..<index].last { $0.isCompleted }
+        return WatchSetPreview(exercise: self, set: set, load: set.load ?? previous?.load,
+                               reps: set.reps ?? set.suggestedReps ?? previous?.reps)
+    }
+}
+
+extension WatchSnapshot.Session {
+    /// What the workout continues with after a rest, shown while resting: the superset partner first, as the iPhone's
+    /// Next button goes, then this exercise, then the next one. Nil when every set is logged.
+    var upNext: WatchSetPreview? {
+        guard exercises.indices.contains(currentIndex) else { return nil }
+        let current = exercises[currentIndex]
+        let next = nextIndex.flatMap { exercises.indices.contains($0) ? exercises[$0] : nil }
+        let group = { (label: String?) in label.map { String($0.prefix { !$0.isNumber }) } }
+        let partner = next.flatMap { current.label != nil && group($0.label) == group(current.label) ? $0 : nil }
+        return [partner, current, next].compactMap { $0 }.lazy.compactMap(\.openSet).first
+    }
+}

@@ -34,7 +34,7 @@ struct WorkoutPage: View {
             TimelineView(.periodic(from: .now, by: 1)) { context in
                 let remaining = rest.secondsRemaining(now: WatchSync.nowMillis(context.date))
                 if remaining > 0 {
-                    RestPage(store: store, rest: rest, remaining: remaining)
+                    RestPage(store: store, session: session, rest: rest, remaining: remaining)
                 } else {
                     setPage
                 }

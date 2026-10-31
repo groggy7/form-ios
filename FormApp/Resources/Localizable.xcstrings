@@ -50974,6 +50974,76 @@
         }
       }
     },
+    "settings.watchHealth": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save to Health Connect"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Connect'e kaydet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Health Connect sichern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer dans Health Connect"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar en Health Connect"
+          }
+        }
+      }
+    },
+    "settings.watchHealthSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Forced Rep to save the workouts your watch records, with heart rate and calories."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep'in, saatinin kaydettiği antrenmanları nabız ve kaloriyle birlikte kaydetmesine izin ver."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaube Forced Rep, die Trainings, die deine Uhr aufzeichnet, mit Herzfrequenz und Kalorien zu sichern."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez Forced Rep à enregistrer les entraînements suivis sur votre montre, avec la fréquence cardiaque et les calories."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permite que Forced Rep guarde los entrenamientos que registra tu reloj, con la frecuencia cardiaca y las calorías."
+          }
+        }
+      }
+    },
     "joint.title": {
       "extractionState": "manual",
       "localizations": {
@@ -54200,31 +54270,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep reads your weight from Health Connect to show weigh-ins in your body log, so you don't type them twice. It reads only weight and never writes to Health Connect. Weigh-ins are shown on this device; they are not saved in Forced Rep's data, backups or exports, and are never shared."
+            "value": "Forced Rep reads your weight from Health Connect to show weigh-ins in your body log, so you don't type them twice. With the Wear OS app, it also saves the workouts your watch records, with heart rate and calories. Weigh-ins are shown on this device; they are not saved in Forced Rep's data, backups or exports, and are never shared. Watch workouts go only to Health Connect."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep, tartımları vücut kaydında göstermek için kilonu Health Connect'ten okur; böylece onları iki kez yazmazsın. Yalnızca kiloyu okur ve Health Connect'e asla yazmaz. Tartımlar bu cihazda gösterilir; Forced Rep verilerine, yedeklerine veya dışa aktarımlarına kaydedilmez ve asla paylaşılmaz."
+            "value": "Forced Rep, tartımları vücut kaydında göstermek için kilonu Health Connect'ten okur; böylece onları iki kez yazmazsın. Wear OS uygulamasıyla saatinin kaydettiği antrenmanları da nabız ve kaloriyle birlikte kaydeder. Tartımlar bu cihazda gösterilir; Forced Rep verilerine, yedeklerine veya dışa aktarımlarına kaydedilmez ve asla paylaşılmaz. Saat antrenmanları yalnızca Health Connect'e gider."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep liest dein Gewicht aus Health Connect, um Wiegungen in deinem Körperprotokoll anzuzeigen, damit du sie nicht doppelt eintippen musst. Es liest nur das Gewicht und schreibt nie in Health Connect. Wiegungen werden auf diesem Gerät angezeigt; sie werden nicht in den Daten, Sicherungen oder Exporten von Forced Rep gespeichert und nie geteilt."
+            "value": "Forced Rep liest dein Gewicht aus Health Connect, um Wiegungen in deinem Körperprotokoll anzuzeigen, damit du sie nicht doppelt eintippen musst. Mit der Wear OS-App sichert es außerdem die Trainings, die deine Uhr aufzeichnet, mit Herzfrequenz und Kalorien. Wiegungen werden auf diesem Gerät angezeigt; sie werden nicht in den Daten, Sicherungen oder Exporten von Forced Rep gespeichert und nie geteilt. Uhr-Trainings gehen nur an Health Connect."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep lit ton poids dans Health Connect pour afficher les pesées dans ton suivi corporel, afin que tu n’aies pas à les saisir deux fois. Il ne lit que le poids et n’écrit jamais dans Health Connect. Les pesées s’affichent sur cet appareil ; elles ne sont pas enregistrées dans les données, sauvegardes ou exports de Forced Rep, et ne sont jamais partagées."
+            "value": "Forced Rep lit ton poids dans Health Connect pour afficher les pesées dans ton suivi corporel, afin que tu n’aies pas à les saisir deux fois. Avec l’app Wear OS, il enregistre aussi les entraînements suivis sur ta montre, avec la fréquence cardiaque et les calories. Les pesées s’affichent sur cet appareil ; elles ne sont pas enregistrées dans les données, sauvegardes ou exports de Forced Rep, et ne sont jamais partagées. Les entraînements de la montre vont uniquement dans Health Connect."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep lee tu peso de Health Connect para mostrar los pesajes en tu registro corporal, así no tienes que escribirlos dos veces. Solo lee el peso y nunca escribe en Health Connect. Los pesajes se muestran en este dispositivo; no se guardan en los datos, copias ni exportaciones de Forced Rep y nunca se comparten."
+            "value": "Forced Rep lee tu peso de Health Connect para mostrar los pesajes en tu registro corporal, así no tienes que escribirlos dos veces. Con la app de Wear OS, también guarda los entrenamientos que registra tu reloj, con la frecuencia cardiaca y las calorías. Los pesajes se muestran en este dispositivo; no se guardan en los datos, copias ni exportaciones de Forced Rep y nunca se comparten. Los entrenamientos del reloj solo van a Health Connect."
           }
         }
       }

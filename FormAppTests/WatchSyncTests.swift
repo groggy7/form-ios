@@ -104,6 +104,22 @@ final class WatchSyncTests: XCTestCase {
                      "A newer watch's unknown command is ignored")
     }
 
+    func testUpNextFollowsTheIphonesOrderWithItsPrefill() throws {
+        let session = try XCTUnwrap(snapshot(draft()).session)
+        let next = try XCTUnwrap(session.upNext)
+        XCTAssertEqual(next.set.id, "b2")
+        XCTAssertEqual(next.load, 80, "The previous set's load")
+        XCTAssertEqual(next.reps, 7, "The coach's target before the previous set's reps")
+        var paired = draft()
+        paired.setsByExercise["bench"]![2] = ExerciseSetLog(id: "b2", setNumber: 2, weightInput: "80", repsInput: "7", weightKg: 80,
+                                                           completedReps: 7, isCompleted: true)
+        paired.currentExerciseIndex = 2
+        paired.setsByExercise["push"]![0].isCompleted = true
+        XCTAssertEqual(snapshot(paired).session?.upNext?.set.id, "c1", "The pending superset partner comes first")
+        paired.setsByExercise["curl"]![0].isCompleted = true
+        XCTAssertNil(snapshot(paired).session?.upNext, "Every set is logged")
+    }
+
     // MARK: Commands
 
     func testCompletingASetLogsTheWatchValuesAndStartsTheRest() throws {
