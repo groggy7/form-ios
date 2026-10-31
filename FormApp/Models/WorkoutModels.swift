@@ -1175,10 +1175,18 @@ public enum WorkoutCalendar {
         }
     }
 
+    /// Each entry ID's date, for lookups across all history. The first entry for an ID wins, as `first(where:)` finds it.
+    static func entryDates(_ entries: [WorkoutDayEntry]) -> [String: String] {
+        var dates: [String: String] = [:]
+        for entry in entries where dates[entry.id] == nil { dates[entry.id] = entry.date }
+        return dates
+    }
+
     static func scheduledOriginsWithActivity(sessions: [WorkoutSessionRecord], entries: [WorkoutDayEntry], timeZone: TimeZone = .current) -> Set<String> {
-        Set(sessions.compactMap { session in
+        let performedDates = entryDates(entries)
+        return Set(sessions.compactMap { session in
             guard let origin = session.scheduledDate, parseDate(origin, timeZone: timeZone) != nil,
-                  let performed = entries.first(where: { $0.id == "session:\(session.id)" })?.date
+                  let performed = performedDates["session:\(session.id)"]
                     ?? localDate(from: session.startedAt, timeZone: timeZone) ?? localDate(from: session.completedAt, timeZone: timeZone),
                   origin != performed,
                   session.totalCompletedSets > 0 || session.exerciseLogs.contains(where: { !$0.sets.isEmpty }) else { return nil }

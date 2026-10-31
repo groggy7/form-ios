@@ -1243,20 +1243,28 @@ public final class AppStore: ObservableObject {
         )
         var statuses = WorkoutCalendar.statuses(history: refreshed, today: todayStr)
 
+        // Resolve each record's day once. Scanning all history and entries for every calendar day
+        // grew with the cube of history size.
+        let entryDates = WorkoutCalendar.entryDates(curCal.entries)
+        var recordsByDate: [String: [WorkoutSessionRecord]] = [:]
+        for record in state.history {
+            guard let date = entryDates["session:\(record.id)"]
+                ?? WorkoutCalendar.localDate(from: record.startedAt) ?? WorkoutCalendar.localDate(from: record.completedAt) else { continue }
+            recordsByDate[date, default: []].append(record)
+        }
+        let completionMarkDates = Set(curCal.entries.filter { $0.status == .completed && !$0.id.hasPrefix("session:") }.map(\.date))
+
         func hasLoggedSets(for dateStr: String) -> Bool {
             if let active = activeSession {
                 let activeDate = active.assignedCalendarDate
-                    ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                    ?? entryDates["session:\(active.id)"]
                     ?? WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
                 if activeDate == dateStr {
                     let allSets = active.setsByExercise.values.flatMap { $0 }
                     if allSets.contains(where: { $0.isCompleted }) { return true }
                 }
             }
-            return state.history.contains { rec in
-                let calDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date
-                let d = calDate ?? WorkoutCalendar.localDate(from: rec.startedAt) ?? WorkoutCalendar.localDate(from: rec.completedAt)
-                guard d == dateStr else { return false }
+            return (recordsByDate[dateStr] ?? []).contains { rec in
                 if rec.totalCompletedSets > 0 { return true }
                 return rec.exerciseLogs.contains { log in
                     log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
@@ -1268,7 +1276,7 @@ public final class AppStore: ObservableObject {
             let allSets = active.setsByExercise.values.flatMap { $0 }
             if allSets.contains(where: { $0.isCompleted }) {
                 let activeDate = active.assignedCalendarDate
-                    ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                    ?? entryDates["session:\(active.id)"]
                     ?? WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
                 if (statuses[activeDate]?.priority ?? -1) < WorkoutDayStatus.unfinished.priority {
                     statuses[activeDate] = .unfinished
@@ -1286,15 +1294,8 @@ public final class AppStore: ObservableObject {
             if dateStr < todayStr && status == .unfinished && !hasLoggedSets(for: dateStr) {
                 statuses[dateStr] = .missed
             } else if status == .completed {
-                let records = state.history.filter { record in
-                    let date = curCal.entries.first(where: { $0.id == "session:\(record.id)" })?.date
-                        ?? WorkoutCalendar.localDate(from: record.startedAt) ?? WorkoutCalendar.localDate(from: record.completedAt)
-                    return date == dateStr
-                }
-                let hasCompletionMark = curCal.entries.contains {
-                    $0.date == dateStr && $0.status == .completed && !$0.id.hasPrefix("session:")
-                }
-                if !hasCompletionMark && !records.isEmpty
+                let records = recordsByDate[dateStr] ?? []
+                if !completionMarkDates.contains(dateStr) && !records.isEmpty
                     && !records.contains(where: { WorkoutCalendar.isSessionComplete(session: $0, workout: nil) }) {
                     statuses[dateStr] = .unfinished
                 }
@@ -1306,7 +1307,7 @@ public final class AppStore: ObservableObject {
         if let active = activeSession, let origin = active.scheduledDate, WorkoutCalendar.parseDate(origin) != nil,
            active.setsByExercise.values.flatMap({ $0 }).contains(where: { $0.isCompleted }) {
             let performed = active.assignedCalendarDate
-                ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                ?? entryDates["session:\(active.id)"]
                 ?? WorkoutCalendar.localDate(from: active.startedAt)
             if performed != nil && performed != origin { origins.insert(origin) }
         }

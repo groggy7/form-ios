@@ -14,15 +14,28 @@ public struct ExerciseRecord {
 
 public enum RecordEngine {
     public static func sameExercise(_ a: SessionExerciseLog, _ b: SessionExerciseLog) -> Bool {
-        if let left = a.exerciseId, !left.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, let right = b.exerciseId, !right.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return left == right }
+        if let left = a.exerciseId, hasText(left), let right = b.exerciseId, hasText(right) { return left == right }
         return PersonalRecordTracker.normalizeExerciseKey(a.exerciseName) == PersonalRecordTracker.normalizeExerciseKey(b.exerciseName)
+    }
+    private static let whitespace = CharacterSet.whitespacesAndNewlines
+    /// Whether trimming whitespace would leave text, without the copy; this runs for every pair of logs compared.
+    private static func hasText(_ value: String) -> Bool {
+        !value.unicodeScalars.allSatisfy { whitespace.contains($0) }
     }
     private static func load(_ set: SessionSetLog) -> Double { WeightUnit.roundHalfAwayFromZero(set.weightKg ?? 0, decimals: 1) }
     public static func workingSets(_ log: SessionExerciseLog) -> [SessionSetLog] {
         log.sets.filter { (($0.weightKg ?? 0) > 0 || WorkoutSessionUtils.allowsZeroWeight(Exercise(name: log.exerciseName, exerciseId: log.exerciseId))) && !$0.isWarmup && $0.weightKg.map { $0.isFinite && (0...1500).contains($0) } == true && (1...999).contains($0.reps ?? 0) }
     }
     public static func forSession(history: [WorkoutSessionRecord], target: WorkoutSessionRecord, timeZone: TimeZone = .current) -> [ExerciseRecord] {
-        let prior = history.filter { $0.id != target.id && PersonalRecordTracker.precedes($0, target, timeZone: timeZone) }.flatMap(\.exerciseLogs)
+        let targetKey = PersonalRecordTracker.TrainingKey(target, timeZone: timeZone)
+        return forPriorRecords(history.filter {
+            $0.id != target.id && PersonalRecordTracker.TrainingKey($0, timeZone: timeZone).precedes(targetKey)
+        }, target: target)
+    }
+
+    /// `forSession` with the records that precede `target` already chosen.
+    static func forPriorRecords(_ priorRecords: [WorkoutSessionRecord], target: WorkoutSessionRecord) -> [ExerciseRecord] {
+        let prior = priorRecords.flatMap(\.exerciseLogs)
         var seen: [SessionExerciseLog] = []
         var result: [(Int, ExerciseRecord)] = []
         for (index, log) in target.exerciseLogs.enumerated() {

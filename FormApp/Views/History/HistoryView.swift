@@ -923,8 +923,9 @@ public struct HistoryView: View {
         if let active = activeRecord {
             daySessions.append(active)
         }
+        let entryDates = WorkoutCalendar.entryDates(store.state.calendarHistory?.entries ?? [])
         let completedForDay = store.state.history.filter { rec in
-            if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
+            if let calDate = entryDates["session:\(rec.id)"] {
                 return calDate == dateString
             }
             let startDate = WorkoutCalendar.localDate(from: rec.startedAt)

@@ -68,20 +68,49 @@ public enum PersonalRecordTracker {
         return WorkoutCalendar.parseIsoTimestamp(ts) ?? WorkoutCalendar.parseDate(ts, timeZone: timeZone)
     }
 
+    private struct CalendarKey: Hashable {
+        let identifier: Calendar.Identifier
+        let timeZone: TimeZone
+    }
+    private static let calendarLock = NSLock()
+    private static var calendars: [CalendarKey: Calendar] = [:]
+
+    /// Creating a calendar per record dominated weekly totals over long histories.
+    private static func cachedCalendar(_ identifier: Calendar.Identifier, _ timeZone: TimeZone) -> Calendar {
+        let key = CalendarKey(identifier: identifier, timeZone: timeZone)
+        calendarLock.lock()
+        defer { calendarLock.unlock() }
+        if let cached = calendars[key] { return cached }
+        var calendar = Calendar(identifier: identifier); calendar.timeZone = timeZone
+        calendars[key] = calendar
+        return calendar
+    }
+
     public static func trainingDate(_ record: WorkoutSessionRecord, timeZone: TimeZone = .current) -> Date? {
         if let day = record.performedDate, let date = WorkoutCalendar.parseDate(day, timeZone: timeZone) { return date }
         guard let date = recordDate(record.startedAt.isEmpty ? record.completedAt : record.startedAt, timeZone: timeZone) else { return nil }
-        var calendar = Calendar(identifier: .gregorian); calendar.timeZone = timeZone
-        return calendar.startOfDay(for: date)
+        return cachedCalendar(.gregorian, timeZone).startOfDay(for: date)
+    }
+
+    /// A record's place in training order: its training day, then when it started.
+    struct TrainingKey {
+        let day: Date?
+        let started: Date?
+
+        init(_ record: WorkoutSessionRecord, timeZone: TimeZone) {
+            day = trainingDate(record, timeZone: timeZone)
+            started = recordDate(record.startedAt.isEmpty ? record.completedAt : record.startedAt, timeZone: timeZone)
+        }
+
+        func precedes(_ other: TrainingKey) -> Bool {
+            let left = day ?? .distantPast, right = other.day ?? .distantPast
+            if left != right { return left < right }
+            return (started ?? .distantPast) < (other.started ?? .distantPast)
+        }
     }
 
     public static func precedes(_ a: WorkoutSessionRecord, _ b: WorkoutSessionRecord, timeZone: TimeZone = .current) -> Bool {
-        let left = trainingDate(a, timeZone: timeZone) ?? .distantPast
-        let right = trainingDate(b, timeZone: timeZone) ?? .distantPast
-        if left != right { return left < right }
-        let at = recordDate(a.startedAt.isEmpty ? a.completedAt : a.startedAt, timeZone: timeZone) ?? .distantPast
-        let bt = recordDate(b.startedAt.isEmpty ? b.completedAt : b.startedAt, timeZone: timeZone) ?? .distantPast
-        return at < bt
+        TrainingKey(a, timeZone: timeZone).precedes(TrainingKey(b, timeZone: timeZone))
     }
 
     public static func isRecordInWeek(
@@ -97,8 +126,7 @@ public enum PersonalRecordTracker {
     }
 
     public static func isoWeekKey(_ date: Date, timeZone: TimeZone = .current) -> String {
-        var calendar = Calendar(identifier: .iso8601)
-        calendar.timeZone = timeZone
+        let calendar = cachedCalendar(.iso8601, timeZone)
         return String(format: "%04d-W%02d", calendar.component(.yearForWeekOfYear, from: date), calendar.component(.weekOfYear, from: date))
     }
 
@@ -112,8 +140,14 @@ public enum PersonalRecordTracker {
     ) -> Int {
         var seen = Set<String>()
         let records = recordsWithActiveSession(history: history, activeSession: activeSession, now: now, timeZone: timeZone).filter { seen.insert($0.id).inserted }
-        return records.filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
-            .reduce(0) { $0 + RecordEngine.forSession(history: records, target: $1, timeZone: timeZone).count }
+        // Resolve each record's training position once; comparing parsed dates per pair made Home redraws scale with history.
+        let keys = records.map { TrainingKey($0, timeZone: timeZone) }
+        return records.indices.reduce(0) { total, index in
+            guard !currentWeekKey.isEmpty, let day = keys[index].day, isoWeekKey(day, timeZone: timeZone) == currentWeekKey else { return total }
+            let target = records[index]
+            let prior = records.indices.filter { records[$0].id != target.id && keys[$0].precedes(keys[index]) }.map { records[$0] }
+            return total + RecordEngine.forPriorRecords(prior, target: target).count
+        }
     }
 
     public static func computeWeeklyMetrics(
