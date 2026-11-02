@@ -264,11 +264,46 @@ struct BuilderTemplatePicker: View {
     }
 }
 
+struct BuilderTrainingDayPicker: View {
+    @ObservedObject private var theme = ThemeManager.shared
+    let occupiedDays: Set<Int>
+    var onSelect: (Int) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        let _ = theme.currentTheme
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 8) {
+                    ForEach(1...7, id: \.self) { day in
+                        Button { onSelect(day) } label: {
+                            Text(LanguageManager.workoutDays[day - 1]).appFont(.body)
+                                .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading).padding(.horizontal, 16)
+                                .foregroundStyle(occupiedDays.contains(day) ? AppColors.muted : AppColors.text)
+                                .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                                .opacity(occupiedDays.contains(day) ? 0.5 : 1)
+                        }.buttonStyle(.plain).disabled(occupiedDays.contains(day))
+                            .accessibilityIdentifier("program-select-day-\(day)")
+                    }
+                }.padding(20)
+            }.background(AppColors.background)
+                .navigationTitle(LanguageManager.t("builder.chooseDay")).navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(LanguageManager.t("modal.cancel")) { dismiss() }.foregroundStyle(AppColors.secondaryText)
+                    }
+                }
+        }.presentationDetents([.height(560), .large]).presentationDragIndicator(.visible)
+    }
+}
+
 struct AddExercisePickerSheet: View {
     @ObservedObject private var theme = ThemeManager.shared
     let catalogue: [ExerciseCatalogEntry]
     let existing: [Exercise]
     let defaultRest: Int
+    var workout: Workout? = nil
     var onAdd: ([Exercise]) -> Void
     @State private var search = ""
     @State private var movement: MovementType?
@@ -304,7 +339,19 @@ struct AddExercisePickerSheet: View {
                 }.padding(20)
             }.background(AppColors.background).searchable(text: $search)
                 .navigationTitle(LanguageManager.t("builder.chooseExercises")).navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .navigationBarLeading) { Button(LanguageManager.t("modal.cancel")) { dismiss() }.foregroundStyle(AppColors.secondaryText) } }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) { Button(LanguageManager.t("modal.cancel")) { dismiss() }.foregroundStyle(AppColors.secondaryText) }
+                    if let workout {
+                        ToolbarItem(placement: .principal) {
+                            VStack(spacing: 2) {
+                                Text(LanguageManager.t("builder.chooseExercises")).appFont(.headline)
+                                Text("\(LanguageManager.workoutDays[workout.day - 1]) · \(workout.displayTitle())")
+                                    .appFont(.caption).foregroundStyle(AppColors.muted)
+                                    .accessibilityIdentifier("program-picker-day")
+                            }.lineLimit(1)
+                        }
+                    }
+                }
                 .safeAreaInset(edge: .bottom) {
                     Button {
                         let entries = selected.compactMap { key in catalogue.first { ProgramEditing.selectionKey($0.exercise) == key } }

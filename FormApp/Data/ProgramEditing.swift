@@ -22,9 +22,9 @@ enum ProgramEditing {
         return names.first { !used.contains($0) } ?? names[0]
     }
 
-    /// One-step day creation: the first free weekday and a default name, both editable later.
-    static func newDay(for program: Program) -> Workout? {
-        guard let day = (1...7).first(where: { day in !program.workouts.contains { $0.day == day } }) else { return nil }
+    /// The chosen weekday with a ready-to-use name; occupied weekdays cannot be added twice.
+    static func newDay(for program: Program, day: Int) -> Workout? {
+        guard (1...7).contains(day), !program.workouts.contains(where: { $0.day == day }) else { return nil }
         let tones = ["violet", "orange", "blue", "lime", "rose", "sand"]
         return Workout(day: day, title: defaultDayTitle(program.workouts.map(\.title)), tone: tones[program.workouts.count % tones.count])
     }

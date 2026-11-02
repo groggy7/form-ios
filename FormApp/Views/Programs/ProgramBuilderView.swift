@@ -16,6 +16,8 @@ public struct ProgramBuilderView: View {
     @State private var showDiscard = false
     @State private var showCoverPicker = false
     @State private var showTemplates = false
+    @State private var showDayPicker = false
+    @State private var selectedNewDay: Int?
     @State private var pendingTemplate: Program?
     @State private var recoveryChecked = false
     @State private var creatingCopy = false
@@ -114,7 +116,7 @@ public struct ProgramBuilderView: View {
             }
             .sheet(item: $pickerWorkout, onDismiss: dropPendingEmptyDay) { workout in
                 AddExercisePickerSheet(catalogue: draftCatalogue ?? store.exerciseCatalogue, existing: workout.exercises,
-                    defaultRest: store.defaultRestSeconds) { selected in
+                    defaultRest: store.defaultRestSeconds, workout: workout) { selected in
                     guard let index = program.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
                     let existing = Set(program.workouts[index].exercises.map(ProgramEditing.selectionKey))
                     let additions = selected.filter { !existing.contains(ProgramEditing.selectionKey($0)) }
@@ -124,6 +126,17 @@ public struct ProgramBuilderView: View {
                     program.workouts[index].exercises.append(contentsOf: additions)
                     pendingNewDayID = nil
                     pickerWorkout = nil
+                }
+            }
+            .sheet(isPresented: $showDayPicker, onDismiss: {
+                if let day = selectedNewDay {
+                    selectedNewDay = nil
+                    addTrainingDay(day: day)
+                }
+            }) {
+                BuilderTrainingDayPicker(occupiedDays: Set(program.workouts.map(\.day))) { day in
+                    selectedNewDay = day
+                    showDayPicker = false
                 }
             }
             .sheet(item: $editingExercise) { context in
@@ -200,7 +213,10 @@ public struct ProgramBuilderView: View {
                                 })
                         }
                         if program.workouts.count < 7 {
-                            BuilderActionButton("builder.addTrainingDay", systemImage: "plus", action: addTrainingDay)
+                            BuilderActionButton("builder.addTrainingDay", systemImage: "plus") {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                showDayPicker = true
+                            }
                                 .accessibilityIdentifier("program-add-day")
                         }
                         if incompleteDays > 0 {
@@ -319,10 +335,10 @@ public struct ProgramBuilderView: View {
         program.workouts[w].exercises.remove(at: e)
     }
     private func offerUndo(_ undo: ProgramRemovalUndo) { removalUndo = undo; removalUndoToken += 1 }
-    private func addTrainingDay() {
-        guard let day = ProgramEditing.newDay(for: program) else { return }
-        program.workouts.append(day); expandedIDs.insert(day.id)
-        pendingNewDayID = day.id; pickerWorkout = day
+    private func addTrainingDay(day: Int) {
+        guard let workout = ProgramEditing.newDay(for: program, day: day) else { return }
+        program.workouts.append(workout); expandedIDs.insert(workout.id)
+        pendingNewDayID = workout.id; pickerWorkout = workout
     }
     /// Cancelling the library for a day that was just added leaves no empty placeholder behind.
     private func dropPendingEmptyDay() {

@@ -33007,6 +33007,41 @@
         }
       }
     },
+    "builder.chooseDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a day"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gün seç"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag wählen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir un jour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un día"
+          }
+        }
+      }
+    },
     "builder.defaultDayName": {
       "extractionState": "manual",
       "localizations": {
@@ -33153,31 +33188,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add a day, then choose its exercises from the library. You can rename it or change its weekday later."
+            "value": "Choose a weekday, then add exercises from the library."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir gün ekle, ardından kütüphaneden egzersizlerini seç. Adını veya gününü sonra değiştirebilirsin."
+            "value": "Haftanın bir gününü seç, ardından kütüphaneden egzersiz ekle."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Füge einen Tag hinzu und wähle dann Übungen aus der Bibliothek. Name und Wochentag kannst du später ändern."
+            "value": "Wähle einen Wochentag und füge dann Übungen aus der Bibliothek hinzu."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ajoutez une journée, puis choisissez ses exercices dans la bibliothèque. Vous pourrez modifier son nom ou son jour plus tard."
+            "value": "Choisissez un jour de la semaine, puis ajoutez des exercices depuis la bibliothèque."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Añade un día y luego elige sus ejercicios de la biblioteca. Puedes cambiar su nombre o día más tarde."
+            "value": "Elige un día de la semana y añade ejercicios de la biblioteca."
           }
         }
       }
