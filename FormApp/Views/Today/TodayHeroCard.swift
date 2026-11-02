@@ -413,8 +413,8 @@ extension TodayHeroCard {
     fileprivate func restPhoto(size: CGSize) -> some View {
         // Keep the athlete toward the right edge in every suite, matching Android's recovery card.
         Image("library_body_rest").resizable().scaledToFill()
-            // Match Android's 80% RGB treatment without changing the generated alpha or the backdrop.
-            .colorMultiply(Color(.sRGB, red: 0.80, green: 0.80, blue: 0.80, opacity: 1))
+            // Match Android's 72% RGB treatment without changing the generated alpha or the backdrop.
+            .colorMultiply(Color(.sRGB, red: 0.72, green: 0.72, blue: 0.72, opacity: 1))
             .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
             .offset(x: size.width * 0.10)
     }
