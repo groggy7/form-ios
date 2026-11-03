@@ -53,7 +53,7 @@ public enum SocialCards {
         let volume = logs.filter { !WorkoutSessionUtils.isAssisted(exerciseId: $0.exerciseId, name: $0.exerciseName) }
             .reduce(0.0) { total, log in total + RecordEngine.workingSets(log).reduce(0.0) { $0 + IntensitySets.loadVolume($1) } }
         var metrics: [SocialMetric] = []
-        if record.durationSeconds > 0 { metrics.append(SocialMetric(key: "duration", value: RestTimerUtils.formatSecondsToTime(record.durationSeconds))) }
+        if record.durationSeconds > 0 { metrics.append(SocialMetric(key: "duration", value: duration(record.durationSeconds))) }
         metrics.append(SocialMetric(key: "exercises", value: "\(logs.count)"))
         if volume > 0 { metrics.append(SocialMetric(key: "volume", value: "\(unit.formatVolume(volume)) \(unit.label)")) }
         let summary = SocialCardContent(id: record.id, kind: .summary,
@@ -93,12 +93,49 @@ public enum SocialCards {
         return SocialCardContent(id: "week:\(weekKey):\(program.id)", kind: .week, title: t("week"),
             result: "\(program.workouts.count) / \(program.workouts.count)", detail: t("workouts"),
             date: "\(formatDate(monday)) – \(formatDate(sunday))",
-            metrics: [SocialMetric(key: "sets", value: "\(sets)"), SocialMetric(key: "duration", value: RestTimerUtils.formatSecondsToTime(duration)), SocialMetric(key: "records", value: "\(prs)")])
+            metrics: [SocialMetric(key: "sets", value: "\(sets)"), SocialMetric(key: "duration", value: self.duration(duration)), SocialMetric(key: "records", value: "\(prs)")])
+    }
+
+    public static func canSuggest(_ record: WorkoutSessionRecord, today: Date = Date()) -> Bool {
+        record.isComplete == true && PersonalRecordTracker.trainingDate(record).map { Calendar.current.isDate($0, inSameDayAs: today) } == true &&
+            record.exerciseLogs.contains { !RecordEngine.workingSets($0).isEmpty }
+    }
+
+    public static func duration(_ seconds: Int) -> String {
+        let minutes = max(0, seconds) / 60
+        if (1...59).contains(seconds) { return "<" + LanguageManager.t("duration.minutes", ["minutes": 1]) }
+        return minutes >= 60 ? LanguageManager.t("duration.short", ["hours": minutes / 60, "minutes": minutes % 60])
+            : LanguageManager.t("duration.minutes", ["minutes": minutes])
     }
 
     public static func suggested(cards: [SocialCardContent], week: SocialCardContent?, justCompletedWeek: Bool) -> SocialShareRequest? {
         let prs = cards.filter { $0.kind == .record }
         guard !prs.isEmpty || justCompletedWeek else { return nil }
-        return SocialShareRequest(cards: prs + [week].compactMap { $0 } + cards.filter { $0.kind != .record }, suggested: true)
+        return SocialShareRequest(cards: (justCompletedWeek ? [week].compactMap { $0 } : []) + prs + (!justCompletedWeek ? [week].compactMap { $0 } : []) + cards.filter { $0.kind != .record }, suggested: true)
     }
+}
+
+/// Device-local attention policy; manual sharing never uses this gate.
+struct SocialSuggestionState: Codable, Equatable {
+    var lastOfferedDay: String?
+    var dismissals = 0
+    var snoozedUntil: String?
+    func canOffer(today: Date) -> Bool {
+        let day = Calendar.current.startOfDay(for: today)
+        let elapsed = lastOfferedDay.flatMap { WorkoutCalendar.parseDate($0) }.flatMap { Calendar.current.date(byAdding: .day, value: 7, to: $0) }
+        let snooze = snoozedUntil.flatMap { WorkoutCalendar.parseDate($0) }
+        return elapsed.map { day >= $0 } != false && snooze.map { day >= $0 } != false
+    }
+    func offered(today: Date) -> Self {
+        var copy = self; copy.lastOfferedDay = WorkoutCalendar.formatDate(today); return copy
+    }
+    func dismissed(today: Date) -> Self {
+        var copy = self
+        if dismissals >= 1 {
+            copy.dismissals = 0
+            copy.snoozedUntil = Calendar.current.date(byAdding: .day, value: 28, to: today).map { WorkoutCalendar.formatDate($0) }
+        } else { copy.dismissals = 1 }
+        return copy
+    }
+    func engaged() -> Self { var copy = self; copy.dismissals = 0; copy.snoozedUntil = nil; return copy }
 }

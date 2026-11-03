@@ -66,6 +66,7 @@ public struct RootView: View {
     @State private var presentedSocialShareRequest: SocialShareRequest?
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject private var tour = TourController.shared
+    @ObservedObject private var socialPreferences = SocialCardPreferences.shared
 
     @State private var showProgramsSheet: Bool = false
     @State private var showSettingsSheet: Bool = false
@@ -271,8 +272,8 @@ public struct RootView: View {
                     }
                 }
                 // Sheets
-                .sheet(item: $presentedSocialShareRequest, onDismiss: { store.socialShareRequest = nil }) { request in
-                    SocialCardComposer(request: request) { presentedSocialShareRequest = nil; store.socialShareRequest = nil }
+                .sheet(item: $presentedSocialShareRequest, onDismiss: { socialPreferences.finishSuggestion(); store.socialShareRequest = nil }) { request in
+                    SocialCardComposer(request: request) { socialPreferences.finishSuggestion(); presentedSocialShareRequest = nil; store.socialShareRequest = nil }
                 }
                 .sheet(isPresented: $showProgramsSheet) {
                     ProgramsView(store: store) {
@@ -343,7 +344,7 @@ public struct RootView: View {
     }
 
     private var reviewReady: Bool {
-        ReviewPromptPresentation.nativeRequestsEnabled && scenePhase == .active && mainTourIdle && !tour.isActive && !billing.isPurchasing &&
+        !socialPreferences.reviewDeferredForVisit && ReviewPromptPresentation.nativeRequestsEnabled && scenePhase == .active && mainTourIdle && !tour.isActive && !billing.isPurchasing &&
             store.selectedExerciseId == nil && store.selectedHistoryDetailDay == nil &&
             store.reviewPromptState.canAttempt(now: Int64(Date().timeIntervalSince1970 * 1000))
     }

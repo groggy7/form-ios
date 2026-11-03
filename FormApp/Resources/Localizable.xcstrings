@@ -60074,6 +60074,111 @@
         }
       }
     },
+    "social.customize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Customize"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Özelleştir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anpassen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnaliser"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizar"
+          }
+        }
+      }
+    },
+    "social.addPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add photo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf ekle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto hinzufügen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une photo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir foto"
+          }
+        }
+      }
+    },
+    "social.removePhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove photo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafı kaldır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto entfernen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer la photo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar foto"
+          }
+        }
+      }
+    },
     "social.title": {
       "extractionState": "manual",
       "localizations": {
@@ -61025,31 +61130,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Offer a card after a personal record or a completed week."
+            "value": "At most once a week after a personal record or a completed week."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kişisel rekor veya tamamlanan hafta sonrasında kart öner."
+            "value": "Kişisel rekor veya tamamlanan hafta sonrasında haftada en fazla bir kez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nach einem persönlichen Rekord oder einer abgeschlossenen Woche eine Karte anbieten."
+            "value": "Höchstens einmal pro Woche nach einem persönlichen Rekord oder einer abgeschlossenen Woche."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Proposer une carte après un record personnel ou une semaine terminée."
+            "value": "Au plus une fois par semaine après un record personnel ou une semaine terminée."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ofrecer una tarjeta tras un récord personal o una semana completada."
+            "value": "Como máximo una vez por semana tras un récord personal o una semana completada."
           }
         }
       }

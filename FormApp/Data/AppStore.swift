@@ -118,6 +118,7 @@ public final class AppStore: ObservableObject {
     @Published public var showIntensityTechniques: Bool
     @Published public var suggestSharing: Bool
     @Published public var socialShareRequest: SocialShareRequest?
+    var socialPreferences = SocialCardPreferences.shared
     /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
     @Published public var jointStressRatings: Bool
     /// Starts the Apple Watch app with each workout and records it in Apple Health there (docs/apple-watch.md).
@@ -1088,9 +1089,10 @@ public final class AppStore: ObservableObject {
         self.isSessionPresented = false
         if suggestSharingAfterSave { recordReviewWorkoutSaved(adjustedRecord) }
 
-        if suggestSharingAfterSave && suggestSharing && !wasComplete && adjustedRecord.isComplete == true {
+        if suggestSharingAfterSave && suggestSharing && !wasComplete && SocialCards.canSuggest(adjustedRecord) {
             let week = SocialCards.week(program: activeProgram, completed: state.completed, history: state.history, weekKey: state.currentWeekKey, unit: weightUnit)
-            socialShareRequest = SocialCards.suggested(cards: SocialCards.workout(history: state.history, record: adjustedRecord, unit: weightUnit), week: week, justCompletedWeek: oldWeek == nil && week != nil)
+            if let suggestion = SocialCards.suggested(cards: SocialCards.workout(history: state.history, record: adjustedRecord, unit: weightUnit), week: week, justCompletedWeek: oldWeek == nil && week != nil),
+               socialPreferences.beginSuggestion() { socialShareRequest = suggestion }
         }
         if socialShareRequest == nil {
             showNotice(WorkoutSessionUtils.workoutRecordedNotice(finalRecord.totalVolumeKg, completedSets: finalRecord.totalCompletedSets, unit: weightUnit))

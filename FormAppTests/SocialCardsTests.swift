@@ -7,6 +7,8 @@ final class SocialCardsTests: XCTestCase {
     private struct Fixtures: Decodable {
         struct Case: Decodable { let name: String; let history: [WorkoutSessionRecord]; let target: WorkoutSessionRecord; let expected: [String] }
         struct WeekCase: Decodable { let name: String; let record: WorkoutSessionRecord; let zone: String; let expectedWeek: String }
+        struct SuggestionCase: Decodable { let name: String; let state: SocialSuggestionState; let today: String; let eligible: Bool }
+        let suggestionCases: [SuggestionCase]
         let weekCases: [WeekCase]
         let cases: [Case]
         let previewHistory: [WorkoutSessionRecord]
@@ -55,18 +57,21 @@ final class SocialCardsTests: XCTestCase {
             let week = try XCTUnwrap(SocialCards.week(program: program, completed: (1...4).map { "social-fixture:w\($0)" }, history: fixture.previewHistory + fixture.previewHistory, weekKey: "2026-W43", unit: .kg, today: WorkoutCalendar.parseDate("2026-10-25")!))
             XCTAssertEqual(week.metrics.first { $0.key == "sets" }?.value, "62")
             XCTAssertEqual(week.metrics.first { $0.key == "records" }?.value, "3")
-            for card in cards + [week] { for format in SocialCardFormat.allCases {
-                let output = SocialCardRenderer.render(card, format: format, photo: photo)
+            let photoPost = SocialCardRenderer.render(cards.last!, format: .post, photo: photo)
+            XCTAssertEqual(photoPost.image.cgImage?.height, 1350)
+            XCTAssertLessThan(photoPost.sticker!.size.height, 330)
+            for card in cards + [week] { for (format, withPhoto) in [(SocialCardFormat.story, false), (.post, false), (.story, true)] {
+                let output = SocialCardRenderer.render(card, format: format, photo: withPhoto ? photo : nil)
                 XCTAssertEqual(output.image.cgImage?.width, 1080)
                 XCTAssertEqual(output.image.cgImage?.colorSpace?.name, CGColorSpace.sRGB)
                 XCTAssertEqual(output.image.cgImage?.height, format == .post ? 1350 : 1920)
-                if format == .photo { XCTAssertEqual(output.sticker?.cgImage?.width, 900) }
+                if withPhoto { XCTAssertEqual(output.sticker?.cgImage?.width, 900) }
                 let data = try SocialCardSharing.png(output.image)
                 let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
                 let props = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [String: Any]
                 XCTAssertNil(props?[kCGImagePropertyGPSDictionary as String])
                 if ["en", "de"].contains(lang) {
-                    let name = "social-\(lang)-\(card.kind)-\(format.rawValue)"
+                    let name = "social-\(lang)-\(card.kind)-\(withPhoto ? "photo" : format.rawValue)"
                     let attachment = XCTAttachment(image: output.image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
                     let directory = URL(fileURLWithPath: "/tmp/forcedrep-social-ios", isDirectory: true)
                     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -106,10 +111,14 @@ final class SocialCardsTests: XCTestCase {
         let previous = UserDefaults.standard.object(forKey: "suggest_sharing")
         defer { if let previous { UserDefaults.standard.set(previous, forKey: "suggest_sharing") } else { UserDefaults.standard.removeObject(forKey: "suggest_sharing") } }
         let store = AppStore(persistence: persistence)
+        let defaults = UserDefaults(suiteName: "social-policy-\(UUID())")!
+        store.socialPreferences = SocialCardPreferences(defaults: defaults)
         var record = fixture.previewWorkout
         let workout = Workout(id: record.workoutId, day: 1, title: record.workoutTitle,
             exercises: record.exerciseLogs.map { Exercise(name: $0.exerciseName, exerciseId: $0.exerciseId, sets: $0.targetSets) })
         record.workoutSnapshot = workout
+        let stamp = ISO8601DateFormatter().string(from: Date())
+        record.startedAt = stamp; record.completedAt = stamp; record.performedDate = WorkoutCalendar.formatDate(Date())
         store.state.programs = [Program(id: record.programId, name: "Private plan", workouts: [workout, Workout(id: "unfinished", day: 2, title: "Unfinished")])]
         store.state.activeProgramId = record.programId
         store.state.history = [fixture.previewHistory[0]]
@@ -121,12 +130,12 @@ final class SocialCardsTests: XCTestCase {
         store.suggestSharing = true
         store.completeActiveSession(record, suggestSharingAfterSave: true)
         XCTAssertNil(store.socialShareRequest, "An already complete record must not suggest again")
-        var next = record; next.id = "fresh-pr"; next.startedAt = "2026-10-20T10:00:00Z"
+        var next = record; next.id = "fresh-pr"; next.startedAt = ISO8601DateFormatter().string(from: Date().addingTimeInterval(1))
         for i in next.exerciseLogs.indices { for j in next.exerciseLogs[i].sets.indices { next.exerciseLogs[i].sets[j].weightKg! += 5 } }
         store.completeActiveSession(next, suggestSharingAfterSave: true)
         XCTAssertEqual(store.socialShareRequest?.cards.first?.kind, .record)
         store.socialShareRequest = nil
-        next.id = "background-save"; next.startedAt = "2026-10-21T10:00:00Z"
+        next.id = "background-save"; next.startedAt = ISO8601DateFormatter().string(from: Date().addingTimeInterval(2))
         for i in next.exerciseLogs.indices { for j in next.exerciseLogs[i].sets.indices { next.exerciseLogs[i].sets[j].weightKg! += 5 } }
         store.completeActiveSession(next)
         XCTAssertNil(store.socialShareRequest, "Recovery and background saves must remain quiet")
@@ -156,6 +165,8 @@ final class SocialCardsTests: XCTestCase {
         let previousState = store.state, previousDraft = store.activeSession
         let previousSetup = store.isOnboardingCompleted, previousPreference = store.suggestSharing
         let previousView = store.currentView
+        let previousSocialPreferences = store.socialPreferences
+        store.socialPreferences = SocialCardPreferences(defaults: UserDefaults(suiteName: "social-root-\(UUID())")!)
         let previousActiveData = UserDefaults.standard.object(forKey: "active_session_v1")
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
         let fixture = try fixtures()
@@ -183,6 +194,7 @@ final class SocialCardsTests: XCTestCase {
             store.isSessionPresented = false; store.socialShareRequest = nil
             store.activeSession = previousDraft; store.isOnboardingCompleted = previousSetup
             store.suggestSharing = previousPreference; store.currentView = previousView
+            store.socialPreferences = previousSocialPreferences
             _ = store.saveState(previousState, durable: true)
             if let previousActiveData { UserDefaults.standard.set(previousActiveData, forKey: "active_session_v1") }
             else { UserDefaults.standard.removeObject(forKey: "active_session_v1") }
@@ -207,6 +219,50 @@ final class SocialCardsTests: XCTestCase {
         // UIKit programmatic dismissal does not represent the SwiftUI close action.
         sheet.dismiss(animated: false)
         try await Task.sleep(nanoseconds: 250_000_000)
+    }
+
+    func testSuggestionCooldownAndDismissals() throws {
+        for item in try fixtures().suggestionCases {
+            XCTAssertEqual(item.state.canOffer(today: WorkoutCalendar.parseDate(item.today)!), item.eligible, item.name)
+        }
+        let today = WorkoutCalendar.parseDate("2026-11-02")!
+        let second = Calendar.current.date(byAdding: .day, value: 7, to: today)!
+        let ignored = SocialSuggestionState().offered(today: today).dismissed(today: today).offered(today: second).dismissed(today: second)
+        XCTAssertFalse(ignored.canOffer(today: Calendar.current.date(byAdding: .day, value: 34, to: today)!))
+        XCTAssertTrue(ignored.canOffer(today: Calendar.current.date(byAdding: .day, value: 35, to: today)!))
+        XCTAssertTrue(ignored.engaged().canOffer(today: Calendar.current.date(byAdding: .day, value: 14, to: today)!))
+    }
+    func testCompletedWeekTakesPriority() {
+        let record = SocialCardContent(id: "pr", kind: .record, title: "Bench press", result: "100 kg × 5", detail: "Personal record")
+        let week = SocialCardContent(id: "week", kind: .week, title: "Week complete", result: "4 / 4", detail: "Workouts")
+        XCTAssertEqual(SocialCards.suggested(cards: [record], week: week, justCompletedWeek: true)?.cards.first?.kind, .week)
+    }
+    @MainActor func testPrivacyPreferencesAndSuggestionOutcomesPersist() {
+        let suite = "social-preferences-\(UUID())"
+        // Use a unique domain and remove it so the suite never changes the app's preferences.
+        let isolated = UserDefaults(suiteName: suite)!
+        defer { isolated.removePersistentDomain(forName: suite) }
+        let preferences = SocialCardPreferences(defaults: isolated)
+        preferences.options = SocialCardOptions(date: false, title: false, hiddenMetrics: ["duration"])
+        XCTAssertFalse(SocialCardPreferences(defaults: isolated).options.date)
+        XCTAssertFalse(SocialCardPreferences(defaults: isolated).options.title)
+        let today = WorkoutCalendar.parseDate("2026-11-02")!
+        XCTAssertTrue(preferences.beginSuggestion(today: today))
+        preferences.finishSuggestion(today: today)
+        XCTAssertEqual(preferences.state.dismissals, 1)
+        preferences.finishSuggestion(today: today)
+        XCTAssertEqual(preferences.state.dismissals, 1, "Closing callbacks must not count twice")
+    }
+
+    func testOnlyTodaysNonemptyCompleteWorkoutCanSuggest() throws {
+        var record = try fixtures().previewWorkout
+        let today = WorkoutCalendar.parseDate("2026-10-19")!
+        XCTAssertTrue(SocialCards.canSuggest(record, today: today))
+        XCTAssertFalse(SocialCards.canSuggest(record, today: Calendar.current.date(byAdding: .day, value: 1, to: today)!))
+        record.isComplete = false
+        XCTAssertFalse(SocialCards.canSuggest(record, today: today))
+        record.isComplete = true; record.exerciseLogs = []
+        XCTAssertFalse(SocialCards.canSuggest(record, today: today))
     }
 
 }

@@ -1,8 +1,8 @@
 import UIKit
 import SwiftUI
 
-enum SocialCardFormat: String, CaseIterable { case story, post, photo }
-struct SocialCardOptions: Equatable {
+enum SocialCardFormat: String, CaseIterable { case story, post }
+struct SocialCardOptions: Codable, Equatable {
     var date = true
     var title = true
     var muscles = true
@@ -38,26 +38,27 @@ enum SocialCardRenderer {
     static func titleFits(_ title: String) -> Bool { measure(title, 260, 18, true) <= ceil(UIFont.systemFont(ofSize: 18, weight: .bold).lineHeight * 3) }
 
     static func render(_ card: SocialCardContent, format: SocialCardFormat, options: SocialCardOptions = SocialCardOptions(), photo: UIImage? = nil, position: SocialPhotoPosition = SocialPhotoPosition()) -> SocialRenderedImage {
-        if format == .photo, let photo {
-            let background = renderer(CGSize(width: 360, height: 640), opaque: true).image { _ in
-                let scale = max(360 / photo.size.width, 640 / photo.size.height)
+        let canvasHeight: CGFloat = format == .post ? 450 : 640
+        if let photo {
+            let background = renderer(CGSize(width: 360, height: canvasHeight), opaque: true).image { _ in
+                let scale = max(360 / photo.size.width, canvasHeight / photo.size.height)
                 let w = photo.size.width * scale, h = photo.size.height * scale
                 let left = (360 - w) / 2 + (w - 360) / 2 * min(1, max(-1, position.x))
-                let top = (640 - h) / 2 + (h - 640) / 2 * min(1, max(-1, position.y))
+                let top = (canvasHeight - h) / 2 + (h - canvasHeight) / 2 * min(1, max(-1, position.y))
                 photo.draw(in: CGRect(x: left, y: top, width: w, height: h))
             }
-            let sticker = panel(card, options, width: 300, height: 400, overlay: true)
-            let image = renderer(CGSize(width: 360, height: 640), opaque: true).image { _ in
-                background.draw(in: CGRect(x: 0, y: 0, width: 360, height: 640))
-                sticker.draw(in: CGRect(x: 30, y: 120, width: 300, height: 400))
+            let sticker = panel(card, options, width: 300, maxHeight: format == .post ? 270 : 330, overlay: true)
+            let image = renderer(CGSize(width: 360, height: canvasHeight), opaque: true).image { _ in
+                background.draw(in: CGRect(x: 0, y: 0, width: 360, height: canvasHeight))
+                sticker.draw(in: CGRect(x: 30, y: canvasHeight - (format == .post ? 20 : 114) - sticker.size.height, width: 300, height: sticker.size.height))
             }
             return SocialRenderedImage(image: sRGB(image), background: sRGB(background), sticker: sRGB(sticker))
         }
         let height: CGFloat = format == .post ? 450 : 640
-        let cardPanel = panel(card, options, width: 320, height: 410, overlay: false)
+        let cardPanel = panel(card, options, width: 320, maxHeight: 410, overlay: false)
         let image = renderer(CGSize(width: 360, height: height), opaque: true).image { c in
             UIColor(palette.background).setFill(); c.fill(CGRect(x: 0, y: 0, width: 360, height: height))
-            cardPanel.draw(in: CGRect(x: 20, y: height == 640 ? 90 : 20, width: 320, height: 410))
+            cardPanel.draw(in: CGRect(x: 20, y: height == 640 ? 90 + (436 - cardPanel.size.height) / 2 : (height - cardPanel.size.height) / 2, width: 320, height: cardPanel.size.height))
         }
         return SocialRenderedImage(image: sRGB(image))
     }
@@ -72,56 +73,47 @@ enum SocialCardRenderer {
         return UIImage(cgImage: output, scale: 3, orientation: .up)
     }
 
-    private static func panel(_ card: SocialCardContent, _ options: SocialCardOptions, width: CGFloat, height: CGFloat, overlay: Bool) -> UIImage {
-        renderer(CGSize(width: width, height: height)).image { _ in
-            let rect = CGRect(x: 0.5, y: 0.5, width: width - 1, height: height - 1)
-            let shape = UIBezierPath(roundedRect: rect, cornerRadius: 20)
+    private static func panel(_ card: SocialCardContent, _ options: SocialCardOptions, width: CGFloat, maxHeight: CGFloat, overlay: Bool) -> UIImage {
+        let inset: CGFloat = 20, usable = width - 40
+        let title = !options.title && card.kind == .summary ? LanguageManager.t("social.summary") : card.title
+        var metrics = card.metrics.filter { !options.hiddenMetrics.contains($0.key) }
+        var includeDate = options.date && card.date != nil
+        var titleSize: CGFloat = overlay ? 23 : 27
+        var resultSize: CGFloat = overlay ? 36 : card.kind == .record ? 52 : card.kind == .summary ? 34 : 50
+        let detailSize: CGFloat = 13
+        while measure(title, usable, titleSize, true) > UIFont.systemFont(ofSize: titleSize, weight: .bold).lineHeight * 3 && titleSize > 18 { titleSize -= 1 }
+        func titleHeight() -> CGFloat { min(measure(title, usable, titleSize, true), ceil(UIFont.systemFont(ofSize: titleSize, weight: .bold).lineHeight * 3)) }
+        func baseHeight() -> CGFloat {
+            20 + titleHeight() + 10 + measure(card.result, usable, resultSize, true) + 4 + measure(card.detail, usable, detailSize, false) + 10 +
+                (card.previous.map { measure($0, usable, 11, false) + 8 } ?? 0) + CGFloat(metrics.count) * 18 + 37 + (includeDate ? 26 : 0)
+        }
+        if baseHeight() > maxHeight { includeDate = false }
+        while baseHeight() > maxHeight && !metrics.isEmpty { metrics.removeLast() }
+        while baseHeight() > maxHeight && resultSize > 20 { resultSize -= 1 }
+        let hasMap = options.muscles && (!card.primary.isEmpty || !card.secondary.isEmpty)
+        let mapTarget: CGFloat = overlay ? 80 : 170
+        let availableMapHeight = hasMap ? min(mapTarget, max(0, maxHeight - baseHeight() - 8)) : 0
+        let mapHeight = availableMapHeight >= 60 ? availableMapHeight : 0
+        let height = baseHeight() + (mapHeight > 0 ? mapHeight + 8 : 0)
+        return renderer(CGSize(width: width, height: height)).image { _ in
+            let shape = UIBezierPath(roundedRect: CGRect(x: 0.5, y: 0.5, width: width - 1, height: height - 1), cornerRadius: 20)
             UIColor(palette.surface).withAlphaComponent(overlay ? 0.9 : 1).setFill(); shape.fill()
             UIColor(palette.border).setStroke(); shape.lineWidth = 1; shape.stroke()
-            let inset: CGFloat = 20, usable = width - 40
-            let category = LanguageManager.t("social." + (card.kind == .summary ? "summary" : card.kind == .record ? "record" : "week"))
-            let title = !options.title && card.kind == .summary ? LanguageManager.t("social.summary") : card.title
-            var metrics = card.metrics.filter { !options.hiddenMetrics.contains($0.key) }
-            var includeDate = options.date && card.date != nil
-            var titleSize: CGFloat = 27, resultSize: CGFloat = card.kind == .record ? 44 : 50, detailSize: CGFloat = 13
-            while measure(title, usable, titleSize, true) > UIFont.systemFont(ofSize: titleSize, weight: .bold).lineHeight * 3 && titleSize > 18 { titleSize -= 1 }
-            func titleHeight() -> CGFloat { min(measure(title, usable, titleSize, true), ceil(UIFont.systemFont(ofSize: titleSize, weight: .bold).lineHeight * 3)) }
-            func baseHeight() -> CGFloat {
-                20 + measure(category, usable, 11, false) + 12 + titleHeight() + 12 + measure(card.result, usable, resultSize, true) + 4 +
-                measure(card.detail, usable, detailSize, false) + 10 + (card.previous.map { measure($0, usable, 11, false) + 8 } ?? 0) +
-                CGFloat(metrics.count) * 18 + 37 + (includeDate ? 26 : 0)
-            }
-            while baseHeight() > height && titleSize > 18 { titleSize -= 1; resultSize = max(24, resultSize - 2); detailSize = 12 }
-            if baseHeight() > height { includeDate = false }
-            while baseHeight() > height && metrics.count > 1 { metrics.removeLast() }
-            while baseHeight() > height && resultSize > 16 { resultSize -= 1 }
-            var y: CGFloat = 20 + label(category, inset, 20, usable, 11, color: secondary) + 12
+            var y: CGFloat = 20
             var fittedTitle = title
-            // NSString's truncating-tail paragraph mode collapses wrapping to one line.
-            // Wrap normally, adding an ellipsis only when a custom name exceeds three lines.
             if measure(fittedTitle, usable, titleSize, true) > titleHeight() {
                 while !fittedTitle.isEmpty && measure(fittedTitle + "…", usable, titleSize, true) > titleHeight() { fittedTitle.removeLast() }
                 fittedTitle += "…"
             }
-            let titleAttributes = attributes(titleSize, true, ink)
-            (fittedTitle as NSString).draw(with: CGRect(x: inset, y: y, width: usable, height: titleHeight()), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: titleAttributes, context: nil)
-            y += titleHeight() + 12
+            (fittedTitle as NSString).draw(with: CGRect(x: inset, y: y, width: usable, height: titleHeight()), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: attributes(titleSize, true, ink), context: nil)
+            y += titleHeight() + 10
             y += label(card.result, inset, y, usable, resultSize, bold: true) + 4
             y += label(card.detail, inset, y, usable, detailSize, color: card.kind == .record ? accent : secondary) + 10
-            let footer: CGFloat = 37 + (includeDate ? 26 : 0)
-            let previousHeight = card.previous.map { measure($0, usable, 11, false) + 8 } ?? 0
-            if options.muscles && (!card.primary.isEmpty || !card.secondary.isEmpty) {
-                let available = min(155, height - footer - CGFloat(metrics.count) * 18 - previousHeight - y - 8)
-                if available >= 60 {
-                    drawMuscles(card, rect: CGRect(x: inset, y: y, width: usable, height: available))
-                    y += available + 8
-                }
+            if mapHeight > 0 {
+                drawMuscles(card, rect: CGRect(x: inset, y: y, width: usable, height: mapHeight)); y += mapHeight + 8
             }
-            if let previous = card.previous, y + previousHeight <= height - footer - CGFloat(metrics.count) * 18 + 1 {
-                y += label(previous, inset, y, usable, 11, color: secondary) + 8
-            }
+            if let previous = card.previous { y += label(previous, inset, y, usable, 11, color: secondary) + 8 }
             for metric in metrics {
-                if y + 18 > height - footer + 1 { break }
                 label(LanguageManager.t("social." + metric.key), inset, y, usable * 0.55, 10, color: secondary, maxLines: 1)
                 let metricWidth = max(usable * 0.45, (metric.value as NSString).size(withAttributes: attributes(12, true, ink)).width)
                 label(metric.value, width - inset - metricWidth, y, metricWidth, 12, bold: true, maxLines: 1)
@@ -135,12 +127,13 @@ enum SocialCardRenderer {
 
     private static func drawMuscles(_ card: SocialCardContent, rect: CGRect) {
         guard let catalog = ExerciseMuscleCatalog.shared, let context = UIGraphicsGetCurrentContext() else { return }
-        let figureWidth = rect.width / 2
+        let figureWidth = min(rect.width / 2, rect.height * catalog.width / catalog.height + 12)
+        let groupLeft = rect.minX + (rect.width - figureWidth * 2) / 2
         for (index, view) in ["front", "back"].enumerated() {
             guard let anatomy = catalog.views[view], let image = ExerciseMuscleCatalog.images[view] else { continue }
             let scale = min(figureWidth / catalog.width, rect.height / catalog.height)
             context.saveGState()
-            context.translateBy(x: rect.minX + CGFloat(index) * figureWidth + (figureWidth - catalog.width * scale) / 2, y: rect.minY)
+            context.translateBy(x: groupLeft + CGFloat(index) * figureWidth + (figureWidth - catalog.width * scale) / 2, y: rect.minY)
             context.scaleBy(x: scale, y: scale)
             image.draw(in: CGRect(x: 0, y: 0, width: catalog.width, height: catalog.height))
             context.translateBy(x: -anatomy.offsetX, y: 0)

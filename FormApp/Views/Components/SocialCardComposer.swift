@@ -74,6 +74,36 @@ private struct SocialActivitySheet: UIViewControllerRepresentable {
     func updateUIViewController(_ viewController: UIActivityViewController, context: Context) {}
 }
 
+/// Local presentation preferences stay outside workout backups and cloud sync.
+final class SocialCardPreferences: ObservableObject {
+    static let shared = SocialCardPreferences()
+    @Published var reviewDeferredForVisit = false
+    private var suggestionActive = false
+    private var suggestionEngaged = false
+    private let defaults: UserDefaults
+    init(defaults: UserDefaults = .standard) { self.defaults = defaults }
+    var options: SocialCardOptions {
+        get { defaults.data(forKey: "social_card_options").flatMap { try? JSONDecoder().decode(SocialCardOptions.self, from: $0) } ?? SocialCardOptions() }
+        set { if let data = try? JSONEncoder().encode(newValue) { defaults.set(data, forKey: "social_card_options") } }
+    }
+    var state: SocialSuggestionState {
+        get { defaults.data(forKey: "social_suggestions").flatMap { try? JSONDecoder().decode(SocialSuggestionState.self, from: $0) } ?? SocialSuggestionState() }
+        set { if let data = try? JSONEncoder().encode(newValue) { defaults.set(data, forKey: "social_suggestions") } }
+    }
+    func beginSuggestion(today: Date = Date()) -> Bool {
+        guard state.canOffer(today: today) else { return false }
+        state = state.offered(today: today)
+        suggestionActive = true; suggestionEngaged = false; reviewDeferredForVisit = true
+        return true
+    }
+    func engaged() { suggestionEngaged = true; state = state.engaged() }
+    func finishSuggestion(today: Date = Date()) {
+        guard suggestionActive else { return }
+        suggestionActive = false
+        state = suggestionEngaged ? state.engaged() : state.dismissed(today: today)
+    }
+}
+
 struct SocialCardComposer: View {
     @ObservedObject private var theme = ThemeManager.shared
     let request: SocialShareRequest
@@ -92,11 +122,11 @@ struct SocialCardComposer: View {
     @State private var busy = false
     @State private var message: String?
     @State private var sharedURL: SocialSharedURL?
-    @State private var composer: Bool
+    @State private var customizing = false
 
     init(request: SocialShareRequest, onDismiss: @escaping () -> Void) {
         self.request = request; self.onDismiss = onDismiss
-        _composer = State(initialValue: !request.suggested)
+        _options = State(initialValue: SocialCardPreferences.shared.options)
     }
     private func t(_ key: String) -> String { LanguageManager.t("social." + key) }
     private var card: SocialCardContent { request.cards[selected] }
@@ -111,34 +141,45 @@ struct SocialCardComposer: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     preview
-                    if composer {
+                    Button { customizing.toggle() } label: {
+                        Text(t("customize")).frame(maxWidth: .infinity, minHeight: 48)
+                    }.buttonStyle(.bordered).accessibilityIdentifier("social-customize")
+                    if customizing {
                         if request.cards.count > 1 {
                             Text(t("card")).foregroundStyle(AppColors.secondaryText)
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 8) {
-                                    ForEach(Array(request.cards.enumerated()), id: \.element.id) { index, item in
-                                        Button { selected = index } label: {
-                                            Text(item.kind == .record ? item.title : t(item.kind == .week ? "week" : "summary"))
-                                                .padding(.horizontal, 12).padding(.vertical, 10).frame(minHeight: 48)
-                                                .foregroundStyle(selected == index ? AppColors.accent : AppColors.text)
-                                                .background(selected == index ? AppColors.positiveBg : AppColors.surfaceRaised)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        }.buttonStyle(.plain).accessibilityAddTraits(selected == index ? .isSelected : [])
-                                            .accessibilityIdentifier("social-card-\(index)")
-                                    }
+                            Menu {
+                                ForEach(Array(request.cards.enumerated()), id: \.element.id) { index, item in
+                                    Button { selected = index } label: {
+                                        if selected == index { Label(cardLabel(item), systemImage: "checkmark") }
+                                        else { Text(cardLabel(item)) }
+                                    }.accessibilityIdentifier("social-card-\(index)")
                                 }
-                            }
+                            } label: {
+                                Text(cardLabel(card)).frame(maxWidth: .infinity, minHeight: 48)
+                            }.buttonStyle(.bordered).accessibilityIdentifier("social-card-choice")
                         }
                         Text(t("format")).foregroundStyle(AppColors.secondaryText)
-                        Picker(t("format"), selection: $format) {
-                            ForEach(SocialCardFormat.allCases, id: \.self) { option in Text(t(option.rawValue)).tag(option) }
-                        }.pickerStyle(.segmented).frame(minHeight: 48).disabled(busy).accessibilityIdentifier("social-format")
-                        if format == .photo {
-                            Button { choosingPhoto = true } label: {
-                                Text(t(photo == nil ? "choosePhoto" : "changePhoto")).frame(maxWidth: .infinity, minHeight: 48)
-                            }.buttonStyle(.bordered).disabled(busy).accessibilityIdentifier("social-choose-photo")
-                            .photosPicker(isPresented: $choosingPhoto, selection: $photoItem, matching: .images, preferredItemEncoding: .compatible)
+                        HStack(spacing: 8) {
+                            ForEach(SocialCardFormat.allCases, id: \.self) { option in
+                                Button { format = option } label: {
+                                    Text(t(option.rawValue)).frame(maxWidth: .infinity, minHeight: 48)
+                                        .foregroundStyle(format == option ? AppColors.accent : AppColors.text)
+                                        .background(format == option ? AppColors.positiveBg : AppColors.surfaceRaised)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                }.buttonStyle(.plain).disabled(busy)
+                                    .accessibilityAddTraits(format == option ? .isSelected : [])
+                                    .accessibilityIdentifier("social-format-\(option.rawValue)")
+                            }
+                        }
+                        Button { choosingPhoto = true } label: {
+                            Text(t(photo == nil ? "addPhoto" : "changePhoto")).frame(maxWidth: .infinity, minHeight: 48)
+                        }.buttonStyle(.bordered).disabled(busy).accessibilityIdentifier("social-add-photo")
+                        .photosPicker(isPresented: $choosingPhoto, selection: $photoItem, matching: .images, preferredItemEncoding: .compatible)
+                        if photo != nil {
                             Text(t("reposition")).appFont(.footnote).foregroundStyle(AppColors.secondaryText)
+                            Button { photo = nil; photoItem = nil; photoRevision = UUID(); position = SocialPhotoPosition(); dragStart = position } label: {
+                                Text(t("removePhoto")).frame(minHeight: 48)
+                            }.disabled(busy)
                         }
                         toggle(t("date"), $options.date)
                         if card.kind == .summary { toggle(t("workoutTitle"), $options.title) }
@@ -149,39 +190,38 @@ struct SocialCardComposer: View {
                             }))
                         }
                         if format != .post && SocialCardSharing.canShareStory {
-                            action("Instagram Stories") { if let rendered { try SocialCardSharing.story(rendered) } }
+                            Button { do { if let rendered { try SocialCardSharing.story(rendered); SocialCardPreferences.shared.engaged() } } catch { message = t("error") } } label: {
+                                Text("Instagram Stories").frame(maxWidth: .infinity, minHeight: 48)
+                            }.buttonStyle(.bordered).disabled(!ready)
                         }
-                        action(t("share") + "…") {
-                            if let rendered { sharedURL = SocialSharedURL(url: try SocialCardSharing.shareURL(rendered.image)) }
-                        }.accessibilityIdentifier("social-share")
-                        Button {
-                            guard let rendered else { return }
-                            busy = true
-                            Task {
-                                do { try await SocialCardSharing.save(rendered.image); message = t("savedImage") }
-                                catch SocialCardSharing.SharingError.permission { message = t("permission") }
-                                catch { message = t("error") }
-                                busy = false
-                            }
-                        } label: { Text(t("save")).frame(maxWidth: .infinity, minHeight: 48) }
-                        .buttonStyle(.bordered).disabled(!ready).accessibilityIdentifier("social-save")
-                    } else {
-                        Button { composer = true } label: { Text(t("share")).frame(maxWidth: .infinity, minHeight: 48) }
-                            .buttonStyle(.borderedProminent).accessibilityIdentifier("social-open-composer")
                     }
-                    if let message { Text(message).appFont(.footnote).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("social-status") }
                 }.padding(20)
             }
             .background(AppColors.background)
-            .navigationTitle(t(composer ? "title" : "saved")).navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(t(request.suggested ? "saved" : "share")).navigationBarTitleDisplayMode(.inline)
             .toolbar { FormCloseToolbarItem(action: onDismiss) }
             .tint(AppColors.accent)
             .sheet(item: $sharedURL) { SocialActivitySheet(url: $0.url) }
-            .onChange(of: format) { _, value in
-                if value == .photo && photo == nil && !busy { choosingPhoto = true }
-            }
-            .onChange(of: choosingPhoto) { _, showing in
-                if !showing && photoItem == nil && photo == nil && format == .photo { format = .story }
+            .onAppear { SocialCardPreferences.shared.reviewDeferredForVisit = true }
+            .onChange(of: options) { _, value in SocialCardPreferences.shared.options = value }
+            .safeAreaInset(edge: .bottom) {
+                VStack(spacing: 4) {
+                    if let message { Text(message).appFont(.footnote).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("social-status") }
+                    action(t("share") + "…") {
+                        if let rendered { sharedURL = SocialSharedURL(url: try SocialCardSharing.shareURL(rendered.image)); SocialCardPreferences.shared.engaged() }
+                    }.accessibilityIdentifier("social-share")
+                    Button {
+                        guard let rendered else { return }
+                        busy = true
+                        Task {
+                            do { try await SocialCardSharing.save(rendered.image); SocialCardPreferences.shared.engaged(); message = t("savedImage") }
+                            catch SocialCardSharing.SharingError.permission { message = t("permission") }
+                            catch { message = t("error") }
+                            busy = false
+                        }
+                    } label: { Text(t("save")).frame(maxWidth: .infinity, minHeight: 48) }
+                    .disabled(!ready).accessibilityIdentifier("social-save")
+                }.padding(.horizontal, 20).padding(.top, 12).background(AppColors.surface).tint(AppColors.accent)
             }
             .onChange(of: photoItem) { _, item in
                 guard let item else { return }
@@ -206,31 +246,34 @@ struct SocialCardComposer: View {
             }
     }
 
-    private var ready: Bool { rendered != nil && renderedKey == renderKey && !busy && (format != .photo || photo != nil) }
+    private var ready: Bool { rendered != nil && renderedKey == renderKey && !busy  }
     private var preview: some View {
         Group {
             if let rendered {
                 Image(uiImage: rendered.image).resizable().scaledToFit()
-                    .frame(maxWidth: .infinity).frame(maxHeight: composer ? 350 : 290)
+                    .frame(maxWidth: .infinity).frame(maxHeight: customizing ? 260 : 350)
                     .accessibilityLabel(description).accessibilityIdentifier("social-preview")
                     .gesture(DragGesture().onChanged { value in
-                        guard format == .photo && photo != nil else { return }
+                        guard photo != nil else { return }
                         position.x = min(1, max(-1, dragStart.x + value.translation.width / 150))
                         position.y = min(1, max(-1, dragStart.y + value.translation.height / 175))
                     }.onEnded { _ in dragStart = position })
                     .accessibilityAdjustableAction { direction in
-                        guard format == .photo else { return }
+                        guard photo != nil else { return }
                         position.y = min(1, max(-1, position.y + (direction == .increment ? 0.1 : -0.1))); dragStart = position
                     }
             } else { ProgressView().frame(maxWidth: .infinity, minHeight: 200) }
         }
+    }
+    private func cardLabel(_ item: SocialCardContent) -> String {
+        item.kind == .record ? item.title : t(item.kind == .week ? "week" : "summary")
     }
     private func toggle(_ label: String, _ binding: Binding<Bool>) -> some View {
         Toggle(label, isOn: binding).padding(.horizontal, 14).frame(minHeight: 48)
             .foregroundStyle(AppColors.text).background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 12))
     }
     private func action(_ title: String, perform: @escaping () throws -> Void) -> some View {
-        Button { do { try perform() } catch { message = t("error") } } label: { Text(title).frame(maxWidth: .infinity, minHeight: 48) }
+        Button { do { try perform() } catch { message = t("error") } } label: { Text(title).frame(maxWidth: .infinity, minHeight: 48).foregroundStyle(AppColors.background) }
             .buttonStyle(.borderedProminent).disabled(!ready)
     }
 }

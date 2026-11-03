@@ -81,6 +81,8 @@ final class ReviewPromptTests: XCTestCase {
         let oldTour = store.tourProgress, oldToast = store.currentToast
         let oldExercise = store.selectedExerciseId, oldHistory = store.selectedHistoryDetailDay
         let oldSocial = store.socialShareRequest
+        let oldDeferred = SocialCardPreferences.shared.reviewDeferredForVisit
+        SocialCardPreferences.shared.reviewDeferredForVisit = false
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
         store.isOnboardingCompleted = true; store.currentView = .today; store.currentToast = nil
         store.selectedExerciseId = nil; store.selectedHistoryDetailDay = nil; store.socialShareRequest = nil
@@ -96,6 +98,7 @@ final class ReviewPromptTests: XCTestCase {
         window.frame = CGRect(x: 0, y: 0, width: 393, height: 852); window.rootViewController = host; window.makeKeyAndVisible()
         defer {
             ReviewPromptPresentation.testRequestHandler = nil
+            SocialCardPreferences.shared.reviewDeferredForVisit = oldDeferred
             window.isHidden = true; previousWindow?.makeKeyAndVisible()
             store.isSessionPresented = false; store.activeSession = oldDraft; store.isOnboardingCompleted = oldSetup
             store.currentView = oldView; store.currentToast = oldToast; store.reviewPromptState = oldPrompt
@@ -113,7 +116,12 @@ final class ReviewPromptTests: XCTestCase {
         host.present(sheet, animated: false)
         try await Task.sleep(nanoseconds: 1_300_000_000)
         XCTAssertEqual(attempts, 0); XCTAssertTrue(store.reviewPromptState.pending)
+        SocialCardPreferences.shared.reviewDeferredForVisit = true
         sheet.dismiss(animated: false)
+        try await Task.sleep(nanoseconds: 1_300_000_000)
+        XCTAssertEqual(attempts, 0, "Closing sharing must not immediately request a review")
+        XCTAssertTrue(store.reviewPromptState.pending)
+        SocialCardPreferences.shared.reviewDeferredForVisit = false
         for _ in 0..<80 {
             if attempts == 1 { break }
             try await Task.sleep(nanoseconds: 100_000_000)
