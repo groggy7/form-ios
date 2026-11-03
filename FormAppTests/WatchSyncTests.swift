@@ -242,6 +242,27 @@ final class WatchSyncTests: XCTestCase {
         XCTAssertNil(next.workoutStep(running: nil, skipped: []), "A workout that already ended is not started again")
     }
 
+    func testLosingRecordingAccessDiscardsEvenAnUnadoptedWorkout() {
+        let active = WatchSnapshotBuilder.build(draft: draft(), unit: .kg, language: "en", isPremium: true,
+                                                steps: steps, recordsWorkouts: true, now: now)
+        var locked = active
+        locked.access = .locked
+        locked.session = nil
+        var staleLocked = active
+        staleLocked.access = .locked
+        var disabled = active
+        disabled.recordsWorkouts = false
+        for running in [RunningWorkout(sessionId: nil, startedAt: now), RunningWorkout(sessionId: "s", startedAt: now)] {
+            for blocked in [locked, staleLocked, disabled] {
+                XCTAssertEqual(blocked.workoutStep(running: running, skipped: []), .finish(save: false, endedAt: nil))
+                XCTAssertNil(blocked.workoutStep(running: nil, skipped: []))
+            }
+        }
+        locked.finished = WatchSnapshot.Finished(sessionId: "s", saved: true, endedAt: now + 1_000)
+        XCTAssertEqual(locked.workoutStep(running: RunningWorkout(sessionId: "s", startedAt: now), skipped: []),
+                       .finish(save: true, endedAt: now + 1_000), "A completed paid workout can still finish after entitlement changes")
+    }
+
     func testAWorkoutResumedFromHistoryKeepsItsNewRecording() {
         let marker = WatchSnapshotBuilder.finished(sessionId: "s", recordAtStart: nil,
                                                    history: [record(completedAt: "2026-10-31T10:30:00.000Z")], now: now)

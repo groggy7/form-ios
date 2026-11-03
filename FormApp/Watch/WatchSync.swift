@@ -157,6 +157,7 @@ extension WatchSnapshot {
             if let finished, finished.sessionId == running.sessionId || (running.sessionId == nil && finished.endedAt >= running.startedAt) {
                 return .finish(save: finished.saved, endedAt: finished.endedAt)
             }
+            guard access == .premium, recordsWorkouts == true else { return .finish(save: false, endedAt: nil) }
             guard let id = running.sessionId else { return session.map { .adopt(sessionId: $0.id) } }
             if access == .premium, session?.id == id { return nil }
             // Its workout ended without word from the iPhone (cleared data or Premium ended): write nothing.

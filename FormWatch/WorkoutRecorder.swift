@@ -42,11 +42,11 @@ final class WorkoutRecorder: NSObject, ObservableObject, HKWorkoutSessionDelegat
         }
     }
 
-    /// The iPhone opened the app for a new workout; the snapshot that follows names it.
+    /// Opening the app is not an entitlement: only an eligible iPhone snapshot can start recording.
     func startFromIPhone() {
         dispatchPrecondition(condition: .onQueue(.main))
-        guard session == nil, !isBusy else { return }
-        begin(sessionId: nil)
+        WatchStore.shared.send(.refresh)
+        update(for: WatchStore.shared.snapshot)
     }
 
     /// Reattaches a workout that was running when the app ended.
@@ -63,9 +63,14 @@ final class WorkoutRecorder: NSObject, ObservableObject, HKWorkoutSessionDelegat
         }
     }
 
-    private func begin(sessionId id: String?) {
+    private func eligibleStart(_ id: String) -> Bool {
+        WatchStore.shared.snapshot?.workoutStep(running: nil, skipped: skipped) == .start(sessionId: id)
+    }
+
+    private func begin(sessionId id: String) {
+        guard eligibleStart(id) else { return }
         guard HKHealthStore.isHealthDataAvailable() else {
-            if let id { skipped.insert(id) }
+            skipped.insert(id)
             return
         }
         isBusy = true
@@ -75,14 +80,16 @@ final class WorkoutRecorder: NSObject, ObservableObject, HKWorkoutSessionDelegat
         }
     }
 
-    private func startSession(sessionId id: String?) {
+    private func startSession(sessionId id: String) {
         defer {
             isBusy = false
             update(for: WatchStore.shared.snapshot)
         }
+        // A permission prompt can outlive the entitlement, recording setting or workout it was opened for.
+        guard eligibleStart(id) else { return }
         // Declining Health access leaves the watch app as a remote for the iPhone workout.
         guard healthStore.authorizationStatus(for: HKObjectType.workoutType()) == .sharingAuthorized else {
-            if let id { skipped.insert(id) }
+            skipped.insert(id)
             return
         }
         let configuration = HKWorkoutConfiguration()
@@ -101,7 +108,7 @@ final class WorkoutRecorder: NSObject, ObservableObject, HKWorkoutSessionDelegat
             }
         } catch {
             print("Workout session failed to start: \(error)")
-            if let id { skipped.insert(id) }
+            skipped.insert(id)
         }
     }
 
