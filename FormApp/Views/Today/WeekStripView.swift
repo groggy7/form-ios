@@ -200,8 +200,10 @@ struct WorkoutDayStrip: View {
                                     }
                                     .padding(.top, glowTiles ? tileWidth * 0.04 : 0)
 
+                                // Workout titles never drop below 10pt (scaled with Dynamic Type): phone tiles (76-96pt)
+                                // would otherwise set them at 7.6-9.6pt. The narrower side inset below gives them more room.
                                 Text(workout.displayTitle(programId: program.id))
-                                    .font(.app(size: glowTiles ? labelSize * tileWidth / 110 : labelSize))
+                                    .font(.app(size: glowTiles ? max(labelSize * tileWidth / 110, labelSize * 10 / 11) : labelSize))
                                     .foregroundStyle(textColor)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(2, reservesSpace: true)
@@ -209,7 +211,7 @@ struct WorkoutDayStrip: View {
                                     .frame(maxWidth: .infinity)
                                     .padding(.top, glowTiles ? tileWidth * 0.14 : 0)
                             }
-                            .padding(.horizontal, glowTiles ? tileWidth * 0.125 : 8)
+                            .padding(.horizontal, glowTiles ? tileWidth * 0.06 : 8)
                             .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
                             .containerRelativeFrame(.horizontal) { width, _ in Self.tileWidth(stripWidth: width) }
                             .frame(minHeight: glowTiles ? tileWidth * 1.1667 : 108, alignment: .top)
