@@ -52,21 +52,29 @@ struct BodySummaryCard: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
             }
-            Button(action: onLog) {
-                Text(LanguageManager.t("body.quickLogTitle"))
-                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.background)
-                    .frame(maxWidth: .infinity, minHeight: 50).padding(.vertical, 4)
-                    .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+            // Both actions are 48pt, like the sheet's other buttons and Android; the inner padding only
+            // shows once a larger text size wraps a label.
+            VStack(spacing: 8) {
+                Button(action: onLog) {
+                    Text(LanguageManager.t("body.quickLogTitle"))
+                        .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.background)
+                        .multilineTextAlignment(.center).padding(.horizontal, 12).padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("body-card-log")
+                Button(action: onMeasurements) {
+                    Text(LanguageManager.t("body.showMeasurements"))
+                        .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
+                        .multilineTextAlignment(.center).padding(.horizontal, 12).padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("body-add-measurements")
             }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("body-card-log")
-            Button(action: onMeasurements) {
-                Text(LanguageManager.t("body.showMeasurements"))
-                    .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("body-add-measurements")
         }
         .padding(16)
         .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
