@@ -10345,6 +10345,8 @@ final class HistoryBreakdownTests: XCTestCase {
             XCTAssertFalse(result.first!.isComplete)
             XCTAssertFalse(result.contains { $0.sessionRecord == nil })
             XCTAssertEqual(result.first?.exerciseItems.first?.name, pull.exercises[0].displayName)
+            // History rates a row through its position in the record's logs.
+            XCTAssertEqual(result.first?.exerciseItems.first?.logIndex, 0)
             XCTAssertFalse(result.first!.exerciseItems.contains { $0.name == edited.exercises[0].displayName })
         }
     }

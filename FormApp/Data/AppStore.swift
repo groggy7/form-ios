@@ -1669,6 +1669,21 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    /// Rates or clears one exercise of a saved workout from History (docs/design/body-and-joint-journal.md). The live
+    /// workout's record is left alone: its draft owns the rating and would overwrite it on finish.
+    @discardableResult
+    public func setHistoryJointStress(recordId: String, logIndex: Int, rating: JointStress?) -> Bool {
+        guard activeSession?.id != recordId,
+              let index = state.history.firstIndex(where: { $0.id == recordId }),
+              let updated = JointJournal.rated(state.history[index], logIndex: logIndex, rating: rating) else { return false }
+        guard updated != state.history[index] else { return true }
+        var next = state
+        next.history[index] = updated
+        guard saveState(next, durable: true) else { return false }
+        autoSyncCloudBackup()
+        return true
+    }
+
     /// Adds or replaces the body-log entry for its date (docs/design/body-and-joint-journal.md).
     @discardableResult
     public func saveBodyEntry(_ entry: BodyEntry, now: Date = Date()) -> Bool {

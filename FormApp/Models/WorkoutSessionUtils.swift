@@ -439,6 +439,12 @@ public enum WorkoutSessionUtils {
         return ratings
     }
 
+    /// The joint-stress rating is offered once any working set is completed, not only when all are: a lifter who
+    /// stops early because a joint hurts is the one most likely to want to rate it.
+    public static func offersJointStressRating(_ sets: [ExerciseSetLog]) -> Bool {
+        sets.contains { !$0.isWarmup && $0.isCompleted }
+    }
+
     /// Joint-stress ratings saved with a resumed record, keyed by the workout's exercise IDs.
     public static func restoreJointStressFromHistory(workout: Workout, record: WorkoutSessionRecord) -> [String: String] {
         var ratings: [String: String] = [:]

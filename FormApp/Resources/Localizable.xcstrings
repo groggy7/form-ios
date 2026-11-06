@@ -50840,31 +50840,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rate each exercise after its working sets. Only you see the ratings; they never change targets."
+            "value": "Rate an exercise after a working set, or later from its day in the calendar. Only you see the ratings; they never change targets."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her egzersizi çalışma setlerinden sonra puanla. Puanları yalnızca sen görürsün; hedefleri hiç değiştirmez."
+            "value": "Bir egzersizi bir çalışma setinden sonra ya da daha sonra takvimdeki gününden puanla. Puanları yalnızca sen görürsün; hedefleri hiç değiştirmez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bewerte jede Übung nach ihren Arbeitssätzen. Nur du siehst die Bewertungen; sie ändern nie Ziele."
+            "value": "Bewerte eine Übung nach einem Arbeitssatz oder später über ihren Tag im Kalender. Nur du siehst die Bewertungen; sie ändern nie Ziele."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Note chaque exercice après ses séries de travail. Toi seul vois les notes ; elles ne changent jamais les objectifs."
+            "value": "Note un exercice après une série de travail, ou plus tard depuis son jour dans le calendrier. Toi seul vois les notes ; elles ne changent jamais les objectifs."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Valora cada ejercicio después de sus series de trabajo. Solo tú ves las valoraciones; nunca cambian los objetivos."
+            "value": "Valora un ejercicio después de una serie de trabajo, o más tarde desde su día en el calendario. Solo tú ves las valoraciones; nunca cambian los objetivos."
           }
         }
       }
@@ -51289,6 +51289,111 @@
         }
       }
     },
+    "history.rateJointStress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate joint stress"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eklem zorlanmasını puanla"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelenkbelastung bewerten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noter le stress articulaire"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valorar el estrés articular"
+          }
+        }
+      }
+    },
+    "history.changeJointStress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change joint stress"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eklem zorlanmasını değiştir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelenkbelastung ändern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier le stress articulaire"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar el estrés articular"
+          }
+        }
+      }
+    },
+    "history.clearJointStress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear rating"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puanı kaldır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewertung entfernen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer la note"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar la valoración"
+          }
+        }
+      }
+    },
     "form_lab.tab_joints": {
       "extractionState": "manual",
       "localizations": {
@@ -51470,31 +51575,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Switch them on to rate each exercise after its working sets. You can change this later in Settings."
+            "value": "Switch them on to rate exercises after a working set or later from the calendar. You can change this later in Settings."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her egzersizi çalışma setlerinden sonra puanlamak için aç. Bunu daha sonra Ayarlar’dan değiştirebilirsin."
+            "value": "Egzersizleri bir çalışma setinden sonra ya da daha sonra takvimden puanlamak için aç. Bunu daha sonra Ayarlar’dan değiştirebilirsin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schalte sie ein, um jede Übung nach ihren Arbeitssätzen zu bewerten. Du kannst das später in den Einstellungen ändern."
+            "value": "Schalte sie ein, um Übungen nach einem Arbeitssatz oder später im Kalender zu bewerten. Du kannst das später in den Einstellungen ändern."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Active-les pour noter chaque exercice après ses séries de travail. Tu pourras changer cela plus tard dans les Réglages."
+            "value": "Active-les pour noter les exercices après une série de travail ou plus tard depuis le calendrier. Tu pourras changer cela plus tard dans les Réglages."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Actívalas para valorar cada ejercicio después de sus series de trabajo. Puedes cambiarlo más tarde en Ajustes."
+            "value": "Actívalas para valorar ejercicios después de una serie de trabajo o más tarde desde el calendario. Puedes cambiarlo más tarde en Ajustes."
           }
         }
       }
@@ -53080,31 +53185,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Best estimated 1RM from the last 90 days, divided by your bodyweight trend."
+            "value": "Best estimated 1RM from the last 90 days for barbell squats, bench presses, deadlifts, overhead presses and rows, divided by your bodyweight trend."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 90 gündeki en iyi tahmini 1RM’nin kilo trendine bölümü."
+            "value": "Son 90 gündeki barbell squat, bench press, deadlift, overhead press ve row setlerinden en iyi tahmini 1RM’nin kilo trendine bölümü."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bestes geschätztes 1RM der letzten 90 Tage, geteilt durch deinen Körpergewichtstrend."
+            "value": "Bestes geschätztes 1RM der letzten 90 Tage aus Kniebeugen, Bankdrücken, Kreuzheben, Schulterdrücken und Rudern mit Langhantel, geteilt durch deinen Körpergewichtstrend."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meilleur 1RM estimé des 90 derniers jours, divisé par ta tendance de poids de corps."
+            "value": "Meilleur 1RM estimé des 90 derniers jours au squat, développé couché, soulevé de terre, développé militaire et rowing à la barre, divisé par ta tendance de poids de corps."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mejor 1RM estimado de los últimos 90 días, dividido entre tu tendencia de peso corporal."
+            "value": "Mejor 1RM estimado de los últimos 90 días en sentadilla, press de banca, peso muerto, press militar y remo con barra, dividido entre tu tendencia de peso corporal."
           }
         }
       }
@@ -53220,31 +53325,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No eligible weighted sets in the last 90 days."
+            "value": "No barbell squat, bench press, deadlift, overhead press or row sets in the last 90 days."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son 90 günde uygun ağırlıklı set yok."
+            "value": "Son 90 günde barbell squat, bench press, deadlift, overhead press veya row seti yok."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keine geeigneten Sätze mit Gewicht in den letzten 90 Tagen."
+            "value": "Keine Sätze Kniebeuge, Bankdrücken, Kreuzheben, Schulterdrücken oder Rudern mit Langhantel in den letzten 90 Tagen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucune série avec charge éligible ces 90 derniers jours."
+            "value": "Aucune série de squat, développé couché, soulevé de terre, développé militaire ou rowing à la barre ces 90 derniers jours."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No hay series con carga válidas en los últimos 90 días."
+            "value": "No hay series de sentadilla, press de banca, peso muerto, press militar o remo con barra en los últimos 90 días."
           }
         }
       }

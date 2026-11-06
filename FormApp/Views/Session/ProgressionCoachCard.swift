@@ -608,8 +608,9 @@ private struct LockedProgressionTrend: Shape {
     }
 }
 
-/// The ratings asked once every working set of an exercise is recorded: Smart Progression's effort rating and
-/// the opt-in joint-stress rating share one compact card under the last set, so there is never a second prompt.
+/// The exercise's ratings: Smart Progression's effort rating, asked once every working set is recorded, and the
+/// opt-in joint-stress rating, offered from the first completed working set, share one compact card under the last
+/// set, so there is never a second prompt.
 /// Both are the user's own reports; tapping the selected value again clears it. Their explanations are spoken
 /// hints and live in Settings, so the card stays one line per rating.
 struct ExerciseRatingsCard: View {

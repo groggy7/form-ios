@@ -29,7 +29,7 @@ public struct SetLoggingTable: View {
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     /// Drop sets, rest-pause and partials (docs/design/intensity-sets.md).
     var intensity: IntensityActions? = nil
-    /// The exercise's ratings, shown directly beneath its last set once every working set is done.
+    /// The exercise's ratings, shown directly beneath its last set when the caller asks for them.
     var ratings: AnyView? = nil
     /// The keyboard bar's previous, next and Done controls.
     var fieldNavigator: SessionFieldNavigator? = nil

@@ -73,11 +73,56 @@ final class BodyAndJointJournalTests: XCTestCase {
         XCTAssertNil(byName["Push-Up"]?.recent.first?.topLoadKg)
     }
 
-    func testRelativeStrengthExcludesBodyweightAndNeedsARecentWeighIn() {
+    @MainActor func testHistoryRatesOneSavedExerciseWithWorkingSets() throws {
+        let saved = record("1", date(10), [
+            log("Barbell Bench Press", "barbell-bench-press", nil, [SessionSetLog(setNumber: 1, weightKg: 60, reps: 8)]),
+            log("Barbell Bench Press", "barbell-bench-press", .mild, [SessionSetLog(setNumber: 1, weightKg: 80, reps: 5)]),
+            log("Warmup Only", nil, nil, [SessionSetLog(setNumber: 1, weightKg: 20, reps: 10, isWarmup: true)])
+        ])
+        // The second occurrence keeps its own rating; nothing else in the record changes.
+        let rated = try XCTUnwrap(JointJournal.rated(saved, logIndex: 0, rating: .high))
+        XCTAssertEqual(rated.exerciseLogs.map(\.jointStress), ["high", "mild", nil])
+        var expected = saved
+        expected.exerciseLogs[0].jointStress = "high"
+        XCTAssertEqual(rated, expected)
+        // An exercise with no working set, or a missing one, has nothing to rate.
+        XCTAssertNil(JointJournal.rated(saved, logIndex: 2, rating: .noStress))
+        XCTAssertNil(JointJournal.rated(saved, logIndex: 3, rating: .noStress))
+        XCTAssertNil(JointJournal.rated(saved, logIndex: -1, rating: .noStress))
+
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        var state = store.state
+        state.history = [saved]
+        store.state = state
+        XCTAssertTrue(store.setHistoryJointStress(recordId: "1", logIndex: 0, rating: .high))
+        XCTAssertTrue(store.setHistoryJointStress(recordId: "1", logIndex: 1, rating: nil))
+        XCTAssertEqual(store.state.history.first?.exerciseLogs.map(\.jointStress), ["high", nil, nil])
+        XCTAssertFalse(store.setHistoryJointStress(recordId: "missing", logIndex: 0, rating: .mild))
+        XCTAssertFalse(store.setHistoryJointStress(recordId: "1", logIndex: 2, rating: .mild))
+    }
+
+    func testJointStressRatingIsOfferedFromTheFirstCompletedWorkingSet() {
+        let warmup = ExerciseSetLog(setNumber: 1, isCompleted: true, isWarmup: true)
+        let first = ExerciseSetLog(setNumber: 2)
+        var done = first
+        done.isCompleted = true
+        let second = ExerciseSetLog(setNumber: 3)
+        // A completed warmup alone is not an exercise to rate.
+        XCTAssertFalse(WorkoutSessionUtils.offersJointStressRating([warmup, first, second]))
+        // One working set is enough: a lifter who stops early because a joint hurts can still rate it.
+        XCTAssertTrue(WorkoutSessionUtils.offersJointStressRating([warmup, done, second]))
+        XCTAssertFalse(WorkoutSessionUtils.offersJointStressRating([]))
+    }
+
+    func testRelativeStrengthUsesReferenceBarbellLiftsAndNeedsARecentWeighIn() {
         let today = date(40)
+        // Bodyweight, machine, hip-thrust and custom lifts would distort a bodyweight ratio; only reference lifts count.
         let history = [record("1", date(35), [
             log("Barbell Back Squat", "barbell-back-squat", nil, [SessionSetLog(setNumber: 1, weightKg: 140, reps: 1)]),
             log("Weighted Pull-Ups", "weighted-pull-ups", nil, [SessionSetLog(setNumber: 1, weightKg: 40, reps: 1)]),
+            log("Leg Press", "leg-press-45-degree", nil, [SessionSetLog(setNumber: 1, weightKg: 300, reps: 1)]),
+            log("Barbell Hip Thrust", "barbell-hip-thrust", nil, [SessionSetLog(setNumber: 1, weightKg: 200, reps: 1)]),
+            log("My Sled Push", nil, nil, [SessionSetLog(setNumber: 1, weightKg: 250, reps: 1)]),
             log("Barbell Bench Press", "barbell-bench-press", nil, [SessionSetLog(setNumber: 1, weightKg: 100, reps: 1)])
         ])]
         let recent = BodyTrends.trend([BodyEntry(date: date(38), bodyweightKg: 80)])
@@ -157,6 +202,51 @@ final class BodyAndJointJournalTests: XCTestCase {
 
         let decoded = try? JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(draft))
         XCTAssertEqual(decoded?.jointStressByExercise, [bench.id: "mild"])
+    }
+
+    /// Captures for review under forcedrep-ios/build/body-journal-review/: a saved day's rating lines, rated and
+    /// unrated, at 393pt and at 320pt with the largest standard text, in every language.
+    @MainActor func testHistoryDetailRatingLinesRenderInEveryLanguage() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/body-journal-review").standardized
+        try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+        let bench = Exercise(id: "bench", name: "Bench Press", sets: 2, reps: RepTarget(min: 8, max: 12))
+        let row = Exercise(id: "row", name: "Barbell Row", sets: 2, reps: RepTarget(min: 8, max: 12))
+        let workout = Workout(id: "upper", day: 1, title: "Upper", exercises: [bench, row])
+        let record = WorkoutSessionRecord(id: "saved", programId: "plan", workoutId: workout.id, workoutTitle: workout.title,
+            startedAt: "2026-10-20T09:00:00Z", completedAt: "2026-10-20T10:00:00Z", durationSeconds: 3600, totalCompletedSets: 4,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: bench.name, sets: [1, 2].map { SessionSetLog(setNumber: $0, weightKg: 80, reps: 8) },
+                                   targetSets: 2, jointStress: "mild"),
+                SessionExerciseLog(exerciseName: row.name, sets: [1, 2].map { SessionSetLog(setNumber: $0, weightKg: 70, reps: 10) }, targetSets: 2)
+            ], isComplete: true, workoutSnapshot: workout, performedDate: "2026-10-20")
+        let detail = HistoryDayDetailData(date: WorkoutCalendar.parseDate("2026-10-20")!, dateString: "2026-10-20", status: .completed,
+                                          sessionRecord: record, workout: workout)
+        // Rows hand back the record and the log they rate.
+        let items = HistoryDayDetailData.buildExerciseProgress(sessionRecord: record, workout: workout, history: [record])
+        XCTAssertEqual(items.map(\.logIndex), [0, 1])
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+                let content = HistoryDetailView(detail: detail, history: [record], today: WorkoutCalendar.parseDate("2026-10-21")!,
+                                                onBack: {}, jointStressRatings: true, onRateJointStress: { _, _, _ in })
+                    .frame(width: width).background(AppColors.background)
+                    .environment(\.sizeCategory, size)
+                let controller = UIHostingController(rootView: content)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: size == .large ? 1100 : 1700))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                defer { window.isHidden = true }
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+                let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                    controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                }
+                try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("history-rating-\(language)-\(Int(width)).png"))
+            }
+        }
     }
 
     /// Captures for review under forcedrep-ios/build/body-journal-review/: the ratings card, the Joints tab sample

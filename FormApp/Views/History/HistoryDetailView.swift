@@ -9,6 +9,9 @@ public struct HistoryDetailView: View {
     var onActionWorkout: (() -> Void)? = nil
     var weightUnit: WeightUnit = .kg
     var onActionSection: ((WorkoutDaySection) -> Void)? = nil
+    /// Offers a rating on unrated exercises; existing ratings can always be changed while `onRateJointStress` is set.
+    var jointStressRatings: Bool = false
+    var onRateJointStress: ((WorkoutSessionRecord, Int, JointStress?) -> Void)? = nil
     @State private var socialRequest: SocialShareRequest?
     @State private var collapsedSections: Set<String> = []
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -24,7 +27,10 @@ public struct HistoryDetailView: View {
 
     public init(detail: HistoryDayDetailData, history: [WorkoutSessionRecord] = [], today: Date = Date(),
         onBack: @escaping () -> Void, onActionWorkout: (() -> Void)? = nil,
-        weightUnit: WeightUnit = .kg, onActionSection: ((WorkoutDaySection) -> Void)? = nil) {
+        weightUnit: WeightUnit = .kg, onActionSection: ((WorkoutDaySection) -> Void)? = nil,
+        jointStressRatings: Bool = false, onRateJointStress: ((WorkoutSessionRecord, Int, JointStress?) -> Void)? = nil) {
+        self.jointStressRatings = jointStressRatings
+        self.onRateJointStress = onRateJointStress
         self.detail = detail
         self.history = history
         self.today = today
@@ -296,7 +302,7 @@ public struct HistoryDetailView: View {
             if expanded {
                 VStack(spacing: 0) {
                     ForEach(Array(items.enumerated()), id: \.element.id) { rowIndex, item in
-                        exerciseRow(item, past: past)
+                        exerciseRow(item, past: past, rate: jointRating(item, in: section))
                         if rowIndex < items.count - 1 { Rectangle().fill(AppColors.border).frame(height: 1) }
                     }
                 }
@@ -366,28 +372,41 @@ public struct HistoryDetailView: View {
         return 2
     }
 
-    private func exerciseRow(_ item: HistoryDayExerciseProgress, past: Bool) -> some View {
+    /// A saved exercise with working sets can be rated afterwards: joint discomfort often shows up later.
+    private func jointRating(_ item: HistoryDayExerciseProgress, in section: WorkoutDaySection) -> ((JointStress?) -> Void)? {
+        guard let onRateJointStress, !section.isLiveSession, let record = section.sessionRecord, let logIndex = item.logIndex,
+              record.exerciseLogs.indices.contains(logIndex),
+              record.exerciseLogs[logIndex].sets.contains(where: { !$0.isWarmup }),
+              jointStressRatings || item.jointStress != nil else { return nil }
+        return { onRateJointStress(record, logIndex, $0) }
+    }
+
+    private func exerciseRow(_ item: HistoryDayExerciseProgress, past: Bool, rate: ((JointStress?) -> Void)? = nil) -> some View {
         let completed = item.completedSets >= item.plannedSets && item.plannedSets > 0
         let partial = item.completedSets > 0 && !completed
         return HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
-                    Text(item.name).font(.app(size: rowFont, weight: .semibold)).foregroundStyle(AppColors.text)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 6) {
+                        Text(item.name).font(.app(size: rowFont, weight: .semibold)).foregroundStyle(AppColors.text)
+                            .fixedSize(horizontal: false, vertical: true)
+                        if item.isPr {
+                            Text("PR").font(.app(size: detailFont, weight: .bold)).foregroundStyle(AppColors.orangePrText)
+                                .padding(.horizontal, 5).padding(.vertical, 1).background(AppColors.orangePrBg)
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                        }
+                    }
+                    Text(exerciseSubtitle(item)).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                         .fixedSize(horizontal: false, vertical: true)
-                    if item.isPr {
-                        Text("PR").font(.app(size: detailFont, weight: .bold)).foregroundStyle(AppColors.orangePrText)
-                            .padding(.horizontal, 5).padding(.vertical, 1).background(AppColors.orangePrBg)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    SavedNote(text: item.setupNote)
+                    if rate == nil, let rating = item.jointStress {
+                        Text(LanguageManager.t("history.jointStress", ["rating": LanguageManager.t(rating.labelKey)]))
+                            .font(.app(size: detailFont)).foregroundStyle(AppColors.muted)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
-                Text(exerciseSubtitle(item)).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-                SavedNote(text: item.setupNote)
-                if let rating = item.jointStress {
-                    Text(LanguageManager.t("history.jointStress", ["rating": LanguageManager.t(rating.labelKey)]))
-                        .font(.app(size: detailFont)).foregroundStyle(AppColors.muted)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                .accessibilityElement(children: .combine)
+                if let rate { jointRatingMenu(item, rate: rate) }
             }.frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: completed ? "checkmark" : partial ? "clock" : "minus")
                 .font(.system(size: 16, weight: .semibold))
@@ -396,8 +415,44 @@ public struct HistoryDetailView: View {
                 .accessibilityLabel(LanguageManager.t(completed ? "history.completed" : partial ? "history.unfinished" : past ? "history.notCompleted" : "history.notStarted"))
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
-        .accessibilityElement(children: .combine)
+        // The rating menu stays its own control; otherwise the row reads as one element.
+        .accessibilityElement(children: rate == nil ? .combine : .contain)
         .accessibilityIdentifier("history-exercise-\(item.name)")
+    }
+
+    /// The rating line of a saved exercise: its current rating, or an offer to rate, opening None / Mild / High.
+    private func jointRatingMenu(_ item: HistoryDayExerciseProgress, rate: @escaping (JointStress?) -> Void) -> some View {
+        let label = item.jointStress.map { LanguageManager.t("history.jointStress", ["rating": LanguageManager.t($0.labelKey)]) }
+            ?? LanguageManager.t("history.rateJointStress")
+        return Menu {
+            ForEach(JointStress.allCases, id: \.self) { option in
+                Button { if option != item.jointStress { rate(option) } } label: {
+                    if option == item.jointStress {
+                        Label(LanguageManager.t(option.labelKey), systemImage: "checkmark")
+                    } else {
+                        Text(LanguageManager.t(option.labelKey))
+                    }
+                }
+                .accessibilityIdentifier("history-joint-option-\(option.rawValue)")
+            }
+            if item.jointStress != nil {
+                Divider()
+                Button(role: .destructive) { rate(nil) } label: { Text(LanguageManager.t("history.clearJointStress")) }
+                    .accessibilityIdentifier("history-joint-clear")
+            }
+        } label: {
+            HStack(spacing: 4) {
+                // Menu labels centre wrapped lines by default; keep them aligned with the row's other text.
+                Text(label).font(.app(size: detailFont, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                    .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                Image(systemName: "chevron.up.chevron.down").font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(AppColors.muted)
+            }
+            .frame(minHeight: 48).contentShape(Rectangle())
+        }
+        .accessibilityLabel("\(item.name), \(label)")
+        .accessibilityHint(LanguageManager.t("history.changeJointStress"))
+        .accessibilityIdentifier("history-joint-\(item.name)")
     }
 
     private func exerciseSubtitle(_ item: HistoryDayExerciseProgress) -> String {

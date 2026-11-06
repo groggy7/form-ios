@@ -298,7 +298,7 @@ public struct ActiveSessionView: View {
                                     let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
                                     let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
                                         workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
-                                    let asksJointStress = store.jointStressRatings && workingSetsDone
+                                    let asksJointStress = store.jointStressRatings && WorkoutSessionUtils.offersJointStressRating(currentSets)
 
                                     SetLoggingTable(
                                         sets: currentSets,

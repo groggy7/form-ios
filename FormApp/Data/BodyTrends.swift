@@ -53,6 +53,17 @@ public enum BodyTrends {
     public static let strengthDays = 90
     public static let strengthRows = 5
 
+    /// Lifts whose bodyweight ratio is a common strength reference: barbell squat, bench press, deadlift, overhead
+    /// press and row variations. Machines, dumbbells, isolation and hip-thrust-style lifts are left out: their ratios
+    /// are not comparable, and a leg press would otherwise top the list. Android `BodyTrends.REFERENCE_LIFTS` matches.
+    public static let referenceLifts: Set<String> = [
+        "barbell-back-squat", "barbell-low-bar-squat", "barbell-front-squat", "barbell-pause-full-squat",
+        "barbell-bench-press", "incline-barbell-bench-press", "barbell-close-grip-bench-press",
+        "conventional-barbell-deadlift", "barbell-sumo-deadlift", "trap-bar-deadlift",
+        "standing-barbell-overhead-press", "barbell-seated-overhead-press",
+        "barbell-row", "barbell-pendlay-row"
+    ]
+
     public static func report(entries: [BodyEntry], history: [WorkoutSessionRecord], today: String) -> BodyTrendReport {
         let points = trend(entries)
         return BodyTrendReport(points: points, weeklyChangeKg: weeklyChange(points),
@@ -112,8 +123,8 @@ public enum BodyTrends {
         }
     }
 
-    /// Best Brzycki estimate per exercise from the last 90 days (Rep Lab's eligibility), divided by the latest trend.
-    /// Bodyweight and assisted exercises are excluded: their logged load is not the load moved.
+    /// Best Brzycki estimate per reference lift (`referenceLifts`) from the last 90 days (Rep Lab's eligibility),
+    /// divided by the latest trend.
     public static func relativeStrength(points: [BodyTrendPoint], history: [WorkoutSessionRecord], today: String) -> RelativeStrengthReport {
         guard let latest = points.last, let latestDay = BodyDay.number(latest.date), let todayNumber = BodyDay.number(today),
               todayNumber - latestDay <= recentWeighInDays else { return .needsWeighIn }
@@ -125,15 +136,13 @@ public enum BodyTrends {
             for log in record.exerciseLogs {
                 let name = log.exerciseName
                 guard !name.trimmingCharacters(in: .whitespaces).isEmpty,
-                      !WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: name),
-                      !WorkoutSessionUtils.usesBodyweightResistance(exerciseId: log.exerciseId, name: name) else { continue }
+                      let key = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: name),
+                      referenceLifts.contains(key) else { continue }
                 let estimate = log.sets.filter { !$0.isWarmup }
                     .map { FormLabEngine.calculateEstimated1RM(weightKg: $0.weightKg ?? 0, reps: $0.reps ?? 0, formula: .brzycki) }
                     .max() ?? 0
                 guard estimate > 0 else { continue }
-                let canonicalId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: name)
-                let key = canonicalId ?? "name:\(ExerciseCatalog.key(name))"
-                let displayName = canonicalId.flatMap { ExerciseCatalog.canonicalExercises[$0]?.name } ?? name
+                let displayName = ExerciseCatalog.canonicalExercises[key]?.name ?? name
                 if best[key] == nil { order.append(key) }
                 if estimate > (best[key]?.estimate ?? 0) { best[key] = (displayName, estimate) }
             }
@@ -170,6 +179,17 @@ public struct JointExerciseSummary: Hashable, Identifiable {
 public enum JointJournal {
     public static let windowDays = 56
     public static let maxShown = 12
+
+    /// `record` with exercise `logIndex` rated `rating` (nil clears it), or nil when that exercise has no working set
+    /// to rate. History can rate an exercise after the workout because joint discomfort often shows up later; nothing
+    /// else in the record changes. Android `JointJournal.rated` matches.
+    public static func rated(_ record: WorkoutSessionRecord, logIndex: Int, rating: JointStress?) -> WorkoutSessionRecord? {
+        guard record.exerciseLogs.indices.contains(logIndex),
+              record.exerciseLogs[logIndex].sets.contains(where: { !$0.isWarmup }) else { return nil }
+        var updated = record
+        updated.exerciseLogs[logIndex].jointStress = rating?.rawValue
+        return updated
+    }
 
     public static func summaries(history: [WorkoutSessionRecord], today: String) -> [JointExerciseSummary] {
         guard let todayNumber = BodyDay.number(today) else { return [] }

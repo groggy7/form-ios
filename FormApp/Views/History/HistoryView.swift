@@ -13,6 +13,8 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
     /// The user's own joint-stress report; free history shows it as a quiet line.
     public let jointStress: JointStress?
     public let setupNote: String?
+    /// The row's position in its record's `exerciseLogs`, so History can rate it; nil for an unlogged exercise.
+    public let logIndex: Int?
 
     public init(
         name: String,
@@ -24,8 +26,10 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
         isPr: Bool = false,
         occurrenceID: String? = nil,
         jointStress: JointStress? = nil,
-        setupNote: String? = nil
+        setupNote: String? = nil,
+        logIndex: Int? = nil
     ) {
+        self.logIndex = logIndex
         self.jointStress = jointStress
         self.setupNote = setupNote
         self.occurrenceID = occurrenceID
@@ -308,7 +312,8 @@ public struct HistoryDayDetailData: Identifiable {
                     isPr: isPr,
                     occurrenceID: "planned-\(ex.id)-\(index)",
                     jointStress: log?.jointStress.flatMap(JointStress.init(rawValue:)),
-                    setupNote: log?.setupNote
+                    setupNote: log?.setupNote,
+                    logIndex: indices[index]
                 )
             }
             let used = Set(indices.compactMap { $0 })
@@ -326,7 +331,8 @@ public struct HistoryDayDetailData: Identifiable {
                     isPr: isPr,
                     occurrenceID: "logged-\(index)",
                     jointStress: log.jointStress.flatMap(JointStress.init(rawValue:)),
-                    setupNote: log.setupNote
+                    setupNote: log.setupNote,
+                    logIndex: index
                 )
             }
             return planned + extraLogs
@@ -350,7 +356,8 @@ public struct HistoryDayDetailData: Identifiable {
                     isPr: isPr,
                     occurrenceID: "logged-\(index)",
                     jointStress: log.jointStress.flatMap(JointStress.init(rawValue:)),
-                    setupNote: log.setupNote
+                    setupNote: log.setupNote,
+                    logIndex: index
                 )
             }
         }
@@ -674,7 +681,13 @@ public struct HistoryView: View {
             },
             onActionWorkout: { handleWorkoutAction(detail: detail) },
             weightUnit: store.weightUnit,
-            onActionSection: { section in handleWorkoutAction(detail: detail, section: section) }
+            onActionSection: { section in handleWorkoutAction(detail: detail, section: section) },
+            jointStressRatings: store.jointStressRatings,
+            onRateJointStress: { record, logIndex, rating in
+                if !store.setHistoryJointStress(recordId: record.id, logIndex: logIndex, rating: rating) {
+                    store.showErrorNotice(LanguageManager.t("notice.storageFailed"))
+                }
+            }
         )
     }
 
