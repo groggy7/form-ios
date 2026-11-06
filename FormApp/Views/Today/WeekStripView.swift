@@ -75,7 +75,10 @@ public struct WeekStripView: View {
             unfinishedKeys: unfinishedKeys, onSelectWorkout: onSelectWorkout,
             glowTiles: store.homeGlowTiles
         )
-        .tourTarget("home.days", cornerRadius: 18, flags: tourFlags))
+        // The strip scrolls edge to edge; highlight its padded tiles so the outline stays on screen.
+        .tourTarget("home.days", cornerRadius: 18, flags: tourFlags,
+                    contentInsets: EdgeInsets(top: 0, leading: WorkoutDayStrip.edgeInset,
+                                              bottom: 0, trailing: WorkoutDayStrip.edgeInset)))
     }
 }
 
@@ -92,7 +95,7 @@ struct WorkoutDayStrip: View {
     var glowTiles: Bool = true
 
     /// Matches the Home header's horizontal padding.
-    private static let edgeInset: CGFloat = 20
+    static let edgeInset: CGFloat = 20
     private static let gap: CGFloat = 8
 
     @State private var tileWidth: CGFloat = 82

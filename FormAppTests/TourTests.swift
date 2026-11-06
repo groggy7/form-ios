@@ -378,6 +378,10 @@ final class TourLayoutTests: XCTestCase {
         tour.start(.home)
         try await settle { tour.shownStepIndex == 0 }
         try capture(window, "ios-home-days-\(Int(width))")
+        // The strip scrolls edge to edge; its outline hugs the padded tiles instead of leaving the screen.
+        let days = try XCTUnwrap(tour.frame("home.days", host: .main)?.rect).insetBy(dx: -6, dy: -6)
+        XCTAssertEqual(days.minX, WorkoutDayStrip.edgeInset - 6, accuracy: 0.5)
+        XCTAssertEqual(days.maxX, width - WorkoutDayStrip.edgeInset + 6, accuracy: 0.5)
         tour.next(); try await settle { tour.shownStepIndex == 1 }
         if heroMustFit {
             try await settle(message: "The hero and explanation fit without overlap") {
