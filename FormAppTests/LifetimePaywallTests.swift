@@ -51,15 +51,23 @@ final class LifetimePaywallTests: XCTestCase {
         }
     }
 
-    func testLifetimeReviewScreenshotUsesTheStorePriceAndPortraitBounds() async throws {
+    func testLifetimeReviewScreenshotUsesTheStorePriceAndPortraitBounds() throws {
         try XCTSkipUnless(ProcessInfo.processInfo.environment["FORCED_REP_STOREKIT_TESTS"] == "1", "Use the local StoreKit scheme")
-        let fetched = try await Product.products(for: [StoreKitSubscriptionManager.lifetimeProductId])
-        let product = try XCTUnwrap(fetched.first)
+        // Every plan card shows the price configured in ForcedRep.storekit, not a sample, because this capture is uploaded
+        // for App Review. Prices are read from the file rather than fetched: on a freshly erased simulator, StoreKit answers
+        // with App Store Connect's sandbox prices before a test session can take over, and caches them for the process.
+        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "ForcedRep", withExtension: "storekit"))
+        let prices = try fixturePrices(url)
+        func price(_ id: String) throws -> String {
+            try XCTUnwrap(prices[id]).formatted(.currency(code: "USD").locale(Locale(identifier: "en_US")))
+        }
         let previous = LanguageManager.shared.languagePreference
         defer { LanguageManager.setLanguage(previous) }
         LanguageManager.setLanguage("en")
         let bounds = CGRect(x: 0, y: 0, width: 440, height: 956)
-        let image = render(paywall(price: product.displayPrice),
+        let image = render(paywall(price: try price(StoreKitSubscriptionManager.lifetimeProductId),
+                                   annualPrice: try price(StoreKitSubscriptionManager.annualProductId),
+                                   monthlyPrice: try price(StoreKitSubscriptionManager.monthlyProductId)),
                            width: bounds.width, height: bounds.height, size: .large)
         let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/lifetime-review").standardized
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
@@ -67,10 +75,25 @@ final class LifetimePaywallTests: XCTestCase {
         try XCTUnwrap(image.jpegData(compressionQuality: 0.95)).write(to: output.appendingPathComponent("lifetime-pro-iphone.jpg"))
     }
 
-    private func paywall(price: String?, plan: PaywallPlan = .lifetime, subscriber: Bool = false) -> some View {
+    /// Product ID → configured price for every in-app purchase and subscription in a StoreKit configuration file.
+    private func fixturePrices(_ url: URL) throws -> [String: Decimal] {
+        let root = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any])
+        let products = root["products"] as? [[String: Any]] ?? []
+        let groups = root["subscriptionGroups"] as? [[String: Any]] ?? []
+        let entries = products + groups.flatMap { $0["subscriptions"] as? [[String: Any]] ?? [] }
+        var prices: [String: Decimal] = [:]
+        for entry in entries {
+            let id = try XCTUnwrap(entry["productID"] as? String)
+            prices[id] = try XCTUnwrap((entry["displayPrice"] as? String).flatMap { Decimal(string: $0) })
+        }
+        return prices
+    }
+
+    private func paywall(price: String?, plan: PaywallPlan = .lifetime, subscriber: Bool = false,
+                         annualPrice: String = "$29.99", monthlyPrice: String = "$4.99") -> some View {
         SessionFeaturePaywallContent(
-            annual: SessionPaywallOffer(price: "$29.99", hasTrial: true),
-            monthly: SessionPaywallOffer(price: "$4.99"), selectedPlan: plan,
+            annual: SessionPaywallOffer(price: annualPrice, hasTrial: true),
+            monthly: SessionPaywallOffer(price: monthlyPrice), selectedPlan: plan,
             isPurchasing: false, isRestoring: false, purchaseError: nil, restoreMessage: nil, isRestoreError: false,
             onSelectPlan: { _ in }, onPurchase: {}, onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {},
             feature: nil, lifetime: SessionPaywallOffer(price: price), hasActiveSubscription: subscriber)
