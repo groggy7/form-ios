@@ -7843,6 +7843,9 @@ final class FormAppTests: XCTestCase {
                     attachment.name = "progression-info-\(language)-\(Int(width))-\(position)"
                     attachment.lifetime = .keepAlways
                     add(attachment)
+                    let reviewDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/progression-info").standardized
+                    try FileManager.default.createDirectory(at: reviewDir, withIntermediateDirectories: true)
+                    try image.pngData()?.write(to: reviewDir.appendingPathComponent("\(attachment.name ?? position).png"))
                 }
                 window.isHidden = true
             }

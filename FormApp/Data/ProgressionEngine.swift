@@ -387,9 +387,14 @@ public enum ProgressionEngine {
         let confirmedTwice = allHitCeiling && !padded && sessions.dropFirst().first.map { previous in
             comparable(previous) && fullUnpadded(previous)!.allSatisfy { $0.reps! >= repMax } && withinWindow(last, previous)
         } == true
-        // The user's own rating: Easy confirms after one session, Hard withholds the step.
-        let ratedEasy = allHitCeiling && !padded && last.effort == .easy
-        let ratedHard = last.effort == .hard
+        // The user's own rating: Easy confirms after one session, Hard withholds the step. Without one, every set's
+        // reps in reserve stands in for it (SetEffort.sessionEffort); a padded baseline repeats sets nobody rated.
+        let rirEffort = padded || last.effort != nil ? nil : SetEffort.sessionEffort(workingSets)
+        let effort = last.effort ?? rirEffort
+        let ratedEasy = allHitCeiling && !padded && effort == .easy
+        let ratedHard = effort == .hard
+        // Room to spare on every set below the ceiling: up to two more reps instead of one.
+        let repStep = rirEffort == .easy ? 2 : 1
         let confirmed = (confirmedTwice || ratedEasy) && !ratedHard
         let possibleIncrease = increasePlan(workingSets, step: step, unit: weightUnit, barbell: barbell, repMin: repMin, repMax: repMax)
         let increase = confirmed ? possibleIncrease : nil
@@ -398,7 +403,7 @@ public enum ProgressionEngine {
         let bodyweightOnly = step == nil && workingSets.allSatisfy { $0.weightKg == 0 }
         let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)
         let targets = increase?.targets ?? workingSets.map { set in
-            ProgressionSetTarget(weightKg: set.weightKg.map(loadable), reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
+            ProgressionSetTarget(weightKg: set.weightKg.map(loadable), reps: allHitCeiling ? repMax : min(set.reps! + repStep, repMax))
         }
         let variation = allHitCeiling && (confirmedTwice || ratedEasy) && !ratedHard && bodyweightOnly ? bodyweightLadder[exerciseId] : nil
         let key: String
@@ -406,7 +411,9 @@ public enum ProgressionEngine {
         else if let increase {
             // Only some sets aim for the range minimum: name both groups, whichever confirmation applied.
             if increase.resetReps && Set(increase.targets.map { $0.reps }).count > 1 { key = "progression.rationale.increase_load_reset_mixed" }
-            else if ratedEasy && !confirmedTwice { key = "progression.rationale.increase_load_easy" }
+            else if ratedEasy && !confirmedTwice {
+                key = rirEffort != nil ? "progression.rationale.increase_load_rir" : "progression.rationale.increase_load_easy"
+            }
             else if increase.resetReps { key = "progression.rationale.increase_load_reset" }
             else { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
         }
@@ -418,11 +425,12 @@ public enum ProgressionEngine {
             }
         }
         else if allHitCeiling {
-            if ratedHard { key = "progression.rationale.repeat_ceiling_hard" }
+            if ratedHard { key = rirEffort != nil ? "progression.rationale.repeat_ceiling_rir_hard" : "progression.rationale.repeat_ceiling_hard" }
             else if confirmedTwice || ratedEasy { key = bodyweightOnly ? "progression.rationale.bodyweight_ceiling" : "progression.rationale.load_step_unavailable" }
             else { key = possibleIncrease != nil ? "progression.rationale.repeat_ceiling" : "progression.rationale.repeat_ceiling_no_step" }
         }
         else if missedFloor { key = mixedLoads ? "progression.rationale.hold_load_mixed" : "progression.rationale.hold_load" }
+        else if repStep == 2 { key = "progression.rationale.add_reps_rir" }
         else { key = mixedLoads ? "progression.rationale.add_reps_mixed" : "progression.rationale.add_reps" }
         let weights = Set(targets.compactMap { $0.weightKg })
         let uniformWeight = weights.count == 1 ? weights.first : nil
@@ -447,5 +455,20 @@ public enum ProgressionEngine {
             let r = set.reps ?? 0
             return "\(w)×\(r)"
         }.joined(separator: ", ")
+    }
+}
+
+extension SetEffort {
+    /// Reps in reserve at which a set counts as having room to spare: the coach's Easy.
+    public static let roomyRir = 3
+
+    /// The coach's effort from a session's reps in reserve, used when the lifter gave no Easy / About right / Hard
+    /// rating (docs/adaptive-training.md#b1-targets-that-use-reported-effort). Every working set needs a value: all at
+    /// 3 or 4+ reads Easy, a first set at 0 reads Hard, anything else About right. Nil when any set is unrated.
+    public static func sessionEffort(_ workingSets: [SessionSetLog]) -> ProgressionEffort? {
+        guard !workingSets.isEmpty, workingSets.allSatisfy({ $0.rir.map(rirRange.contains) == true }) else { return nil }
+        if workingSets.allSatisfy({ $0.rir! >= roomyRir }) { return .easy }
+        if workingSets[0].rir == 0 { return .hard }
+        return .right
     }
 }

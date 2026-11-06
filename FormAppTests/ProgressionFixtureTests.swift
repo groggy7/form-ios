@@ -67,6 +67,8 @@ final class ProgressionFixtureTests: XCTestCase {
         let effort: String?
         let warmups: [[Double]]?
         let working: [[Double]]
+        /// Each working set's reps in reserve; null leaves a set unrated.
+        let rir: [Int?]?
         /// A drop, rest-pause or partials on the working set at a 1-based position.
         let techniques: [Technique]?
     }
@@ -123,7 +125,8 @@ final class ProgressionFixtureTests: XCTestCase {
                         let loadUnit = WeightUnit.fromCode(log.loadUnit ?? fixture.unit)
                         func sets(_ pairs: [[Double]]?, warmup: Bool) -> [SessionSetLog] {
                             (pairs ?? []).enumerated().map { index, pair in
-                                var set = SessionSetLog(setNumber: index + 1, weightKg: loadUnit.toCanonicalKg(pair[0]), reps: Int(pair[1]), isWarmup: warmup)
+                                var set = SessionSetLog(setNumber: index + 1, weightKg: loadUnit.toCanonicalKg(pair[0]), reps: Int(pair[1]), isWarmup: warmup,
+                                                        rir: warmup ? nil : log.rir.flatMap { index < $0.count ? $0[index] : nil })
                                 if !warmup, let technique = log.techniques?.first(where: { $0.set == index + 1 }) {
                                     set.partialReps = technique.partialReps
                                     set.technique = technique.technique

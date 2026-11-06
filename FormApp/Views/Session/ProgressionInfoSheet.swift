@@ -35,6 +35,7 @@ public struct ProgressionInfoSheet: View {
                     overviewSection
                     actionsSection
                     plateauSection
+                    effortSection
                     tipSection
                 }
                 .padding(.horizontal, 20)
@@ -169,6 +170,32 @@ public struct ProgressionInfoSheet: View {
             }
 
             Text(LanguageManager.t("progression.info.plateauText"))
+                .appFont(.footnote)
+                .lineSpacing(3)
+                .foregroundStyle(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surfaceRaised)
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    /// How logged reps in reserve stand in for the effort rating (docs/adaptive-training.md#b1-targets-that-use-reported-effort).
+    private var effortSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
+                Image(systemName: "gauge.with.dots.needle.67percent")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(AppColors.purple)
+                Text(LanguageManager.t("progression.info.effortTitle"))
+                    .appFont(.subheadline, weight: .semibold)
+                    .foregroundStyle(AppColors.text)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Text(LanguageManager.t("progression.info.effortText"))
                 .appFont(.footnote)
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)

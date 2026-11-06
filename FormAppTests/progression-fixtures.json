@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. Formatting cases give the rounded `display` label, the lossless two-decimal `exact` text, and the text a set or target receives for other lifts (`loadable`) and barbell lifts (`barbell`). A load that reads back on the two-decimal grid in `unit` stays exact. A converted barbell load takes the multiple of 5 lb / 2.5 kg within 2.5% that needs the fewest standard plates per side on a 45 lb / 20 kg bar (lb: 45, 35, 25, 10, 5, 2.5; kg: 25, 20, 15, 10, 5, 2.5, 1.25), ties going to the closer, then lighter, load; other converted loads round to the nearest 5 lb or 2.5 kg. A positive load never rounds to zero and keeps one decimal instead. `applied` is the input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` and `platesLbs` set each unit's available plates (defaults include 1.25 kg and 2.5 lb); `barType` is the Warmup & Plates bar key (default `olympic_20`: 20 kg / 45 lb), where a bar step's grid starts. A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match. A log's optional `techniques` list adds a drop, rest-pause or partials to its working set at 1-based position `set`: `technique` (`drop` or `restPause`) with `extensions` as [load, reps] pairs, and/or `partialReps`. `techniqueSets`, when given, lists the set numbers the card shows on its \"Last time\" line.",
+  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. Formatting cases give the rounded `display` label, the lossless two-decimal `exact` text, and the text a set or target receives for other lifts (`loadable`) and barbell lifts (`barbell`). A load that reads back on the two-decimal grid in `unit` stays exact. A converted barbell load takes the multiple of 5 lb / 2.5 kg within 2.5% that needs the fewest standard plates per side on a 45 lb / 20 kg bar (lb: 45, 35, 25, 10, 5, 2.5; kg: 25, 20, 15, 10, 5, 2.5, 1.25), ties going to the closer, then lighter, load; other converted loads round to the nearest 5 lb or 2.5 kg. A positive load never rounds to zero and keeps one decimal instead. `applied` is the input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` and `platesLbs` set each unit's available plates (defaults include 1.25 kg and 2.5 lb); `barType` is the Warmup & Plates bar key (default `olympic_20`: 20 kg / 45 lb), where a bar step's grid starts. A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match. A log's optional `techniques` list adds a drop, rest-pause or partials to its working set at 1-based position `set`: `technique` (`drop` or `restPause`) with `extensions` as [load, reps] pairs, and/or `partialReps`. `techniqueSets`, when given, lists the set numbers the card shows on its \"Last time\" line. A log's `rir` lists each working set's reps in reserve (0–4, 4 meaning 4+, or null for an unrated set). `adjustment` cases are the mid-workout load adjustment (adaptive-training.md, B2): `sets` are the exercise's current rows in order, where `load` and `reps` are typed values (a row without `load` is untouched), `done` marks a ticked set, `warmup` a warmup row and `rir` the set's reps in reserve. `expected` is null when nothing is offered; otherwise `direction` is easier or harder, `target` the load and rep goal in `unit`, `rows` the row indices Use fills and `applied` the load text each of those rows receives. After Use, nothing is offered again. `blockTarget` is a training block week's reps-in-reserve target (training-blocks.md), whose window replaces the default 1–3. A record's `blockId` marks a training-block session (training-blocks.md): its padded earlier-plan baseline confirms a load increase like a full session.",
   "formatting": [
     { "value": 20.25, "valueUnit": "kg", "unit": "kg", "display": "20.3", "exact": "20.25", "loadable": "20.25", "barbell": "20.25" },
     { "value": 21.25, "valueUnit": "kg", "unit": "kg", "display": "21.3", "exact": "21.25", "loadable": "21.25", "barbell": "21.25" },
@@ -411,6 +411,37 @@
       "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.plan_sets_changed", "targets": [[65, 12], [65, 12], [65, 12], [65, 12]] }
     },
     {
+      "name": "in a block, two sessions of fewer sets than the block's new plan confirm a load increase",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 4, "reps": [8, 12] },
+      "context": { "programId": "pb", "workoutId": "day", "now": "2026-09-10T11:00:00Z" },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load", "targets": [[67.5, 12], [67.5, 12], [67.5, 12], [67.5, 12]], "applied": ["67.5", "67.5", "67.5", "67.5"] }
+    },
+    {
+      "name": "in a block, one session of fewer sets with reps to spare confirms a load increase",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 4, "reps": [8, 12] },
+      "context": { "programId": "pb", "workoutId": "day", "now": "2026-09-10T11:00:00Z" },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]], "rir": [3, 3, 4] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load_rir", "targets": [[67.5, 12], [67.5, 12], [67.5, 12], [67.5, 12]] }
+    },
+    {
+      "name": "in a block, one session of fewer sets at the ceiling repeats it with the usual rationale",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 4, "reps": [8, 12] },
+      "context": { "programId": "pb", "workoutId": "day", "now": "2026-09-10T11:00:00Z" },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.repeat_ceiling", "targets": [[65, 12], [65, 12], [65, 12], [65, 12]] }
+    },
+    {
       "name": "a removed row without a smaller saved plan stays partial",
       "unit": "kg",
       "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
@@ -818,6 +849,267 @@
         { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 2, "reps": [8, 12] } ] }
       ],
       "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.plan_sets_changed", "targets": [[65, 11], [65, 10], [65, 10]], "rationaleArgs": { "logged": "2", "sets": "3" }, "techniqueSets": [] }
+    },
+    {
+      "name": "every set at the ceiling with 3 or more reps in reserve offers the load step",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]], "rir": [3, 3, 4] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load_rir", "targets": [[67.5, 12], [67.5, 12], [67.5, 12]], "applied": ["67.5", "67.5", "67.5"] }
+    },
+    {
+      "name": "a first set with no reps in reserve holds a confirmed ceiling",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s2", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]], "rir": [0, 1, 1] } ] },
+        { "id": "s1", "completedAt": "2026-11-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.repeat_ceiling_rir_hard", "targets": [[65, 12], [65, 12], [65, 12]] }
+    },
+    {
+      "name": "every set below the ceiling with 3 or more reps in reserve adds two reps",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]], "rir": [3, 4, 3] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.add_reps_rir", "targets": [[65, 10], [65, 10], [65, 10]], "applied": ["65", "65", "65"] }
+    },
+    {
+      "name": "two added reps stop at the ceiling",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 11], [65, 10], [65, 9]], "rir": [4, 3, 3] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.add_reps_rir", "targets": [[65, 12], [65, 12], [65, 11]] }
+    },
+    {
+      "name": "reps in reserve on only some sets keep the two-session rule",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]], "rir": [4, null, 4] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.repeat_ceiling", "targets": [[65, 12], [65, 12], [65, 12]] }
+    },
+    {
+      "name": "the lifter's own rating wins over reps in reserve",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]], "rir": [4, 4, 4], "effort": "right" } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.add_reps", "targets": [[65, 9], [65, 9], [65, 9]] }
+    },
+    {
+      "name": "middling reps in reserve at the ceiling keep the two-session rule",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-11-06T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-11-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]], "rir": [2, 1, 1] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.repeat_ceiling", "targets": [[65, 12], [65, 12], [65, 12]] }
+    },
+    {
+      "name": "in a block, an exercise ended with a drop never confirms a load increase",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "context": { "programId": "pb", "workoutId": "day", "now": "2026-09-10T11:00:00Z" },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 12], [65, 12]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }], "rir": [3, 4] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.ended_with_drop", "targets": [[65, 12], [65, 12], [65, 12]], "rationaleArgs": { "logged": "2", "sets": "3" }, "techniqueSets": [2] }
+    },
+    {
+      "name": "in a block, an exercise ended with a drop does not confirm the next session",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "context": { "programId": "pb", "workoutId": "day", "now": "2026-09-10T11:00:00Z" },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 12], [65, 12]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "blockId": "b", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "programId": "pb", "workoutId": "day", "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.repeat_ceiling", "targets": [[65, 12], [65, 12], [65, 12]] }
+    }
+  ],
+  "adjustment": [
+    {
+      "name": "easier: the ceiling with 4+ reps left offers the next load step for the remaining sets",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }, { "load": 100, "reps": 12 }, {}],
+      "expected": { "direction": "easier", "target": [102.5, 12], "rows": [1, 2], "applied": "102.5" }
+    },
+    {
+      "name": "RIR 3 at the ceiling is inside the target window",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 3 }, { "load": 100, "reps": 12 }, {}],
+      "expected": null
+    },
+    {
+      "name": "4+ reps left below the ceiling is not easier than planned",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 10, "done": true, "rir": 4 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "harder: below the minimum with no reps left offers one load step down",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 6, "done": true, "rir": 0 }, { "load": 100, "reps": 6 }, { "reps": 8 }],
+      "expected": { "direction": "harder", "target": [97.5, 8], "rows": [1, 2], "applied": "97.5" }
+    },
+    {
+      "name": "below the minimum with a rep left is not harder than planned",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 6, "done": true, "rir": 1 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "an unrated first set offers nothing",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "once a second working set is ticked the moment has passed",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }, { "load": 100, "reps": 12, "done": true }, {}],
+      "expected": null
+    },
+    {
+      "name": "remaining rows at another load are left alone",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }, { "load": 100, "reps": 12 }, { "load": 90, "reps": 12 }],
+      "expected": null
+    },
+    {
+      "name": "warmups are skipped: the first working set decides and only working rows change",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 60, "reps": 5, "done": true, "warmup": true }, { "load": 100, "reps": 12, "done": true, "rir": 4 }, {}, {}],
+      "expected": { "direction": "easier", "target": [102.5, 12], "rows": [2, 3], "applied": "102.5" }
+    },
+    {
+      "name": "a 10–25% dumbbell step aims for the range minimum",
+      "unit": "kg",
+      "exercise": { "exerciseId": "dumbbell-bench-press", "name": "Dumbbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 10, "reps": 12, "done": true, "rir": 4 }, {}, {}],
+      "expected": { "direction": "easier", "target": [12, 8], "rows": [1, 2], "applied": "12" }
+    },
+    {
+      "name": "a step above 25% is withheld",
+      "unit": "kg",
+      "exercise": { "exerciseId": "dumbbell-lateral-raise", "name": "Dumbbell Lateral Raise", "sets": 3, "reps": [12, 15] },
+      "sets": [{ "load": 6, "reps": 15, "done": true, "rir": 4 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "a step down has no relative limit",
+      "unit": "kg",
+      "exercise": { "exerciseId": "dumbbell-lateral-raise", "name": "Dumbbell Lateral Raise", "sets": 3, "reps": [12, 15] },
+      "sets": [{ "load": 6, "reps": 9, "done": true, "rir": 0 }, {}, {}],
+      "expected": { "direction": "harder", "target": [4, 12], "rows": [1, 2], "applied": "4" }
+    },
+    {
+      "name": "the empty bar has no lighter load",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 20, "reps": 5, "done": true, "rir": 0 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "pounds use the pound step",
+      "unit": "lbs",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 225, "reps": 12, "done": true, "rir": 4 }, { "load": 225, "reps": 12 }, {}],
+      "expected": { "direction": "easier", "target": [230, 12], "rows": [1, 2], "applied": "230" }
+    },
+    {
+      "name": "machines use the machine step setting",
+      "unit": "kg",
+      "exercise": { "exerciseId": "leg-press", "name": "Leg Press", "sets": 3, "reps": [10, 15] },
+      "steps": { "machine": 2.5 },
+      "sets": [{ "load": 100, "reps": 15, "done": true, "rir": 4 }, {}, {}],
+      "expected": { "direction": "easier", "target": [102.5, 15], "rows": [1, 2], "applied": "102.5" }
+    },
+    {
+      "name": "a fixed-rep prescription keeps its reps for a small step",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-back-squat", "name": "Barbell Back Squat", "sets": 5, "reps": [5, 5] },
+      "sets": [{ "load": 140, "reps": 5, "done": true, "rir": 4 }, { "load": 140, "reps": 5 }, {}, {}, {}],
+      "expected": { "direction": "easier", "target": [142.5, 5], "rows": [1, 2, 3, 4], "applied": "142.5" }
+    },
+    {
+      "name": "weighted bodyweight steps the added load without a relative limit",
+      "unit": "kg",
+      "exercise": { "exerciseId": "weighted-pull-ups", "name": "Weighted Pull-Ups", "sets": 3, "reps": [6, 8] },
+      "sets": [{ "load": 5, "reps": 8, "done": true, "rir": 4 }, {}, {}],
+      "expected": { "direction": "easier", "target": [7.5, 8], "rows": [1, 2], "applied": "7.5" }
+    },
+    {
+      "name": "equipment without a load step offers nothing",
+      "unit": "kg",
+      "exercise": { "exerciseId": "kettlebell-swing", "name": "Kettlebell Swing", "sets": 3, "reps": [12, 15] },
+      "sets": [{ "load": 16, "reps": 15, "done": true, "rir": 4 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "nothing is left to change after the last working set",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 1, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }],
+      "expected": null
+    },
+    {
+      "name": "an RIR 3 block week still takes 4+ at the ceiling as easier",
+      "unit": "kg",
+      "blockTarget": 3,
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }, { "load": 100, "reps": 12 }, {}],
+      "expected": { "direction": "easier", "target": [102.5, 12], "rows": [1, 2], "applied": "102.5" }
+    },
+    {
+      "name": "an RIR 1 block week takes 3 reps left at the ceiling as easier",
+      "unit": "kg",
+      "blockTarget": 1,
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 3 }, {}, {}],
+      "expected": { "direction": "easier", "target": [102.5, 12], "rows": [1, 2], "applied": "102.5" }
+    },
+    {
+      "name": "an RIR 2 block week keeps 3 reps left inside the window",
+      "unit": "kg",
+      "blockTarget": 2,
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 3 }, {}, {}],
+      "expected": null
+    },
+    {
+      "name": "a lighter readiness day aiming for 4+ keeps 4+ inside the window",
+      "unit": "kg",
+      "blockTarget": 4,
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "sets": [{ "load": 100, "reps": 12, "done": true, "rir": 4 }, {}, {}],
+      "expected": null
     }
   ]
 }
