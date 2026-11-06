@@ -404,6 +404,18 @@ public struct SettingsView: View {
                         lockedNoticeKey: "settings.premiumNotice.warmupPlates",
                         onLockedNotice: showPremiumNotice
                     )
+                },
+                SettingsEntry("readiness", terms: [LanguageManager.t("settings.readiness"), LanguageManager.t("settings.readinessSubtitle")]) {
+                    SettingsPremiumToggle(
+                        titleKey: "settings.readiness",
+                        subtitleKey: "settings.readinessSubtitle",
+                        preference: $store.readinessCheck,
+                        isUnlocked: proManager.isProSubscribed,
+                        identifier: "toggle-readiness",
+                        lockedNoticeKey: "settings.premiumNotice.smartProgression",
+                        onLockedNotice: showPremiumNotice,
+                        lockedValue: false
+                    )
                 }
             ]),
             watchGroup,
@@ -868,10 +880,12 @@ struct SettingsPremiumToggle: View {
     let identifier: String
     let lockedNoticeKey: String
     var onLockedNotice: (String) -> Void = { _ in }
+    /// What a locked switch shows: its default, without changing the saved preference.
+    var lockedValue = true
 
-    // Locked switches show the default on state without changing the saved preference.
+    // Locked switches show the default state without changing the saved preference.
     var selection: Binding<Bool> {
-        Binding(get: { !isUnlocked || preference }, set: { value in
+        Binding(get: { isUnlocked ? preference : lockedValue }, set: { value in
             if isUnlocked { preference = value }
         })
     }

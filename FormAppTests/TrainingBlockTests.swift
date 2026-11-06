@@ -20,7 +20,18 @@ final class TrainingBlockFixtureTests: XCTestCase {
             let name: String; let kind: String; let exercises: [Row]; let focus: [String]?; let additions: [String]?
             let feedback: [String: [Answer]]?; let expected: Expected
         }
+        struct ReadinessCase: Decodable {
+            struct Expected: Decodable { let offered: Bool; let options: [String]; let moreRirTarget: Int? }
+            let name: String; let answers: [String: String]; let target: Int?; let deload: Bool; let expected: Expected
+        }
+        struct FewerSetsCase: Decodable {
+            struct Row: Decodable { let done: Bool?; let warmup: Bool? }
+            struct Expected: Decodable { let kept: [Int]; let sets: Int }
+            let name: String; let sets: Int; let rows: [Row]; let expected: Expected
+        }
         let references: [String: [Double]]
+        let readiness: [ReadinessCase]
+        let fewerSets: [FewerSetsCase]
         let schedule: [Schedule]
         let windows: [Window]
         let performance: [Performance]
@@ -56,6 +67,36 @@ final class TrainingBlockFixtureTests: XCTestCase {
         for row in fixtures.performance {
             func pairs(_ rows: [[Double]]) -> [(Double, Int)] { rows.map { ($0[0], Int($0[1])) } }
             XCTAssertEqual(TrainingBlockRules.performanceFell(previous: pairs(row.previous), current: pairs(row.current)), row.fell, row.name)
+        }
+    }
+
+    func testReadinessMatchesTheSharedContract() throws {
+        for fixture in try load().readiness {
+            let a = fixture.answers
+            let check = ReadinessCheck(sleep: a["sleep"], energy: a["energy"], soreness: a["soreness"], choice: a["choice"])
+            let offered = Readiness.offersLighterDay(check)
+            XCTAssertEqual(offered, fixture.expected.offered, fixture.name)
+            XCTAssertEqual(offered ? Readiness.options(blockTarget: fixture.target, deload: fixture.deload) : [], fixture.expected.options, fixture.name)
+            if let moreRir = fixture.expected.moreRirTarget {
+                var chosen = check; chosen.choice = "more_rir"
+                XCTAssertEqual(Readiness.target(fixture.target, check: chosen), moreRir, fixture.name)
+            }
+            var planned = check; planned.choice = "planned"
+            XCTAssertEqual(Readiness.target(fixture.target, check: planned), fixture.target, "\(fixture.name) planned keeps the target")
+        }
+    }
+
+    func testFewerSetsMatchesTheSharedContract() throws {
+        for fixture in try load().fewerSets {
+            let rows = fixture.rows.enumerated().map { index, row in
+                ExerciseSetLog(id: "row-\(index)", setNumber: index + 1, isCompleted: row.done ?? false, isWarmup: row.warmup ?? false)
+            }
+            let exercise = Exercise(id: "e", name: "Bench", sets: fixture.sets, reps: RepTarget(min: 8, max: 12))
+            let draft = ActiveSessionDraft(programId: "p", workout: Workout(id: "w", day: 1, title: "W", exercises: [exercise]),
+                                           startedAt: "2026-11-07T10:00:00Z", startedAtEpochMillis: 0, setsByExercise: ["e": rows])
+            let lighter = Readiness.fewerSets(draft)
+            XCTAssertEqual(lighter.setsByExercise["e"]?.map(\.id), fixture.expected.kept.map { "row-\($0)" }, fixture.name)
+            XCTAssertEqual(lighter.workout.exercises.first?.sets, fixture.expected.sets, fixture.name)
         }
     }
 
@@ -287,6 +328,33 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         }
     }
 
+    func testALighterDayIsChosenOnceAndSaved() throws {
+        try preservingDefaults {
+            let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            XCTAssertTrue(store.saveState(StoredAppState(programs: [program], activeProgramId: "p", currentWeekKey: store.state.currentWeekKey), durable: true))
+            XCTAssertTrue(store.startActiveSession(programId: "p", workout: upper, allowPast: true))
+            defer { store.abandonActiveSession() }
+            store.chooseReadiness("fewer_sets")
+            XCTAssertNil(store.activeSession?.readiness, "nothing is offered before two low answers")
+            store.setReadiness(ReadinessCheck(sleep: "poor", energy: "low", soreness: "bad"))
+            XCTAssertEqual(store.activeSession?.readiness, ReadinessCheck(sleep: "poor", energy: "low"))
+            store.chooseReadiness("fewer_sets")
+            var draft = try XCTUnwrap(store.activeSession)
+            XCTAssertEqual(draft.workout.exercises.map(\.sets), [1, 2])
+            XCTAssertEqual(draft.workout.exercises.map { draft.setsByExercise[$0.id]?.count }, [1, 2])
+            store.chooseReadiness("fewer_sets")
+            XCTAssertEqual(store.activeSession?.workout.exercises.map(\.sets), [1, 2], "a choice is made once")
+            store.setReadiness(ReadinessCheck(sleep: "ok", energy: "low"))
+            draft = try XCTUnwrap(store.activeSession)
+            XCTAssertEqual(draft.readiness?.choice, "fewer_sets", "changing an answer keeps the choice")
+            let saved = SessionProgress.from(draft: draft, nowEpochMillis: 1_000).record(draft: draft, completedAtEpochMillis: 1_000)
+            XCTAssertEqual(saved.readiness, ReadinessCheck(sleep: "ok", energy: "low", choice: "fewer_sets"))
+            let state = StoredAppState(programs: [program], activeProgramId: "p", currentWeekKey: "2026-W45", history: [saved])
+            let json = try XCTUnwrap(AppStore.encodeBackup(FullBackupDocument(state: state, weightUnit: .kg)))
+            XCTAssertEqual(try JSONDecoder().decode(FullBackupDocument.self, from: Data(json.utf8)).state.history.first?.readiness, saved.readiness)
+        }
+    }
+
     @MainActor private func render<V: View>(_ view: V, width: CGFloat, size: ContentSizeCategory, height: CGFloat, name: String) throws {
         let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/block-review").standardized
         try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
@@ -316,10 +384,14 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
             access.setFeatureOverride(.autoProgression, unlocked: true)
             defer { access.setFeatureOverride(.autoProgression, unlocked: nil) }
             let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            store.readinessCheck = true
+            defer { store.readinessCheck = false }
             XCTAssertTrue(store.saveState(StoredAppState(programs: [program], activeProgramId: "p", currentWeekKey: store.state.currentWeekKey), durable: true))
             XCTAssertTrue(store.startTrainingBlock(length: 4, focus: [], nextWeek: false))
             XCTAssertTrue(store.startActiveSession(programId: "p", workout: upper, allowPast: true))
             defer { store.abandonActiveSession() }
+            store.setReadiness(ReadinessCheck(sleep: "poor", energy: "low"))
+            store.chooseReadiness("more_rir")
             for (name, completed) in [("soreness", false), ("pump", true)] {
                 var draft = try XCTUnwrap(store.activeSession)
                 draft.setsByExercise["bench"] = (1...2).map {
@@ -379,6 +451,8 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                                     onAddSet: {}, onRemoveSet: { _ in }, effort: EffortActions(scale: .rir) { _, _ in }, prescriptionSuffix: "RIR 2",
                                     ratings: AnyView(BlockFeedbackCard(muscles: ["chest"], answers: [:], questions: .pumpAndWorkload) { _, _ in }))
                     BlockFeedbackCard(muscles: ["side-delts"], answers: [:], questions: .soreness) { _, _ in }
+                    ReadinessCard(check: ReadinessCheck(sleep: "poor", energy: "low"), options: Readiness.options(blockTarget: 2, deload: false),
+                                  lighterTarget: nil, onAnswer: { _ in }, onChoose: { _ in })
                 }.padding(.horizontal, 20).padding(.vertical, 16).background(AppColors.background),
                     width: width, size: size, height: size == .large ? 1400 : 2400, name: "block-card-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockSetupContent(program: program, scale: .rir, replacesBlock: true) { _, _, _ in })),

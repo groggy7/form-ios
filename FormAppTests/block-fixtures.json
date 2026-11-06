@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target. `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order.",
+  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target. `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order. `readiness` cases give the pre-workout answers (sleep poor/ok/good, energy low/ok/high, soreness none/some/a_lot), the block week's target (null outside a block) and whether it is the deload; `expected` says whether a lighter day is offered, its options in order, and the target after \"more_rir\". `fewerSets` cases give an exercise's planned `sets` and rows (`done`, `warmup`); `expected` is the rows kept, by index, and the exercise's sets after \"fewer_sets\".",
   "references": {
     "chest": [
       6,
@@ -3210,6 +3210,206 @@
           "a/three": 2,
           "a/four": 1
         }
+      }
+    }
+  ],
+  "readiness": [
+    {
+      "name": "two low answers offer a lighter day",
+      "answers": {
+        "sleep": "poor",
+        "energy": "low",
+        "soreness": "some"
+      },
+      "target": null,
+      "deload": false,
+      "expected": {
+        "offered": true,
+        "options": [
+          "planned",
+          "fewer_sets"
+        ],
+        "moreRirTarget": null
+      }
+    },
+    {
+      "name": "in a block week the target can rise by one",
+      "answers": {
+        "sleep": "poor",
+        "energy": "ok",
+        "soreness": "a_lot"
+      },
+      "target": 2,
+      "deload": false,
+      "expected": {
+        "offered": true,
+        "options": [
+          "planned",
+          "fewer_sets",
+          "more_rir"
+        ],
+        "moreRirTarget": 3
+      }
+    },
+    {
+      "name": "the target never passes 4",
+      "answers": {
+        "sleep": "good",
+        "energy": "low",
+        "soreness": "a_lot"
+      },
+      "target": 3,
+      "deload": false,
+      "expected": {
+        "offered": true,
+        "options": [
+          "planned",
+          "fewer_sets",
+          "more_rir"
+        ],
+        "moreRirTarget": 4
+      }
+    },
+    {
+      "name": "the deload is already light",
+      "answers": {
+        "sleep": "poor",
+        "energy": "low",
+        "soreness": "a_lot"
+      },
+      "target": 4,
+      "deload": true,
+      "expected": {
+        "offered": true,
+        "options": [
+          "planned",
+          "fewer_sets"
+        ],
+        "moreRirTarget": null
+      }
+    },
+    {
+      "name": "one low answer is an ordinary day",
+      "answers": {
+        "sleep": "poor",
+        "energy": "ok",
+        "soreness": "none"
+      },
+      "target": 2,
+      "deload": false,
+      "expected": {
+        "offered": false,
+        "options": [],
+        "moreRirTarget": null
+      }
+    },
+    {
+      "name": "skipped questions are not low",
+      "answers": {
+        "energy": "low"
+      },
+      "target": null,
+      "deload": false,
+      "expected": {
+        "offered": false,
+        "options": [],
+        "moreRirTarget": null
+      }
+    },
+    {
+      "name": "a choice already made is not offered again",
+      "answers": {
+        "sleep": "poor",
+        "energy": "low",
+        "choice": "planned"
+      },
+      "target": null,
+      "deload": false,
+      "expected": {
+        "offered": false,
+        "options": [],
+        "moreRirTarget": null
+      }
+    }
+  ],
+  "fewerSets": [
+    {
+      "name": "the last unfinished working set goes",
+      "sets": 3,
+      "rows": [
+        {
+          "done": false
+        },
+        {
+          "done": false
+        },
+        {
+          "done": false
+        }
+      ],
+      "expected": {
+        "kept": [
+          0,
+          1
+        ],
+        "sets": 2
+      }
+    },
+    {
+      "name": "warmups stay",
+      "sets": 2,
+      "rows": [
+        {
+          "warmup": true,
+          "done": true
+        },
+        {
+          "done": false
+        },
+        {
+          "done": false
+        }
+      ],
+      "expected": {
+        "kept": [
+          0,
+          1
+        ],
+        "sets": 1
+      }
+    },
+    {
+      "name": "a single working set stays",
+      "sets": 1,
+      "rows": [
+        {
+          "done": false
+        }
+      ],
+      "expected": {
+        "kept": [
+          0
+        ],
+        "sets": 1
+      }
+    },
+    {
+      "name": "a finished last set stays",
+      "sets": 2,
+      "rows": [
+        {
+          "done": true
+        },
+        {
+          "done": true
+        }
+      ],
+      "expected": {
+        "kept": [
+          0,
+          1
+        ],
+        "sets": 2
       }
     }
   ]

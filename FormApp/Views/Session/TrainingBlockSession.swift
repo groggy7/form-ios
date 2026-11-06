@@ -54,3 +54,67 @@ struct BlockFeedbackCard: View {
         }
     }
 }
+
+/// The optional readiness check before a workout's first set (docs/training-blocks.md#readiness-check): sleep,
+/// energy and soreness, then, on two or more low answers, a lighter day the lifter may choose. Never applied on its own.
+struct ReadinessCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let check: ReadinessCheck?
+    let options: [String]
+    let lighterTarget: String?
+    let onAnswer: (ReadinessCheck) -> Void
+    let onChoose: (String) -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .footnote) private var bodySize = 13.0
+
+    private func label(_ option: String) -> String {
+        LanguageManager.t(option == "planned" ? "readiness.planned" : option == "fewer_sets" ? "readiness.fewer" : "readiness.moreRir")
+    }
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        let current = check ?? ReadinessCheck()
+        let hint = LanguageManager.t("readiness.hint")
+        VStack(alignment: .leading, spacing: 8) {
+            Text(LanguageManager.t("readiness.title")).font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                .accessibilityAddTraits(.isHeader)
+            RatingSection(title: LanguageManager.t("readiness.sleep"), hint: hint,
+                          options: Readiness.sleepCodes.map { ($0, LanguageManager.t("readiness.sleep.\($0)")) },
+                          selected: current.sleep, identifier: "readiness-sleep") { var next = current; next.sleep = $0; onAnswer(next) }
+            RatingSection(title: LanguageManager.t("readiness.energy"), hint: hint,
+                          options: Readiness.energyCodes.map { ($0, LanguageManager.t("readiness.energy.\($0)")) },
+                          selected: current.energy, identifier: "readiness-energy") { var next = current; next.energy = $0; onAnswer(next) }
+            RatingSection(title: LanguageManager.t("readiness.soreness"), hint: hint,
+                          options: Readiness.sorenessCodes.map { ($0, LanguageManager.t("readiness.soreness.\($0)")) },
+                          selected: current.soreness, identifier: "readiness-soreness") { var next = current; next.soreness = $0; onAnswer(next) }
+            if Readiness.offersLighterDay(check) {
+                Text(LanguageManager.t("readiness.offer")).font(.app(size: bodySize, weight: .semibold)).foregroundStyle(AppColors.purple)
+                    .fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("readiness-offer")
+                ForEach(Array(options.enumerated()), id: \.element) { index, option in
+                    Button { onChoose(option) } label: {
+                        Text(label(option)).font(.app(size: titleSize, weight: index == 0 ? .semibold : .regular))
+                            .foregroundStyle(index == 0 ? AppColors.background : AppColors.secondaryText)
+                            .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 12).padding(.vertical, 10)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(index == 0 ? AppColors.accent : Color.clear)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(index == 0 ? Color.clear : AppColors.border, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain).accessibilityIdentifier("readiness-\(option)")
+                }
+            } else if check?.choice == "fewer_sets" {
+                Text(LanguageManager.t("readiness.applied.fewer")).font(.app(size: bodySize)).foregroundStyle(AppColors.purple)
+                    .fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("readiness-applied")
+            } else if check?.choice == "more_rir", let lighterTarget {
+                Text(LanguageManager.t("readiness.applied.moreRir", ["effort": lighterTarget])).font(.app(size: bodySize))
+                    .foregroundStyle(AppColors.purple).fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("readiness-applied")
+            }
+        }
+        .padding(.horizontal, 12).padding(.vertical, 10).frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surfaceRaised.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("readiness-card")
+    }
+}

@@ -177,7 +177,8 @@ public struct TodayView: View {
         switch sheet {
         case .setup:
             if let active = store.activeProgram {
-                TrainingBlockSetupSheet(program: active, scale: store.effortScale, replacesBlock: block != nil) { length, focus, nextWeek in
+                TrainingBlockSetupSheet(program: active, scale: store.effortScale, replacesBlock: block != nil,
+                                        readinessCheck: $store.readinessCheck) { length, focus, nextWeek in
                     store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
                     blockSheet = nil
                 }

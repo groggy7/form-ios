@@ -55,6 +55,7 @@ public final class AppStore: ObservableObject {
     private let showIntensityTechniquesKey = "show_intensity_techniques"
     private let jointStressRatingsKey = "joint_stress_ratings"
     private let repsInReserveKey = "reps_in_reserve"
+    private let readinessCheckKey = "readiness_check"
     private let effortScaleKey = SetEffort.scaleDefaultsKey
     private let recordWatchWorkoutsKey = "record_watch_workouts"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
@@ -125,6 +126,8 @@ public final class AppStore: ObservableObject {
     @Published public var jointStressRatings: Bool
     /// Opt-in reps in reserve on each completed working set (docs/adaptive-training.md#phase-a-effort-logging-free).
     @Published public var repsInReserve: Bool
+    /// Opt-in Premium readiness check before each workout (docs/training-blocks.md#readiness-check).
+    @Published public var readinessCheck: Bool
     /// How effort reads: reps in reserve or RPE. Stored values are always RIR.
     @Published public var effortScale: SetEffort.Scale
     /// Starts the Apple Watch app with each workout and records it in Apple Health there (docs/apple-watch.md).
@@ -285,6 +288,7 @@ public final class AppStore: ObservableObject {
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.repsInReserve = UserDefaults.standard.object(forKey: repsInReserveKey) as? Bool ?? false
+        self.readinessCheck = UserDefaults.standard.object(forKey: readinessCheckKey) as? Bool ?? false
         self.effortScale = (UserDefaults.standard.string(forKey: effortScaleKey)).flatMap(SetEffort.Scale.init(rawValue:)) ?? .rir
         self.recordWatchWorkouts = UserDefaults.standard.object(forKey: recordWatchWorkoutsKey) as? Bool ?? true
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
@@ -482,6 +486,10 @@ public final class AppStore: ObservableObject {
         $repsInReserve
             .dropFirst()
             .sink { [repsInReserveKey] in UserDefaults.standard.set($0, forKey: repsInReserveKey) }
+            .store(in: &cancellables)
+        $readinessCheck
+            .dropFirst()
+            .sink { [readinessCheckKey] in UserDefaults.standard.set($0, forKey: readinessCheckKey) }
             .store(in: &cancellables)
         $effortScale
             .dropFirst()
@@ -752,7 +760,8 @@ public final class AppStore: ObservableObject {
             note: unfinishedRecord?.note,
             blockId: sessionBlock?.id ?? unfinishedRecord?.blockId,
             blockWeek: blockWeek ?? (unfinishedRecord?.blockId != nil ? unfinishedRecord?.blockWeek : nil),
-            muscleFeedback: unfinishedRecord?.muscleFeedback
+            muscleFeedback: unfinishedRecord?.muscleFeedback,
+            readiness: unfinishedRecord?.readiness
         )
 
         saveActiveSession(draft)
@@ -1028,7 +1037,7 @@ public final class AppStore: ObservableObject {
             isComplete: isComplete,
             scheduledDate: record.scheduledDate ?? activeSession?.scheduledDate,
             workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout, note: record.note ?? activeSession?.note,
-            blockId: record.blockId, blockWeek: record.blockWeek, muscleFeedback: record.muscleFeedback
+            blockId: record.blockId, blockWeek: record.blockWeek, muscleFeedback: record.muscleFeedback, readiness: record.readiness
         )
 
         var cal = state.calendarHistory ?? WorkoutCalendarHistory(
@@ -1076,7 +1085,8 @@ public final class AppStore: ObservableObject {
                 isComplete: finalRecord.isComplete,
                 scheduledDate: finalRecord.scheduledDate,
                 workoutSnapshot: finalRecord.workoutSnapshot, note: finalRecord.note,
-                blockId: finalRecord.blockId, blockWeek: finalRecord.blockWeek, muscleFeedback: finalRecord.muscleFeedback
+                blockId: finalRecord.blockId, blockWeek: finalRecord.blockWeek, muscleFeedback: finalRecord.muscleFeedback,
+                readiness: finalRecord.readiness
             )
         }()
 
@@ -1473,6 +1483,27 @@ public final class AppStore: ObservableObject {
         var next = state
         next.trainingBlock = nil
         saveState(next, durable: true)
+    }
+
+    /// The readiness answers before the first set; a choice already made is kept.
+    public func setReadiness(_ check: ReadinessCheck) {
+        updateActiveSession { draft in
+            var copy = draft
+            var answers = check
+            answers.choice = draft.readiness?.choice
+            copy.readiness = Readiness.sanitized(answers)
+            return copy
+        }
+    }
+
+    /// The lifter's answer to a lighter day: planned, fewer_sets (applied now) or more_rir. Made once.
+    public func chooseReadiness(_ choice: String) {
+        updateActiveSession { draft in
+            guard Readiness.choices.contains(choice), Readiness.offersLighterDay(draft.readiness) else { return draft }
+            var copy = choice == "fewer_sets" ? Readiness.fewerSets(draft) : draft
+            copy.readiness?.choice = choice
+            return copy
+        }
     }
 
     /// A training block answer for one muscle; nil fields clear. Only block sessions keep answers.
@@ -2536,6 +2567,7 @@ enum BackupSanitizer {
         copy.blockId = validBlock ? record.blockId : nil
         copy.blockWeek = validBlock ? record.blockWeek : nil
         copy.muscleFeedback = TrainingBlockRules.sanitizedFeedback(record.muscleFeedback)
+        copy.readiness = Readiness.sanitized(record.readiness)
         copy.durationSeconds = clamped(record.durationSeconds, 0...maxSessionSeconds)
         copy.totalVolumeKg = clamped(record.totalVolumeKg, 0...maxSessionVolumeKg)
         copy.totalCompletedSets = clamped(record.totalCompletedSets, 0...maxSessionSets)

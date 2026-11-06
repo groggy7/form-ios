@@ -241,9 +241,19 @@ public struct ActiveSessionView: View {
                                     // A block week sets the effort target, the mid-workout window and the muscle questions.
                                     let block = store.state.trainingBlock.flatMap { $0.id == activeDraft.blockId ? $0 : nil }
                                     let blockWeek = block == nil ? nil : activeDraft.blockWeek
-                                    let blockTarget = blockWeek.flatMap { TrainingBlockRules.target(length: block!.length, week: $0) }
+                                    let plannedTarget = blockWeek.flatMap { TrainingBlockRules.target(length: block!.length, week: $0) }
+                                    // A lighter day the lifter chose can add one rep in reserve to the week's target.
+                                    let blockTarget = Readiness.target(plannedTarget, check: activeDraft.readiness)
                                     let blockDeload = block != nil && blockWeek.map { TrainingBlockRules.isDeload(length: block!.length, week: $0) } == true
                                     let blockQuestions = block == nil ? nil : TrainingBlocks.feedbackPlan(activeDraft.workout)
+                                    // Asked before the workout's first working set; it leaves once one is ticked.
+                                    if store.readinessCheck && proManager.isFeatureUnlocked(.autoProgression)
+                                        && !activeDraft.setsByExercise.values.joined().contains(where: { $0.isCompleted && !$0.isWarmup }) {
+                                        ReadinessCard(check: activeDraft.readiness,
+                                                      options: Readiness.options(blockTarget: plannedTarget, deload: blockDeload),
+                                                      lighterTarget: blockTarget.map { SetEffort.tag($0, scale: store.effortScale) },
+                                                      onAnswer: { store.setReadiness($0) }, onChoose: { store.chooseReadiness($0) })
+                                    }
                                     if blockDeload {
                                         Text(LanguageManager.t("block.session.deload")).appFont(.footnote).foregroundStyle(AppColors.purple)
                                             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)

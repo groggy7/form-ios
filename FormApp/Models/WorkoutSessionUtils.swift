@@ -124,7 +124,8 @@ public struct SessionProgress {
             muscleFeedback: draft.muscleFeedback.flatMap { answers in
                 let kept = answers.filter { !$0.value.isEmpty }
                 return kept.isEmpty ? nil : kept
-            }
+            },
+            readiness: Readiness.sanitized(draft.readiness)
         )
     }
 }

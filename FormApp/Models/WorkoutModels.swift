@@ -706,6 +706,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
     public var blockWeek: Int?
     /// Block answers by muscle.
     public var muscleFeedback: [String: MuscleFeedback]?
+    /// The pre-workout readiness answers and choice, when the lifter gave any.
+    public var readiness: ReadinessCheck?
 
     public init(
         id: String = UUID().uuidString,
@@ -725,11 +727,13 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         note: String? = nil,
         blockId: String? = nil,
         blockWeek: Int? = nil,
-        muscleFeedback: [String: MuscleFeedback]? = nil
+        muscleFeedback: [String: MuscleFeedback]? = nil,
+        readiness: ReadinessCheck? = nil
     ) {
         self.blockId = blockId
         self.blockWeek = blockWeek
         self.muscleFeedback = muscleFeedback
+        self.readiness = readiness
         self.id = id
         self.programId = programId
         self.workoutId = workoutId
@@ -845,6 +849,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var blockWeek: Int?
     /// Block answers by muscle.
     public var muscleFeedback: [String: MuscleFeedback]?
+    /// The pre-workout readiness answers and choice.
+    public var readiness: ReadinessCheck?
 
     public init(
         schemaVersion: Int = ActiveSessionDraft.currentSchemaVersion,
@@ -868,11 +874,13 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         note: String? = nil,
         blockId: String? = nil,
         blockWeek: Int? = nil,
-        muscleFeedback: [String: MuscleFeedback]? = nil
+        muscleFeedback: [String: MuscleFeedback]? = nil,
+        readiness: ReadinessCheck? = nil
     ) {
         self.blockId = blockId
         self.blockWeek = blockWeek
         self.muscleFeedback = muscleFeedback
+        self.readiness = readiness
         self.effortByExercise = effortByExercise
         self.jointStressByExercise = jointStressByExercise
         self.note = note
@@ -924,6 +932,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.blockWeek = validBlock ? blockWeek : nil
         self.muscleFeedback = TrainingBlockRules.sanitizedFeedback(
             try? container.decodeIfPresent([String: MuscleFeedback].self, forKey: .muscleFeedback))
+        self.readiness = Readiness.sanitized(try? container.decodeIfPresent(ReadinessCheck.self, forKey: .readiness))
     }
 
     public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {
@@ -1452,7 +1461,7 @@ public enum WorkoutCalendar {
 
 public struct StoredAppState: Codable {
     /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log; 7 adds set effort
-    /// (rir); 8 adds the training block and session block fields (docs/training-blocks.md).
+    /// (rir); 8 adds the training block, session block fields and readiness answers (docs/training-blocks.md).
     public static let currentSchemaVersion = 8
 
     public var schemaVersion: Int

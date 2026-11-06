@@ -266,6 +266,8 @@ struct TrainingBlockSetupContent: View {
     let scale: SetEffort.Scale
     let replacesBlock: Bool
     let onStart: (Int, [String], Bool) -> Void
+    /// The same Premium switch as Settings: a readiness check before each workout.
+    var readinessCheck: Binding<Bool>? = nil
     @State private var length = 5
     @State private var focus: [String] = []
     @State private var nextWeek = false
@@ -303,6 +305,10 @@ struct TrainingBlockSetupContent: View {
             BlockChoice(label: LanguageManager.t("block.setup.thisWeek"), selected: !nextWeek, identifier: "block-start-this-week") { nextWeek = false }
             BlockChoice(label: LanguageManager.t("block.setup.nextWeek"), selected: nextWeek, identifier: "block-start-next-week") { nextWeek = true }
         }
+        if let readinessCheck {
+            BlockChoice(label: LanguageManager.t("block.setup.readiness"), selected: readinessCheck.wrappedValue,
+                        identifier: "block-setup-readiness") { readinessCheck.wrappedValue.toggle() }
+        }
         if replacesBlock { BlockBody(text: LanguageManager.t("block.setup.replaces")) }
         blockPrimaryButton(LanguageManager.t("block.setup.confirm"), "block-setup-confirm") { onStart(length, focus, nextWeek) }
     }
@@ -312,10 +318,12 @@ struct TrainingBlockSetupSheet: View {
     let program: Program
     let scale: SetEffort.Scale
     let replacesBlock: Bool
+    var readinessCheck: Binding<Bool>? = nil
     let onStart: (Int, [String], Bool) -> Void
     var body: some View {
         BlockSheetPage(identifier: "training-block-setup") {
-            TrainingBlockSetupContent(program: program, scale: scale, replacesBlock: replacesBlock, onStart: onStart)
+            TrainingBlockSetupContent(program: program, scale: scale, replacesBlock: replacesBlock, onStart: onStart,
+                                      readinessCheck: readinessCheck)
         }
     }
 }

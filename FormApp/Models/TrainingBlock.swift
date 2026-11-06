@@ -333,3 +333,72 @@ public enum TrainingBlockRules {
         return sameLoads && current.prefix(shared).reduce(0) { $0 + $1.1 } < previous.prefix(shared).reduce(0) { $0 + $1.1 }
     }
 }
+
+/// The optional pre-workout readiness check (docs/training-blocks.md#readiness-check): the lifter's own answers,
+/// and what they chose when a lighter day was offered. Each field is optional. Android `ReadinessCheck` matches.
+public struct ReadinessCheck: Codable, Hashable {
+    public var sleep: String?
+    public var energy: String?
+    public var soreness: String?
+    /// planned, fewer_sets or more_rir; nil until a lighter day is offered and answered.
+    public var choice: String?
+
+    public init(sleep: String? = nil, energy: String? = nil, soreness: String? = nil, choice: String? = nil) {
+        self.sleep = sleep
+        self.energy = energy
+        self.soreness = soreness
+        self.choice = choice
+    }
+}
+
+/// Readiness rules; Android `Readiness` matches and the shared block-fixtures.json pins them.
+public enum Readiness {
+    public static let sleepCodes = ["poor", "ok", "good"]
+    public static let energyCodes = ["low", "ok", "high"]
+    public static let sorenessCodes = ["none", "some", "a_lot"]
+    public static let choices = ["planned", "fewer_sets", "more_rir"]
+
+    public static func sanitized(_ raw: ReadinessCheck?) -> ReadinessCheck? {
+        guard let raw else { return nil }
+        let clean = ReadinessCheck(sleep: raw.sleep.flatMap { sleepCodes.contains($0) ? $0 : nil },
+                                   energy: raw.energy.flatMap { energyCodes.contains($0) ? $0 : nil },
+                                   soreness: raw.soreness.flatMap { sorenessCodes.contains($0) ? $0 : nil },
+                                   choice: raw.choice.flatMap { choices.contains($0) ? $0 : nil })
+        return clean == ReadinessCheck() ? nil : clean
+    }
+
+    /// Poor sleep, low energy and a lot of soreness each count; skipped questions do not.
+    public static func lows(_ check: ReadinessCheck?) -> Int {
+        [check?.sleep == "poor", check?.energy == "low", check?.soreness == "a_lot"].filter { $0 }.count
+    }
+
+    /// Two or more low answers offer a lighter day, once.
+    public static func offersLighterDay(_ check: ReadinessCheck?) -> Bool { lows(check) >= 2 && check?.choice == nil }
+
+    /// "Train as planned" always first; a higher effort target only inside a block week that is not the deload.
+    public static func options(blockTarget: Int?, deload: Bool) -> [String] {
+        ["planned", "fewer_sets"] + (blockTarget != nil && !deload ? ["more_rir"] : [])
+    }
+
+    /// The block week's target after the lifter's choice; one more rep in reserve, at most 4+.
+    public static func target(_ blockTarget: Int?, check: ReadinessCheck?) -> Int? {
+        guard let blockTarget, check?.choice == "more_rir" else { return blockTarget }
+        return min(blockTarget + 1, SetEffort.maxRir)
+    }
+
+    /// One set fewer per exercise: the last working row goes when it is unfinished and not the only one.
+    public static func fewerSets(_ draft: ActiveSessionDraft) -> ActiveSessionDraft {
+        var copy = draft
+        for (exerciseId, rows) in draft.setsByExercise {
+            let working = rows.indices.filter { !rows[$0].isWarmup }
+            guard working.count > 1, let last = working.last, !rows[last].isCompleted else { continue }
+            var kept = rows
+            kept.remove(at: last)
+            copy.setsByExercise[exerciseId] = kept
+            if let index = copy.workout.exercises.firstIndex(where: { $0.id == exerciseId }) {
+                copy.workout.exercises[index].sets = (copy.workout.exercises[index].sets ?? working.count) - 1
+            }
+        }
+        return copy
+    }
+}
