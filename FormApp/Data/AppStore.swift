@@ -1443,13 +1443,14 @@ public final class AppStore: ObservableObject {
 
     /// Starts a block on the active program, replacing any earlier one.
     @discardableResult
-    public func startTrainingBlock(length: Int, focus: [String], nextWeek: Bool) -> Bool {
+    public func startTrainingBlock(length: Int, focus: [String], nextWeek: Bool, strength: Bool = false, lifts: [String] = []) -> Bool {
         guard let program = state.programs.first(where: { $0.id == state.activeProgramId }),
               let thisWeek = TrainingBlocks.monday(state.currentWeekKey) else { return false }
         let startWeek = nextWeek
             ? TrainingBlocks.weekKey(Calendar(identifier: .iso8601).date(byAdding: .day, value: 7, to: thisWeek) ?? thisWeek)
             : state.currentWeekKey
-        guard let block = TrainingBlocks.start(program, length: length, focus: focus, startWeek: startWeek) else { return false }
+        guard let block = strength ? TrainingBlocks.startStrength(program, length: length, lifts: lifts, startWeek: startWeek)
+                : TrainingBlocks.start(program, length: length, focus: focus, startWeek: startWeek) else { return false }
         var next = state
         next.trainingBlock = block
         return saveState(next, durable: true)

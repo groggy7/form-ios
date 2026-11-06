@@ -14,9 +14,17 @@ public struct TrainingBlock: Codable, Hashable {
     public var weeks: [TrainingBlockWeek]
     /// Exercise keys in the order sets were added; removals take the most recent first.
     public var additions: [String]
+    /// "strength" for a block that peaks lifts for a test; nil builds muscle.
+    public var kind: String?
+    /// A strength block's lifts, as exercise keys.
+    public var lifts: [String]?
+
+    public var isStrength: Bool { kind == TrainingBlockRules.strength }
 
     public init(id: String, programId: String, startWeek: String, length: Int, focus: [String] = [],
-                weeks: [TrainingBlockWeek] = [], additions: [String] = []) {
+                weeks: [TrainingBlockWeek] = [], additions: [String] = [], kind: String? = nil, lifts: [String]? = nil) {
+        self.kind = kind
+        self.lifts = lifts
         self.id = id
         self.programId = programId
         self.startWeek = startWeek
@@ -35,6 +43,8 @@ public struct TrainingBlock: Codable, Hashable {
         focus = try container.decodeIfPresent([String].self, forKey: .focus) ?? []
         weeks = try container.decodeIfPresent([TrainingBlockWeek].self, forKey: .weeks) ?? []
         additions = try container.decodeIfPresent([String].self, forKey: .additions) ?? []
+        kind = try container.decodeIfPresent(String.self, forKey: .kind)
+        lifts = try container.decodeIfPresent([String].self, forKey: .lifts)
     }
 }
 
@@ -128,6 +138,56 @@ public enum TrainingBlockRules {
         }
         return clean.isEmpty ? nil : clean
     }
+
+    // Strength blocks (docs/training-blocks.md#strength-blocks).
+    public static let strength = "strength"
+    public static let strengthLengths = 4...8
+    public static let maxLifts = 3
+    /// The test's singles as percentages of the estimated 1RM.
+    public static let testPercents: [Double] = [90, 96, 101]
+
+    public static func lengths(strength: Bool) -> ClosedRange<Int> { strength ? strengthLengths : lengths }
+
+    /// A lift's week: a top set and back-offs, or the test's three singles.
+    public struct StrengthWeek: Equatable {
+        public var weeksToTest: Int
+        public var topReps: Int
+        public var topRir: Int
+        public var backoffSets: Int
+        public var backoffReps: Int
+        public var backoffPercent: Double
+        public var test: Bool { weeksToTest == 0 }
+        public var taper: Bool { weeksToTest == 1 }
+        /// The lift's working sets: one top set plus the back-offs, or three singles.
+        public var liftSets: Int { test ? testPercents.count : 1 + backoffSets }
+        public var liftReps: Int { test ? 1 : topReps }
+    }
+
+    public static func strengthWeek(length: Int, week: Int) -> StrengthWeek? {
+        guard strengthLengths.contains(length), (1...length).contains(week) else { return nil }
+        switch length - week {
+        case 0: return StrengthWeek(weeksToTest: 0, topReps: 1, topRir: 0, backoffSets: 0, backoffReps: 1, backoffPercent: 0)
+        case 1: return StrengthWeek(weeksToTest: 1, topReps: 2, topRir: 2, backoffSets: 2, backoffReps: 2, backoffPercent: 90)
+        case 2: return StrengthWeek(weeksToTest: 2, topReps: 3, topRir: 1, backoffSets: 3, backoffReps: 3, backoffPercent: 90)
+        case 3: return StrengthWeek(weeksToTest: 3, topReps: 4, topRir: 2, backoffSets: 3, backoffReps: 4, backoffPercent: 87.5)
+        case let toTest: return StrengthWeek(weeksToTest: toTest, topReps: 5, topRir: 2, backoffSets: 3, backoffReps: 5, backoffPercent: 85)
+        }
+    }
+
+    /// A strength week's sets: the lifts follow the schedule, other exercises halve in the taper and test weeks.
+    public static func strengthSets(_ exercises: [(key: String, sets: Int)], lifts: Set<String>, length: Int, week: Int) -> [String: Int] {
+        guard let plan = strengthWeek(length: length, week: week) else {
+            return Dictionary(exercises.map { ($0.key, $0.sets) }, uniquingKeysWith: { first, _ in first })
+        }
+        return Dictionary(exercises.map { exercise -> (String, Int) in
+            if lifts.contains(exercise.key) { return (exercise.key, plan.liftSets) }
+            if plan.weeksToTest <= 1 { return (exercise.key, max(1, Int((Double(exercise.sets) / 2).rounded(.up)))) }
+            return (exercise.key, exercise.sets)
+        }, uniquingKeysWith: { first, _ in first })
+    }
+
+    /// The load a set of `reps` with `rir` left implies from an estimated 1RM: Brzycki solved for reps + RIR.
+    public static func topSetTarget(e1rm: Double, reps: Int, rir: Int) -> Double { e1rm * Double(37 - reps - rir) / 36 }
 
     /// Reps-in-reserve targets by week; the last is the deload.
     public static func targets(length: Int) -> [Int] {

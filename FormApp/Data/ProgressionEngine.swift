@@ -234,6 +234,35 @@ public enum ProgressionEngine {
                               rir: rir, currentKg: currentKg, target: target, rows: rest.map(\.offset))
     }
 
+    /// A load on the exercise's grid in `unit`: rounded down (or to the nearest load), never below the empty bar or zero.
+    /// Nil without a supported step. Strength blocks use it for top sets, back-offs and attempts.
+    public static func gridLoadKg(exercise: Exercise, targetKg: Double, unit: WeightUnit,
+                                  steps: ProgressionLoadSteps = ProgressionLoadSteps(), nearest: Bool = false) -> Double? {
+        guard targetKg.isFinite, targetKg > 0, let step = loadStep(exercise, loadsKg: [targetKg], unit: unit, steps: steps) else { return nil }
+        let display = unit.toDisplay(targetKg)
+        let units = (display - step.origin) / step.display + (nearest ? 0.5 : 0)
+        let load = snapped(max(step.origin, step.origin + (units + epsilon).rounded(.down) * step.display))
+        return load <= 0 ? nil : unit.toCanonicalKg(load)
+    }
+
+    /// The test's three singles: 90% and 96% rounded down, 101% to the nearest load, each a step above the last.
+    public static func attemptsKg(exercise: Exercise, e1rmKg: Double, unit: WeightUnit,
+                                  steps: ProgressionLoadSteps = ProgressionLoadSteps()) -> [Double]? {
+        guard let step = loadStep(exercise, loadsKg: [e1rmKg], unit: unit, steps: steps) else { return nil }
+        var loads: [Double] = []
+        for (index, percent) in TrainingBlockRules.testPercents.enumerated() {
+            guard let kg = gridLoadKg(exercise: exercise, targetKg: e1rmKg * percent / 100, unit: unit, steps: steps,
+                                      nearest: index == TrainingBlockRules.testPercents.count - 1) else { return nil }
+            if let last = loads.last {
+                let floorKg = unit.toCanonicalKg(snapped(unit.toDisplay(last) + step.display))
+                loads.append(kg < floorKg - 1e-9 ? floorKg : kg)
+            } else {
+                loads.append(kg)
+            }
+        }
+        return loads
+    }
+
     private struct IncreasePlan { let targets: [ProgressionSetTarget]; let resetReps: Bool; let deltaDisplay: Double? }
 
     /// Per-set next loads; nil when any set has no loadable step within the limits.

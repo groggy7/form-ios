@@ -552,6 +552,92 @@ public struct LoadAdjustmentCard: View {
     }
 }
 
+/// A strength block lift (docs/training-blocks.md#strength-blocks): the top set to work up to, then its back-off sets
+/// from the logged top set, or the test's three singles. Use fills loads only, like Apply. Android `StrengthLiftCard` matches.
+public struct StrengthLiftCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let plan: TrainingBlockRules.StrengthWeek
+    let exercise: Exercise
+    let sets: [ExerciseSetLog]
+    let estimateKg: Double?
+    let weightUnit: WeightUnit
+    let steps: ProgressionLoadSteps
+    let scale: SetEffort.Scale
+    let onApply: ([Int: ProgressionSetTarget]) -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .footnote) private var bodySize = 13.0
+
+    private func load(_ kg: Double) -> String { "\(weightUnit.formatLoadableDisplayWeight(kg))\u{00A0}\(weightUnit.label)" }
+
+    /// The card's title, detail and Use action for the current rows; nil when there is nothing to show.
+    private var content: (title: String, detail: String?, action: (String, [Int: ProgressionSetTarget])?)? {
+        let working = sets.indices.filter { !sets[$0].isWarmup }
+        guard let top = working.first else { return nil }
+        let open = working.filter { !sets[$0].isCompleted }
+        if plan.test {
+            let attempts = estimateKg.flatMap { ProgressionEngine.attemptsKg(exercise: exercise, e1rmKg: $0, unit: weightUnit, steps: steps) }
+            var targets: [Int: ProgressionSetTarget] = [:]
+            for (index, kg) in zip(working.prefix(attempts?.count ?? 0), attempts ?? []) where open.contains(index) {
+                targets[index] = ProgressionSetTarget(weightKg: kg, reps: 1)
+            }
+            return (LanguageManager.t("block.strength.test"), attempts?.map(load).joined(separator: " · "),
+                    attempts == nil ? nil : (LanguageManager.t("block.strength.useAttempts"), targets))
+        }
+        if !sets[top].isCompleted {
+            let suggestion = estimateKg.flatMap {
+                ProgressionEngine.gridLoadKg(exercise: exercise, targetKg: TrainingBlockRules.topSetTarget(e1rm: $0, reps: plan.topReps, rir: plan.topRir),
+                                             unit: weightUnit, steps: steps)
+            }
+            let title = LanguageManager.t("block.strength.top", ["reps": plan.topReps,
+                "effort": SetEffort.tag(plan.topRir, scale: scale).replacingOccurrences(of: " ", with: "\u{00A0}")])
+            let detail = suggestion.map { LanguageManager.t("block.strength.topLoad", ["load": load($0)]) } ?? LanguageManager.t("block.strength.workUp")
+            return (title, detail, suggestion.map { (LanguageManager.t("progression.adjust.use", ["load": load($0)]),
+                                                     [top: ProgressionSetTarget(weightKg: $0, reps: plan.topReps)]) })
+        }
+        guard let topKg = sets[top].weightKg, topKg > 0, !open.isEmpty,
+              let backoff = ProgressionEngine.gridLoadKg(exercise: exercise, targetKg: topKg * plan.backoffPercent / 100, unit: weightUnit, steps: steps)
+        else { return nil }
+        let title = LanguageManager.t("block.strength.backoff", ["sets": plan.backoffSets, "reps": plan.backoffReps, "load": load(backoff)])
+            .replacingOccurrences(of: " × ", with: "\u{00A0}×\u{00A0}")
+        let detail = LanguageManager.t("block.strength.backoffWhy", ["percent": BlockFormat.percent(plan.backoffPercent)])
+            .replacingOccurrences(of: " %", with: "\u{00A0}%")
+        let needsLoads = open.contains { abs((sets[$0].weightKg ?? -1) - backoff) > 1e-6 }
+        return (title, detail, needsLoads ? (LanguageManager.t("progression.adjust.use", ["load": load(backoff)]),
+                                             Dictionary(uniqueKeysWithValues: open.map { ($0, ProgressionSetTarget(weightKg: backoff, reps: plan.backoffReps)) })) : nil)
+    }
+
+    public var body: some View {
+        let _ = themeManager.currentTheme
+        if let content {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .top, spacing: 6) {
+                    ProgressionHeaderBolt().fill(AppColors.purple)
+                        .frame(width: 16, height: 16).frame(width: 20, height: 24).accessibilityHidden(true)
+                    Text(content.title).font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true).padding(.top, 2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityAddTraits(.isHeader).accessibilityIdentifier("strength-lift-title")
+                }
+                if let detail = content.detail {
+                    Text(detail).font(.app(size: bodySize)).foregroundStyle(AppColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true).accessibilityIdentifier("strength-lift-detail")
+                }
+                if let (label, targets) = content.action {
+                    CompactCoachButton(label: label, primary: true) { onApply(targets) }
+                        .accessibilityIdentifier("strength-lift-use")
+                }
+            }
+            .padding(.horizontal, 14).padding(.top, 12).padding(.bottom, content.action == nil ? 12 : 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("strength-lift-card")
+        }
+    }
+}
+
 private struct CompactCoachButton: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let label: String

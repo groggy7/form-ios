@@ -17,7 +17,8 @@ enum BlockCardState: Equatable {
         }
         guard let week = TrainingBlocks.weekIndex(block, weekKey: weekKey) else { return .upcoming(block) }
         if week > block.length { return .complete(block) }
-        guard let target = TrainingBlockRules.target(length: block.length, week: week) else { return .none }
+        // A strength block has no weekly effort target: its lifts follow their own schedule.
+        guard let target = block.isStrength ? 0 : TrainingBlockRules.target(length: block.length, week: week) else { return .none }
         let ready = week > 1 && block.weeks.indices.contains(week - 1) && !block.weeks[week - 1].reviewed
         return .active(block, week: week, target: target, ready: ready)
     }
@@ -39,6 +40,18 @@ enum BlockFormat {
     }
 
     static func muscle(_ code: String) -> String { LanguageManager.t("anatomy.muscle.\(code)") }
+
+    /// Keeps "3 × 5" and "90 %" whole when a sentence wraps.
+    static func unbroken(_ text: String) -> String {
+        text.replacingOccurrences(of: " × ", with: "\u{00A0}×\u{00A0}").replacingOccurrences(of: " %", with: "\u{00A0}%")
+    }
+
+    static func percent(_ value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        formatter.maximumFractionDigits = 1
+        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
+    }
 
     /// An effort tag that never splits across lines: "RIR 2".
     static func tag(_ rir: Int, scale: SetEffort.Scale) -> String {
@@ -112,10 +125,15 @@ struct TrainingBlockCard: View {
             primary(LanguageManager.t("block.card.start"), "training-block-start", onStart)
         case .upcoming(let block):
             headline(LanguageManager.t("block.card.startsNext"))
-            bodyText(BlockFormat.targets(length: block.length, scale: scale))
+            bodyText(block.isStrength ? LanguageManager.t("block.card.testIn", ["count": block.length])
+                     : BlockFormat.targets(length: block.length, scale: scale))
             endButton
         case .active(let block, let week, let target, let ready):
-            let detail = TrainingBlockRules.isDeload(length: block.length, week: week) ? LanguageManager.t("block.card.deload")
+            let toTest = block.length - week
+            let detail = block.isStrength
+                ? (toTest == 0 ? LanguageManager.t("block.card.test") : toTest == 1 ? LanguageManager.t("block.card.taper")
+                   : LanguageManager.t("block.card.testIn", ["count": toTest]))
+                : TrainingBlockRules.isDeload(length: block.length, week: week) ? LanguageManager.t("block.card.deload")
                 : LanguageManager.t("block.card.target", ["effort": BlockFormat.tag(target, scale: scale)])
             headline(LanguageManager.t("block.card.week", ["week": week, "length": block.length]) + " · " + detail)
             if ready {
@@ -268,15 +286,48 @@ struct TrainingBlockSetupContent: View {
     let onStart: (Int, [String], Bool) -> Void
     /// The same Premium switch as Settings: a readiness check before each workout.
     var readinessCheck: Binding<Bool>? = nil
+    var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
     @State private var length = 5
     @State private var focus: [String] = []
     @State private var nextWeek = false
+    @State private var strength = false
+    @State private var testIn = 6
+    @State private var lifts: [String] = []
 
     var body: some View {
         let choices = TrainingBlocks.focusChoices(program)
+        let liftChoices = TrainingBlocks.liftChoices(program)
         Text(LanguageManager.t("block.setup.title")).blockFont(20, .bold).foregroundStyle(AppColors.text)
             .accessibilityAddTraits(.isHeader)
-        BlockBody(text: LanguageManager.t("block.setup.intro"))
+        BlockBody(text: LanguageManager.t(strength ? "block.setup.strengthPlan" : "block.setup.intro"))
+        BlockSectionLabel(text: LanguageManager.t("block.setup.goal"))
+        BlockFlow {
+            BlockChoice(label: LanguageManager.t("block.setup.muscle"), selected: !strength, identifier: "block-goal-muscle") { strength = false }
+            BlockChoice(label: LanguageManager.t("block.setup.strength"), selected: strength, identifier: "block-goal-strength") { strength = true }
+        }
+        if strength {
+            BlockSectionLabel(text: LanguageManager.t("block.setup.lifts"))
+            BlockBody(text: LanguageManager.t(liftChoices.isEmpty ? "block.setup.noLifts" : "block.setup.liftsHint"))
+            BlockFlow {
+                ForEach(liftChoices, id: \.key) { choice in
+                    let selected = lifts.contains(choice.key)
+                    // The same lift on two days names its day.
+                    let repeated = liftChoices.filter { $0.exercise.displayName == choice.exercise.displayName }.count > 1
+                    let day = program.workouts.first { choice.key.hasPrefix("\($0.id)/") }?.title
+                    BlockChoice(label: choice.exercise.displayName + (repeated && day != nil ? " · \(day!)" : ""), selected: selected,
+                                identifier: "block-lift-\(choice.key)", enabled: selected || lifts.count < TrainingBlockRules.maxLifts) {
+                        if selected { lifts.removeAll { $0 == choice.key } } else { lifts.append(choice.key) }
+                    }
+                }
+            }
+            BlockSectionLabel(text: LanguageManager.t("block.setup.testIn"))
+            BlockFlow {
+                ForEach(Array(TrainingBlockRules.strengthLengths), id: \.self) { weeks in
+                    BlockChoice(label: LanguageManager.t("block.setup.weeks", ["count": weeks]), selected: testIn == weeks,
+                                identifier: "block-test-\(weeks)") { testIn = weeks }
+                }
+            }
+        } else {
         BlockSectionLabel(text: LanguageManager.t("block.setup.length"))
         BlockFlow {
             ForEach(Array(TrainingBlockRules.lengths), id: \.self) { weeks in
@@ -287,7 +338,8 @@ struct TrainingBlockSetupContent: View {
         Text(LanguageManager.t("block.setup.targets", ["targets": BlockFormat.targets(length: length, scale: scale)]))
             .blockFont(13).foregroundStyle(AppColors.purple).fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("block-setup-targets")
-        if !choices.isEmpty {
+        }
+        if !strength && !choices.isEmpty {
             BlockSectionLabel(text: LanguageManager.t("block.setup.focus"))
             BlockBody(text: LanguageManager.t("block.setup.focusHint"))
             BlockFlow {
@@ -310,7 +362,10 @@ struct TrainingBlockSetupContent: View {
                         identifier: "block-setup-readiness") { readinessCheck.wrappedValue.toggle() }
         }
         if replacesBlock { BlockBody(text: LanguageManager.t("block.setup.replaces")) }
-        blockPrimaryButton(LanguageManager.t("block.setup.confirm"), "block-setup-confirm") { onStart(length, focus, nextWeek) }
+        blockPrimaryButton(LanguageManager.t("block.setup.confirm"), "block-setup-confirm") {
+            if strength { onStartStrength(testIn, lifts, nextWeek) } else { onStart(length, focus, nextWeek) }
+        }
+        .disabled(strength && lifts.isEmpty).opacity(strength && lifts.isEmpty ? 0.4 : 1)
     }
 }
 
@@ -319,11 +374,12 @@ struct TrainingBlockSetupSheet: View {
     let scale: SetEffort.Scale
     let replacesBlock: Bool
     var readinessCheck: Binding<Bool>? = nil
+    var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
     let onStart: (Int, [String], Bool) -> Void
     var body: some View {
         BlockSheetPage(identifier: "training-block-setup") {
             TrainingBlockSetupContent(program: program, scale: scale, replacesBlock: replacesBlock, onStart: onStart,
-                                      readinessCheck: readinessCheck)
+                                      readinessCheck: readinessCheck, onStartStrength: onStartStrength)
         }
     }
 }
@@ -339,7 +395,9 @@ struct TrainingBlockWeekContent: View {
     @State private var edits: [String: Int] = [:]
 
     var body: some View {
-        if block.weeks.indices.contains(week - 1) {
+        if block.isStrength {
+            StrengthWeekContent(block: block, week: week, program: program, scale: scale) { onStartWeek([:]) }
+        } else if block.weeks.indices.contains(week - 1) {
             let current = block.weeks[week - 1]
             let previous = block.weeks.indices.contains(week - 2) ? block.weeks[week - 2] : nil
             let deload = TrainingBlockRules.isDeload(length: block.length, week: week)
@@ -444,6 +502,15 @@ struct TrainingBlockSummaryContent: View {
     let onDone: () -> Void
 
     var body: some View {
+        if block.isStrength {
+            StrengthSummaryContent(block: block, program: program, history: history, weightUnit: weightUnit,
+                                   onStartAnother: onStartAnother, onDone: onDone)
+        } else {
+            muscleSummary
+        }
+    }
+
+    @ViewBuilder private var muscleSummary: some View {
         let sets = TrainingBlocks.setsByWeek(block, program: program)
         let strength = TrainingBlocks.strengthChanges(block, program: program, history: history)
         Text(LanguageManager.t("block.summary.title")).blockFont(20, .bold).foregroundStyle(AppColors.text)
@@ -518,4 +585,76 @@ private struct BlockFont: ViewModifier {
 
 private extension View {
     func blockFont(_ size: CGFloat, _ weight: Font.Weight? = nil) -> some View { modifier(BlockFont(size, weight)) }
+}
+
+/// A strength week: each lift's top set and back-offs (or the test) and what the other exercises do.
+private struct StrengthWeekContent: View {
+    let block: TrainingBlock
+    let week: Int
+    let program: Program
+    let scale: SetEffort.Scale
+    let onDone: () -> Void
+
+    var body: some View {
+        if let plan = TrainingBlockRules.strengthWeek(length: block.length, week: week) {
+            let names = Dictionary(TrainingBlocks.liftChoices(program).map { ($0.key, $0.exercise) }, uniquingKeysWith: { first, _ in first })
+            Text(LanguageManager.t("block.review.title", ["week": week, "length": block.length]))
+                .blockFont(20, .bold).foregroundStyle(AppColors.text).accessibilityAddTraits(.isHeader)
+            Text(plan.test ? LanguageManager.t("block.card.test") : plan.taper ? LanguageManager.t("block.card.taper")
+                 : LanguageManager.t("block.card.testIn", ["count": plan.weeksToTest]))
+                .blockFont(14, .semibold).foregroundStyle(AppColors.purple)
+            BlockSectionLabel(text: LanguageManager.t("block.setup.lifts"))
+            ForEach(block.lifts ?? [], id: \.self) { key in
+                if let exercise = names[key] {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(exercise.displayName).blockFont(15, .semibold).foregroundStyle(AppColors.text)
+                        Text(plan.test ? LanguageManager.t("block.review.strengthTest") : BlockFormat.unbroken(LanguageManager.t("block.review.strengthLift", [
+                            "reps": plan.topReps, "effort": BlockFormat.tag(plan.topRir, scale: scale), "sets": plan.backoffSets,
+                            "backoffReps": plan.backoffReps, "percent": BlockFormat.percent(plan.backoffPercent)])))
+                            .blockFont(13).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityIdentifier("block-lift-week-\(key)")
+                }
+            }
+            BlockBody(text: LanguageManager.t(plan.weeksToTest <= 1 ? "block.review.accessoriesHalf" : "block.review.accessories"))
+            blockPrimaryButton(LanguageManager.t("common.done"), "block-week-start", action: onDone)
+        }
+    }
+}
+
+/// After a strength block's test: each lift's best estimate by week and the heaviest single in the test.
+private struct StrengthSummaryContent: View {
+    let block: TrainingBlock
+    let program: Program
+    let history: [WorkoutSessionRecord]
+    let weightUnit: WeightUnit
+    let onStartAnother: () -> Void
+    let onDone: () -> Void
+
+    var body: some View {
+        let progress = TrainingBlocks.liftProgress(block, program: program, history: history)
+        Text(LanguageManager.t("block.summary.title")).blockFont(20, .bold).foregroundStyle(AppColors.text).accessibilityAddTraits(.isHeader)
+        BlockSectionLabel(text: LanguageManager.t("block.summary.e1rm"))
+        if !progress.contains(where: { lift in lift.byWeek.contains { $0 != nil } || lift.testKg != nil }) {
+            BlockBody(text: LanguageManager.t("block.summary.noStrength"))
+        }
+        ForEach(progress, id: \.exerciseName) { lift in
+            VStack(alignment: .leading, spacing: 2) {
+                Text(lift.exerciseName).blockFont(14, .semibold).foregroundStyle(AppColors.text)
+                Text(lift.byWeek.enumerated().map { index, kg in
+                    "\(LanguageManager.t("block.summary.week", ["week": index + 1]))\u{00A0}\(kg.map(weightUnit.formatWeight) ?? "–")"
+                }.joined(separator: " · "))
+                    .blockFont(13).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                if let test = lift.testKg {
+                    Text(LanguageManager.t("block.summary.test", ["load": "\(weightUnit.formatWeight(test))\u{00A0}\(weightUnit.label)"]))
+                        .blockFont(14, .semibold).foregroundStyle(AppColors.accent)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("block-summary-lift")
+        }
+        blockPrimaryButton(LanguageManager.t("block.summary.again"), "block-summary-again", action: onStartAnother)
+        blockSecondaryButton(LanguageManager.t("common.done"), "block-summary-done", action: onDone)
+    }
 }

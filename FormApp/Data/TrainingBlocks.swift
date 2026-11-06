@@ -81,6 +81,28 @@ enum TrainingBlocks {
         TrainingBlockRules.participants(ruleExercises(program, catalog: catalog))
     }
 
+    /// The program's barbell exercises a strength block can test, as (key, exercise).
+    static func liftChoices(_ program: Program) -> [(key: String, exercise: Exercise)] {
+        program.workouts.flatMap { workout in
+            workout.exercises.filter(WorkoutSessionUtils.usesBarbellPlates).map { (key(workout, $0), $0) }
+        }
+    }
+
+    /// A strength block: every week known at the start (docs/training-blocks.md#strength-blocks).
+    static func startStrength(_ program: Program, length: Int, lifts: [String], startWeek: String,
+                              id: String = UUID().uuidString) -> TrainingBlock? {
+        let choices = Set(liftChoices(program).map(\.key))
+        var chosen: [String] = []
+        for lift in lifts where choices.contains(lift) && !chosen.contains(lift) && chosen.count < TrainingBlockRules.maxLifts { chosen.append(lift) }
+        guard TrainingBlockRules.strengthLengths.contains(length), isWeekKey(startWeek), !chosen.isEmpty else { return nil }
+        let exercises = program.workouts.flatMap { workout in workout.exercises.map { (key: key(workout, $0), sets: programSets($0)) } }
+        return TrainingBlock(id: id, programId: program.id, startWeek: startWeek, length: length,
+                             weeks: (1...length).map { week in
+                                 TrainingBlockWeek(sets: TrainingBlockRules.strengthSets(exercises, lifts: Set(chosen), length: length, week: week),
+                                                   reviewed: true)
+                             }, kind: TrainingBlockRules.strength, lifts: chosen)
+    }
+
     static func start(_ program: Program, length: Int, focus: [String], startWeek: String,
                       catalog: ExerciseMuscleCatalog? = .shared, id: String = UUID().uuidString) -> TrainingBlock? {
         guard TrainingBlockRules.lengths.contains(length), isWeekKey(startWeek) else { return nil }
@@ -117,7 +139,9 @@ enum TrainingBlocks {
     /// Fills the weeks that have begun, each from the previous week's answers and logs. Ended blocks stop at the deload.
     static func advance(_ block: TrainingBlock, program: Program, history: [WorkoutSessionRecord], weekKey: String,
                         catalog: ExerciseMuscleCatalog? = .shared) -> TrainingBlock {
-        guard program.id == block.programId, !block.weeks.isEmpty, let current = weekIndex(block, weekKey: weekKey) else { return block }
+        // A strength block's weeks are all known when it starts.
+        guard program.id == block.programId, !block.weeks.isEmpty, !block.isStrength,
+              let current = weekIndex(block, weekKey: weekKey) else { return block }
         let target = min(current, block.length)
         guard block.weeks.count < target else { return block }
         let logs = blockLogs(block, program: program, history: history)
@@ -160,13 +184,69 @@ enum TrainingBlocks {
     static func sessionWorkout(_ block: TrainingBlock, week: Int, workout: Workout) -> Workout {
         guard block.weeks.indices.contains(week - 1) else { return workout }
         let sets = block.weeks[week - 1].sets
+        let plan = block.isStrength ? TrainingBlockRules.strengthWeek(length: block.length, week: week) : nil
+        let lifts = Set(block.lifts ?? [])
         var copy = workout
         copy.exercises = workout.exercises.map { exercise in
             var exercise = exercise
-            if let count = sets[key(workout, exercise)] { exercise.sets = count }
+            let key = key(workout, exercise)
+            if let plan, lifts.contains(key) {
+                // A lift's top set and back-offs share one rep count; the test is three singles.
+                exercise.sets = plan.liftSets
+                exercise.reps = RepTarget(min: plan.liftReps, max: plan.liftReps)
+            } else if let count = sets[key] {
+                exercise.sets = count
+            }
             return exercise
         }
         return copy
+    }
+
+    /// The strength week a block lift follows in this session, or nil when `exercise` is not a block lift.
+    static func strengthLift(_ block: TrainingBlock?, week: Int?, workout: Workout, exercise: Exercise) -> TrainingBlockRules.StrengthWeek? {
+        guard let block, let week, block.isStrength, (block.lifts ?? []).contains(key(workout, exercise)) else { return nil }
+        return TrainingBlockRules.strengthWeek(length: block.length, week: week)
+    }
+
+    /// Days of history an estimated 1RM may come from.
+    private static let estimateDays: Double = 42
+
+    /// The best Brzycki estimate (1–10 reps) from `exercise`'s working sets in that workout's sessions in the last 42 days.
+    static func estimatedOneRepMaxKg(workout: Workout, exercise: Exercise, history: [WorkoutSessionRecord], now: Date = Date(),
+                                     excludeSessionId: String? = nil) -> Double? {
+        guard let index = workout.exercises.firstIndex(where: { $0.id == exercise.id }) else { return nil }
+        let since = now.addingTimeInterval(-estimateDays * 86_400)
+        return history.filter { $0.workoutId == workout.id && $0.id != excludeSessionId
+                && (PersonalRecordTracker.trainingDate($0) ?? .distantPast) >= since }
+            .compactMap { record -> SessionExerciseLog? in
+                let logs = WorkoutSessionUtils.historyLogs(workout: workout, record: record)
+                return logs.indices.contains(index) ? logs[index] : nil
+            }
+            .flatMap(workingSets)
+            .map { FormLabEngine.calculateEstimated1RM(weightKg: $0.0, reps: $0.1, formula: .brzycki) }
+            .filter { $0 > 0 }.max()
+    }
+
+    struct LiftProgress: Equatable {
+        var exerciseName: String
+        var byWeek: [Double?]
+        var testKg: Double?
+    }
+
+    /// Each strength lift's best estimate by block week and the heaviest single in the test week.
+    static func liftProgress(_ block: TrainingBlock, program: Program, history: [WorkoutSessionRecord]) -> [LiftProgress] {
+        let logs = blockLogs(block, program: program, history: history)
+        let names = Dictionary(liftChoices(program).map { ($0.key, $0.exercise) }, uniquingKeysWith: { first, _ in first })
+        return (block.lifts ?? []).compactMap { lift in
+            guard let exercise = names[lift] else { return nil }
+            let byWeek: [Double?] = (1..<block.length).map { week in
+                (logs[week]?[lift] ?? []).flatMap(workingSets)
+                    .map { FormLabEngine.calculateEstimated1RM(weightKg: $0.0, reps: $0.1, formula: .brzycki) }
+                    .filter { $0 > 0 }.max()
+            }
+            let test = (logs[block.length]?[lift] ?? []).flatMap(workingSets).filter { $0.0 > 0 && $0.1 >= 1 }.map(\.0).max()
+            return LiftProgress(exerciseName: exercise.name, byWeek: byWeek, testKg: test)
+        }
     }
 
     /// Muscles asked about soreness before, and pump and workload after, each exercise index of a block workout.
@@ -243,8 +323,12 @@ enum TrainingBlocks {
 
     /// A stored block, or nil when it cannot belong to one of `programs`.
     static func sanitize(_ raw: TrainingBlock?, programs: [Program]) -> TrainingBlock? {
-        guard let raw, !raw.id.isEmpty, raw.id.count <= 100, TrainingBlockRules.lengths.contains(raw.length), isWeekKey(raw.startWeek),
-              programs.contains(where: { $0.id == raw.programId }) else { return nil }
+        let strength = raw?.kind == TrainingBlockRules.strength
+        guard let raw, !raw.id.isEmpty, raw.id.count <= 100, TrainingBlockRules.lengths(strength: strength).contains(raw.length),
+              isWeekKey(raw.startWeek), programs.contains(where: { $0.id == raw.programId }) else { return nil }
+        var lifts: [String] = []
+        for lift in raw.lifts ?? [] where lift.count <= 210 && !lifts.contains(lift) && lifts.count < TrainingBlockRules.maxLifts { lifts.append(lift) }
+        guard !strength || !lifts.isEmpty else { return nil }
         let weeks = raw.weeks.prefix(raw.length).map { week in
             TrainingBlockWeek(
                 sets: week.sets.filter { $0.key.count <= 210 && (1...maxExerciseSets).contains($0.value) },
@@ -263,6 +347,7 @@ enum TrainingBlocks {
             focus.append(muscle)
         }
         return TrainingBlock(id: raw.id, programId: raw.programId, startWeek: raw.startWeek, length: raw.length, focus: focus,
-                             weeks: Array(weeks), additions: Array(raw.additions.filter { $0.count <= 210 }.prefix(200)))
+                             weeks: Array(weeks), additions: Array(raw.additions.filter { $0.count <= 210 }.prefix(200)),
+                             kind: strength ? TrainingBlockRules.strength : nil, lifts: strength ? lifts : nil)
     }
 }

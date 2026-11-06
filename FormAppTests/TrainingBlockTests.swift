@@ -29,7 +29,25 @@ final class TrainingBlockFixtureTests: XCTestCase {
             struct Expected: Decodable { let kept: [Int]; let sets: Int }
             let name: String; let sets: Int; let rows: [Row]; let expected: Expected
         }
+        struct Strength: Decodable {
+            struct Top: Decodable { let reps: Int; let rir: Int }
+            struct Backoff: Decodable { let sets: Int; let reps: Int; let percent: Double }
+            struct ScheduleRow: Decodable { let weeksToTest: Int; let top: Top?; let backoff: Backoff?; let test: [Double]? }
+            struct WeekRow: Decodable { let key: String; let sets: Int }
+            struct WeekCase: Decodable { let name: String; let length: Int; let lifts: [String]; let exercises: [WeekRow]; let expected: [[String: Int]] }
+            struct Lift: Decodable { let exerciseId: String; let name: String }
+            struct LoadCase: Decodable { let name: String; let unit: String; let exercise: Lift; let e1rm: Double; let reps: Int; let rir: Int; let expected: Double }
+            struct BackoffCase: Decodable { let name: String; let unit: String; let exercise: Lift; let top: Double; let percent: Double; let expected: Double }
+            struct AttemptCase: Decodable { let name: String; let unit: String; let exercise: Lift; let e1rm: Double; let expected: [Double] }
+            let lengths: [Int]
+            let schedule: [ScheduleRow]
+            let weeks: [WeekCase]
+            let loads: [LoadCase]
+            let backoffs: [BackoffCase]
+            let attempts: [AttemptCase]
+        }
         let references: [String: [Double]]
+        let strength: Strength
         let readiness: [ReadinessCase]
         let fewerSets: [FewerSetsCase]
         let schedule: [Schedule]
@@ -67,6 +85,51 @@ final class TrainingBlockFixtureTests: XCTestCase {
         for row in fixtures.performance {
             func pairs(_ rows: [[Double]]) -> [(Double, Int)] { rows.map { ($0[0], Int($0[1])) } }
             XCTAssertEqual(TrainingBlockRules.performanceFell(previous: pairs(row.previous), current: pairs(row.current)), row.fell, row.name)
+        }
+    }
+
+    func testStrengthMatchesTheSharedContract() throws {
+        let strength = try load().strength
+        XCTAssertEqual(TrainingBlockRules.strengthLengths, strength.lengths[0]...strength.lengths[1])
+        for row in strength.schedule {
+            let plan = try XCTUnwrap(TrainingBlockRules.strengthWeek(length: 8, week: 8 - row.weeksToTest))
+            if let test = row.test {
+                XCTAssertTrue(plan.test)
+                XCTAssertEqual(TrainingBlockRules.testPercents, test)
+                XCTAssertEqual(plan.liftSets, 3)
+                XCTAssertEqual(plan.liftReps, 1)
+            } else if let top = row.top, let backoff = row.backoff {
+                XCTAssertEqual(plan.topReps, top.reps, "\(row.weeksToTest)")
+                XCTAssertEqual(plan.topRir, top.rir, "\(row.weeksToTest)")
+                XCTAssertEqual(plan.backoffSets, backoff.sets)
+                XCTAssertEqual(plan.backoffReps, backoff.reps)
+                XCTAssertEqual(plan.backoffPercent, backoff.percent)
+                XCTAssertEqual(plan.liftSets, 1 + backoff.sets)
+            }
+        }
+        XCTAssertNil(TrainingBlockRules.strengthWeek(length: 3, week: 1))
+        for fixture in strength.weeks {
+            for (index, expected) in fixture.expected.enumerated() {
+                XCTAssertEqual(TrainingBlockRules.strengthSets(fixture.exercises.map { (key: $0.key, sets: $0.sets) }, lifts: Set(fixture.lifts),
+                                                               length: fixture.length, week: index + 1), expected, "\(fixture.name) week \(index + 1)")
+            }
+        }
+        func lift(_ row: Fixtures.Strength.Lift) -> Exercise { Exercise(id: "lift", name: row.name, exerciseId: row.exerciseId, sets: 3, reps: RepTarget(min: 5, max: 5)) }
+        for row in strength.loads {
+            let unit = WeightUnit.fromCode(row.unit)
+            let target = TrainingBlockRules.topSetTarget(e1rm: unit.toCanonicalKg(row.e1rm), reps: row.reps, rir: row.rir)
+            let load = try XCTUnwrap(ProgressionEngine.gridLoadKg(exercise: lift(row.exercise), targetKg: target, unit: unit), row.name)
+            XCTAssertEqual(unit.toDisplay(load), row.expected, accuracy: 1e-6, row.name)
+        }
+        for row in strength.backoffs {
+            let unit = WeightUnit.fromCode(row.unit)
+            let load = try XCTUnwrap(ProgressionEngine.gridLoadKg(exercise: lift(row.exercise), targetKg: unit.toCanonicalKg(row.top) * row.percent / 100, unit: unit))
+            XCTAssertEqual(unit.toDisplay(load), row.expected, accuracy: 1e-6, row.name)
+        }
+        for row in strength.attempts {
+            let unit = WeightUnit.fromCode(row.unit)
+            let loads = try XCTUnwrap(ProgressionEngine.attemptsKg(exercise: lift(row.exercise), e1rmKg: unit.toCanonicalKg(row.e1rm), unit: unit))
+            XCTAssertEqual(loads.map { (unit.toDisplay($0) * 1000).rounded() / 1000 }, row.expected, row.name)
         }
     }
 
@@ -214,6 +277,59 @@ final class TrainingBlocksTests: XCTestCase {
         XCTAssertNil(TrainingBlocks.activeWeek(done, programId: "p", weekKey: "2026-W49"))
     }
 
+    func testAStrengthBlockPeaksItsLiftsForTheTest() throws {
+        XCTAssertEqual(TrainingBlocks.liftChoices(program).map(\.key), ["upper/bench", "lower/squat"])
+        let block = try XCTUnwrap(TrainingBlocks.startStrength(program, length: 5, lifts: ["lower/squat", "upper/raise", "lower/squat"],
+                                                               startWeek: "2026-W45", id: "s"))
+        XCTAssertEqual(block.lifts, ["lower/squat"], "only barbell lifts, once each")
+        XCTAssertTrue(block.isStrength)
+        XCTAssertEqual(block.weeks.count, 5)
+        XCTAssertTrue(block.weeks.allSatisfy(\.reviewed))
+        XCTAssertEqual(TrainingBlocks.advance(block, program: program, history: [], weekKey: "2026-W48"), block)
+        let week1 = TrainingBlocks.sessionWorkout(block, week: 1, workout: lower)
+        XCTAssertEqual(week1.exercises[0].sets, 4)
+        XCTAssertEqual(week1.exercises[0].reps, RepTarget(min: 5, max: 5))
+        XCTAssertEqual(week1.exercises[1].sets, 3)
+        XCTAssertEqual(TrainingBlocks.sessionWorkout(block, week: 4, workout: lower).exercises.map(\.sets), [3, 2])
+        let test = TrainingBlocks.sessionWorkout(block, week: 5, workout: lower)
+        XCTAssertEqual(test.exercises[0].sets, 3)
+        XCTAssertEqual(test.exercises[0].reps, RepTarget(min: 1, max: 1))
+        XCTAssertEqual(TrainingBlocks.strengthLift(block, week: 4, workout: lower, exercise: squat)?.topReps, 2)
+        XCTAssertNil(TrainingBlocks.strengthLift(block, week: 4, workout: lower, exercise: extensionLift))
+
+        let now = try XCTUnwrap(WorkoutCalendar.parseIsoTimestamp("2026-11-20T12:00:00Z"))
+        var old = record("old", block, week: 1, workout: lower, completedAt: "2026-09-01T18:00:00Z", sets: ["squat": [(200, 3)]])
+        old.blockId = nil
+        old.blockWeek = nil
+        let history = [old,
+            record("l1", block, week: 1, workout: lower, completedAt: "2026-11-02T18:00:00Z", sets: ["squat": [(140, 5), (120, 5)]]),
+            record("l3", block, week: 3, workout: lower, completedAt: "2026-11-16T18:00:00Z", sets: ["squat": [(150, 4), (130, 4)]]),
+            record("l5", block, week: 5, workout: lower, completedAt: "2026-11-30T18:00:00Z", sets: ["squat": [(150, 1), (160, 1), (165, 1)]])]
+        XCTAssertEqual(try XCTUnwrap(TrainingBlocks.estimatedOneRepMaxKg(workout: lower, exercise: squat, history: Array(history.prefix(3)), now: now)),
+                       150.0 * 36 / 33, accuracy: 1e-6, "the last 42 days only")
+        XCTAssertNil(TrainingBlocks.estimatedOneRepMaxKg(workout: upper, exercise: bench, history: history, now: now))
+        let progress = try XCTUnwrap(TrainingBlocks.liftProgress(block, program: program, history: history).first)
+        XCTAssertEqual(progress.exerciseName, "Barbell Back Squat")
+        XCTAssertEqual(progress.byWeek.count, 4)
+        XCTAssertEqual(progress.byWeek[0] ?? 0, 140.0 * 36 / 32, accuracy: 1e-6)
+        XCTAssertNil(progress.byWeek[1])
+        XCTAssertEqual(progress.testKg, 165)
+
+        let state = StoredAppState(programs: [program], activeProgramId: "p", currentWeekKey: "2026-W45", trainingBlock: block)
+        let json = try XCTUnwrap(AppStore.encodeBackup(FullBackupDocument(state: state, weightUnit: .kg)))
+        XCTAssertEqual(try JSONDecoder().decode(FullBackupDocument.self, from: Data(json.utf8)).state.trainingBlock, block)
+        var noLift = block
+        noLift.lifts = []
+        XCTAssertNil(TrainingBlocks.sanitize(noLift, programs: [program]), "a strength block needs a lift")
+        var long = block
+        long.length = 8
+        XCTAssertEqual(TrainingBlocks.sanitize(long, programs: [program])?.length, 8)
+        var muscleLong = block
+        muscleLong.kind = nil
+        muscleLong.length = 8
+        XCTAssertNil(TrainingBlocks.sanitize(muscleLong, programs: [program]), "muscle blocks stay 4 to 6 weeks")
+    }
+
     func testFeedbackIsAskedAroundEachMusclesFirstAndLastExercise() {
         let workout = Workout(id: "w", day: 1, title: "Mixed", exercises: [bench, squat, raise, extensionLift])
         let plan = TrainingBlocks.feedbackPlan(workout)
@@ -355,6 +471,48 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         }
     }
 
+    /// A strength block through the store: the week's lift sets, the card's Use, and the test week's singles.
+    @MainActor func testAStrengthBlockSessionSuggestsTopSetThenBackOffs() throws {
+        try preservingDefaults {
+            let previous = LanguageManager.shared.languagePreference
+            defer { LanguageManager.setLanguage(previous) }
+            LanguageManager.setLanguage("en")
+            let access = ProAccessManager.shared
+            access.setFeatureOverride(.autoProgression, unlocked: true)
+            defer { access.setFeatureOverride(.autoProgression, unlocked: nil) }
+            let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            let earlier = WorkoutCalendar.formatIsoTimestamp(Date().addingTimeInterval(-5 * 86_400))
+            let prior = WorkoutSessionRecord(id: "earlier", programId: "p", workoutId: "lower", workoutTitle: "Lower", startedAt: earlier,
+                completedAt: earlier, durationSeconds: 3600,
+                exerciseLogs: [SessionExerciseLog(exerciseName: squat.name, sets: [SessionSetLog(setNumber: 1, weightKg: 140, reps: 5)], exerciseId: squat.exerciseId)])
+            XCTAssertTrue(store.saveState(StoredAppState(programs: [program], activeProgramId: "p", currentWeekKey: store.state.currentWeekKey,
+                                                         history: [prior]), durable: true))
+            XCTAssertTrue(store.startTrainingBlock(length: 6, focus: [], nextWeek: false, strength: true, lifts: ["lower/squat"]))
+            XCTAssertTrue(store.startActiveSession(programId: "p", workout: lower, allowPast: true))
+            defer { store.abandonActiveSession() }
+            let draft = try XCTUnwrap(store.activeSession)
+            XCTAssertEqual(draft.workout.exercises.map(\.sets), [4], "this lower day is the squat alone")
+            XCTAssertEqual(draft.setsByExercise["squat"]?.count, 4)
+            let estimate = TrainingBlocks.estimatedOneRepMaxKg(workout: draft.workout, exercise: draft.workout.exercises[0], history: store.state.history,
+                                                               excludeSessionId: draft.id)
+            XCTAssertEqual(try XCTUnwrap(estimate), 157.5, accuracy: 1e-6)
+            let controller = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1500))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            defer { window.isHidden = true }
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+            let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+            let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/block-review").standardized
+            try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+            try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("strength-session-top.png"))
+        }
+    }
+
     @MainActor private func render<V: View>(_ view: V, width: CGFloat, size: ContentSizeCategory, height: CGFloat, name: String) throws {
         let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/block-review").standardized
         try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
@@ -427,6 +585,11 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
             blockId: "b", blockWeek: 1,
             muscleFeedback: ["chest": MuscleFeedback(pump: "low", workload: "easy", soreness: "healed_early"), "side-delts": MuscleFeedback(soreness: "still_sore")])
         block = TrainingBlocks.advance(block, program: program, history: [record], weekKey: "2026-W46")
+        let strengthBlock = try XCTUnwrap(TrainingBlocks.startStrength(program, length: 5, lifts: ["lower/squat"], startWeek: "2026-W45", id: "s"))
+        let strengthRecord = WorkoutSessionRecord(id: "l1", programId: "p", workoutId: "lower", workoutTitle: "Lower", startedAt: "2026-11-04T18:00:00Z",
+            completedAt: "2026-11-04T19:00:00Z", durationSeconds: 3600,
+            exerciseLogs: [SessionExerciseLog(exerciseName: squat.name, sets: [SessionSetLog(setNumber: 1, weightKg: 140, reps: 5)], exerciseId: squat.exerciseId)],
+            blockId: "s", blockWeek: 1)
         LanguageManager.setLanguage("en")
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W46", unlocked: true),
                        .active(block, week: 2, target: 2, ready: true))
@@ -462,6 +625,11 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                 try render(page(AnyView(TrainingBlockSummaryContent(block: block, program: program, history: [record], weightUnit: .kg,
                                                                     onStartAnother: {}, onDone: {}))),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-summary-\(language)-\(label)")
+                try render(page(AnyView(TrainingBlockWeekContent(block: strengthBlock, week: 4, program: program, scale: .rir) { _ in })),
+                           width: width, size: size, height: size == .large ? 900 : 1500, name: "block-strength-week-\(language)-\(label)")
+                try render(page(AnyView(TrainingBlockSummaryContent(block: strengthBlock, program: program, history: [strengthRecord], weightUnit: .kg,
+                                                                    onStartAnother: {}, onDone: {}))),
+                           width: width, size: size, height: size == .large ? 900 : 1500, name: "block-strength-summary-\(language)-\(label)")
             }
         }
     }

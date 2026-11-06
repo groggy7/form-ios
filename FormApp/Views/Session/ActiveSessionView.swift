@@ -241,11 +241,17 @@ public struct ActiveSessionView: View {
                                     // A block week sets the effort target, the mid-workout window and the muscle questions.
                                     let block = store.state.trainingBlock.flatMap { $0.id == activeDraft.blockId ? $0 : nil }
                                     let blockWeek = block == nil ? nil : activeDraft.blockWeek
-                                    let plannedTarget = blockWeek.flatMap { TrainingBlockRules.target(length: block!.length, week: $0) }
+                                    // Muscle blocks set an effort target, a deload and muscle questions; strength blocks prescribe their lifts.
+                                    let muscleBlock = block?.isStrength == false ? block : nil
+                                    let plannedTarget = muscleBlock.flatMap { muscle in blockWeek.flatMap { TrainingBlockRules.target(length: muscle.length, week: $0) } }
                                     // A lighter day the lifter chose can add one rep in reserve to the week's target.
                                     let blockTarget = Readiness.target(plannedTarget, check: activeDraft.readiness)
-                                    let blockDeload = block != nil && blockWeek.map { TrainingBlockRules.isDeload(length: block!.length, week: $0) } == true
-                                    let blockQuestions = block == nil ? nil : TrainingBlocks.feedbackPlan(activeDraft.workout)
+                                    let blockDeload = muscleBlock != nil && blockWeek.map { TrainingBlockRules.isDeload(length: muscleBlock!.length, week: $0) } == true
+                                    let blockQuestions = muscleBlock == nil ? nil : TrainingBlocks.feedbackPlan(activeDraft.workout)
+                                    let strengthPlan = TrainingBlocks.strengthLift(block, week: blockWeek, workout: activeDraft.workout, exercise: exercise)
+                                    let liftEstimateKg = strengthPlan == nil ? nil
+                                        : TrainingBlocks.estimatedOneRepMaxKg(workout: activeDraft.workout, exercise: exercise, history: store.state.history,
+                                                                              excludeSessionId: activeDraft.id)
                                     // Asked before the workout's first working set; it leaves once one is ticked.
                                     if store.readinessCheck && proManager.isFeatureUnlocked(.autoProgression)
                                         && !activeDraft.setsByExercise.values.joined().contains(where: { $0.isCompleted && !$0.isWarmup }) {
@@ -260,7 +266,8 @@ public struct ActiveSessionView: View {
                                             .accessibilityIdentifier("block-deload-hint")
                                     }
                                     let recommendation = historyInsights?.recommendation
-                                    let showsProgressionCard = recommendation != nil && store.showProgressionTargets
+                                    // A strength block's lift follows its own top set and back-offs instead of the coach.
+                                    let showsProgressionCard = recommendation != nil && store.showProgressionTargets && strengthPlan == nil
 
                                     if let recommendation, showsProgressionCard {
                                         ProgressionCoachCard(
@@ -330,7 +337,7 @@ public struct ActiveSessionView: View {
                                     // The first working set's reps in reserve can offer a load step for the rest (Premium coach).
                                     let effortOn = store.repsInReserve || activeDraft.blockId != nil
                                     let loadAdjustment = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
-                                        effortOn && !keptAdjustments.contains(exercise.id) && !blockDeload
+                                        effortOn && !keptAdjustments.contains(exercise.id) && !blockDeload && strengthPlan == nil
                                         ? ProgressionEngine.loadAdjustment(exercise: exercise, sets: currentSets, unit: store.weightUnit,
                                                                            steps: store.progressionLoadSteps,
                                                                            window: blockTarget.map { TrainingBlockRules.window(target: $0) } ?? SetEffort.targetWindow)
@@ -345,10 +352,17 @@ public struct ActiveSessionView: View {
                                             store.setMuscleFeedback(muscle: $0, feedback: $1)
                                         }
                                     }
+                                    if let strengthPlan {
+                                        StrengthLiftCard(plan: strengthPlan, exercise: exercise, sets: currentSets, estimateKg: liftEstimateKg,
+                                                         weightUnit: store.weightUnit, steps: store.progressionLoadSteps, scale: store.effortScale) {
+                                            applyProgressionTargets($0, exerciseId: exercise.id)
+                                        }
+                                    }
 
                                     SetLoggingTable(
                                         sets: currentSets,
-                                        prescription: exercise.displayPrescription,
+                                        // The test's singles read "Test" alone rather than "1 reps".
+                                        prescription: strengthPlan?.test == true ? "" : exercise.displayPrescription,
                                         isRestActive: isRestActive,
                                         isRestForCurrentExercise: isRestForCurrentExercise,
                                         previousSets: previousSetsByIndex,
@@ -391,8 +405,10 @@ public struct ActiveSessionView: View {
                                                 onKeep: { keptAdjustments.insert(exercise.id) })))
                                         },
                                         // The ratings sit right under the last set, where the exercise ends.
-                                        prescriptionSuffix: blockDeload ? LanguageManager.t("block.setup.deload")
-                                            : blockTarget.map { SetEffort.tag($0, scale: store.effortScale) },
+                                        prescriptionSuffix: strengthPlan?.test == true ? LanguageManager.t("block.strength.pillTest")
+                                            : strengthPlan.map { LanguageManager.t("block.strength.pill", ["effort": SetEffort.tag($0.topRir, scale: store.effortScale)]) }
+                                            ?? (blockDeload ? LanguageManager.t("block.setup.deload")
+                                            : blockTarget.map { SetEffort.tag($0, scale: store.effortScale) }),
                                         ratings: asksEffort || asksJointStress || !pumpMuscles.isEmpty ? AnyView(VStack(spacing: 8) {
                                             ExerciseRatingsCard(
                                                 effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),

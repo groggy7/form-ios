@@ -178,7 +178,11 @@ public struct TodayView: View {
         case .setup:
             if let active = store.activeProgram {
                 TrainingBlockSetupSheet(program: active, scale: store.effortScale, replacesBlock: block != nil,
-                                        readinessCheck: $store.readinessCheck) { length, focus, nextWeek in
+                                        readinessCheck: $store.readinessCheck,
+                                        onStartStrength: { length, lifts, nextWeek in
+                                            store.startTrainingBlock(length: length, focus: [], nextWeek: nextWeek, strength: true, lifts: lifts)
+                                            blockSheet = nil
+                                        }) { length, focus, nextWeek in
                     store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
                     blockSheet = nil
                 }

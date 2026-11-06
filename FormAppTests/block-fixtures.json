@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target. `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order. `readiness` cases give the pre-workout answers (sleep poor/ok/good, energy low/ok/high, soreness none/some/a_lot), the block week's target (null outside a block) and whether it is the deload; `expected` says whether a lighter day is offered, its options in order, and the target after \"more_rir\". `fewerSets` cases give an exercise's planned `sets` and rows (`done`, `warmup`); `expected` is the rows kept, by index, and the exercise's sets after \"fewer_sets\".",
+  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target. `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order. `readiness` cases give the pre-workout answers (sleep poor/ok/good, energy low/ok/high, soreness none/some/a_lot), the block week's target (null outside a block) and whether it is the deload; `expected` says whether a lighter day is offered, its options in order, and the target after \"more_rir\". `fewerSets` cases give an exercise's planned `sets` and rows (`done`, `warmup`); `expected` is the rows kept, by index, and the exercise's sets after \"fewer_sets\". `strength` holds the strength-block contract: `schedule` gives each number of weeks to the test week (0 is the test, 1 the taper) with the lifts' top set (`reps`, `rir`) and back-off sets (`sets`, `reps`, `percent`) or the test's attempt percentages; `weeks` gives a block's lifts and other exercises and every week's sets; `loads`, `backoffs` and `attempts` give loads in `unit` for a barbell `exercise` on the default plates and Olympic bar: a top set from an estimated 1RM (`e1rm`), a back-off from a logged top set, and the test's three singles.",
   "references": {
     "chest": [
       6,
@@ -3412,5 +3412,310 @@
         "sets": 2
       }
     }
-  ]
+  ],
+  "strength": {
+    "lengths": [
+      4,
+      8
+    ],
+    "schedule": [
+      {
+        "weeksToTest": 5,
+        "top": {
+          "reps": 5,
+          "rir": 2
+        },
+        "backoff": {
+          "sets": 3,
+          "reps": 5,
+          "percent": 85
+        }
+      },
+      {
+        "weeksToTest": 4,
+        "top": {
+          "reps": 5,
+          "rir": 2
+        },
+        "backoff": {
+          "sets": 3,
+          "reps": 5,
+          "percent": 85
+        }
+      },
+      {
+        "weeksToTest": 3,
+        "top": {
+          "reps": 4,
+          "rir": 2
+        },
+        "backoff": {
+          "sets": 3,
+          "reps": 4,
+          "percent": 87.5
+        }
+      },
+      {
+        "weeksToTest": 2,
+        "top": {
+          "reps": 3,
+          "rir": 1
+        },
+        "backoff": {
+          "sets": 3,
+          "reps": 3,
+          "percent": 90
+        }
+      },
+      {
+        "weeksToTest": 1,
+        "top": {
+          "reps": 2,
+          "rir": 2
+        },
+        "backoff": {
+          "sets": 2,
+          "reps": 2,
+          "percent": 90
+        }
+      },
+      {
+        "weeksToTest": 0,
+        "test": [
+          90,
+          96,
+          101
+        ]
+      }
+    ],
+    "weeks": [
+      {
+        "name": "lifts follow the schedule; other exercises halve in the taper and test weeks",
+        "length": 5,
+        "lifts": [
+          "lower/squat"
+        ],
+        "exercises": [
+          {
+            "key": "lower/squat",
+            "sets": 3
+          },
+          {
+            "key": "lower/leg-curl",
+            "sets": 3
+          },
+          {
+            "key": "upper/row",
+            "sets": 4
+          }
+        ],
+        "expected": [
+          {
+            "lower/squat": 4,
+            "lower/leg-curl": 3,
+            "upper/row": 4
+          },
+          {
+            "lower/squat": 4,
+            "lower/leg-curl": 3,
+            "upper/row": 4
+          },
+          {
+            "lower/squat": 4,
+            "lower/leg-curl": 3,
+            "upper/row": 4
+          },
+          {
+            "lower/squat": 3,
+            "lower/leg-curl": 2,
+            "upper/row": 2
+          },
+          {
+            "lower/squat": 3,
+            "lower/leg-curl": 2,
+            "upper/row": 2
+          }
+        ]
+      }
+    ],
+    "loads": [
+      {
+        "name": "a top set of 5 at RIR 2 is 30/36 of the estimate",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "barbell-bench-press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "reps": [
+            8,
+            12
+          ]
+        },
+        "e1rm": 120,
+        "reps": 5,
+        "rir": 2,
+        "expected": 100.0
+      },
+      {
+        "name": "loads round down to the bar grid",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "barbell-back-squat",
+          "name": "Barbell Back Squat",
+          "sets": 3,
+          "reps": [
+            6,
+            10
+          ]
+        },
+        "e1rm": 183,
+        "reps": 3,
+        "rir": 1,
+        "expected": 167.5
+      },
+      {
+        "name": "pounds use the pound grid from a 45 lb bar",
+        "unit": "lbs",
+        "exercise": {
+          "exerciseId": "barbell-bench-press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "reps": [
+            8,
+            12
+          ]
+        },
+        "e1rm": 275,
+        "reps": 4,
+        "rir": 2,
+        "expected": 235.0
+      },
+      {
+        "name": "never below the empty bar",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "standing-barbell-overhead-press",
+          "name": "Standing Barbell Overhead Press",
+          "sets": 3,
+          "reps": [
+            6,
+            10
+          ]
+        },
+        "e1rm": 22,
+        "reps": 5,
+        "rir": 2,
+        "expected": 20.0
+      }
+    ],
+    "backoffs": [
+      {
+        "name": "85% of the logged top set",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "barbell-bench-press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "reps": [
+            8,
+            12
+          ]
+        },
+        "top": 100,
+        "percent": 85,
+        "expected": 85.0
+      },
+      {
+        "name": "87.5% rounds down",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "barbell-bench-press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "reps": [
+            8,
+            12
+          ]
+        },
+        "top": 102.5,
+        "percent": 87.5,
+        "expected": 87.5
+      },
+      {
+        "name": "pounds",
+        "unit": "lbs",
+        "exercise": {
+          "exerciseId": "barbell-back-squat",
+          "name": "Barbell Back Squat",
+          "sets": 3,
+          "reps": [
+            6,
+            10
+          ]
+        },
+        "top": 315,
+        "percent": 90,
+        "expected": 280.0
+      }
+    ],
+    "attempts": [
+      {
+        "name": "90, 96 and 101% of the estimate",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "barbell-bench-press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "reps": [
+            8,
+            12
+          ]
+        },
+        "e1rm": 150,
+        "expected": [
+          135.0,
+          142.5,
+          152.5
+        ]
+      },
+      {
+        "name": "close loads stay a step apart",
+        "unit": "kg",
+        "exercise": {
+          "exerciseId": "standing-barbell-overhead-press",
+          "name": "Standing Barbell Overhead Press",
+          "sets": 3,
+          "reps": [
+            6,
+            10
+          ]
+        },
+        "e1rm": 25,
+        "expected": [
+          22.5,
+          25.0,
+          27.5
+        ]
+      },
+      {
+        "name": "pounds",
+        "unit": "lbs",
+        "exercise": {
+          "exerciseId": "barbell-back-squat",
+          "name": "Barbell Back Squat",
+          "sets": 3,
+          "reps": [
+            6,
+            10
+          ]
+        },
+        "e1rm": 405,
+        "expected": [
+          360.0,
+          385.0,
+          410.0
+        ]
+      }
+    ]
+  }
 }
