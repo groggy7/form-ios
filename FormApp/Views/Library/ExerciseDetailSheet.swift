@@ -929,12 +929,13 @@ struct ExerciseSessionHistoryCard: View {
                                 Spacer()
 
                                 let setDetail: String = {
+                                    let effort = SetEffort.tag(of: setLog).map { " · " + $0 } ?? ""
                                     if IntensitySets.hasDetail(setLog) {
-                                        return IntensitySets.notation(setLog, unit: weightUnit)
+                                        return IntensitySets.notation(setLog, unit: weightUnit) + effort
                                     } else if let w = setLog.weightKg, w > 0.0 {
-                                        return "\(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
+                                        return "\(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)" + effort
                                     } else {
-                                        return "\(setLog.reps ?? 0) reps"
+                                        return "\(setLog.reps ?? 0) reps" + effort
                                     }
                                 }()
 

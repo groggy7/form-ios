@@ -309,6 +309,26 @@ final class HistoryImportTests: XCTestCase {
         XCTAssertEqual(imported.exerciseLogs[0].setupNote, "Seat 4")
     }
 
+    /// RPE becomes reps in reserve on working sets only, rounded toward the harder side (docs/adaptive-training.md).
+    func testStrongRpeIsKeptAsRepsInReserveOnWorkingSets() throws {
+        let csv = strong(
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);W;40;10;9;;;;",
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);1;100;8;8.5;;;;",
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);2;100;7;9.5;;;;",
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);D;80;6;10;;;;",
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);3;100;6;;;;;",
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);4;90;8;5;;;;"
+        )
+        let plan = try plan(csv)
+        XCTAssertEqual(plan.file.rpeValues, 5)
+        XCTAssertEqual(plan.file.rpeKept, 3, "the warmup's and the drop's RPE are not kept")
+        let sets = plan.records[0].exerciseLogs[0].sets
+        XCTAssertEqual(sets.map(\.rir), [nil, 1, 0, nil, 4])
+        XCTAssertEqual(sets[2].setExtensions.count, 1, "the drop still joins the set before it")
+        let restored = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONEncoder().encode(plan.records[0]))
+        XCTAssertEqual(restored.exerciseLogs[0].sets.map(\.rir), [nil, 1, 0, nil, 4])
+    }
+
     func testEverySharedCaseMatchesItsExpectedResult() throws {
         var checked = 0
         for testCase in cases {

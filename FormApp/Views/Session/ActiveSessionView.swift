@@ -340,6 +340,9 @@ public struct ActiveSessionView: View {
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         logbookBeatenSets: logbookBeatenSets,
                                         intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil,
+                                        effort: store.repsInReserve ? EffortActions(scale: store.effortScale) { setIdx, rir in
+                                            store.setEffort(exerciseId: exercise.id, index: setIdx, rir: rir)
+                                        } : nil,
                                         // The ratings sit right under the last set, where the exercise ends.
                                         ratings: asksEffort || asksJointStress ? AnyView(ExerciseRatingsCard(
                                             effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),

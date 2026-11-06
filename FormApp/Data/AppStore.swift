@@ -54,6 +54,8 @@ public final class AppStore: ObservableObject {
     private let showProgressionTargetsKey = "show_progression_targets"
     private let showIntensityTechniquesKey = "show_intensity_techniques"
     private let jointStressRatingsKey = "joint_stress_ratings"
+    private let repsInReserveKey = "reps_in_reserve"
+    private let effortScaleKey = SetEffort.scaleDefaultsKey
     private let recordWatchWorkoutsKey = "record_watch_workouts"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
     private static let dumbbellStepLbsKey = "progression_dumbbell_step_lbs"
@@ -121,6 +123,10 @@ public final class AppStore: ObservableObject {
     var socialPreferences = SocialCardPreferences.shared
     /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
     @Published public var jointStressRatings: Bool
+    /// Opt-in reps in reserve on each completed working set (docs/adaptive-training.md#phase-a-effort-logging-free).
+    @Published public var repsInReserve: Bool
+    /// How effort reads: reps in reserve or RPE. Stored values are always RIR.
+    @Published public var effortScale: SetEffort.Scale
     /// Starts the Apple Watch app with each workout and records it in Apple Health there (docs/apple-watch.md).
     @Published public var recordWatchWorkouts: Bool
     /// Reference day tiles are the default; switching off retains the optional Calm material.
@@ -278,6 +284,8 @@ public final class AppStore: ObservableObject {
         self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
+        self.repsInReserve = UserDefaults.standard.object(forKey: repsInReserveKey) as? Bool ?? false
+        self.effortScale = (UserDefaults.standard.string(forKey: effortScaleKey)).flatMap(SetEffort.Scale.init(rawValue:)) ?? .rir
         self.recordWatchWorkouts = UserDefaults.standard.object(forKey: recordWatchWorkoutsKey) as? Bool ?? true
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
         self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? true
@@ -470,6 +478,14 @@ public final class AppStore: ObservableObject {
         $jointStressRatings
             .dropFirst()
             .sink { [jointStressRatingsKey] in UserDefaults.standard.set($0, forKey: jointStressRatingsKey) }
+            .store(in: &cancellables)
+        $repsInReserve
+            .dropFirst()
+            .sink { [repsInReserveKey] in UserDefaults.standard.set($0, forKey: repsInReserveKey) }
+            .store(in: &cancellables)
+        $effortScale
+            .dropFirst()
+            .sink { [effortScaleKey] in UserDefaults.standard.set($0.rawValue, forKey: effortScaleKey) }
             .store(in: &cancellables)
         $recordWatchWorkouts
             .dropFirst()
@@ -874,6 +890,18 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    /// Records or clears the lifter's reps in reserve on a completed working set.
+    public func setEffort(exerciseId: String, index: Int, rir: Int?) {
+        updateActiveSession { d in
+            var copy = d
+            guard var sets = copy.setsByExercise[exerciseId], sets.indices.contains(index),
+                  rir == nil || SetEffort.canRate(sets[index]) else { return copy }
+            sets[index] = SetEffort.rating(sets[index], rir: rir)
+            copy.setsByExercise[exerciseId] = sets
+            return copy
+        }
+    }
+
     public func toggleWarmup(exerciseId: String, index: Int) {
         updateActiveSession { d in
             var copy = d
@@ -912,10 +940,11 @@ public final class AppStore: ObservableObject {
                 isCompleted: s.isCompleted,
                 inputTouched: s.inputTouched,
                 isWarmup: false,
-                // Warmups above are rebuilt without techniques; working sets keep theirs.
+                // Warmups above are rebuilt without techniques or effort; working sets keep theirs.
                 technique: s.technique,
                 partialRepsInput: s.partialRepsInput,
-                extensions: s.extensions
+                extensions: s.extensions,
+                rir: s.rir
             )
         }
         return warmups + working
@@ -2345,6 +2374,9 @@ struct FullBackupDocument: Codable, @unchecked Sendable {
         if let problem = BackupSanitizer.intensityProblem(in: decoded.history) {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Backup contains an invalid intensity set (\(problem))"))
         }
+        if let problem = BackupSanitizer.effortProblem(in: decoded.history) {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Backup contains an invalid set effort (\(problem))"))
+        }
         state = BackupSanitizer.sanitize(decoded)
         let metadata = try decoder.container(keyedBy: MetadataKeys.self)
         if let code = try metadata.decodeIfPresent(String.self, forKey: .weightUnit) {
@@ -2441,7 +2473,9 @@ enum BackupSanitizer {
                     // Validated before sanitizing (intensityProblem), so these pass through unchanged.
                     partialReps: set.partialReps,
                     technique: set.technique,
-                    extensions: set.extensions
+                    extensions: set.extensions,
+                    // Backups are validated (effortProblem); stored state drops anything the logger never writes.
+                    rir: set.isWarmup ? nil : set.rir.flatMap { SetEffort.rirRange.contains($0) ? $0 : nil }
                 )
             }
             return log
@@ -2460,6 +2494,18 @@ enum BackupSanitizer {
                 let assisted = WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: log.exerciseName)
                 for set in log.sets {
                     if let problem = IntensitySets.restoreError(set, assisted: assisted) { return problem }
+                }
+            }
+        }
+        return nil
+    }
+
+    /// The first saved effort a logger could never write: out of range or on a warmup.
+    static func effortProblem(in history: [WorkoutSessionRecord]) -> String? {
+        for record in history {
+            for log in record.exerciseLogs {
+                for set in log.sets {
+                    if let problem = SetEffort.restoreError(set) { return problem }
                 }
             }
         }

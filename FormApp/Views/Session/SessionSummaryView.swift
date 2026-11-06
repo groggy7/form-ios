@@ -215,6 +215,13 @@ public struct SessionSummaryView: View {
                                                         .foregroundStyle(AppColors.secondaryText)
                                                         .fixedSize(horizontal: false, vertical: true)
                                                 }
+                                                if let effort = SetEffort.summary(working) {
+                                                    Text(effort)
+                                                        .font(.app(size: 12, weight: .medium))
+                                                        .foregroundStyle(AppColors.purple)
+                                                        .fixedSize(horizontal: false, vertical: true)
+                                                        .accessibilityIdentifier("summary-effort")
+                                                }
                                             }
 
                                             Spacer()

@@ -147,7 +147,7 @@ final class HealthWeighInTests: XCTestCase {
                                    hiddenHealthWeighIns: ["2026-10-02", "bad", "2026-10-02", "2099-01-01", "2026-09-30"])
         let data = try JSONEncoder().encode(FullBackupDocument(state: state, weightUnit: .kg))
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(json["schemaVersion"] as? Int, 6)
+        XCTAssertEqual(json["schemaVersion"] as? Int, StoredAppState.currentSchemaVersion)
         let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data).state
         XCTAssertEqual(restored.hiddenHealthWeighIns, ["2026-09-30", "2026-10-02"])
         XCTAssertEqual(restored.bodyEntries, [BodyEntry(date: "2026-10-01", waistCm: 85)])

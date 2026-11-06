@@ -13062,9 +13062,9 @@ final class PremiumSettingsTests: XCTestCase {
             try await Task.sleep(nanoseconds: 250_000_000)
             controller.view.layoutIfNeeded()
             let switches = descendants(controller.view).compactMap { $0 as? UISwitch }
-            // Premium controls follow the pre-fill, intensity and joint-stress switches.
-            XCTAssertGreaterThanOrEqual(switches.count, 5)
-            for control in switches.dropFirst(3).prefix(2) {
+            // Premium controls follow the pre-fill, intensity, joint-stress and reps-in-reserve switches.
+            XCTAssertGreaterThanOrEqual(switches.count, 6)
+            for control in switches.dropFirst(4).prefix(2) {
                 XCTAssertEqual(control.isEnabled, unlocked)
                 XCTAssertEqual(control.isOn, !unlocked)
             }

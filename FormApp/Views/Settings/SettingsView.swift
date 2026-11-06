@@ -337,6 +337,33 @@ public struct SettingsView: View {
                     .tint(AppColors.accent)
                     .padding(14)
                     .accessibilityIdentifier("toggle-joint-stress")
+                },
+                SettingsEntry("reps-in-reserve", terms: [LanguageManager.t("settings.repsInReserve"), LanguageManager.t("settings.repsInReserveSubtitle"),
+                                                         LanguageManager.t("settings.effortScale"), "RIR", "RPE"]) {
+                    VStack(spacing: 0) {
+                        Toggle(isOn: $store.repsInReserve) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.repsInReserve"))
+                                    .font(.app(size: 15))
+                                    .foregroundStyle(AppColors.text)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(LanguageManager.t("settings.repsInReserveSubtitle"))
+                                    .font(.app(size: 12))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .tint(AppColors.accent)
+                        .padding(14)
+                        .accessibilityIdentifier("toggle-reps-in-reserve")
+                        if store.repsInReserve {
+                            ViewThatFits(in: .horizontal) {
+                                HStack(spacing: 12) { effortScaleLabels; Spacer(minLength: 0); effortScalePicker.frame(width: 120) }
+                                VStack(alignment: .leading, spacing: 8) { effortScaleLabels; effortScalePicker }
+                            }
+                            .padding(.horizontal, 14).padding(.bottom, 14)
+                        }
+                    }
                 }
             ]),
             SettingsGroup(id: "progression", title: LanguageManager.t("settings.progressionWarmup"), premium: true, entries: [
@@ -738,6 +765,29 @@ enum SettingsSearch {
 }
 
 /// One Settings row and the localized text a search can find it by.
+private extension SettingsView {
+    var effortScaleLabels: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(LanguageManager.t("settings.effortScale"))
+                .font(.app(size: 15))
+                .foregroundStyle(AppColors.text)
+            Text(LanguageManager.t("settings.effortScaleSubtitle"))
+                .font(.app(size: 12))
+                .foregroundStyle(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    var effortScalePicker: some View {
+        Picker(LanguageManager.t("settings.effortScale"), selection: $store.effortScale) {
+            Text(LanguageManager.t("effort.scale.rir")).tag(SetEffort.Scale.rir)
+            Text(LanguageManager.t("effort.scale.rpe")).tag(SetEffort.Scale.rpe)
+        }
+        .pickerStyle(.segmented)
+        .accessibilityIdentifier("picker-effort-scale")
+    }
+}
+
 private struct SettingsEntry: Identifiable {
     let id: String
     let terms: [String]

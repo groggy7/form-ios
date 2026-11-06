@@ -56,6 +56,10 @@ struct HistoryImportPreviewSheet: View {
                         if !plan.records.isEmpty {
                             countRow("import.preview.workingSets", plan.workingSets)
                             countRow("import.preview.warmupSets", plan.warmupSets)
+                            let effortSets = plan.records.reduce(0) { count, record in
+                                count + record.exerciseLogs.reduce(0) { $0 + $1.sets.filter { $0.rir != nil }.count }
+                            }
+                            if effortSets > 0 { countRow("import.preview.rirSets", effortSets) }
                             countRow("import.preview.libraryExercises", plan.libraryExercises)
                             countRow("import.preview.customExercises", plan.customExercises)
                             let noteCount = plan.records.reduce(0) { count, record in
@@ -122,7 +126,7 @@ struct HistoryImportPreviewSheet: View {
                         ("import.preview.timedSets", file.timedSets),
                         ("import.preview.distanceSets", file.distanceSets),
                         ("import.preview.setsWithoutReps", file.setsWithoutReps),
-                        ("import.preview.rpeValues", file.rpeValues),
+                        ("import.preview.rpeValues", file.rpeValues - file.rpeKept),
                         ("import.preview.supersetLinks", file.supersetLinks),
                         ("import.preview.nothingToImport", file.nothingToImport)
                     ].filter { $0.1 > 0 }

@@ -496,10 +496,12 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
     public var partialRepsInput: String?
     /// Drops or rest-pause efforts after the main part, in the order performed.
     public var extensions: [SetExtensionLog]?
+    /// Reps in reserve the lifter reported for the main part, 0–4 (4 means four or more); docs/adaptive-training.md.
+    public var rir: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, setNumber, weightInput, repsInput, weightKg, completedReps, isCompleted, inputTouched, isWarmup, targetReps
-        case technique, partialRepsInput, extensions
+        case technique, partialRepsInput, extensions, rir
     }
 
     public init(
@@ -515,8 +517,10 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         targetReps: Int? = nil,
         technique: String? = nil,
         partialRepsInput: String? = nil,
-        extensions: [SetExtensionLog]? = nil
+        extensions: [SetExtensionLog]? = nil,
+        rir: Int? = nil
     ) {
+        self.rir = rir
         self.targetReps = targetReps
         self.id = id
         self.setNumber = setNumber
@@ -547,6 +551,7 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.technique = try container.decodeIfPresent(String.self, forKey: .technique)
         self.partialRepsInput = try container.decodeIfPresent(String.self, forKey: .partialRepsInput)
         self.extensions = try container.decodeIfPresent([SetExtensionLog].self, forKey: .extensions)
+        self.rir = (try? container.decodeIfPresent(Int.self, forKey: .rir)).flatMap { SetEffort.rirRange.contains($0) ? $0 : nil }
     }
 }
 
@@ -618,13 +623,16 @@ public struct SessionSetLog: Codable, Hashable {
     public var partialReps: Int?
     public var technique: String?
     public var extensions: [SessionSetExtension]?
+    /// Reps in reserve the lifter reported for the main part (working sets only); see `SetEffort`.
+    public var rir: Int?
 
     enum CodingKeys: String, CodingKey {
-        case setNumber, weightKg, reps, isWarmup, partialReps, technique, extensions
+        case setNumber, weightKg, reps, isWarmup, partialReps, technique, extensions, rir
     }
 
     public init(setNumber: Int, weightKg: Double? = nil, reps: Int? = nil, isWarmup: Bool = false,
-                partialReps: Int? = nil, technique: String? = nil, extensions: [SessionSetExtension]? = nil) {
+                partialReps: Int? = nil, technique: String? = nil, extensions: [SessionSetExtension]? = nil, rir: Int? = nil) {
+        self.rir = rir
         self.setNumber = setNumber
         self.weightKg = weightKg
         self.reps = reps
@@ -643,6 +651,8 @@ public struct SessionSetLog: Codable, Hashable {
         self.partialReps = try container.decodeIfPresent(Int.self, forKey: .partialReps)
         self.technique = try container.decodeIfPresent(String.self, forKey: .technique)
         self.extensions = try container.decodeIfPresent([SessionSetExtension].self, forKey: .extensions)
+        // Kept as written so backup restore can reject a value the logger never writes (SetEffort.restoreError).
+        self.rir = try container.decodeIfPresent(Int.self, forKey: .rir)
     }
 
     /// Completed extensions in order; empty for a straight set.
@@ -1412,8 +1422,8 @@ public enum WorkoutCalendar {
 
 
 public struct StoredAppState: Codable {
-    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log.
-    public static let currentSchemaVersion = 6
+    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log; 7 adds set effort (rir).
+    public static let currentSchemaVersion = 7
 
     public var schemaVersion: Int
     public var programs: [Program]

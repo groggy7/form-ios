@@ -82,6 +82,13 @@ public struct WorkoutDetailSheet: View {
                                                 .font(.app(size: 14, weight: .semibold))
                                                 .foregroundStyle(AppColors.text)
                                         }
+                                        if let effort = SetEffort.tag(of: setLog) {
+                                            Text(effort)
+                                                .font(.app(size: 12, weight: .semibold))
+                                                .foregroundStyle(AppColors.purple)
+                                                .lineLimit(1)
+                                                .fixedSize()
+                                        }
                                     }
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 8)

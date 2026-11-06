@@ -202,6 +202,8 @@ struct ImportedSetRow {
     let kind: ImportedSetKind
     let weight: Double
     let reps: Int
+    /// The row's RPE as reps in reserve; working rows only (docs/adaptive-training.md#history-and-import).
+    var rir: Int? = nil
 }
 
 struct ImportedExercise { let sourceName: String; let rows: [ImportedSetRow]; var note: String? = nil }
@@ -228,6 +230,8 @@ public struct HistoryImportFile {
     public let distanceSets: Int
     public let setsWithoutReps: Int
     public let rpeValues: Int
+    /// RPE values on working sets, saved as reps in reserve; the rest are not imported.
+    public var rpeKept: Int = 0
     public let exerciseNotes: Int
     public let workoutDescriptions: Int
     public let supersetLinks: Int
@@ -517,7 +521,7 @@ public enum HistoryImport {
         }
         if !problems.isEmpty { throw HistoryImportError(problems) }
 
-        var nothing = 0, timed = 0, distanceSets = 0, noReps = 0, rpeCount = 0, notes = 0, descriptions = 0, supersets = 0
+        var nothing = 0, timed = 0, distanceSets = 0, noReps = 0, rpeCount = 0, rpeKept = 0, notes = 0, descriptions = 0, supersets = 0
         var sessions: [ImportedSession] = []
         for run in firstRuns {
             let head = run[0]
@@ -541,6 +545,7 @@ public enum HistoryImport {
                 }
                 for row in sets {
                     if row.rpe != nil { rpeCount += 1 }
+                    if row.kind == .working, row.hasReps, SetEffort.rir(fromRpe: row.rpe) != nil { rpeKept += 1 }
                     if !row.hasReps {
                         if (row.distance ?? 0) > 0 { distanceSets += 1 }
                         else if (row.seconds ?? 0) > 0 { timed += 1 }
@@ -554,7 +559,8 @@ public enum HistoryImport {
                 if (note?.utf16.count ?? 0) > 10_000 { problem("notesTooLong", entry[0].line) }
                 exercises.append(ImportedExercise(sourceName: entry[0].exercise, rows: imported.map { row in
                     let kind: ImportedSetKind = row.kind == .warmup ? .warmup : row.kind == .drop ? .drop : .working
-                    return ImportedSetRow(line: row.line, kind: kind, weight: row.weight, reps: row.reps!)
+                    return ImportedSetRow(line: row.line, kind: kind, weight: row.weight, reps: row.reps!,
+                                          rir: kind == .working ? SetEffort.rir(fromRpe: row.rpe) : nil)
                 }, note: note))
             }
             if exercises.count > maxEntries { problem("tooManySets", head.line) }
@@ -575,7 +581,7 @@ public enum HistoryImport {
         return HistoryImportFile(
             source: source, fileUnit: fileUnit, zone: zone, sessions: sessions, repeatedInFile: repeated,
             nothingToImport: nothing, timedSets: timed, distanceSets: distanceSets, setsWithoutReps: noReps,
-            rpeValues: rpeCount, exerciseNotes: notes, workoutDescriptions: descriptions, supersetLinks: supersets
+            rpeValues: rpeCount, rpeKept: rpeKept, exerciseNotes: notes, workoutDescriptions: descriptions, supersetLinks: supersets
         )
     }
 
@@ -672,7 +678,8 @@ public enum HistoryImport {
                     }
                     separate += 1
                 }
-                sets.append(SessionSetLog(setNumber: sets.count + 1, weightKg: kg, reps: row.reps, isWarmup: row.kind == .warmup))
+                sets.append(SessionSetLog(setNumber: sets.count + 1, weightKg: kg, reps: row.reps, isWarmup: row.kind == .warmup,
+                                          rir: row.kind == .working ? row.rir : nil))
             }
             logs.append((SessionExerciseLog(exerciseName: name, sets: sets, targetSets: sets.filter { !$0.isWarmup }.count, exerciseId: id, setupNote: exercise.note), assisted))
         }

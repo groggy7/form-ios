@@ -27,6 +27,8 @@ public struct SetLoggingTable: View {
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     /// Drop sets, rest-pause and partials (docs/design/intensity-sets.md).
     var intensity: IntensityActions? = nil
+    /// Reps in reserve per completed working set (docs/adaptive-training.md); nil hides the effort line.
+    var effort: EffortActions? = nil
     /// The exercise's ratings, shown directly beneath its last set when the caller asks for them.
     var ratings: AnyView? = nil
     /// The session's number pad; the selected field becomes its target.
@@ -61,6 +63,7 @@ public struct SetLoggingTable: View {
         isBodyweight: Bool = false,
         logbookBeatenSets: [Int: LogbookBeatResult] = [:],
         intensity: IntensityActions? = nil,
+        effort: EffortActions? = nil,
         ratings: AnyView? = nil,
         keypad: SessionKeypad? = nil,
         weightStep: Double? = nil,
@@ -85,6 +88,7 @@ public struct SetLoggingTable: View {
         self.isBodyweight = isBodyweight
         self.logbookBeatenSets = logbookBeatenSets
         self.intensity = intensity
+        self.effort = effort
         self.ratings = ratings
         self.keypad = keypad
         self.weightStep = weightStep
@@ -169,8 +173,10 @@ public struct SetLoggingTable: View {
                         let isSetInputEnabled = isSetEnabled
                         // A technique follows a finished effort: offered under the newest completed working set and under any
                         // completed set being edited. It stays while a later set is typed, so no row moves under the finger.
-                        let showsTechniqueMenu = intensity != nil && !set.isWarmup && set.isCompleted
-                            && (selectedInSet || index == latestCompletedIndex)
+                        let followsFinishedEffort = !set.isWarmup && set.isCompleted && (selectedInSet || index == latestCompletedIndex)
+                        let showsTechniqueMenu = intensity != nil && followsFinishedEffort
+                        // Effort is asked where a technique is offered; elsewhere a rated set keeps a quiet tag.
+                        let showsEffortLine = effort != nil && followsFinishedEffort
                         let previous = set.isWarmup ? nil : previousSets[index].flatMap { $0.isWarmup ? nil : $0 }
                         let previousText: String = {
                             guard let previous, let load = previous.weightKg, load.isFinite, load >= 0,
@@ -276,16 +282,27 @@ public struct SetLoggingTable: View {
                         // A set and its drops, rest-pause efforts and partials share one container, so they read as one set.
                         VStack(spacing: 0) {
                             HStack(spacing: 8) {
-                                Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
-                                    .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
-                                    .foregroundStyle(
-                                        set.isWarmup
-                                            ? AppColors.warmupAmber
-                                            : (set.isCompleted
-                                                ? AppColors.accent
-                                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
-                                    )
-                                    .frame(width: 32, alignment: .center)
+                                VStack(spacing: 1) {
+                                    Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
+                                        .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
+                                        .foregroundStyle(
+                                            set.isWarmup
+                                                ? AppColors.warmupAmber
+                                                : (set.isCompleted
+                                                    ? AppColors.accent
+                                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
+                                        )
+                                    if let effort, !showsEffortLine, !set.isWarmup, let rir = set.rir {
+                                        Text(SetEffort.tag(rir, scale: effort.scale))
+                                            .font(.app(size: 9, weight: .bold))
+                                            .foregroundStyle(AppColors.purple)
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(0.6)
+                                            .accessibilityLabel(SetEffort.spokenLabel(rir, scale: effort.scale))
+                                            .accessibilityIdentifier("effort-tag-\(set.id)")
+                                    }
+                                }
+                                .frame(width: 32, alignment: .center)
 
                                 let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
                                 if set.isWarmup {
@@ -395,6 +412,9 @@ public struct SetLoggingTable: View {
                             Text(LanguageManager.t(key)).font(.app(size: 12)).foregroundStyle(AppColors.danger)
                                 .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
                                 .accessibilityIdentifier("set-validation-\(set.id)")
+                        }
+                        if showsEffortLine, let effort {
+                            effortLine(set: set, index: index, actions: effort)
                         }
                         if showsTechniqueMenu, let intensity {
                             techniqueMenu(set: set, index: index, actions: intensity)
@@ -719,6 +739,54 @@ public struct SetLoggingTable: View {
         .accessibilityIdentifier("technique-menu")
     }
 
+    // MARK: Effort
+
+    /// One line under a finished working set: how many good reps were left. Tapping the chosen value clears it.
+    private func effortLine(set: ExerciseSetLog, index: Int, actions: EffortActions) -> some View {
+        let title = Text(LanguageManager.t(actions.scale == .rir ? "effort.title.rir" : "effort.title.rpe"))
+            .font(.app(size: 13, weight: .semibold))
+            .foregroundStyle(AppColors.secondaryText)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
+        let chips = HStack(spacing: 5) {
+            ForEach(SetEffort.values, id: \.self) { value in
+                let selected = set.rir == value
+                Button {
+                    UISelectionFeedbackGenerator().selectionChanged()
+                    actions.onSetEffort(index, selected ? nil : value)
+                } label: {
+                    Text(SetEffort.chipLabel(value, scale: actions.scale))
+                        .font(.app(size: 15, weight: .semibold))
+                        .monospacedDigit()
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .foregroundStyle(selected ? AppColors.purple : AppColors.secondaryText)
+                        .frame(minWidth: 40, maxWidth: .infinity, minHeight: 48)
+                        .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(selected ? AppColors.purpleBg : AppColors.surfaceRaised))
+                        .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .strokeBorder(selected ? AppColors.purple.opacity(0.7) : AppColors.border, lineWidth: 1))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(SetEffort.spokenLabel(value, scale: actions.scale))
+                .accessibilityValue(LanguageManager.t(selected ? "progression.effort.selected" : "progression.effort.not_selected"))
+                .accessibilityAddTraits(selected ? .isSelected : [])
+                .accessibilityHint(LanguageManager.t("effort.hint"))
+                .accessibilityIdentifier("effort-\(set.id)-\(value)")
+            }
+        }
+        // At 320 pt the session card leaves 244 pt: five chips of 44 pt with 5 pt gaps.
+        return ViewThatFits(in: .horizontal) {
+            HStack(spacing: 10) { title; chips }
+            VStack(alignment: .leading, spacing: 6) { title.padding(.leading, 4); chips }
+        }
+        .padding(.horizontal, 2)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(LanguageManager.t("effort.set", ["set": set.setNumber]))
+        .accessibilityIdentifier("effort-line-\(set.id)")
+    }
+
     // MARK: Scrolling
 
     static func groupId(_ setId: String) -> String { "set-group-" + setId }
@@ -778,6 +846,18 @@ private struct EndHereRow: View {
         .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("end-here-\(set.id)")
+    }
+}
+
+/// What the session table needs to log reps in reserve on completed working sets.
+public struct EffortActions {
+    public let scale: SetEffort.Scale
+    /// The set index and its new value; nil clears it.
+    public let onSetEffort: (Int, Int?) -> Void
+
+    public init(scale: SetEffort.Scale, onSetEffort: @escaping (Int, Int?) -> Void) {
+        self.scale = scale
+        self.onSetEffort = onSetEffort
     }
 }
 

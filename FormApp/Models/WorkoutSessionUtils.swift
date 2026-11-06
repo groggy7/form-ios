@@ -848,6 +848,89 @@ final class SessionHistoryInsightsCache {
 
 /// Drop sets, rest-pause and partials (gym/docs/design/intensity-sets.md). Android `IntensitySets`
 /// applies the same rules; gym/docs/intensity-fixtures.json checks both.
+/// Per-set effort, stored as reps in reserve (RIR). The lifter's own report on a working set's main part;
+/// RPE is a display scale over the same value. Shared with Android and backups (docs/adaptive-training.md).
+public enum SetEffort {
+    public static let rirRange = 0...4
+    /// The stored value that means "four or more"; beyond it self-reports are unreliable.
+    public static let maxRir = 4
+    /// The chips in reading order, easiest last.
+    public static let values = Array(rirRange)
+
+    public enum Scale: String, CaseIterable, Identifiable {
+        case rir, rpe
+        public var id: String { rawValue }
+    }
+
+    /// The device setting AppStore writes; history screens read it so saved effort shows on the chosen scale.
+    public static let scaleDefaultsKey = "effort_scale"
+    public static var preferredScale: Scale {
+        UserDefaults.standard.string(forKey: scaleDefaultsKey).flatMap(Scale.init(rawValue:)) ?? .rir
+    }
+
+    /// A saved working set's effort tag, such as "RIR 2"; nil when it has none.
+    public static func tag(of set: SessionSetLog, scale: Scale = preferredScale) -> String? {
+        guard !set.isWarmup, let rir = set.rir, rirRange.contains(rir) else { return nil }
+        return tag(rir, scale: scale)
+    }
+
+    /// One line for an exercise's working sets, such as "RIR 2 · 1 · 0" ("–" for an unrated set); nil when none is rated.
+    public static func summary(_ sets: [SessionSetLog], scale: Scale = preferredScale) -> String? {
+        let working = sets.filter { !$0.isWarmup }
+        guard working.contains(where: { $0.rir.map(rirRange.contains) == true }) else { return nil }
+        let values = working.map { set in set.rir.flatMap { rirRange.contains($0) ? chipLabel($0, scale: scale) : nil } ?? "–" }
+        return LanguageManager.t(scale == .rir ? "effort.scale.rir" : "effort.scale.rpe") + " " + values.joined(separator: " · ")
+    }
+
+    /// The chip text: "0"…"3" and "4+", or as RPE "10"…"7" and "≤6".
+    public static func chipLabel(_ rir: Int, scale: Scale) -> String {
+        let value = min(max(rir, rirRange.lowerBound), maxRir)
+        switch scale {
+        case .rir: return value == maxRir ? "\(maxRir)+" : "\(value)"
+        case .rpe: return value == maxRir ? "≤\(10 - maxRir)" : "\(10 - value)"
+        }
+    }
+
+    /// "RIR 2", "RIR 4+", "RPE 8" or "RPE ≤6": the scale names stay untranslated, as lifters write them.
+    public static func tag(_ rir: Int, scale: Scale) -> String {
+        LanguageManager.t(scale == .rir ? "effort.scale.rir" : "effort.scale.rpe") + " " + chipLabel(rir, scale: scale)
+    }
+
+    public static func spokenLabel(_ rir: Int, scale: Scale) -> String {
+        let value = min(max(rir, rirRange.lowerBound), maxRir)
+        switch scale {
+        case .rir:
+            return value == maxRir ? LanguageManager.t("effort.spoken.rirMax") : LanguageManager.shared.plural("effort.spoken.rir", value)
+        case .rpe:
+            return value == maxRir ? LanguageManager.t("effort.spoken.rpeMin") : LanguageManager.t("effort.spoken.rpe", ["value": 10 - value])
+        }
+    }
+
+    /// RPE from another app as RIR, rounded toward the harder side so an imported set never reads easier
+    /// than it was logged: RPE 8.5 → 1, 9.5 → 0, 6 or lower → 4+. Zero or no value means none.
+    public static func rir(fromRpe rpe: Double?) -> Int? {
+        guard let rpe, rpe.isFinite, rpe > 0, rpe <= 10 else { return nil }
+        return min(maxRir, max(0, Int((10 - rpe + 1e-9).rounded(.down))))
+    }
+
+    /// Only a completed working set carries effort.
+    public static func canRate(_ set: ExerciseSetLog) -> Bool { set.isCompleted && !set.isWarmup }
+
+    /// Sets or clears a set's effort; a warmup or an out-of-range value leaves none.
+    public static func rating(_ set: ExerciseSetLog, rir: Int?) -> ExerciseSetLog {
+        var copy = set
+        copy.rir = set.isWarmup ? nil : rir.flatMap { rirRange.contains($0) ? $0 : nil }
+        return copy
+    }
+
+    /// Why a saved set's effort cannot be restored, or nil. The logger never writes one on a warmup.
+    public static func restoreError(_ set: SessionSetLog) -> String? {
+        guard let rir = set.rir else { return nil }
+        if set.isWarmup { return "rir_warmup" }
+        return rirRange.contains(rir) ? nil : "rir"
+    }
+}
+
 public enum IntensitySets {
     public static let maxExtensions = 6
     public static let partialRepsRange = 1...99
@@ -1131,9 +1214,10 @@ public enum IntensitySets {
         return copy
     }
 
-    /// Converting a set to a warmup removes its technique and partials.
+    /// Converting a set to a warmup removes its technique, partials and effort.
     public static func clearingIntensity(_ set: ExerciseSetLog) -> ExerciseSetLog {
         var copy = set
+        copy.rir = nil
         copy.technique = nil
         copy.partialRepsInput = nil
         copy.extensions = nil
@@ -1144,6 +1228,7 @@ public enum IntensitySets {
     public static func savedSet(_ set: ExerciseSetLog, exercise: Exercise, unit: WeightUnit) -> SessionSetLog {
         var saved = SessionSetLog(setNumber: set.setNumber, weightKg: set.weightKg, reps: set.completedReps, isWarmup: set.isWarmup)
         guard !set.isWarmup else { return saved }
+        saved.rir = set.rir.flatMap { SetEffort.rirRange.contains($0) ? $0 : nil }
         saved.partialReps = partialCount(set.partialRepsInput)
         guard let technique = technique(of: set) else { return saved }
         let parts: [SessionSetExtension] = (set.extensions ?? []).enumerated().compactMap { index, part in
@@ -1162,6 +1247,7 @@ public enum IntensitySets {
     public static func restoringIntensity(_ saved: SessionSetLog, into set: ExerciseSetLog, unit: WeightUnit, barbell: Bool) -> ExerciseSetLog {
         guard !saved.isWarmup else { return set }
         var copy = set
+        copy.rir = saved.rir.flatMap { SetEffort.rirRange.contains($0) ? $0 : nil }
         copy.partialRepsInput = saved.partialReps.map(String.init)
         if usesTechnique(saved), let technique = saved.setTechnique {
             copy.technique = technique.rawValue

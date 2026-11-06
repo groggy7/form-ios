@@ -340,3 +340,168 @@ final class IntensityTableRenderTests: XCTestCase {
         }
     }
 }
+
+/// Reps in reserve per working set (docs/adaptive-training.md#phase-a-effort-logging-free).
+final class SetEffortTests: XCTestCase {
+    private var previousLanguage: String!
+    private let bench = Exercise(id: "bench", name: "Bench Press", exerciseId: "barbell-bench-press", sets: 3)
+
+    override func setUp() {
+        super.setUp()
+        previousLanguage = LanguageManager.shared.languagePreference
+        LanguageManager.setLanguage("en")
+    }
+
+    override func tearDown() {
+        LanguageManager.setLanguage(previousLanguage)
+        super.tearDown()
+    }
+
+    func testScalesShareOneStoredValue() {
+        XCTAssertEqual(SetEffort.values, [0, 1, 2, 3, 4])
+        XCTAssertEqual(SetEffort.values.map { SetEffort.chipLabel($0, scale: .rir) }, ["0", "1", "2", "3", "4+"])
+        XCTAssertEqual(SetEffort.values.map { SetEffort.chipLabel($0, scale: .rpe) }, ["10", "9", "8", "7", "≤6"])
+        XCTAssertEqual(SetEffort.tag(2, scale: .rir), "RIR 2")
+        XCTAssertEqual(SetEffort.tag(4, scale: .rpe), "RPE ≤6")
+        XCTAssertEqual(SetEffort.spokenLabel(1, scale: .rir), "1 rep in reserve")
+        XCTAssertEqual(SetEffort.spokenLabel(0, scale: .rir), "0 reps in reserve")
+        XCTAssertEqual(SetEffort.spokenLabel(4, scale: .rir), "4 or more reps in reserve")
+        XCTAssertEqual(SetEffort.spokenLabel(2, scale: .rpe), "RPE 8")
+        XCTAssertEqual(SetEffort.spokenLabel(4, scale: .rpe), "RPE 6 or lower")
+    }
+
+    func testRpeRoundsTowardTheHarderSide() {
+        let cases: [(Double?, Int?)] = [(10, 0), (9.5, 0), (9, 1), (8.5, 1), (8, 2), (7, 3), (6.5, 3), (6, 4), (5, 4), (1, 4),
+                                        (0, nil), (nil, nil), (10.5, nil), (-1, nil), (.nan, nil), (.infinity, nil)]
+        for (rpe, rir) in cases {
+            XCTAssertEqual(SetEffort.rir(fromRpe: rpe), rir, "RPE \(String(describing: rpe))")
+        }
+    }
+
+    func testOnlyCompletedWorkingSetsCarryEffort() {
+        let done = ExerciseSetLog(setNumber: 1, weightInput: "100", repsInput: "8", weightKg: 100, completedReps: 8, isCompleted: true)
+        XCTAssertTrue(SetEffort.canRate(done))
+        XCTAssertFalse(SetEffort.canRate(ExerciseSetLog(setNumber: 1)))
+        XCTAssertFalse(SetEffort.canRate(ExerciseSetLog(setNumber: 1, isCompleted: true, isWarmup: true)))
+        XCTAssertEqual(SetEffort.rating(done, rir: 2).rir, 2)
+        XCTAssertNil(SetEffort.rating(done, rir: 7).rir)
+        XCTAssertNil(SetEffort.rating(SetEffort.rating(done, rir: 2), rir: nil).rir)
+        var warmup = done
+        warmup.isWarmup = true
+        XCTAssertNil(SetEffort.rating(warmup, rir: 2).rir)
+    }
+
+    private func draft(_ sets: [ExerciseSetLog]) -> ActiveSessionDraft {
+        ActiveSessionDraft(programId: "p", workout: Workout(id: "w", day: 1, title: "Push", exercises: [bench]),
+                           startedAt: "2026-11-06T10:00:00Z", startedAtEpochMillis: 1_000, setsByExercise: [bench.id: sets])
+    }
+
+    private func completed(_ number: Int, rir: Int?, warmup: Bool = false) -> ExerciseSetLog {
+        ExerciseSetLog(setNumber: number, weightInput: "100", repsInput: "8", weightKg: 100, completedReps: 8,
+                       isCompleted: true, isWarmup: warmup, rir: rir)
+    }
+
+    func testEffortIsSavedResumedAndClearedOnWarmups() throws {
+        var open = completed(3, rir: 1)
+        open.isCompleted = false
+        let sets = [completed(1, rir: 2), completed(2, rir: nil), open]
+        let record = SessionProgress.from(draft: draft(sets), nowEpochMillis: 2_000).record(draft: draft(sets), completedAtEpochMillis: 2_000)
+        XCTAssertEqual(record.exerciseLogs[0].sets.map(\.rir), [2, nil], "an unticked set is not saved")
+        let restored = try XCTUnwrap(WorkoutSessionUtils.restoreSetsFromHistory(workout: draft([]).workout, record: record)[bench.id])
+        XCTAssertEqual(restored.map(\.rir), [2, nil, nil])
+
+        let reindexed = AppStore.reindexSets([completed(1, rir: 3), completed(2, rir: 1)])
+        XCTAssertEqual(reindexed.map(\.rir), [3, 1], "renumbering keeps effort")
+        var toWarmup = [completed(1, rir: 3), completed(2, rir: 1)]
+        toWarmup[0].isWarmup = true
+        XCTAssertEqual(AppStore.reindexSets(toWarmup).map(\.rir), [nil, 1], "a set turned into a warmup loses its effort")
+        XCTAssertNil(IntensitySets.clearingIntensity(completed(1, rir: 3)).rir)
+
+        let toggled = WorkoutSessionUtils.togglingCompletion(of: 0, in: [completed(1, rir: 2)], prefillNextSet: true, unit: .kg)
+        XCTAssertEqual(toggled[0].rir, 2, "undoing a tick keeps the value, as reps are kept")
+    }
+
+    func testDraftDecodingDropsAValueTheLoggerNeverWrites() throws {
+        let json = #"{"id":"a","setNumber":1,"isCompleted":true,"rir":9}"#
+        XCTAssertNil(try JSONDecoder().decode(ExerciseSetLog.self, from: Data(json.utf8)).rir)
+        let valid = #"{"id":"a","setNumber":1,"isCompleted":true,"rir":0}"#
+        XCTAssertEqual(try JSONDecoder().decode(ExerciseSetLog.self, from: Data(valid.utf8)).rir, 0)
+    }
+
+    func testBackupCarriesEffortAndRejectsValuesTheLoggerNeverWrites() throws {
+        let sets = [completed(1, rir: 2), completed(2, rir: nil)]
+        let record = SessionProgress.from(draft: draft(sets), nowEpochMillis: 2_000).record(draft: draft(sets), completedAtEpochMillis: 2_000)
+        let state = StoredAppState(programs: [], activeProgramId: "", currentWeekKey: "2026-W45", history: [record])
+        let data = try JSONEncoder().encode(FullBackupDocument(state: state, weightUnit: .kg))
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual(json["schemaVersion"] as? Int, 7)
+        let text = String(decoding: data, as: UTF8.self)
+        XCTAssertEqual(text.components(separatedBy: "\"rir\"").count - 1, 1, "an unrated set writes no field")
+        let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data)
+        XCTAssertEqual(restored.state.history[0].exerciseLogs[0].sets.map(\.rir), [2, nil])
+
+        for bad in ["\"rir\":5", "\"rir\":-1"] {
+            let broken = text.replacingOccurrences(of: "\"rir\":2", with: bad)
+            XCTAssertNotEqual(broken, text)
+            XCTAssertThrowsError(try JSONDecoder().decode(FullBackupDocument.self, from: Data(broken.utf8)), bad)
+        }
+        var warmupRecord = record
+        warmupRecord.exerciseLogs[0].sets[0].isWarmup = true
+        let warmupData = try JSONEncoder().encode(FullBackupDocument(state: StoredAppState(programs: [], activeProgramId: "",
+            currentWeekKey: "2026-W45", history: [warmupRecord]), weightUnit: .kg))
+        XCTAssertThrowsError(try JSONDecoder().decode(FullBackupDocument.self, from: warmupData), "effort on a warmup")
+    }
+
+    func testHistoryShowsSavedEffortOnTheChosenScale() {
+        let sets = [SessionSetLog(setNumber: 1, weightKg: 100, reps: 8, isWarmup: true, rir: nil),
+                    SessionSetLog(setNumber: 1, weightKg: 100, reps: 8, rir: 2),
+                    SessionSetLog(setNumber: 2, weightKg: 100, reps: 8),
+                    SessionSetLog(setNumber: 3, weightKg: 100, reps: 7, rir: 0)]
+        XCTAssertEqual(SetEffort.summary(sets, scale: .rir), "RIR 2 · – · 0")
+        XCTAssertEqual(SetEffort.summary(sets, scale: .rpe), "RPE 8 · – · 10")
+        XCTAssertNil(SetEffort.summary([SessionSetLog(setNumber: 1, weightKg: 100, reps: 8)], scale: .rir))
+        XCTAssertEqual(SetEffort.tag(of: sets[1], scale: .rir), "RIR 2")
+        XCTAssertNil(SetEffort.tag(of: sets[2], scale: .rir))
+    }
+}
+
+final class EffortTableRenderTests: XCTestCase {
+    /// The effort line at the session card's real width: 38 pt of card padding each side leaves 244 pt at 320 pt.
+    @MainActor func testEffortLineRendersAtNarrowWidthAndLargeTextInEveryLanguage() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        func set(_ number: Int, rir: Int?, completed: Bool) -> ExerciseSetLog {
+            ExerciseSetLog(id: "set-\(number)", setNumber: number, weightInput: completed ? "100" : "", repsInput: completed ? "8" : "",
+                           weightKg: completed ? 100 : nil, completedReps: completed ? 8 : nil, isCompleted: completed, inputTouched: completed, rir: rir)
+        }
+        let sets = [set(1, rir: 2, completed: true), set(2, rir: 1, completed: true), set(3, rir: nil, completed: false)]
+        let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/effort-review").standardized
+        try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for scale in SetEffort.Scale.allCases {
+                for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+                    let table = SetLoggingTable(sets: sets, prescription: "3 × 8–12", onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in },
+                                                onAddSet: {}, onRemoveSet: { _ in }, weightUnit: .kg,
+                                                effort: EffortActions(scale: scale) { _, _ in })
+                        .padding(.horizontal, 38).padding(.vertical, 16)
+                        .frame(width: width).frame(maxHeight: .infinity, alignment: .top).background(AppColors.background)
+                        .environment(\.sizeCategory, size)
+                    let controller = UIHostingController(rootView: table)
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: size == .large ? 700 : 1000))
+                    window.rootViewController = controller
+                    window.makeKeyAndVisible()
+                    defer { window.isHidden = true }
+                    controller.view.frame = window.bounds
+                    controller.view.layoutIfNeeded()
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+                    let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    XCTAssertEqual(image.size.width, width)
+                    try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("effort-\(language)-\(scale.rawValue)-\(Int(width)).png"))
+                }
+            }
+        }
+    }
+}

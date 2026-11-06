@@ -171,13 +171,13 @@ final class BodyAndJointJournalTests: XCTestCase {
         let state = StoredAppState(programs: [], activeProgramId: "", currentWeekKey: "2026-W43", bodyEntries: entries)
         let data = try JSONEncoder().encode(FullBackupDocument(state: state, weightUnit: .kg))
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(json["schemaVersion"] as? Int, 6)
+        XCTAssertEqual(json["schemaVersion"] as? Int, StoredAppState.currentSchemaVersion)
         XCTAssertEqual((json["bodyEntries"] as? [Any])?.count, 2)
         XCTAssertEqual(try JSONDecoder().decode(FullBackupDocument.self, from: data).state.bodyEntries, entries)
         // Older backups carry no body log; newer schemas are refused rather than silently dropped.
         let old = #"{"schemaVersion":5,"programs":[],"activeProgramId":"","completed":[],"currentWeekKey":"2026-W43","weeklyArchives":[],"history":[]}"#
         XCTAssertNil(try JSONDecoder().decode(FullBackupDocument.self, from: Data(old.utf8)).state.bodyEntries)
-        let newer = old.replacingOccurrences(of: "\"schemaVersion\":5", with: "\"schemaVersion\":7")
+        let newer = old.replacingOccurrences(of: "\"schemaVersion\":5", with: "\"schemaVersion\":\(StoredAppState.currentSchemaVersion + 1)")
         XCTAssertThrowsError(try JSONDecoder().decode(FullBackupDocument.self, from: Data(newer.utf8)))
         let empty = try JSONEncoder().encode(FullBackupDocument(state: StoredAppState(currentWeekKey: "2026-W43"), weightUnit: .kg))
         XCTAssertNil((try JSONSerialization.jsonObject(with: empty) as? [String: Any])?["bodyEntries"])
