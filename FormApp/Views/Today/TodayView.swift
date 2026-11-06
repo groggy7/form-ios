@@ -142,7 +142,8 @@ public struct TodayView: View {
             onReview: { blockSheet = .week($0) },
             onSummary: { blockSheet = .summary },
             onEnd: { store.endTrainingBlock() },
-            onLocked: { blockPaywall = true }
+            onLocked: { blockPaywall = true },
+            onOpenMethod: { blockSheet = .method(fromSetup: false) }
         )
         .padding(.horizontal, 20)
         .sheet(item: $blockSheet) { sheet in blockSheetView(sheet) }
@@ -182,7 +183,8 @@ public struct TodayView: View {
                                         onStartStrength: { length, lifts, nextWeek in
                                             store.startTrainingBlock(length: length, focus: [], nextWeek: nextWeek, strength: true, lifts: lifts)
                                             blockSheet = nil
-                                        }) { length, focus, nextWeek in
+                                        },
+                                        onOpenMethod: { blockSheet = .method(fromSetup: true) }) { length, focus, nextWeek in
                     store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
                     blockSheet = nil
                 }
@@ -194,6 +196,9 @@ public struct TodayView: View {
                     blockSheet = nil
                 }
             }
+        case .method(let fromSetup):
+            // From the setup, closing the Method page returns there.
+            TrainingBlockMethodSheet().onDisappear { if fromSetup && blockSheet == nil { blockSheet = .setup } }
         case .summary:
             if let block, let program {
                 TrainingBlockSummarySheet(block: block, program: program, history: store.state.history, weightUnit: store.weightUnit,

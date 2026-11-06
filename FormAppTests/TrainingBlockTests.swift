@@ -598,6 +598,16 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W50", unlocked: true), .complete(block))
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W44", unlocked: true), .upcoming(block))
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W46", unlocked: false), .locked)
+        // Every Method card has its words in every language: no key falls back to its name.
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for key in ["method.title", "method.open", "method.sources"] + ["principle", "rir", "adjust", "blocks", "strength", "readiness"]
+                .flatMap({ ["method.\($0)Title", "method.\($0)Text"] }) {
+                XCTAssertNotEqual(LanguageManager.t(key), key, "\(language) \(key)")
+            }
+        }
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(BlockSheet.method(fromSetup: true).id, "method-setup")
 
         let sets = [ExerciseSetLog(id: "s1", setNumber: 1, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true, inputTouched: true, rir: 2),
                     ExerciseSetLog(id: "s2", setNumber: 2, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true, inputTouched: true)]
@@ -617,7 +627,7 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                     ReadinessCard(check: ReadinessCheck(sleep: "poor", energy: "low"), options: Readiness.options(blockTarget: 2, deload: false),
                                   lighterTarget: nil, onAnswer: { _ in }, onChoose: { _ in })
                 }.padding(.horizontal, 20).padding(.vertical, 16).background(AppColors.background),
-                    width: width, size: size, height: size == .large ? 1400 : 2400, name: "block-card-\(language)-\(label)")
+                    width: width, size: size, height: size == .large ? 2000 : 2700, name: "block-card-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockSetupContent(program: program, scale: .rir, replacesBlock: true) { _, _, _ in })),
                            width: width, size: size, height: size == .large ? 1100 : 1900, name: "block-setup-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockWeekContent(block: block, week: 2, program: program, scale: .rpe) { _ in })),
@@ -625,6 +635,8 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                 try render(page(AnyView(TrainingBlockSummaryContent(block: block, program: program, history: [record], weightUnit: .kg,
                                                                     onStartAnother: {}, onDone: {}))),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-summary-\(language)-\(label)")
+                try render(page(AnyView(TrainingBlockMethodContent())),
+                           width: width, size: size, height: size == .large ? 2200 : 2700, name: "block-method-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockWeekContent(block: strengthBlock, week: 4, program: program, scale: .rir) { _ in })),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-strength-week-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockSummaryContent(block: strengthBlock, program: program, history: [strengthRecord], weightUnit: .kg,

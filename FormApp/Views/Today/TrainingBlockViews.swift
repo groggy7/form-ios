@@ -75,6 +75,8 @@ struct TrainingBlockCard: View {
     let onSummary: () -> Void
     let onEnd: () -> Void
     let onLocked: () -> Void
+    /// Opens the Method page; offered locked too, so the feature can be read about before buying.
+    var onOpenMethod: () -> Void = {}
     @State private var confirmEnd = false
     @ScaledMetric(relativeTo: .headline) private var titleSize = 15.0
     @ScaledMetric(relativeTo: .headline) private var headlineSize = 16.0
@@ -92,6 +94,8 @@ struct TrainingBlockCard: View {
                     Image(systemName: "lock.fill").font(.system(size: 14)).foregroundStyle(AppColors.purple)
                         .accessibilityLabel(LanguageManager.t("pro.premium_required"))
                 }
+                // Room for the info button, which sits above the card so a locked card's own tap stays separate.
+                Color.clear.frame(width: 20, height: 1)
             }
             content
         }
@@ -108,6 +112,15 @@ struct TrainingBlockCard: View {
             }
         }
         .accessibilityIdentifier("training-block-card")
+        .overlay(alignment: .topTrailing) {
+            Button(action: onOpenMethod) {
+                Image(systemName: "info.circle").font(.system(size: 16)).foregroundStyle(AppColors.muted)
+                    .frame(width: 48, height: 48).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain).padding(.trailing, 6)
+            .accessibilityLabel(LanguageManager.t("method.open"))
+            .accessibilityIdentifier("training-block-method")
+        }
         .alert(LanguageManager.t("block.card.endTitle"), isPresented: $confirmEnd) {
             Button(LanguageManager.t("block.card.end"), role: .destructive, action: onEnd)
             Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
@@ -287,6 +300,7 @@ struct TrainingBlockSetupContent: View {
     /// The same Premium switch as Settings: a readiness check before each workout.
     var readinessCheck: Binding<Bool>? = nil
     var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
+    var onOpenMethod: () -> Void = {}
     @State private var length = 5
     @State private var focus: [String] = []
     @State private var nextWeek = false
@@ -300,6 +314,10 @@ struct TrainingBlockSetupContent: View {
         Text(LanguageManager.t("block.setup.title")).blockFont(20, .bold).foregroundStyle(AppColors.text)
             .accessibilityAddTraits(.isHeader)
         BlockBody(text: LanguageManager.t(strength ? "block.setup.strengthPlan" : "block.setup.intro"))
+        Button(action: onOpenMethod) {
+            Text(LanguageManager.t("method.open")).blockFont(14, .semibold).foregroundStyle(AppColors.purple).frame(minHeight: 48)
+        }
+        .buttonStyle(.plain).accessibilityIdentifier("block-setup-method")
         BlockSectionLabel(text: LanguageManager.t("block.setup.goal"))
         BlockFlow {
             BlockChoice(label: LanguageManager.t("block.setup.muscle"), selected: !strength, identifier: "block-goal-muscle") { strength = false }
@@ -375,11 +393,12 @@ struct TrainingBlockSetupSheet: View {
     let replacesBlock: Bool
     var readinessCheck: Binding<Bool>? = nil
     var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
+    var onOpenMethod: () -> Void = {}
     let onStart: (Int, [String], Bool) -> Void
     var body: some View {
         BlockSheetPage(identifier: "training-block-setup") {
             TrainingBlockSetupContent(program: program, scale: scale, replacesBlock: replacesBlock, onStart: onStart,
-                                      readinessCheck: readinessCheck, onStartStrength: onStartStrength)
+                                      readinessCheck: readinessCheck, onStartStrength: onStartStrength, onOpenMethod: onOpenMethod)
         }
     }
 }
@@ -561,11 +580,14 @@ enum BlockSheet: Identifiable, Equatable {
     case setup
     case week(Int)
     case summary
+    /// The Method page; from the setup, closing it returns there.
+    case method(fromSetup: Bool)
     var id: String {
         switch self {
         case .setup: return "setup"
         case .week(let week): return "week-\(week)"
         case .summary: return "summary"
+        case .method(let fromSetup): return fromSetup ? "method-setup" : "method"
         }
     }
 }
@@ -656,5 +678,45 @@ private struct StrengthSummaryContent: View {
         }
         blockPrimaryButton(LanguageManager.t("block.summary.again"), "block-summary-again", action: onStartAnother)
         blockSecondaryButton(LanguageManager.t("common.done"), "block-summary-done", action: onDone)
+    }
+}
+
+/// The Method page (docs/adaptive-training.md#phase-f-method-and-why): each adaptive feature's rule in plain words,
+/// what rests on evidence and what is a product rule, and the sources. Android `TrainingBlockMethodContent` matches.
+struct TrainingBlockMethodContent: View {
+    private let topics: [(id: String, symbol: String, tint: Color)] = [
+        ("principle", "lightbulb", AppColors.accent), ("rir", "gauge.with.dots.needle.67percent", AppColors.purple),
+        ("adjust", "arrow.up.right", AppColors.purple), ("blocks", "calendar.badge.clock", AppColors.purple),
+        ("strength", "dumbbell", AppColors.purple), ("readiness", "bed.double", AppColors.purple), ("sources", "book", AppColors.muted)]
+
+    var body: some View {
+        Text(LanguageManager.t("method.title")).blockFont(20, .bold).foregroundStyle(AppColors.text).accessibilityAddTraits(.isHeader)
+        ForEach(topics, id: \.id) { topic in
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: topic.symbol).font(.system(size: 15, weight: .semibold)).foregroundStyle(topic.tint)
+                        .frame(width: 18).accessibilityHidden(true)
+                    Text(LanguageManager.t("method.\(topic.id)Title")).blockFont(15, .semibold)
+                        .foregroundStyle(topic.id == "principle" ? AppColors.accent : AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityAddTraits(.isHeader)
+                }
+                Text(LanguageManager.t(topic.id == "sources" ? "method.sources" : "method.\(topic.id)Text"))
+                    .blockFont(topic.id == "sources" ? 12 : 13).foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(16).frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(topic.id == "principle" ? AppColors.accent.opacity(0.35) : AppColors.border, lineWidth: 1))
+            .accessibilityElement(children: .combine)
+            .accessibilityIdentifier("method-\(topic.id)")
+        }
+    }
+}
+
+struct TrainingBlockMethodSheet: View {
+    var body: some View {
+        BlockSheetPage(identifier: "training-block-method") { TrainingBlockMethodContent() }
     }
 }
