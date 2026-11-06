@@ -505,3 +505,72 @@ final class EffortTableRenderTests: XCTestCase {
         }
     }
 }
+
+/// The mid-workout load adjustment under the first working set (docs/adaptive-training.md#b2-mid-workout-adjustment).
+final class LoadAdjustmentRenderTests: XCTestCase {
+    private let bench = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3,
+                                 reps: RepTarget(min: 8, max: 12))
+
+    private func rows(reps: Int, rir: Int) -> [ExerciseSetLog] {
+        [ExerciseSetLog(id: "set-1", setNumber: 1, weightInput: "100", repsInput: "\(reps)", weightKg: 100, completedReps: reps,
+                        isCompleted: true, inputTouched: true, rir: rir),
+         ExerciseSetLog(id: "set-2", setNumber: 2, weightInput: "100", repsInput: "\(reps)", weightKg: 100, completedReps: reps, inputTouched: true),
+         ExerciseSetLog(id: "set-3", setNumber: 3)]
+    }
+
+    func testTheCardReadsTheOfferOnTheChosenScale() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        let easier = try XCTUnwrap(ProgressionEngine.loadAdjustment(exercise: bench, sets: rows(reps: 12, rir: 4), unit: .kg))
+        XCTAssertEqual(easier.setIndex, 0)
+        XCTAssertEqual(LanguageManager.t(easier.direction.titleKey, ["set": easier.setNumber, "effort": SetEffort.tag(easier.rir, scale: .rir)]),
+                       "Set 1 felt easier than planned (RIR 4+)")
+        let harder = try XCTUnwrap(ProgressionEngine.loadAdjustment(exercise: bench, sets: rows(reps: 6, rir: 0), unit: .kg))
+        XCTAssertEqual(LanguageManager.t(harder.direction.titleKey, ["set": harder.setNumber, "effort": SetEffort.tag(harder.rir, scale: .rpe)]),
+                       "Set 1 was harder than planned (RPE 10)")
+        XCTAssertEqual(harder.target, ProgressionSetTarget(weightKg: 97.5, reps: 8))
+        // Use writes loads only; afterwards nothing is offered.
+        let used = WorkoutSessionUtils.applyingProgressionTargets(easier.targets, to: rows(reps: 12, rir: 4), unit: .kg)
+        XCTAssertEqual(used.map(\.weightInput), ["100", "102.5", "102.5"])
+        XCTAssertEqual(used.map(\.repsInput), ["12", "12", ""])
+        XCTAssertNil(ProgressionEngine.loadAdjustment(exercise: bench, sets: used, unit: .kg))
+    }
+
+    /// The card at the session card's real width: 38 pt of card padding each side leaves 244 pt at 320 pt.
+    @MainActor func testTheCardRendersAtNarrowWidthAndLargeTextInEveryLanguage() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/adjustment-review").standardized
+        try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for (name, sets, scale) in [("easier", rows(reps: 12, rir: 4), SetEffort.Scale.rir), ("harder", rows(reps: 6, rir: 0), .rpe)] {
+                let offer = try XCTUnwrap(ProgressionEngine.loadAdjustment(exercise: bench, sets: sets, unit: .kg), "\(language) \(name)")
+                for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+                    let table = SetLoggingTable(sets: sets, prescription: "3 × 8–12", onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in },
+                                                onAddSet: {}, onRemoveSet: { _ in }, weightUnit: .kg,
+                                                effort: EffortActions(scale: scale) { _, _ in },
+                                                adjustment: AdjustmentSlot(afterIndex: offer.setIndex, content: AnyView(LoadAdjustmentCard(
+                                                    adjustment: offer, scale: scale, weightUnit: .kg, onUse: {}, onKeep: {}))))
+                        .padding(.horizontal, 38).padding(.vertical, 16)
+                        .frame(width: width).frame(maxHeight: .infinity, alignment: .top).background(AppColors.background)
+                        .environment(\.sizeCategory, size)
+                    let controller = UIHostingController(rootView: table)
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: size == .large ? 900 : 1400))
+                    window.rootViewController = controller
+                    window.makeKeyAndVisible()
+                    defer { window.isHidden = true }
+                    controller.view.frame = window.bounds
+                    controller.view.layoutIfNeeded()
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+                    let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    XCTAssertEqual(image.size.width, width)
+                    try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("adjustment-\(name)-\(language)-\(Int(width)).png"))
+                }
+            }
+        }
+    }
+}

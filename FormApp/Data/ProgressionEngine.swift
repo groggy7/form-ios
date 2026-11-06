@@ -187,6 +187,53 @@ public enum ProgressionEngine {
         return unit.toCanonicalKg(nextOnGrid(unit.toDisplay(weightKg), step: step))
     }
 
+    /// The mid-workout adjustment (docs/adaptive-training.md#b2-mid-workout-adjustment): after the first working set
+    /// is ticked with reps in reserve, and before any other working set is, a set at or above the rep ceiling with more
+    /// reps left than `window` allows offers the next load step (with the coach's 10% / 25% rules), and a set below the
+    /// minimum with none left offers one step down. Straight sets only: every remaining working row must be untouched,
+    /// without a load, or at the first set's load. Android `ProgressionEngine.loadAdjustment` matches.
+    public static func loadAdjustment(exercise: Exercise, sets: [ExerciseSetLog], unit: WeightUnit,
+                                      steps: ProgressionLoadSteps = ProgressionLoadSteps(),
+                                      window: ClosedRange<Int> = SetEffort.targetWindow) -> LoadAdjustment? {
+        guard let range = parseRepRange(exercise: exercise) else { return nil }
+        let working = sets.enumerated().filter { !$0.element.isWarmup }
+        guard let firstRow = working.first else { return nil }
+        let first = firstRow.element
+        let rest = working.dropFirst()
+        guard first.isCompleted, !rest.isEmpty, !rest.contains(where: { $0.element.isCompleted }),
+              let rir = first.rir, SetEffort.rirRange.contains(rir),
+              let reps = first.completedReps, (1...999).contains(reps),
+              let loggedKg = first.weightKg, loggedKg.isFinite, loggedKg > 0 else { return nil }
+        let easier = reps >= range.max && rir > window.upperBound
+        let harder = reps < range.min && rir == 0
+        guard easier || harder else { return nil }
+
+        let barbell = WorkoutSessionUtils.usesBarbellPlates(exercise)
+        let currentKg = unit.loadableKg(loggedKg, barbell: barbell)
+        func isOpen(_ row: ExerciseSetLog) -> Bool {
+            if row.inputTouched != true || (row.weightInput.trimmingCharacters(in: .whitespaces).isEmpty && row.weightKg == nil) { return true }
+            guard let kg = row.weightKg else { return false }
+            return abs(unit.loadableKg(kg, barbell: barbell) - currentKg) < 1e-6
+        }
+        guard rest.allSatisfy({ isOpen($0.element) }),
+              let step = loadStep(exercise, loadsKg: [loggedKg], unit: unit, steps: steps) else { return nil }
+
+        let target: ProgressionSetTarget
+        if easier {
+            guard let next = increasePlan([SessionSetLog(setNumber: first.setNumber, weightKg: loggedKg, reps: reps)], step: step,
+                                          unit: unit, barbell: barbell, repMin: range.min, repMax: range.max)?.targets.first else { return nil }
+            target = next
+        } else {
+            // One step down on the same grid; a lighter load is always the lifter's safe choice, so no relative limit.
+            let display = unit.toDisplay(currentKg)
+            let lower = snapped(step.origin + ((display - step.origin - step.display / 2) / step.display + epsilon).rounded(.down) * step.display)
+            guard lower > 0, lower >= step.origin - epsilon else { return nil }
+            target = ProgressionSetTarget(weightKg: unit.toCanonicalKg(lower), reps: range.min)
+        }
+        return LoadAdjustment(direction: easier ? .easier : .harder, setIndex: firstRow.offset, setNumber: first.setNumber,
+                              rir: rir, currentKg: currentKg, target: target, rows: rest.map(\.offset))
+    }
+
     private struct IncreasePlan { let targets: [ProgressionSetTarget]; let resetReps: Bool; let deltaDisplay: Double? }
 
     /// Per-set next loads; nil when any set has no loadable step within the limits.
@@ -461,6 +508,10 @@ public enum ProgressionEngine {
 extension SetEffort {
     /// Reps in reserve at which a set counts as having room to spare: the coach's Easy.
     public static let roomyRir = 3
+
+    /// The planned reps in reserve for a working set outside a training block. The mid-workout adjustment offers a
+    /// load step up only above it (docs/adaptive-training.md#b2-mid-workout-adjustment).
+    public static let targetWindow = 1...3
 
     /// The coach's effort from a session's reps in reserve, used when the lifter gave no Easy / About right / Hard
     /// rating (docs/adaptive-training.md#b1-targets-that-use-reported-effort). Every working set needs a value: all at

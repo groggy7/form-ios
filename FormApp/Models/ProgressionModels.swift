@@ -247,3 +247,26 @@ public struct ExerciseProgressionRecommendation: Equatable {
         })
     }
 }
+
+/// A load change offered after the first working set of an exercise (docs/adaptive-training.md#b2-mid-workout-adjustment).
+/// Never applied automatically: Use fills `rows` with `target`'s load the way Apply does, reps left to the lifter.
+public struct LoadAdjustment: Equatable {
+    public enum Direction: String {
+        case easier, harder
+
+        public var titleKey: String { "progression.adjust.\(rawValue)" }
+        public var reasonKey: String { "progression.adjust.\(rawValue)Why" }
+    }
+
+    public let direction: Direction
+    /// The first working set: its index in the exercise's sets, number, reps in reserve and loadable load.
+    public let setIndex: Int
+    public let setNumber: Int
+    public let rir: Int
+    public let currentKg: Double
+    public let target: ProgressionSetTarget
+    /// Unfinished working rows, by index in the exercise's sets, that Use fills.
+    public let rows: [Int]
+
+    public var targets: [Int: ProgressionSetTarget] { Dictionary(uniqueKeysWithValues: rows.map { ($0, target) }) }
+}

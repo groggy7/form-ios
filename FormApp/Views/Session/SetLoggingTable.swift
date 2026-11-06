@@ -29,6 +29,8 @@ public struct SetLoggingTable: View {
     var intensity: IntensityActions? = nil
     /// Reps in reserve per completed working set (docs/adaptive-training.md); nil hides the effort line.
     var effort: EffortActions? = nil
+    /// The mid-workout load adjustment, shown under the first working set that offers it.
+    var adjustment: AdjustmentSlot? = nil
     /// The exercise's ratings, shown directly beneath its last set when the caller asks for them.
     var ratings: AnyView? = nil
     /// The session's number pad; the selected field becomes its target.
@@ -64,6 +66,7 @@ public struct SetLoggingTable: View {
         logbookBeatenSets: [Int: LogbookBeatResult] = [:],
         intensity: IntensityActions? = nil,
         effort: EffortActions? = nil,
+        adjustment: AdjustmentSlot? = nil,
         ratings: AnyView? = nil,
         keypad: SessionKeypad? = nil,
         weightStep: Double? = nil,
@@ -89,6 +92,7 @@ public struct SetLoggingTable: View {
         self.logbookBeatenSets = logbookBeatenSets
         self.intensity = intensity
         self.effort = effort
+        self.adjustment = adjustment
         self.ratings = ratings
         self.keypad = keypad
         self.weightStep = weightStep
@@ -421,6 +425,9 @@ public struct SetLoggingTable: View {
                             if let count = IntensitySets.endingCount(sets, at: index) {
                                 EndHereRow(set: set, index: index, count: count, actions: intensity)
                             }
+                        }
+                        if let adjustment, adjustment.afterIndex == index {
+                            adjustment.content
                         }
                     }
                     .tourTarget("workout.sets.row.\(index + 2)", cornerRadius: 10)
@@ -846,6 +853,17 @@ private struct EndHereRow: View {
         .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("end-here-\(set.id)")
+    }
+}
+
+/// A card the session table shows directly under the set at `afterIndex`, before the next set.
+public struct AdjustmentSlot {
+    public let afterIndex: Int
+    public let content: AnyView
+
+    public init(afterIndex: Int, content: AnyView) {
+        self.afterIndex = afterIndex
+        self.content = content
     }
 }
 

@@ -7,6 +7,29 @@ final class ProgressionFixtureTests: XCTestCase {
     private struct Fixtures: Decodable {
         let formatting: [Formatting]
         let progression: [Case]
+        let adjustment: [AdjustmentCase]
+    }
+    /// The mid-workout adjustment (docs/adaptive-training.md#b2-mid-workout-adjustment).
+    private struct AdjustmentCase: Decodable {
+        struct Row: Decodable {
+            let load: Double?
+            let reps: Int?
+            let done: Bool?
+            let warmup: Bool?
+            let rir: Int?
+        }
+        struct Expected: Decodable {
+            let direction: String
+            let target: [Double]
+            let rows: [Int]
+            let applied: String
+        }
+        let name: String
+        let unit: String
+        let steps: Steps?
+        let exercise: FixtureExercise
+        let sets: [Row]
+        let expected: Expected?
     }
     private struct Formatting: Decodable {
         let value: Double
@@ -97,6 +120,59 @@ final class ProgressionFixtureTests: XCTestCase {
         return try JSONDecoder().decode(Fixtures.self, from: Data(contentsOf: url))
     }
 
+    /// A case's load-step settings in its unit, over the app's defaults.
+    private func loadSteps(_ settings: Steps?, unit: WeightUnit, platesKg: [Double]? = nil, platesLbs: [Double]? = nil,
+                           barType: String? = nil) -> ProgressionLoadSteps {
+        let defaults = ProgressionLoadSteps()
+        return ProgressionLoadSteps.from(
+            dumbbellKg: unit == .kg ? (settings?.dumbbell ?? defaults.dumbbellKg) : defaults.dumbbellKg,
+            dumbbellLbs: unit == .lbs ? (settings?.dumbbell ?? defaults.dumbbellLbs) : defaults.dumbbellLbs,
+            machineKg: unit == .kg ? (settings?.machine ?? defaults.machineKg) : defaults.machineKg,
+            machineLbs: unit == .lbs ? (settings?.machine ?? defaults.machineLbs) : defaults.machineLbs,
+            platesKg: platesKg ?? WarmupPlateEngine.defaultPlatesKg,
+            platesLbs: platesLbs ?? WarmupPlateEngine.defaultPlatesLbs,
+            barType: BarType.fromKey(barType))
+    }
+
+    func testEveryAdjustmentCaseMatchesTheSharedContract() throws {
+        for fixture in try load().adjustment {
+            let name = fixture.name
+            let unit = WeightUnit.fromCode(fixture.unit)
+            let exercise = fixture.exercise.exercise(id: "fixture-exercise")
+            var warmups = 0
+            let rows = fixture.sets.enumerated().map { index, row -> ExerciseSetLog in
+                let warmup = row.warmup == true
+                if warmup { warmups += 1 }
+                let kg = row.load.map { unit.toCanonicalKg($0) }
+                return ExerciseSetLog(id: "row-\(index)", setNumber: warmup ? warmups : index + 1 - warmups,
+                                      weightInput: kg.map { unit.formatExactWeight($0) } ?? "", repsInput: row.reps.map(String.init) ?? "",
+                                      weightKg: kg, completedReps: row.reps, isCompleted: row.done == true,
+                                      inputTouched: row.load != nil || row.reps != nil ? true : nil, isWarmup: warmup, rir: row.rir)
+            }
+            let steps = loadSteps(fixture.steps, unit: unit)
+            let offer = ProgressionEngine.loadAdjustment(exercise: exercise, sets: rows, unit: unit, steps: steps)
+            guard let expected = fixture.expected else { XCTAssertNil(offer, name); continue }
+            guard let offer else { XCTFail("\(name): no adjustment"); continue }
+            XCTAssertEqual(offer.direction.rawValue, expected.direction, "\(name) direction")
+            XCTAssertEqual(unit.toDisplay(offer.target.weightKg ?? .nan), expected.target[0], accuracy: 1e-6, "\(name) target load")
+            XCTAssertEqual(offer.target.reps, Int(expected.target[1]), "\(name) target reps")
+            XCTAssertEqual(offer.rows, expected.rows, "\(name) rows")
+
+            let after = WorkoutSessionUtils.applyingProgressionTargets(offer.targets, to: rows, unit: unit)
+            for (index, row) in after.enumerated() {
+                if offer.rows.contains(index) {
+                    XCTAssertEqual(row.weightInput, expected.applied, "\(name) row \(index) load text")
+                    XCTAssertEqual(row.weightKg, offer.target.weightKg, "\(name) row \(index) keeps the canonical target")
+                    XCTAssertEqual(row.repsInput, rows[index].repsInput, "\(name) row \(index) keeps typed reps")
+                    XCTAssertEqual(row.targetReps, offer.target.reps, "\(name) row \(index) reps hint")
+                } else {
+                    XCTAssertEqual(row, rows[index], "\(name) row \(index) is untouched")
+                }
+            }
+            XCTAssertNil(ProgressionEngine.loadAdjustment(exercise: exercise, sets: after, unit: unit, steps: steps), "\(name) offers nothing once used")
+        }
+    }
+
     func testFormattingFollowsTheSharedRoundingRule() throws {
         for fixture in try load().formatting {
             let kg = WeightUnit.fromCode(fixture.valueUnit).toCanonicalKg(fixture.value)
@@ -145,15 +221,7 @@ final class ProgressionFixtureTests: XCTestCase {
                     })
             }
             let expected = fixture.expected
-            let defaults = ProgressionLoadSteps()
-            let steps = ProgressionLoadSteps.from(
-                dumbbellKg: unit == .kg ? (fixture.steps?.dumbbell ?? defaults.dumbbellKg) : defaults.dumbbellKg,
-                dumbbellLbs: unit == .lbs ? (fixture.steps?.dumbbell ?? defaults.dumbbellLbs) : defaults.dumbbellLbs,
-                machineKg: unit == .kg ? (fixture.steps?.machine ?? defaults.machineKg) : defaults.machineKg,
-                machineLbs: unit == .lbs ? (fixture.steps?.machine ?? defaults.machineLbs) : defaults.machineLbs,
-                platesKg: fixture.platesKg ?? WarmupPlateEngine.defaultPlatesKg,
-                platesLbs: fixture.platesLbs ?? WarmupPlateEngine.defaultPlatesLbs,
-                barType: BarType.fromKey(fixture.barType))
+            let steps = loadSteps(fixture.steps, unit: unit, platesKg: fixture.platesKg, platesLbs: fixture.platesLbs, barType: fixture.barType)
             let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit,
                                                            activeSessionId: fixture.activeSessionId, context: context, steps: steps)
             guard let action = expected.action else { XCTAssertNil(rec, name); continue }

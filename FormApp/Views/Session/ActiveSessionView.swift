@@ -23,6 +23,8 @@ public struct ActiveSessionView: View {
     @State private var reportingExercise: Exercise? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showProgressionInfo: Bool = false
+    /// Exercises whose mid-workout adjustment the lifter chose to keep: hidden for the rest of this workout.
+    @State private var keptAdjustments: Set<String> = []
     @State private var showWarmupPlateSheet: Bool = false
     @State private var warmupModalTab: WarmupPlateTab = .warmupRamp
     @State private var selectedPlateWeight: Double? = nil
@@ -304,6 +306,12 @@ public struct ActiveSessionView: View {
                                     let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
                                         workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
                                     let asksJointStress = store.jointStressRatings && WorkoutSessionUtils.offersJointStressRating(currentSets)
+                                    // The first working set's reps in reserve can offer a load step for the rest (Premium coach).
+                                    let loadAdjustment = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
+                                        store.repsInReserve && !keptAdjustments.contains(exercise.id)
+                                        ? ProgressionEngine.loadAdjustment(exercise: exercise, sets: currentSets, unit: store.weightUnit,
+                                                                           steps: store.progressionLoadSteps)
+                                        : nil
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -343,6 +351,12 @@ public struct ActiveSessionView: View {
                                         effort: store.repsInReserve ? EffortActions(scale: store.effortScale) { setIdx, rir in
                                             store.setEffort(exerciseId: exercise.id, index: setIdx, rir: rir)
                                         } : nil,
+                                        adjustment: loadAdjustment.map { offer in
+                                            AdjustmentSlot(afterIndex: offer.setIndex, content: AnyView(LoadAdjustmentCard(
+                                                adjustment: offer, scale: store.effortScale, weightUnit: store.weightUnit,
+                                                onUse: { applyProgressionTargets(offer.targets, exerciseId: exercise.id) },
+                                                onKeep: { keptAdjustments.insert(exercise.id) })))
+                                        },
                                         // The ratings sit right under the last set, where the exercise ends.
                                         ratings: asksEffort || asksJointStress ? AnyView(ExerciseRatingsCard(
                                             effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),

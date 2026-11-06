@@ -482,6 +482,76 @@ private struct ProgressionTableRow: Layout {
     }
 }
 
+/// The mid-workout adjustment under the first working set (docs/adaptive-training.md#b2-mid-workout-adjustment):
+/// what the set's reps in reserve suggest for the remaining sets. Use fills their loads like Apply; Keep hides it.
+public struct LoadAdjustmentCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let adjustment: LoadAdjustment
+    let scale: SetEffort.Scale
+    let weightUnit: WeightUnit
+    let onUse: () -> Void
+    let onKeep: () -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .footnote) private var bodySize = 13.0
+
+    public init(adjustment: LoadAdjustment, scale: SetEffort.Scale, weightUnit: WeightUnit,
+                onUse: @escaping () -> Void, onKeep: @escaping () -> Void) {
+        self.adjustment = adjustment
+        self.scale = scale
+        self.weightUnit = weightUnit
+        self.onUse = onUse
+        self.onKeep = onKeep
+    }
+
+    /// A tag, a load and a load × reps each stay on one line when the sentence around them wraps.
+    private func unbroken(_ text: String) -> String { text.replacingOccurrences(of: " ", with: "\u{00A0}") }
+
+    private func load(_ kg: Double) -> String {
+        unbroken("\(weightUnit.formatLoadableDisplayWeight(kg)) \(weightUnit.label)")
+    }
+
+    public var body: some View {
+        let _ = themeManager.currentTheme
+        let targetLoad = load(adjustment.target.weightKg ?? adjustment.currentKg)
+        let currentLoad = load(adjustment.currentKg)
+        let use = CompactCoachButton(label: LanguageManager.t("progression.adjust.use", ["load": targetLoad]), primary: true, action: onUse)
+            .accessibilityIdentifier("load-adjustment-use")
+        let keep = CompactCoachButton(label: LanguageManager.t("progression.adjust.keep", ["load": currentLoad]), action: onKeep)
+            .accessibilityIdentifier("load-adjustment-keep")
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .top, spacing: 6) {
+                ProgressionHeaderBolt().fill(AppColors.purple)
+                    .frame(width: 16, height: 16).frame(width: 20, height: 24).accessibilityHidden(true)
+                Text(LanguageManager.t(adjustment.direction.titleKey,
+                                       ["set": adjustment.setNumber, "effort": unbroken(SetEffort.tag(adjustment.rir, scale: scale))]))
+                    .font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                    .fixedSize(horizontal: false, vertical: true).padding(.top, 2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityAddTraits(.isHeader)
+            }
+            Text(LanguageManager.t(adjustment.direction.reasonKey))
+                .font(.app(size: bodySize)).foregroundStyle(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(LanguageManager.t("progression.adjust.remaining", ["target": unbroken("\(targetLoad) × \(adjustment.target.reps)")]))
+                .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                .fixedSize(horizontal: false, vertical: true).padding(.top, 2)
+                .accessibilityIdentifier("load-adjustment-target")
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) { use; keep }.fixedSize(horizontal: true, vertical: false)
+                VStack(alignment: .leading, spacing: 0) { use; keep }
+            }
+        }
+        .padding(.horizontal, 14).padding(.top, 12).padding(.bottom, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
+        .padding(.top, 6).padding(.bottom, 2)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("load-adjustment")
+    }
+}
+
 private struct CompactCoachButton: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let label: String
