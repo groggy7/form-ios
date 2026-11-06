@@ -43,13 +43,14 @@ public struct TourText: Equatable {
     }
 }
 
-/// A stationary sample of complete rows; a nil item limit includes the entire group.
+/// A stationary sample of complete rows: every row that fits below the explanation, reserving room for
+/// the leading rows and one item. `keepsAllRows` reserves room for the entire group instead (Rep Lab's grid).
 public struct TourRowHighlight: Equatable {
     public let leadingRows: Int
-    public let itemLimit: Int?
-    public init(leadingRows: Int = 0, itemLimit: Int? = nil) {
+    public let keepsAllRows: Bool
+    public init(leadingRows: Int = 0, keepsAllRows: Bool = false) {
         self.leadingRows = leadingRows
-        self.itemLimit = itemLimit
+        self.keepsAllRows = keepsAllRows
     }
 }
 
@@ -174,7 +175,7 @@ public enum TourCatalog {
                          variants: [("rest", text("tour.home.rest")),
                                     ("views", TourText(titleKey: "tour.home.workout.title", bodyKey: "tour.home.workout.bodyViews", args: workoutArgs))]),
                 TourStep(id: "home.week", targetId: "home.week", text: text("tour.home.week")),
-                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises"), rowHighlight: TourRowHighlight(leadingRows: 1, itemLimit: 3)),
+                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises"), rowHighlight: TourRowHighlight(leadingRows: 1)),
                 TourStep(id: "home.tabs", targetId: "dock", text: text("tour.home.tabs",
                     ["plan": "nav.plan", "library": "nav.library", "progress": "nav.progress"]))
             ]
@@ -210,7 +211,7 @@ public enum TourCatalog {
             return [
                 TourStep(id: "workout.exercises", targetId: "workout.exercises", text: text("tour.workout.exercises")),
                 TourStep(id: "workout.sets", targetId: "workout.sets", text: text("tour.workout.sets", ["weight_unit": "settings.unitKg"]),
-                         variants: [("lbs", text("tour.workout.sets", ["weight_unit": "settings.unitLbs"]))], rowHighlight: TourRowHighlight(leadingRows: 2, itemLimit: 3)),
+                         variants: [("lbs", text("tour.workout.sets", ["weight_unit": "settings.unitLbs"]))], rowHighlight: TourRowHighlight(leadingRows: 2)),
                 TourStep(id: "workout.finish", targetId: "workout.finish", text: TourText(titleKey: "session.finishBtn", bodyKey: "tour.workout.finish.body"))
             ]
         case .volumeMatrix:
@@ -224,7 +225,7 @@ public enum TourCatalog {
             return steps
         case .repLab:
             var steps = [
-                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body"), rowHighlight: TourRowHighlight()),
+                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body"), rowHighlight: TourRowHighlight(keepsAllRows: true)),
                 TourStep(id: labCurvesStep, targetId: "lab.curves", text: TourText(titleKey: "form_lab.tab_curves", bodyKey: "tour.lab.curves.body")),
                 TourStep(id: labBalanceStep, targetId: "lab.balance", text: TourText(titleKey: "form_lab.tab_balance", bodyKey: "tour.lab.balance.body"))
             ]

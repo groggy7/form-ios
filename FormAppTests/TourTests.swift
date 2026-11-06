@@ -33,14 +33,14 @@ final class TourTests: XCTestCase {
         XCTAssertEqual(TourProgress().skipped(.repLab).skipped(.restTimer).skipCount, 0)
     }
 
-    func testHomeCombinesDaysAndColorsAndRowHighlightsUseFocusedSamples() {
+    func testHomeCombinesDaysAndColorsAndRowHighlightsFitTheScreen() {
         let home = TourCatalog.steps(.home)
         XCTAssertEqual(home.map(\.id), ["home.days", "home.workout", "home.week", "home.exercises", "home.tabs"])
         XCTAssertEqual(home.first?.targetId, "home.days")
         XCTAssertEqual(home.first?.text(for: ["scroll"]).bodyKey, "tour.home.days.bodyScroll")
         XCTAssertTrue(home.first { $0.id == "home.exercises" }!.highlightsRows)
-        XCTAssertEqual(home.first { $0.id == "home.exercises" }!.rowHighlight, TourRowHighlight(leadingRows: 1, itemLimit: 3))
-        XCTAssertEqual(TourCatalog.steps(.repLab).first!.rowHighlight, TourRowHighlight())
+        XCTAssertEqual(home.first { $0.id == "home.exercises" }!.rowHighlight, TourRowHighlight(leadingRows: 1))
+        XCTAssertEqual(TourCatalog.steps(.repLab).first!.rowHighlight, TourRowHighlight(keepsAllRows: true))
         XCTAssertEqual(ProPreviewData.formLabRepMaxSummary.targets.map(\.reps), [1, 3, 5, 8, 10])
         XCTAssertTrue(TourCatalog.steps(.workout).first { $0.id == "workout.sets" }!.highlightsRows)
         XCTAssertTrue(TourProgress().finished(.home).seen.contains(.dayStatus))
@@ -526,11 +526,17 @@ final class TourLayoutTests: XCTestCase {
     @MainActor
     private func assertSample(_ id: String, tour: TourController, host: TourHost, leadingRows: Int) throws {
         let bounds = try XCTUnwrap(tour.groupHighlightBounds)
+        let area = try XCTUnwrap(tour.groupViewport)
         let rows = tour.groupRows(id, host: host)
         let items = rows.dropFirst(leadingRows)
-        let visible = items.filter { bounds.insetBy(dx: -1, dy: -1).contains($0.1.rect) }
-        XCTAssertTrue((1...3).contains(visible.count), "Show one to three complete items")
-        for row in rows.prefix(leadingRows) { XCTAssertTrue(bounds.insetBy(dx: -1, dy: -1).contains(row.1.rect)) }
-        for row in items.dropFirst(3) { XCTAssertFalse(bounds.intersects(row.1.rect), "Further items stay dimmed") }
+        let outlined = bounds.insetBy(dx: -1, dy: -1)
+        for row in rows.prefix(leadingRows) { XCTAssertTrue(outlined.contains(row.1.rect)) }
+        XCTAssertTrue(items.contains { outlined.contains($0.1.rect) }, "Show at least one complete item")
+        // Every item that fits below the explanation is outlined; the rest stay dimmed.
+        for (key, frame) in items {
+            let fits = frame.rect.minY >= area.minY - 1 && frame.rect.maxY <= area.maxY + 1
+            XCTAssertEqual(outlined.contains(frame.rect), fits, "\(key) must be outlined exactly when it fits")
+            if !fits { XCTAssertFalse(bounds.insetBy(dx: 1, dy: 1).intersects(frame.rect), "\(key) stays dimmed") }
+        }
     }
 }

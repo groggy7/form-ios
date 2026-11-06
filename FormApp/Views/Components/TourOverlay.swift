@@ -288,11 +288,6 @@ public final class TourController: ObservableObject {
             .map { ($0.key, $0.value) }
     }
 
-    func highlightRows(_ step: TourStep, host: TourHost) -> [(String, TourFrame)] {
-        let rows = groupRows(step.targetId ?? "", host: host)
-        guard let policy = step.rowHighlight, let limit = policy.itemLimit else { return rows }
-        return Array(rows.prefix(policy.leadingRows + limit))
-    }
 
     private func isOffscreen(_ id: String, host: TourHost) -> Bool {
         guard let frame = frames[host]?[id] else { return true }
@@ -450,7 +445,7 @@ struct TourOverlay: View {
                 let groupArea = CGRect(x: viewport.minX,
                     y: max(viewport.minY + 6, safe.minY + bubbleHeight + 18), width: viewport.width,
                     height: max(0, viewport.maxY - 6 - max(viewport.minY + 6, safe.minY + bubbleHeight + 18)))
-                let rows = step.highlightsRows ? tour.highlightRows(step, host: host).compactMap { frames[$0.0] } : []
+                let rows = step.highlightsRows ? tour.groupRows(step.targetId ?? "", host: host).compactMap { frames[$0.0] } : []
                 let complete = rows.filter { $0.rect.minY >= groupArea.minY - 1 && $0.rect.maxY <= groupArea.maxY + 1 }
                 let groupBounds = complete.reduce(CGRect.null) { $0.union($1.rect) }
                 // Safe-area margins constrain the bubble, not the target. The dock extends
@@ -467,7 +462,8 @@ struct TourOverlay: View {
                         .position(x: cutout.midX, y: cutout.midY)
                         .allowsHitTesting(false)
                 }
-                let required = step.rowHighlight?.itemLimit == nil ? rows : Array(rows.prefix((step.rowHighlight?.leadingRows ?? 0) + 1))
+                // Reserve room for the leading rows and one item, or the whole group when it must stay together.
+                let required = step.rowHighlight?.keepsAllRows != false ? rows : Array(rows.prefix((step.rowHighlight?.leadingRows ?? 0) + 1))
                 let requiredBounds = required.reduce(CGRect.null) { $0.union($1.rect) }
                 let minimumRow = requiredBounds.isNull ? 96 : max(48, requiredBounds.height)
                 let maxBubbleHeight = step.highlightsRows
