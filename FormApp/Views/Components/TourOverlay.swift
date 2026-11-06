@@ -72,7 +72,9 @@ public final class TourController: ObservableObject {
     @Published private(set) var targetFlags: [TourHost: [String: Set<String>]] = [:]
 
     private var frames: [TourHost: [String: TourFrame]] = [:]
-    private var scrollTargets: [String: TourScrollTarget] = [:]
+    /// Probes per target, newest last. Swapping a view (a locked teaser for the sharp sample) briefly
+    /// registers both, and the outgoing probe can update after the new one appears.
+    private var scrollTargets: [String: [TourScrollTarget]] = [:]
     private var origins: [TourHost: CGPoint] = [:]
     var groupViewport: CGRect?
     var groupHighlightBounds: CGRect?
@@ -196,8 +198,9 @@ public final class TourController: ObservableObject {
             return
         }
         // A step may first switch the view (Rep Lab) or swap the blurred teaser for sharp content.
+        // The new copy reports its frame before its probe joins the window, so wait for both.
         var waited = 0
-        while frames[host]?[targetId] == nil && waited < 12 {
+        while (frames[host]?[targetId] == nil || scrollTarget(targetId) == nil) && waited < 12 {
             try? await Task.sleep(nanoseconds: 50_000_000)
             waited += 1
         }
@@ -208,7 +211,7 @@ public final class TourController: ObservableObject {
             try? await Task.sleep(nanoseconds: 450_000_000)
             guard currentStep?.id == step.id else { return }
         }
-        if let frame = frames[host]?[targetId], let scroll = scrollTargets[targetId] {
+        if let frame = frames[host]?[targetId], let scroll = scrollTarget(targetId) {
             let safe = TourOverlay.safeRect(size: bounds[host] ?? .zero)
             let viewport = scrollViewport(targetId, host: host).intersection(safe)
             let desiredTop = max(viewport.minY + 6, safe.minY + bubbleHeight + 18)
@@ -247,17 +250,30 @@ public final class TourController: ObservableObject {
 
     private func resetGroupViewport() { groupViewport = nil; groupHighlightBounds = nil }
 
-    fileprivate func attachScrollTarget(_ id: String, view: UIView) {
-        guard scrollTargets[id]?.view !== view else { return }
-        scrollTargets[id] = TourScrollTarget(view: view)
+    func attachScrollTarget(_ id: String, view: UIView) {
+        var targets = scrollTargets[id] ?? []
+        guard targets.last?.view !== view else { return }
+        targets.removeAll { $0.view == nil || $0.view === view }
+        targets.append(TourScrollTarget(view: view))
+        scrollTargets[id] = targets
     }
 
-    fileprivate func detachScrollTarget(_ id: String, view: UIView) {
-        if scrollTargets[id]?.view === view { scrollTargets.removeValue(forKey: id) }
+    func detachScrollTarget(_ id: String, view: UIView) {
+        guard var targets = scrollTargets[id] else { return }
+        targets.removeAll { $0.view == nil || $0.view === view }
+        scrollTargets[id] = targets.isEmpty ? nil : targets
     }
+
+    /// The newest probe still on screen, so removing an outgoing copy never drops the live one.
+    private func scrollTarget(_ id: String) -> TourScrollTarget? {
+        scrollTargets[id]?.last { $0.view?.window != nil }
+    }
+
+    /// The scroll view that moves `id`, if it has one.
+    func scrollView(for id: String) -> UIScrollView? { scrollTarget(id)?.scrollView }
 
     func scrollViewport(_ id: String, host: TourHost) -> CGRect {
-        guard let scroll = scrollTargets[id]?.scrollView else {
+        guard let scroll = scrollView(for: id) else {
             return TourOverlay.safeRect(size: bounds[host] ?? .zero)
         }
         let rect = scroll.convert(scroll.bounds, to: nil)

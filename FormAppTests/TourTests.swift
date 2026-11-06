@@ -451,6 +451,79 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
+    func testAnOutgoingCopyDoesNotDropTheLiveScrollTarget() throws {
+        let tour = TourController.shared
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 320, height: 480)
+        let scroll = UIScrollView(frame: window.bounds)
+        scroll.contentSize = CGSize(width: 320, height: 2000)
+        window.addSubview(scroll)
+        let outgoing = UIView(), live = UIView()
+        scroll.addSubview(outgoing); scroll.addSubview(live)
+        let id = "test.swap"
+        defer { tour.detachScrollTarget(id, view: outgoing); tour.detachScrollTarget(id, view: live); window.isHidden = true }
+        // A locked teaser swaps for the sharp sample: the new probe appears, the old one updates once more, then leaves.
+        tour.attachScrollTarget(id, view: outgoing)
+        tour.attachScrollTarget(id, view: live)
+        tour.attachScrollTarget(id, view: outgoing)
+        outgoing.removeFromSuperview()
+        tour.detachScrollTarget(id, view: outgoing)
+        XCTAssertTrue(tour.scrollView(for: id) === scroll, "The live probe must still scroll its target")
+    }
+
+    @MainActor
+    func testLockedVolumeMatrixLiftsTheFigureAndLegendAboveTheDock() async throws {
+        let store = AppStore.shared
+        let tour = TourController.shared
+        let saved = store.tourProgress
+        let language = LanguageManager.shared.currentLanguage
+        let subscribed = ProAccessManager.shared.isProSubscribed
+        LanguageManager.setLanguage("en")
+        tour.cancel()
+        store.updateTourProgress { _ in TourProgress(seen: Set(TourId.allCases).subtracting([.volumeMatrix])) }
+        ProAccessManager.shared.updateSubscriptionStatus(active: false)
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let previous = scene.windows.first { $0.isKeyWindow }
+        let previousRoots = scene.windows.filter { $0.windowLevel == .normal && $0.rootViewController != nil }
+            .map { ($0, $0.rootViewController) }
+        previousRoots.forEach { $0.0.rootViewController = nil }
+        tour.update(frames: [:], bounds: .zero, origin: .zero, host: .main)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 440, height: 956)
+        // Match RootView: the pager ends at the dock, which sits below it.
+        let host = UIHostingController(rootView:
+            VStack(spacing: 0) {
+                HistoryView(store: store, initialTab: .volumeMatrix, onOpenSettings: {}, onSelectRecord: { _ in })
+                BottomDock(currentView: .constant(.history))
+            }
+            .ignoresSafeArea(.container, edges: .bottom)
+            .background(AppColors.background.ignoresSafeArea())
+            .tourOverlay(.main))
+        window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+        defer {
+            tour.cancel(); window.isHidden = true; window.rootViewController = nil
+            store.updateTourProgress { _ in saved }; LanguageManager.setLanguage(language)
+            ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
+            previousRoots.forEach { $0.0.rootViewController = $0.1 }; previous?.makeKeyAndVisible()
+        }
+        try await settle { tour.hasTarget("matrix.figure") && tour.hasTarget("dock") }
+        // Starting swaps the blurred teaser for the sharp sample, re-registering every target.
+        tour.start(.volumeMatrix, locked: true)
+        for (index, id) in [(0, "matrix.figure"), (1, "matrix.legend")] {
+            if index > 0 { tour.next() }
+            try await settle { tour.currentStep?.targetId == id && tour.shownStepIndex == index }
+            try await Task.sleep(nanoseconds: 200_000_000)
+            let dock = try XCTUnwrap(tour.frame("dock", host: .main)?.rect)
+            let target = try XCTUnwrap(tour.frame(id, host: .main)?.rect).insetBy(dx: -6, dy: -6)
+            let bubble = try XCTUnwrap(tour.bubbleBounds)
+            try capture(window, "ios-volume-matrix-\(id)")
+            XCTAssertLessThanOrEqual(target.maxY, dock.minY + 0.5, "\(id) must be scrolled clear of the dock")
+            XCTAssertFalse(bubble.intersects(target), "\(id) and its explanation must not overlap")
+        }
+    }
+
+    @MainActor
     private func assertSample(_ id: String, tour: TourController, host: TourHost, leadingRows: Int) throws {
         let bounds = try XCTUnwrap(tour.groupHighlightBounds)
         let rows = tour.groupRows(id, host: host)
