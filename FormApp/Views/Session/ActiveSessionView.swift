@@ -238,6 +238,17 @@ public struct ActiveSessionView: View {
                                         .accessibilityIdentifier("session-setup-note")
                                     }
 
+                                    // A block week sets the effort target, the mid-workout window and the muscle questions.
+                                    let block = store.state.trainingBlock.flatMap { $0.id == activeDraft.blockId ? $0 : nil }
+                                    let blockWeek = block == nil ? nil : activeDraft.blockWeek
+                                    let blockTarget = blockWeek.flatMap { TrainingBlockRules.target(length: block!.length, week: $0) }
+                                    let blockDeload = block != nil && blockWeek.map { TrainingBlockRules.isDeload(length: block!.length, week: $0) } == true
+                                    let blockQuestions = block == nil ? nil : TrainingBlocks.feedbackPlan(activeDraft.workout)
+                                    if blockDeload {
+                                        Text(LanguageManager.t("block.session.deload")).appFont(.footnote).foregroundStyle(AppColors.purple)
+                                            .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
+                                            .accessibilityIdentifier("block-deload-hint")
+                                    }
                                     let recommendation = historyInsights?.recommendation
                                     let showsProgressionCard = recommendation != nil && store.showProgressionTargets
 
@@ -307,11 +318,23 @@ public struct ActiveSessionView: View {
                                         workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
                                     let asksJointStress = store.jointStressRatings && WorkoutSessionUtils.offersJointStressRating(currentSets)
                                     // The first working set's reps in reserve can offer a load step for the rest (Premium coach).
+                                    let effortOn = store.repsInReserve || activeDraft.blockId != nil
                                     let loadAdjustment = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
-                                        store.repsInReserve && !keptAdjustments.contains(exercise.id)
+                                        effortOn && !keptAdjustments.contains(exercise.id) && !blockDeload
                                         ? ProgressionEngine.loadAdjustment(exercise: exercise, sets: currentSets, unit: store.weightUnit,
-                                                                           steps: store.progressionLoadSteps)
+                                                                           steps: store.progressionLoadSteps,
+                                                                           window: blockTarget.map { TrainingBlockRules.window(target: $0) } ?? SetEffort.targetWindow)
                                         : nil
+                                    // Soreness is asked before a muscle's first exercise, pump and workload after its last.
+                                    let exerciseIndex = activeDraft.workout.exercises.firstIndex { $0.id == exercise.id } ?? -1
+                                    let sorenessMuscles = currentSets.contains { $0.isCompleted && !$0.isWarmup } ? []
+                                        : blockQuestions?.sorenessBefore[exerciseIndex] ?? []
+                                    let pumpMuscles = workingSetsDone ? blockQuestions?.pumpAfter[exerciseIndex] ?? [] : []
+                                    if !sorenessMuscles.isEmpty {
+                                        BlockFeedbackCard(muscles: sorenessMuscles, answers: activeDraft.muscleFeedback ?? [:], questions: .soreness) {
+                                            store.setMuscleFeedback(muscle: $0, feedback: $1)
+                                        }
+                                    }
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -348,7 +371,7 @@ public struct ActiveSessionView: View {
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         logbookBeatenSets: logbookBeatenSets,
                                         intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil,
-                                        effort: store.repsInReserve ? EffortActions(scale: store.effortScale) { setIdx, rir in
+                                        effort: effortOn ? EffortActions(scale: store.effortScale) { setIdx, rir in
                                             store.setEffort(exerciseId: exercise.id, index: setIdx, rir: rir)
                                         } : nil,
                                         adjustment: loadAdjustment.map { offer in
@@ -358,12 +381,19 @@ public struct ActiveSessionView: View {
                                                 onKeep: { keptAdjustments.insert(exercise.id) })))
                                         },
                                         // The ratings sit right under the last set, where the exercise ends.
-                                        ratings: asksEffort || asksJointStress ? AnyView(ExerciseRatingsCard(
-                                            effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
-                                            onEffort: asksEffort ? { setEffort($0, exerciseId: exercise.id) } : nil,
-                                            jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
-                                            onJointStress: asksJointStress ? { setJointStress($0, exerciseId: exercise.id) } : nil
-                                        )) : nil,
+                                        prescriptionSuffix: blockDeload ? LanguageManager.t("block.setup.deload")
+                                            : blockTarget.map { SetEffort.tag($0, scale: store.effortScale) },
+                                        ratings: asksEffort || asksJointStress || !pumpMuscles.isEmpty ? AnyView(VStack(spacing: 8) {
+                                            ExerciseRatingsCard(
+                                                effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
+                                                onEffort: asksEffort ? { setEffort($0, exerciseId: exercise.id) } : nil,
+                                                jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
+                                                onJointStress: asksJointStress ? { setJointStress($0, exerciseId: exercise.id) } : nil
+                                            )
+                                            BlockFeedbackCard(muscles: pumpMuscles, answers: activeDraft.muscleFeedback ?? [:], questions: .pumpAndWorkload) {
+                                                store.setMuscleFeedback(muscle: $0, feedback: $1)
+                                            }
+                                        }) : nil,
                                         keypad: keypad,
                                         weightStep: WorkoutSessionUtils.loadStep(exercise, unit: store.weightUnit, steps: store.progressionLoadSteps),
                                         barbellPlates: WorkoutSessionUtils.usesBarbellPlates(exercise),

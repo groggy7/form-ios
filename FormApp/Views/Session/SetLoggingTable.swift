@@ -31,6 +31,8 @@ public struct SetLoggingTable: View {
     var effort: EffortActions? = nil
     /// The mid-workout load adjustment, shown under the first working set that offers it.
     var adjustment: AdjustmentSlot? = nil
+    /// A training block week's target after the rep range, such as "RIR 2" (docs/training-blocks.md).
+    var prescriptionSuffix: String? = nil
     /// The exercise's ratings, shown directly beneath its last set when the caller asks for them.
     var ratings: AnyView? = nil
     /// The session's number pad; the selected field becomes its target.
@@ -67,6 +69,7 @@ public struct SetLoggingTable: View {
         intensity: IntensityActions? = nil,
         effort: EffortActions? = nil,
         adjustment: AdjustmentSlot? = nil,
+        prescriptionSuffix: String? = nil,
         ratings: AnyView? = nil,
         keypad: SessionKeypad? = nil,
         weightStep: Double? = nil,
@@ -93,6 +96,7 @@ public struct SetLoggingTable: View {
         self.intensity = intensity
         self.effort = effort
         self.adjustment = adjustment
+        self.prescriptionSuffix = prescriptionSuffix
         self.ratings = ratings
         self.keypad = keypad
         self.weightStep = weightStep
@@ -113,7 +117,8 @@ public struct SetLoggingTable: View {
         VStack(spacing: 8) {
             let workingSets = sets.filter { !$0.isWarmup }
             let done = workingSets.filter(\.isCompleted).count
-            let target = WorkoutSessionUtils.sessionPrescription(prescription)
+            let target = [WorkoutSessionUtils.sessionPrescription(prescription), prescriptionSuffix ?? ""]
+                .filter { !$0.isEmpty }.joined(separator: " · ")
             let title = Text(LanguageManager.t("matrix.stat.totalSets"))
                 .font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
             let progress = Text("\(done)/\(workingSets.count)")

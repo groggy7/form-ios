@@ -710,7 +710,15 @@ public final class AppStore: ObservableObject {
                   !WorkoutCalendar.isSessionComplete(session: record, workout: workout),
                   resumableDate(unfinishedRecordDate, record.scheduledDate) else { return false }
         }
-        let sessionWorkout = resumeHistory ? (unfinishedRecord?.workoutSnapshot ?? workout) : workout
+        // A start inside a training block week takes that week's sets; a resumed block session keeps its own week.
+        refreshTrainingBlock()
+        let block = state.trainingBlock
+        let blockWeek: Int? = unfinishedRecord.map { record in
+            record.blockId != nil && record.blockId == block?.id ? record.blockWeek : nil
+        } ?? TrainingBlocks.activeWeek(block, programId: programId, weekKey: state.currentWeekKey)
+        let sessionBlock = blockWeek == nil ? nil : block
+        let sessionWorkout = resumeHistory ? (unfinishedRecord?.workoutSnapshot ?? workout)
+            : sessionBlock.map { TrainingBlocks.sessionWorkout($0, week: blockWeek!, workout: workout) } ?? workout
         let setsByExercise = unfinishedRecord.map { WorkoutSessionUtils.restoreSetsFromHistory(workout: sessionWorkout, record: $0, unit: weightUnit) }
             ?? WorkoutSessionUtils.initialSets(for: sessionWorkout)
         let initialIndex = WorkoutSessionUtils.firstIncompleteExerciseIndex(workout: sessionWorkout, setsByExercise: setsByExercise)
@@ -741,7 +749,10 @@ public final class AppStore: ObservableObject {
             weightInputUnit: weightUnit,
             effortByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreEffortFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 },
             jointStressByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreJointStressFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 },
-            note: unfinishedRecord?.note
+            note: unfinishedRecord?.note,
+            blockId: sessionBlock?.id ?? unfinishedRecord?.blockId,
+            blockWeek: blockWeek ?? (unfinishedRecord?.blockId != nil ? unfinishedRecord?.blockWeek : nil),
+            muscleFeedback: unfinishedRecord?.muscleFeedback
         )
 
         saveActiveSession(draft)
@@ -1016,7 +1027,8 @@ public final class AppStore: ObservableObject {
             exerciseLogs: record.exerciseLogs,
             isComplete: isComplete,
             scheduledDate: record.scheduledDate ?? activeSession?.scheduledDate,
-            workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout, note: record.note ?? activeSession?.note
+            workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout, note: record.note ?? activeSession?.note,
+            blockId: record.blockId, blockWeek: record.blockWeek, muscleFeedback: record.muscleFeedback
         )
 
         var cal = state.calendarHistory ?? WorkoutCalendarHistory(
@@ -1063,7 +1075,8 @@ public final class AppStore: ObservableObject {
                 exerciseLogs: finalRecord.exerciseLogs,
                 isComplete: finalRecord.isComplete,
                 scheduledDate: finalRecord.scheduledDate,
-                workoutSnapshot: finalRecord.workoutSnapshot, note: finalRecord.note
+                workoutSnapshot: finalRecord.workoutSnapshot, note: finalRecord.note,
+                blockId: finalRecord.blockId, blockWeek: finalRecord.blockWeek, muscleFeedback: finalRecord.muscleFeedback
             )
         }()
 
@@ -1223,6 +1236,7 @@ public final class AppStore: ObservableObject {
         next.programs.removeAll { $0.id == id }
         if next.activeProgramId == id { next.activeProgramId = next.programs.first?.id ?? "" }
         next.completed = next.completed.filter { !$0.hasPrefix("\(id):") }
+        if next.trainingBlock?.programId == id { next.trainingBlock = nil }
         guard saveState(refreshCalendarState(next), durable: true) else { return false }
         selectedWorkoutId = nil
         refreshCatalogue()
@@ -1409,8 +1423,68 @@ public final class AppStore: ObservableObject {
     public func refreshForCurrentDate(now: Date = Date()) {
         let rotated = Self.rotateWeek(state, now: now)
         let refreshed = refreshCalendarState(rotated, now: now)
-        guard refreshed.currentWeekKey != state.currentWeekKey || refreshed.calendarHistory != state.calendarHistory else { return }
-        saveState(refreshed, now: now)
+        if refreshed.currentWeekKey != state.currentWeekKey || refreshed.calendarHistory != state.calendarHistory {
+            saveState(refreshed, now: now)
+        }
+        refreshTrainingBlock()
+    }
+
+    // MARK: Training blocks (docs/training-blocks.md): personal state around the active program.
+
+    /// Starts a block on the active program, replacing any earlier one.
+    @discardableResult
+    public func startTrainingBlock(length: Int, focus: [String], nextWeek: Bool) -> Bool {
+        guard let program = state.programs.first(where: { $0.id == state.activeProgramId }),
+              let thisWeek = TrainingBlocks.monday(state.currentWeekKey) else { return false }
+        let startWeek = nextWeek
+            ? TrainingBlocks.weekKey(Calendar(identifier: .iso8601).date(byAdding: .day, value: 7, to: thisWeek) ?? thisWeek)
+            : state.currentWeekKey
+        guard let block = TrainingBlocks.start(program, length: length, focus: focus, startWeek: startWeek) else { return false }
+        var next = state
+        next.trainingBlock = block
+        return saveState(next, durable: true)
+    }
+
+    /// Computes any block week that has begun.
+    public func refreshTrainingBlock() {
+        guard let block = state.trainingBlock else { return }
+        var next = state
+        if let program = state.programs.first(where: { $0.id == block.programId }) {
+            let advanced = TrainingBlocks.advance(block, program: program, history: state.history, weekKey: state.currentWeekKey)
+            guard advanced != block else { return }
+            next.trainingBlock = advanced
+        } else {
+            next.trainingBlock = nil
+        }
+        saveState(next)
+    }
+
+    /// Marks a block week reviewed, with the lifter's own set counts when they changed any.
+    public func reviewTrainingBlockWeek(_ week: Int, sets: [String: Int]) {
+        guard let block = state.trainingBlock else { return }
+        var next = state
+        next.trainingBlock = TrainingBlocks.markReviewed(TrainingBlocks.edit(block, week: week, sets: sets), week: week)
+        saveState(next, durable: true)
+    }
+
+    /// Ends the block; every session stays.
+    public func endTrainingBlock() {
+        guard state.trainingBlock != nil else { return }
+        var next = state
+        next.trainingBlock = nil
+        saveState(next, durable: true)
+    }
+
+    /// A training block answer for one muscle; nil fields clear. Only block sessions keep answers.
+    public func setMuscleFeedback(muscle: String, feedback: MuscleFeedback) {
+        updateActiveSession { draft in
+            guard draft.blockId != nil, TrainingBlockRules.muscles.contains(muscle) else { return draft }
+            var copy = draft
+            var answers = copy.muscleFeedback ?? [:]
+            answers[muscle] = MuscleFeedback.sanitized(feedback)
+            copy.muscleFeedback = answers.isEmpty ? nil : answers
+            return copy
+        }
     }
 
     /// Recover current-week completions from history when upgrading a store whose week key was frozen.
@@ -2432,6 +2506,7 @@ enum BackupSanitizer {
         clean.bodyEntries = body.isEmpty ? nil : body
         let hidden = BodyLog.sanitizeHidden(state.hiddenHealthWeighIns, today: BodyDay.today())
         clean.hiddenHealthWeighIns = hidden.isEmpty ? nil : hidden
+        clean.trainingBlock = TrainingBlocks.sanitize(state.trainingBlock, programs: clean.programs)
         return clean
     }
 
@@ -2456,6 +2531,11 @@ enum BackupSanitizer {
     private static func sanitize(_ record: WorkoutSessionRecord) -> WorkoutSessionRecord {
         var copy = record
         copy.note = record.note.map { String($0.prefix(10_000)) }
+        let validBlock = !(record.blockId ?? "").isEmpty && record.blockId!.count <= 100
+            && (1...TrainingBlockRules.lengths.upperBound).contains(record.blockWeek ?? 0)
+        copy.blockId = validBlock ? record.blockId : nil
+        copy.blockWeek = validBlock ? record.blockWeek : nil
+        copy.muscleFeedback = TrainingBlockRules.sanitizedFeedback(record.muscleFeedback)
         copy.durationSeconds = clamped(record.durationSeconds, 0...maxSessionSeconds)
         copy.totalVolumeKg = clamped(record.totalVolumeKg, 0...maxSessionVolumeKg)
         copy.totalCompletedSets = clamped(record.totalCompletedSets, 0...maxSessionSets)

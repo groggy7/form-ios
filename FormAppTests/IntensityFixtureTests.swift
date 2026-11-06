@@ -434,7 +434,7 @@ final class SetEffortTests: XCTestCase {
         let state = StoredAppState(programs: [], activeProgramId: "", currentWeekKey: "2026-W45", history: [record])
         let data = try JSONEncoder().encode(FullBackupDocument(state: state, weightUnit: .kg))
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(json["schemaVersion"] as? Int, 7)
+        XCTAssertEqual(json["schemaVersion"] as? Int, StoredAppState.currentSchemaVersion)
         let text = String(decoding: data, as: UTF8.self)
         XCTAssertEqual(text.components(separatedBy: "\"rir\"").count - 1, 1, "an unrated set writes no field")
         let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data)

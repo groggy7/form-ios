@@ -716,7 +716,7 @@ struct ExerciseRatingsCard: View {
     }
 }
 
-private struct RatingSection: View {
+struct RatingSection: View {
     let title: String
     let hint: String
     let options: [(String, String)]

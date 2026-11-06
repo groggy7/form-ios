@@ -701,6 +701,11 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
     /// Android's local day for a session moved to another day; kept so backups round-trip.
     public var performedDate: String?
     public var note: String?
+    /// The training block and week this session belonged to (docs/training-blocks.md).
+    public var blockId: String?
+    public var blockWeek: Int?
+    /// Block answers by muscle.
+    public var muscleFeedback: [String: MuscleFeedback]?
 
     public init(
         id: String = UUID().uuidString,
@@ -717,8 +722,14 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         scheduledDate: String? = nil,
         workoutSnapshot: Workout? = nil,
         performedDate: String? = nil,
-        note: String? = nil
+        note: String? = nil,
+        blockId: String? = nil,
+        blockWeek: Int? = nil,
+        muscleFeedback: [String: MuscleFeedback]? = nil
     ) {
+        self.blockId = blockId
+        self.blockWeek = blockWeek
+        self.muscleFeedback = muscleFeedback
         self.id = id
         self.programId = programId
         self.workoutId = workoutId
@@ -829,6 +840,11 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     /// Optional joint-stress ratings by workout exercise ID; the field is optional, so the schema stays 2.
     public var jointStressByExercise: [String: String]?
     public var note: String?
+    /// Set when the session started inside a training block week; its workout carries that week's sets.
+    public var blockId: String?
+    public var blockWeek: Int?
+    /// Block answers by muscle.
+    public var muscleFeedback: [String: MuscleFeedback]?
 
     public init(
         schemaVersion: Int = ActiveSessionDraft.currentSchemaVersion,
@@ -849,8 +865,14 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         weightInputUnit: WeightUnit? = nil,
         effortByExercise: [String: String]? = nil,
         jointStressByExercise: [String: String]? = nil,
-        note: String? = nil
+        note: String? = nil,
+        blockId: String? = nil,
+        blockWeek: Int? = nil,
+        muscleFeedback: [String: MuscleFeedback]? = nil
     ) {
+        self.blockId = blockId
+        self.blockWeek = blockWeek
+        self.muscleFeedback = muscleFeedback
         self.effortByExercise = effortByExercise
         self.jointStressByExercise = jointStressByExercise
         self.note = note
@@ -895,6 +917,13 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
             .filter { ProgressionEffort(rawValue: $0.value) != nil }
         self.jointStressByExercise = try container.decodeIfPresent([String: String].self, forKey: .jointStressByExercise)?
             .filter { JointStress(rawValue: $0.value) != nil }
+        let blockWeek = try container.decodeIfPresent(Int.self, forKey: .blockWeek)
+        let blockId = try container.decodeIfPresent(String.self, forKey: .blockId)
+        let validBlock = !(blockId ?? "").isEmpty && (1...TrainingBlockRules.lengths.upperBound).contains(blockWeek ?? 0)
+        self.blockId = validBlock ? blockId : nil
+        self.blockWeek = validBlock ? blockWeek : nil
+        self.muscleFeedback = TrainingBlockRules.sanitizedFeedback(
+            try? container.decodeIfPresent([String: MuscleFeedback].self, forKey: .muscleFeedback))
     }
 
     public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {
@@ -1422,8 +1451,9 @@ public enum WorkoutCalendar {
 
 
 public struct StoredAppState: Codable {
-    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log; 7 adds set effort (rir).
-    public static let currentSchemaVersion = 7
+    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log; 7 adds set effort
+    /// (rir); 8 adds the training block and session block fields (docs/training-blocks.md).
+    public static let currentSchemaVersion = 8
 
     public var schemaVersion: Int
     public var programs: [Program]
@@ -1437,6 +1467,8 @@ public struct StoredAppState: Codable {
     public var bodyEntries: [BodyEntry]?
     /// Dates whose Apple Health weigh-in the user hid. Dates only: Health values are never stored.
     public var hiddenHealthWeighIns: [String]?
+    /// The current or last training block. Nil in schema 7 and older backups.
+    public var trainingBlock: TrainingBlock?
 
     public init(
         schemaVersion: Int = StoredAppState.currentSchemaVersion,
@@ -1448,8 +1480,10 @@ public struct StoredAppState: Codable {
         history: [WorkoutSessionRecord] = [],
         calendarHistory: WorkoutCalendarHistory? = nil,
         bodyEntries: [BodyEntry]? = nil,
-        hiddenHealthWeighIns: [String]? = nil
+        hiddenHealthWeighIns: [String]? = nil,
+        trainingBlock: TrainingBlock? = nil
     ) {
+        self.trainingBlock = trainingBlock
         self.bodyEntries = bodyEntries
         self.hiddenHealthWeighIns = hiddenHealthWeighIns
         self.schemaVersion = schemaVersion

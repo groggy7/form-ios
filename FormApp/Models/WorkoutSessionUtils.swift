@@ -119,7 +119,12 @@ public struct SessionProgress {
             exerciseLogs: exerciseLogs,
             isComplete: WorkoutSessionUtils.isComplete(draft: draft),
             scheduledDate: draft.scheduledDate,
-            workoutSnapshot: draft.workout, note: draft.note
+            workoutSnapshot: draft.workout, note: draft.note,
+            blockId: draft.blockId, blockWeek: draft.blockWeek,
+            muscleFeedback: draft.muscleFeedback.flatMap { answers in
+                let kept = answers.filter { !$0.value.isEmpty }
+                return kept.isEmpty ? nil : kept
+            }
         )
     }
 }
@@ -410,7 +415,7 @@ public enum WorkoutSessionUtils {
     }
 
     /// Each workout exercise's log in a saved record, matched by snapshot position, identity or name.
-    private static func historyLogs(workout: Workout, record: WorkoutSessionRecord) -> [SessionExerciseLog?] {
+    static func historyLogs(workout: Workout, record: WorkoutSessionRecord) -> [SessionExerciseLog?] {
         var logsByName: [String: SessionExerciseLog] = [:]
         var logsById: [String: SessionExerciseLog] = [:]
         for log in record.exerciseLogs {

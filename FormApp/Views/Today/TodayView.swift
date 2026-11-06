@@ -2,8 +2,11 @@ import SwiftUI
 
 public struct TodayView: View {
     @State private var socialRequest: SocialShareRequest?
+    @State private var blockSheet: BlockSheet?
+    @State private var blockPaywall = false
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
+    @ObservedObject private var proManager = ProAccessManager.shared
     @Environment(\.twoPageLayout) private var twoPageLayout
     var onOpenPrograms: () -> Void
     var onOpenSettings: () -> Void
@@ -130,6 +133,22 @@ public struct TodayView: View {
         .tourTarget("home.week", cornerRadius: 22)
         .padding(.horizontal, 20)
 
+        // Training block (docs/training-blocks.md): a Premium coach feature around the active program.
+        TrainingBlockCard(
+            state: BlockCardState.of(block: store.state.trainingBlock, activeProgram: store.activeProgram, programs: store.state.programs,
+                                     weekKey: store.state.currentWeekKey, unlocked: proManager.isFeatureUnlocked(.autoProgression)),
+            scale: store.effortScale,
+            onStart: { blockSheet = .setup },
+            onReview: { blockSheet = .week($0) },
+            onSummary: { blockSheet = .summary },
+            onEnd: { store.endTrainingBlock() },
+            onLocked: { blockPaywall = true }
+        )
+        .padding(.horizontal, 20)
+        .sheet(item: $blockSheet) { sheet in blockSheetView(sheet) }
+        .sheet(isPresented: $blockPaywall) { ProPaywallSheet(feature: .autoProgression, onDismiss: { blockPaywall = false }) }
+        .onAppear { store.refreshTrainingBlock() }
+
         if let card = SocialCards.week(program: store.activeProgram, completed: store.state.completed, history: store.state.history, weekKey: store.state.currentWeekKey, unit: store.weightUnit) {
             Button { socialRequest = SocialShareRequest(cards: [card]) } label: {
                 Text(LanguageManager.t("social.week") + " · " + LanguageManager.t("social.share"))
@@ -143,7 +162,39 @@ public struct TodayView: View {
     @ViewBuilder
     private func exerciseSection(workout: Workout?) -> some View {
         if let workout = workout, !workout.exercises.isEmpty {
-            WorkoutExercisePreview(store: store, workout: workout, registersTourTargets: true, onSelectExercise: onSelectExercise)
+            // In a block week Home lists that week's sets; starting still uses the program workout.
+            let block = store.state.trainingBlock
+            let week = TrainingBlocks.activeWeek(block, programId: store.activeProgram?.id ?? "", weekKey: store.state.currentWeekKey)
+            let shown = block.flatMap { block in week.map { TrainingBlocks.sessionWorkout(block, week: $0, workout: workout) } } ?? workout
+            WorkoutExercisePreview(store: store, workout: shown, registersTourTargets: true, onSelectExercise: onSelectExercise)
+        }
+    }
+
+    @ViewBuilder
+    private func blockSheetView(_ sheet: BlockSheet) -> some View {
+        let block = store.state.trainingBlock
+        let program = block.flatMap { block in store.state.programs.first { $0.id == block.programId } }
+        switch sheet {
+        case .setup:
+            if let active = store.activeProgram {
+                TrainingBlockSetupSheet(program: active, scale: store.effortScale, replacesBlock: block != nil) { length, focus, nextWeek in
+                    store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
+                    blockSheet = nil
+                }
+            }
+        case .week(let week):
+            if let block, let program {
+                TrainingBlockWeekSheet(block: block, week: week, program: program, scale: store.effortScale) { edits in
+                    store.reviewTrainingBlockWeek(week, sets: edits)
+                    blockSheet = nil
+                }
+            }
+        case .summary:
+            if let block, let program {
+                TrainingBlockSummarySheet(block: block, program: program, history: store.state.history, weightUnit: store.weightUnit,
+                                          onStartAnother: { blockSheet = .setup },
+                                          onDone: { store.endTrainingBlock(); blockSheet = nil })
+            }
         }
     }
 

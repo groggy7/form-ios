@@ -1,0 +1,3216 @@
+{
+  "schemaVersion": 1,
+  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target. `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order.",
+  "references": {
+    "chest": [
+      6,
+      18
+    ],
+    "front-delts": [
+      4,
+      12
+    ],
+    "side-delts": [
+      6,
+      24
+    ],
+    "rear-delts": [
+      8,
+      20
+    ],
+    "biceps": [
+      8,
+      20
+    ],
+    "triceps": [
+      6,
+      18
+    ],
+    "upper-back": [
+      8,
+      20
+    ],
+    "lats": [
+      8,
+      20
+    ],
+    "abs": [
+      6,
+      18
+    ],
+    "obliques": [
+      4,
+      14
+    ],
+    "quads": [
+      6,
+      16
+    ],
+    "hamstrings": [
+      6,
+      16
+    ],
+    "glutes": [
+      4,
+      16
+    ],
+    "calves": [
+      8,
+      20
+    ]
+  },
+  "schedule": [
+    {
+      "length": 4,
+      "targets": [
+        3,
+        2,
+        1,
+        4
+      ]
+    },
+    {
+      "length": 5,
+      "targets": [
+        3,
+        2,
+        2,
+        1,
+        4
+      ]
+    },
+    {
+      "length": 6,
+      "targets": [
+        3,
+        3,
+        2,
+        1,
+        1,
+        4
+      ]
+    }
+  ],
+  "windows": [
+    {
+      "target": 3,
+      "window": [
+        2,
+        4
+      ]
+    },
+    {
+      "target": 2,
+      "window": [
+        1,
+        3
+      ]
+    },
+    {
+      "target": 1,
+      "window": [
+        0,
+        2
+      ]
+    }
+  ],
+  "performance": [
+    {
+      "name": "same loads, fewer reps",
+      "previous": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          9
+        ]
+      ],
+      "current": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          9
+        ],
+        [
+          100,
+          9
+        ]
+      ],
+      "fell": true
+    },
+    {
+      "name": "same loads, same reps",
+      "previous": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          9
+        ]
+      ],
+      "current": [
+        [
+          100,
+          9
+        ],
+        [
+          100,
+          10
+        ]
+      ],
+      "fell": false
+    },
+    {
+      "name": "more reps",
+      "previous": [
+        [
+          100,
+          8
+        ],
+        [
+          100,
+          8
+        ]
+      ],
+      "current": [
+        [
+          100,
+          9
+        ],
+        [
+          100,
+          8
+        ]
+      ],
+      "fell": false
+    },
+    {
+      "name": "a heavier load is not a fall",
+      "previous": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          10
+        ]
+      ],
+      "current": [
+        [
+          102.5,
+          8
+        ],
+        [
+          102.5,
+          8
+        ]
+      ],
+      "fell": false
+    },
+    {
+      "name": "only the shared leading sets count",
+      "previous": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          9
+        ]
+      ],
+      "current": [
+        [
+          100,
+          10
+        ],
+        [
+          100,
+          9
+        ]
+      ],
+      "fell": true
+    },
+    {
+      "name": "no previous log",
+      "previous": [],
+      "current": [
+        [
+          100,
+          10
+        ]
+      ],
+      "fell": false
+    }
+  ],
+  "weeks": [
+    {
+      "name": "week 1 uses the program's sets",
+      "kind": "first",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": []
+      }
+    },
+    {
+      "name": "a focus muscle starts one set higher on its most specific exercise",
+      "kind": "first",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "focus": [
+        "chest"
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 4,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "focus"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "each focus muscle gets its own set",
+      "kind": "first",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "focus": [
+        "side-delts",
+        "quads"
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 4,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 5,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/lateral-raise",
+          "lower/leg-extension"
+        ],
+        "changes": [
+          {
+            "muscle": "side-delts",
+            "from": 3.0,
+            "to": 4.0,
+            "reasons": [
+              "focus"
+            ]
+          },
+          {
+            "muscle": "quads",
+            "from": 8.0,
+            "to": 9.0,
+            "reasons": [
+              "focus"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "a focus muscle at the top of its range stays",
+      "kind": "first",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "focus": [
+        "chest"
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 6,
+          "upper/incline-db": 6,
+          "upper/cable-fly": 6,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 18.0,
+            "to": 18.0,
+            "reasons": [
+              "focus",
+              "top_of_range"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "a focus muscle the program does not train is ignored",
+      "kind": "first",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "focus": [
+        "calves"
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": []
+      }
+    },
+    {
+      "name": "no answers change nothing",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": []
+      }
+    },
+    {
+      "name": "recovered early with an easy workload adds a set",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy",
+            "pump": "moderate"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 4,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "recovered"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "a low pump adds a second set",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "never",
+            "workload": "right",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 5,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly",
+          "upper/cable-fly"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 11.0,
+            "reasons": [
+              "recovered",
+              "low_pump"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "an exercise takes at most two sets above week 1",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 5,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ],
+          "baseSets": 3
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "additions": [
+        "upper/cable-fly",
+        "upper/cable-fly"
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "never",
+            "workload": "easy",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 5,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 5,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly",
+          "upper/cable-fly",
+          "upper/bench",
+          "upper/bench"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 11.0,
+            "to": 13.0,
+            "reasons": [
+              "recovered",
+              "low_pump"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "an exercise rated High for joint stress this week takes no added set",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ],
+          "highThisWeek": true,
+          "jointHigh": 1
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 4,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/bench"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "recovered"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "fewer High joint ratings in the block come first",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ],
+          "jointHigh": 2
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 4,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/bench"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "recovered"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "still sore takes back the most recent addition",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 4,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ],
+          "baseSets": 3
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "additions": [
+        "upper/cable-fly"
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "still_sore",
+            "workload": "right"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 10.0,
+            "to": 9.0,
+            "reasons": [
+              "still_sore"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "still sore and too much remove two sets from the largest, latest exercises",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "still_sore",
+            "workload": "too_much",
+            "pump": "great"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 2,
+          "upper/cable-fly": 2,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 7.0,
+            "reasons": [
+              "still_sore",
+              "too_much"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "removals stop at the bottom of the reference range",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "biceps": [
+          {
+            "soreness": "still_sore"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "biceps",
+            "from": 4.5,
+            "to": 4.5,
+            "reasons": [
+              "still_sore",
+              "bottom_of_range"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "falling reps at the same loads hold instead of adding",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ],
+          "performanceFell": true
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 9.0,
+            "reasons": [
+              "performance"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "still sore outranks falling reps",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ],
+          "performanceFell": true
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "still_sore",
+            "workload": "right"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 2,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 8.0,
+            "reasons": [
+              "still_sore"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "additions stop at the top of the reference range",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ],
+          "baseSets": 6
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ],
+          "baseSets": 6
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 6,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ],
+          "baseSets": 6
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "never",
+            "workload": "easy",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 6,
+          "upper/incline-db": 6,
+          "upper/cable-fly": 6,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 18.0,
+            "to": 18.0,
+            "reasons": [
+              "recovered",
+              "low_pump",
+              "top_of_range"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "the most severe soreness and workload count, and pump is low only when every answer is",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy",
+            "pump": "low"
+          },
+          {
+            "soreness": "never",
+            "workload": "right",
+            "pump": "great"
+          }
+        ],
+        "quads": [
+          {
+            "soreness": "never",
+            "workload": "easy",
+            "pump": "low"
+          },
+          {
+            "soreness": "still_sore",
+            "workload": "right",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 4,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 3,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "recovered"
+            ]
+          },
+          {
+            "muscle": "quads",
+            "from": 8.0,
+            "to": 7.0,
+            "reasons": [
+              "still_sore"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "a pump answer alone changes nothing",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": []
+      }
+    },
+    {
+      "name": "pushed my limits holds",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "never",
+            "workload": "pushed",
+            "pump": "low"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 3,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": []
+      }
+    },
+    {
+      "name": "muscles are processed in order and each lists its own change",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 3,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "chest": [
+          {
+            "soreness": "healed_early",
+            "workload": "easy"
+          }
+        ],
+        "side-delts": [
+          {
+            "soreness": "never",
+            "workload": "right",
+            "pump": "low"
+          }
+        ],
+        "quads": [
+          {
+            "soreness": "still_sore",
+            "workload": "pushed"
+          }
+        ],
+        "hamstrings": [
+          {
+            "soreness": "just_in_time",
+            "workload": "right"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 4,
+          "upper/row": 3,
+          "upper/lateral-raise": 5,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 3,
+          "lower/rdl": 3
+        },
+        "additions": [
+          "upper/cable-fly",
+          "upper/lateral-raise",
+          "upper/lateral-raise"
+        ],
+        "changes": [
+          {
+            "muscle": "chest",
+            "from": 9.0,
+            "to": 10.0,
+            "reasons": [
+              "recovered"
+            ]
+          },
+          {
+            "muscle": "side-delts",
+            "from": 3.0,
+            "to": 5.0,
+            "reasons": [
+              "recovered",
+              "low_pump"
+            ]
+          },
+          {
+            "muscle": "quads",
+            "from": 8.0,
+            "to": 7.0,
+            "reasons": [
+              "still_sore"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "no exercise can take a set",
+      "kind": "next",
+      "exercises": [
+        {
+          "key": "upper/bench",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/incline-db",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts",
+            "triceps"
+          ]
+        },
+        {
+          "key": "upper/cable-fly",
+          "sets": 3,
+          "primary": [
+            "chest"
+          ],
+          "secondary": [
+            "front-delts"
+          ]
+        },
+        {
+          "key": "upper/row",
+          "sets": 3,
+          "primary": [
+            "upper-back",
+            "lats"
+          ],
+          "secondary": [
+            "biceps",
+            "rear-delts"
+          ]
+        },
+        {
+          "key": "upper/lateral-raise",
+          "sets": 5,
+          "primary": [
+            "side-delts"
+          ],
+          "secondary": [],
+          "baseSets": 3
+        },
+        {
+          "key": "upper/curl",
+          "sets": 3,
+          "primary": [
+            "biceps"
+          ],
+          "secondary": [
+            "forearms"
+          ]
+        },
+        {
+          "key": "lower/squat",
+          "sets": 4,
+          "primary": [
+            "quads",
+            "glutes"
+          ],
+          "secondary": [
+            "adductors"
+          ]
+        },
+        {
+          "key": "lower/leg-extension",
+          "sets": 4,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "lower/rdl",
+          "sets": 3,
+          "primary": [
+            "hamstrings",
+            "glutes"
+          ],
+          "secondary": [
+            "lower-back"
+          ]
+        }
+      ],
+      "feedback": {
+        "side-delts": [
+          {
+            "soreness": "never",
+            "workload": "easy"
+          }
+        ]
+      },
+      "expected": {
+        "sets": {
+          "upper/bench": 3,
+          "upper/incline-db": 3,
+          "upper/cable-fly": 3,
+          "upper/row": 3,
+          "upper/lateral-raise": 5,
+          "upper/curl": 3,
+          "lower/squat": 4,
+          "lower/leg-extension": 4,
+          "lower/rdl": 3
+        },
+        "additions": [],
+        "changes": [
+          {
+            "muscle": "side-delts",
+            "from": 5.0,
+            "to": 5.0,
+            "reasons": [
+              "recovered",
+              "no_exercise"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "the deload halves each exercise's sets, rounded up, at least one",
+      "kind": "deload",
+      "exercises": [
+        {
+          "key": "a/one",
+          "sets": 5,
+          "primary": [
+            "chest"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "a/two",
+          "sets": 4,
+          "primary": [
+            "chest"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "a/three",
+          "sets": 3,
+          "primary": [
+            "quads"
+          ],
+          "secondary": []
+        },
+        {
+          "key": "a/four",
+          "sets": 1,
+          "primary": [
+            "calves"
+          ],
+          "secondary": []
+        }
+      ],
+      "expected": {
+        "sets": {
+          "a/one": 3,
+          "a/two": 2,
+          "a/three": 2,
+          "a/four": 1
+        }
+      }
+    }
+  ]
+}
