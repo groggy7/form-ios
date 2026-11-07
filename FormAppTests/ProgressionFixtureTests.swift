@@ -27,6 +27,7 @@ final class ProgressionFixtureTests: XCTestCase {
         let name: String
         let unit: String
         let steps: Steps?
+        let blockTarget: Int?
         let exercise: FixtureExercise
         let sets: [Row]
         let expected: Expected?
@@ -150,7 +151,8 @@ final class ProgressionFixtureTests: XCTestCase {
                                       inputTouched: row.load != nil || row.reps != nil ? true : nil, isWarmup: warmup, rir: row.rir)
             }
             let steps = loadSteps(fixture.steps, unit: unit)
-            let offer = ProgressionEngine.loadAdjustment(exercise: exercise, sets: rows, unit: unit, steps: steps)
+            let window = fixture.blockTarget.map { TrainingBlockRules.window(target: $0) } ?? SetEffort.targetWindow
+            let offer = ProgressionEngine.loadAdjustment(exercise: exercise, sets: rows, unit: unit, steps: steps, window: window)
             guard let expected = fixture.expected else { XCTAssertNil(offer, name); continue }
             guard let offer else { XCTFail("\(name): no adjustment"); continue }
             XCTAssertEqual(offer.direction.rawValue, expected.direction, "\(name) direction")
@@ -169,7 +171,8 @@ final class ProgressionFixtureTests: XCTestCase {
                     XCTAssertEqual(row, rows[index], "\(name) row \(index) is untouched")
                 }
             }
-            XCTAssertNil(ProgressionEngine.loadAdjustment(exercise: exercise, sets: after, unit: unit, steps: steps), "\(name) offers nothing once used")
+            XCTAssertNil(ProgressionEngine.loadAdjustment(exercise: exercise, sets: after, unit: unit, steps: steps, window: window),
+                         "\(name) offers nothing once used")
         }
     }
 

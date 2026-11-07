@@ -206,8 +206,11 @@ public enum TrainingBlockRules {
 
     public static func isDeload(length: Int, week: Int) -> Bool { lengths.contains(length) && week == length }
 
-    /// The mid-workout adjustment's window around a week's target.
-    public static func window(target: Int) -> ClosedRange<Int> { max(target - 1, 0)...(target + 1) }
+    /// The mid-workout adjustment's window around a week's target. The top answer means 4 or more, so a window stops
+    /// at 3 unless the target itself is 4+: in an RIR 3 week, 4+ at the rep ceiling still offers more load.
+    public static func window(target: Int) -> ClosedRange<Int> {
+        target >= deloadRir ? (target - 1)...target : max(target - 1, 0)...min(target + 1, deloadRir - 1)
+    }
 
     /// One workout exercise as the rules see it, in program order.
     public struct Exercise: Equatable {
