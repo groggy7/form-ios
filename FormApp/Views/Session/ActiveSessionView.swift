@@ -352,11 +352,16 @@ public struct ActiveSessionView: View {
                                             store.setMuscleFeedback(muscle: $0, feedback: $1)
                                         }
                                     }
-                                    if let strengthPlan {
-                                        StrengthLiftCard(plan: strengthPlan, exercise: exercise, sets: currentSets, estimateKg: liftEstimateKg,
+                                    // A strength lift's card: above the rows for the top set, then under the ticked top set for its back-offs.
+                                    let strengthCard = strengthPlan.map { plan in
+                                        StrengthLiftCard(plan: plan, exercise: exercise, sets: currentSets, estimateKg: liftEstimateKg,
                                                          weightUnit: store.weightUnit, steps: store.progressionLoadSteps, scale: store.effortScale) {
                                             applyProgressionTargets($0, exerciseId: exercise.id)
                                         }
+                                    }
+                                    let backoffRow = strengthPlan?.backoffCardRow(currentSets)
+                                    if let strengthCard, backoffRow == nil {
+                                        strengthCard
                                     }
 
                                     SetLoggingTable(
@@ -403,7 +408,9 @@ public struct ActiveSessionView: View {
                                                 adjustment: offer, scale: store.effortScale, weightUnit: store.weightUnit,
                                                 onUse: { applyProgressionTargets(offer.targets, exerciseId: exercise.id) },
                                                 onKeep: { keptAdjustments.insert(exercise.id) })))
-                                        },
+                                        } ?? backoffRow.flatMap { row in strengthCard.map { card in
+                                            AdjustmentSlot(afterIndex: row, content: AnyView(card.padding(.top, 6).padding(.bottom, 2)))
+                                        } },
                                         // The ratings sit right under the last set, where the exercise ends.
                                         prescriptionSuffix: strengthPlan?.test == true ? LanguageManager.t("block.strength.pillTest")
                                             : strengthPlan.map { LanguageManager.t("block.strength.pill", ["effort": SetEffort.tag($0.topRir, scale: store.effortScale)]) }

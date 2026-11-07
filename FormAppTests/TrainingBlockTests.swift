@@ -471,6 +471,22 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         }
     }
 
+    /// The back-off card moves under the ticked top set, before the row pre-fill gave the top set's load.
+    func testTheBackOffCardSitsUnderTheTickedTopSet() throws {
+        let plan = try XCTUnwrap(TrainingBlockRules.strengthWeek(length: 6, week: 1))
+        func rows(_ done: [Bool], warmup: Bool = false) -> [ExerciseSetLog] {
+            (warmup ? [ExerciseSetLog(id: "w", setNumber: 1, isCompleted: true, isWarmup: true)] : [])
+                + done.enumerated().map { ExerciseSetLog(id: "s\($0.offset)", setNumber: $0.offset + 1, isCompleted: $0.element) }
+        }
+        XCTAssertNil(plan.backoffCardRow(rows([false, false, false, false])), "before the top set the card stays above the rows")
+        XCTAssertEqual(plan.backoffCardRow(rows([true, false, false, false])), 0)
+        XCTAssertEqual(plan.backoffCardRow(rows([true, true, false, false])), 0, "it stays while a back-off is open")
+        XCTAssertEqual(plan.backoffCardRow(rows([true, false, false, false], warmup: true)), 1, "warmups come first")
+        XCTAssertNil(plan.backoffCardRow(rows([true, true, true, true])), "nothing is left to load")
+        let test = try XCTUnwrap(TrainingBlockRules.strengthWeek(length: 6, week: 6))
+        XCTAssertNil(test.backoffCardRow(rows([true, false, false])), "the test's singles keep their card above the rows")
+    }
+
     /// A strength block through the store: the week's lift sets, the card's Use, and the test week's singles.
     @MainActor func testAStrengthBlockSessionSuggestsTopSetThenBackOffs() throws {
         try preservingDefaults {
@@ -496,20 +512,35 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
             let estimate = TrainingBlocks.estimatedOneRepMaxKg(workout: draft.workout, exercise: draft.workout.exercises[0], history: store.state.history,
                                                                excludeSessionId: draft.id)
             XCTAssertEqual(try XCTUnwrap(estimate), 157.5, accuracy: 1e-6)
-            let controller = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
-            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1500))
-            window.rootViewController = controller
-            window.makeKeyAndVisible()
-            defer { window.isHidden = true }
-            controller.view.frame = window.bounds
-            controller.view.layoutIfNeeded()
-            RunLoop.main.run(until: Date().addingTimeInterval(0.5))
-            let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
-                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            func render(_ draft: ActiveSessionDraft, name: String) throws {
+                let controller = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1500))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                defer { window.isHidden = true }
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+                let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                    controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                }
+                let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/block-review").standardized
+                try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+                try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("\(name).png"))
             }
-            let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/block-review").standardized
-            try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
-            try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("strength-session-top.png"))
+            try render(draft, name: "strength-session-top")
+            // The top set ticked: pre-fill copies its load into the next row, so the back-off card sits between them.
+            var ticked = draft
+            var top = try XCTUnwrap(ticked.setsByExercise["squat"]?.first)
+            top.weightInput = "132.5"; top.weightKg = 132.5; top.repsInput = "5"; top.completedReps = 5; top.inputTouched = true
+            ticked.setsByExercise["squat"]?[0] = top
+            ticked = WorkoutSessionUtils.toggledSet(ticked, exerciseId: "squat", index: 0, now: 0)
+            XCTAssertEqual(ticked.setsByExercise["squat"]?.map(\.weightInput), ["132.5", "132.5", "", ""])
+            let plan = try XCTUnwrap(TrainingBlocks.strengthLift(store.state.trainingBlock, week: 1, workout: ticked.workout,
+                                                                 exercise: ticked.workout.exercises[0]))
+            XCTAssertEqual(plan.backoffCardRow(ticked.setsByExercise["squat"] ?? []), 0)
+            store.activeSession = ticked
+            try render(ticked, name: "strength-session-backoff")
         }
     }
 

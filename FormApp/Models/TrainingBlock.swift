@@ -161,6 +161,15 @@ public enum TrainingBlockRules {
         /// The lift's working sets: one top set plus the back-offs, or three singles.
         public var liftSets: Int { test ? testPercents.count : 1 + backoffSets }
         public var liftReps: Int { test ? 1 : topReps }
+
+        /// The row the back-off card sits under: the ticked top set, while a back-off row is open, since pre-fill
+        /// copies the top set's load into the next row. Nil keeps the card above the set rows (before the top set,
+        /// and the test's singles).
+        public func backoffCardRow(_ sets: [ExerciseSetLog]) -> Int? {
+            guard !test, let top = sets.firstIndex(where: { !$0.isWarmup }), sets[top].isCompleted,
+                  sets[(top + 1)...].contains(where: { !$0.isWarmup && !$0.isCompleted }) else { return nil }
+            return top
+        }
     }
 
     public static func strengthWeek(length: Int, week: Int) -> StrengthWeek? {
