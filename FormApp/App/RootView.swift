@@ -255,7 +255,7 @@ public struct RootView: View {
                 // Tours start only on a settled screen with nothing else asking for attention (app-tour.md §3).
                 .onChange(of: mainTourIdle, initial: true) { _, idle in tour.setIdle(idle, host: .main) }
                 .onChange(of: store.currentToast) { _, item in
-                    guard let item else { return }
+                    guard let item else { isToastShowing = false; return }
                     isToastShowing = true
                     Task { @MainActor in
                         try? await Task.sleep(nanoseconds: UInt64((item.duration + 0.4) * 1_000_000_000))

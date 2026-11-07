@@ -6109,6 +6109,24 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(store.currentToast?.message, LanguageManager.t("notice.programDeleted"))
     }
 
+    /// A shown notice expires, so the next workout screen does not show "Workout recorded" again.
+    func testANoticeExpiresAfterItsDuration() {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        store.showNotice("Workout recorded", duration: 0.1)
+        XCTAssertEqual(store.currentToast?.message, "Workout recorded")
+        let expired = expectation(description: "the notice expires")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { expired.fulfill() }
+        wait(for: [expired], timeout: 3)
+        XCTAssertNil(store.currentToast)
+        // A newer notice is not cleared by an older one's timer.
+        store.showNotice("First", duration: 0.1)
+        store.showNotice("Second", duration: 5)
+        let later = expectation(description: "the first notice's time passes")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { later.fulfill() }
+        wait(for: [later], timeout: 3)
+        XCTAssertEqual(store.currentToast?.message, "Second")
+    }
+
     func testCannotDeleteProgramWithActiveSession() {
         let persistence = AppStatePersistence(inMemory: true)
         let store = AppStore(persistence: persistence)

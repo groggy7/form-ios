@@ -151,7 +151,16 @@ public final class AppStore: ObservableObject {
                                   machineKg: machineStepKg, machineLbs: machineStepLbs, platesKg: availablePlatesKg,
                                   platesLbs: availablePlatesLbs, barType: barType)
     }
-    @Published public var currentToast: ToastItem?
+    /// The notice on screen. It expires after its duration, so a screen opened later (the next workout) does not
+    /// show an old notice again.
+    @Published public var currentToast: ToastItem? {
+        didSet {
+            guard let item = currentToast, item.id != oldValue?.id else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + item.duration + 0.5) { [weak self] in
+                if self?.currentToast?.id == item.id { self?.currentToast = nil }
+            }
+        }
+    }
     @Published public var noticeMessage: String? {
         didSet {
             if let msg = noticeMessage, !msg.isEmpty {
