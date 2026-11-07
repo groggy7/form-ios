@@ -301,12 +301,16 @@ struct TrainingBlockSetupContent: View {
     var readinessCheck: Binding<Bool>? = nil
     var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
     var onOpenMethod: () -> Void = {}
+    /// Next week once none of the program's workouts is left in this one (docs/training-blocks.md#weeks).
+    var suggestNextWeek = false
     @State private var length = 5
     @State private var focus: [String] = []
-    @State private var nextWeek = false
+    @State private var chosenNextWeek: Bool?
     @State private var strength = false
     @State private var testIn = 6
     @State private var lifts: [String] = []
+
+    private var nextWeek: Bool { chosenNextWeek ?? suggestNextWeek }
 
     var body: some View {
         let choices = TrainingBlocks.focusChoices(program)
@@ -372,8 +376,8 @@ struct TrainingBlockSetupContent: View {
         }
         BlockSectionLabel(text: LanguageManager.t("block.setup.when"))
         BlockFlow {
-            BlockChoice(label: LanguageManager.t("block.setup.thisWeek"), selected: !nextWeek, identifier: "block-start-this-week") { nextWeek = false }
-            BlockChoice(label: LanguageManager.t("block.setup.nextWeek"), selected: nextWeek, identifier: "block-start-next-week") { nextWeek = true }
+            BlockChoice(label: LanguageManager.t("block.setup.thisWeek"), selected: !nextWeek, identifier: "block-start-this-week") { chosenNextWeek = false }
+            BlockChoice(label: LanguageManager.t("block.setup.nextWeek"), selected: nextWeek, identifier: "block-start-next-week") { chosenNextWeek = true }
         }
         if let readinessCheck {
             BlockChoice(label: LanguageManager.t("block.setup.readiness"), selected: readinessCheck.wrappedValue,
@@ -394,11 +398,13 @@ struct TrainingBlockSetupSheet: View {
     var readinessCheck: Binding<Bool>? = nil
     var onStartStrength: (Int, [String], Bool) -> Void = { _, _, _ in }
     var onOpenMethod: () -> Void = {}
+    var suggestNextWeek = false
     let onStart: (Int, [String], Bool) -> Void
     var body: some View {
         BlockSheetPage(identifier: "training-block-setup") {
             TrainingBlockSetupContent(program: program, scale: scale, replacesBlock: replacesBlock, onStart: onStart,
-                                      readinessCheck: readinessCheck, onStartStrength: onStartStrength, onOpenMethod: onOpenMethod)
+                                      readinessCheck: readinessCheck, onStartStrength: onStartStrength, onOpenMethod: onOpenMethod,
+                                      suggestNextWeek: suggestNextWeek)
         }
     }
 }

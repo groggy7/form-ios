@@ -1441,6 +1441,12 @@ public final class AppStore: ObservableObject {
 
     // MARK: Training blocks (docs/training-blocks.md): personal state around the active program.
 
+    /// The setup's default start: next week once none of the active program's workouts is left in this one.
+    public var blockSetupSuggestsNextWeek: Bool {
+        guard let program = state.programs.first(where: { $0.id == state.activeProgramId }) else { return false }
+        return TrainingBlocks.suggestsNextWeek(program, completed: state.completed, today: currentWeekDayNumber())
+    }
+
     /// Starts a block on the active program, replacing any earlier one.
     @discardableResult
     public func startTrainingBlock(length: Int, focus: [String], nextWeek: Bool, strength: Bool = false, lifts: [String] = []) -> Bool {

@@ -82,6 +82,8 @@ final class ProgressionFixtureTests: XCTestCase {
         let workoutId: String?
         let snapshot: [FixtureExercise]?
         let logs: [Log]
+        /// A training-block session (docs/training-blocks.md).
+        let blockId: String?
     }
     private struct Log: Decodable {
         let exerciseId: String?
@@ -221,7 +223,8 @@ final class ProgressionFixtureTests: XCTestCase {
                     workoutSnapshot: record.snapshot.map { snapshot in
                         Workout(id: record.workoutId ?? "fixture", day: 1, title: "Fixture",
                                 exercises: snapshot.enumerated().map { $1.exercise(id: "snapshot-\($0)") })
-                    })
+                    },
+                    blockId: record.blockId)
             }
             let expected = fixture.expected
             let steps = loadSteps(fixture.steps, unit: unit, platesKg: fixture.platesKg, platesLbs: fixture.platesLbs, barType: fixture.barType)

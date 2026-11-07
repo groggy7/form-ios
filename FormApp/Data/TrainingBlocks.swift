@@ -81,11 +81,24 @@ enum TrainingBlocks {
         TrainingBlockRules.participants(ruleExercises(program, catalog: catalog))
     }
 
-    /// The program's barbell exercises a strength block can test, as (key, exercise).
+    /// Lifts a strength block can test: Rep Lab's reference barbell squats, bench presses, deadlifts and overhead
+    /// presses, without the rows. Other barbell work is trained for reps, not tested for a single.
+    static let testLifts = BodyTrends.referenceLifts.subtracting(["barbell-row", "barbell-pendlay-row"])
+
+    /// The program's test lifts a strength block can choose, as (key, exercise).
     static func liftChoices(_ program: Program) -> [(key: String, exercise: Exercise)] {
         program.workouts.flatMap { workout in
-            workout.exercises.filter(WorkoutSessionUtils.usesBarbellPlates).map { (key(workout, $0), $0) }
+            workout.exercises.filter { exercise in
+                ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name).map(testLifts.contains) == true
+            }.map { (key(workout, $0), $0) }
         }
+    }
+
+    /// Whether the setup suggests next week: none of the program's workouts is still ahead this week (scheduled
+    /// `today` or later, an ISO weekday, and not in `completed`, this week's `programId:workoutId` keys).
+    static func suggestsNextWeek(_ program: Program, completed: [String], today: Int) -> Bool {
+        let done = Set(completed)
+        return !program.workouts.contains { !$0.exercises.isEmpty && $0.day >= today && !done.contains("\(program.id):\($0.id)") }
     }
 
     /// A strength block: every week known at the start (docs/training-blocks.md#strength-blocks).

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target (4 is a readiness \"more_rir\" day in an RIR 3 week; a window stops at 3 unless the target is 4, because 4 means 4+). `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order. `readiness` cases give the pre-workout answers (sleep poor/ok/good, energy low/ok/high, soreness none/some/a_lot), the block week's target (null outside a block) and whether it is the deload; `expected` says whether a lighter day is offered, its options in order, and the target after \"more_rir\". `fewerSets` cases give an exercise's planned `sets` and rows (`done`, `warmup`); `expected` is the rows kept, by index, and the exercise's sets after \"fewer_sets\". `strength` holds the strength-block contract: `schedule` gives each number of weeks to the test week (0 is the test, 1 the taper) with the lifts' top set (`reps`, `rir`) and back-off sets (`sets`, `reps`, `percent`) or the test's attempt percentages; `weeks` gives a block's lifts and other exercises and every week's sets; `loads`, `backoffs` and `attempts` give loads in `unit` for a barbell `exercise` on the default plates and Olympic bar: a top set from an estimated 1RM (`e1rm`), a back-off from a logged top set, and the test's three singles.",
+  "about": "Shared training-block contract (docs/training-blocks.md). Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps; Android TrainingBlockFixturesTest and iOS TrainingBlockFixtureTests execute every case. `references` are each adjusting muscle's reference range [mev, mavMax] in weekly sets, matching Volume Matrix. `schedule` gives each length's reps-in-reserve target by week (the last is the deload, 4 meaning 4+) and the mid-workout adjustment window for each target (4 is a readiness \"more_rir\" day in an RIR 3 week; a window stops at 3 unless the target is 4, because 4 means 4+). `performance` compares the previous block week's sets of one workout exercise with this week's ([load, reps], loads in kg). `weeks` cases give the workout exercises in program order with `key`, this week's `sets`, `baseSets` (week 1's count; defaults to `sets`), `primary` and `secondary` muscles, `jointHigh` (High joint-stress ratings in the block so far), `highThisWeek` and `performanceFell`; `additions` are exercise keys in the order sets were added; `feedback` lists each muscle's answers this week. `kind` is first (week 1, with `focus`), next (a following accumulation week) or deload. `expected` gives every exercise's sets, the additions afterwards, and the listed changes: each muscle's weekly sets before and after and its reason codes, in muscle order. `readiness` cases give the pre-workout answers (sleep poor/ok/good, energy low/ok/high, soreness none/some/a_lot), the block week's target (null outside a block) and whether it is the deload; `expected` says whether a lighter day is offered, its options in order, and the target after \"more_rir\". `fewerSets` cases give an exercise's planned `sets` and rows (`done`, `warmup`); `expected` is the rows kept, by index, and the exercise's sets after \"fewer_sets\". `strength` holds the strength-block contract: `schedule` gives each number of weeks to the test week (0 is the test, 1 the taper) with the lifts' top set (`reps`, `rir`) and back-off sets (`sets`, `reps`, `percent`) or the test's attempt percentages; `weeks` gives a block's lifts and other exercises and every week's sets; `loads`, `backoffs` and `attempts` give loads in `unit` for a barbell `exercise` on the default plates and Olympic bar: a top set from an estimated 1RM (`e1rm`), a back-off from a logged top set, and the test's three singles. `start` cases give today's ISO weekday (1 Monday … 7 Sunday), the program's workouts with their days, and the workout ids completed this week; `expected` is the setup's default start, this or next week. `strength.lifts` is the list of test lifts (catalog ids), and `strength.choices` give a program's workout exercises (`key`, catalog `exerciseId`) and the keys the setup offers, in program order.",
   "references": {
     "chest": [
       6,
@@ -119,6 +119,148 @@
         0,
         2
       ]
+    }
+  ],
+  "start": [
+    {
+      "name": "on a Saturday a Monday-to-Friday program has nothing left: next week",
+      "today": 6,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 1
+        },
+        {
+          "id": "b",
+          "day": 2
+        },
+        {
+          "id": "c",
+          "day": 4
+        },
+        {
+          "id": "d",
+          "day": 5
+        }
+      ],
+      "completed": [],
+      "expected": "next"
+    },
+    {
+      "name": "on a Thursday with Thursday's workout still to do: this week",
+      "today": 4,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 1
+        },
+        {
+          "id": "b",
+          "day": 2
+        },
+        {
+          "id": "c",
+          "day": 4
+        },
+        {
+          "id": "d",
+          "day": 5
+        }
+      ],
+      "completed": [
+        "a",
+        "b"
+      ],
+      "expected": "this"
+    },
+    {
+      "name": "on a Friday after the week's last workout: next week",
+      "today": 5,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 1
+        },
+        {
+          "id": "b",
+          "day": 3
+        },
+        {
+          "id": "c",
+          "day": 5
+        }
+      ],
+      "completed": [
+        "a",
+        "b",
+        "c"
+      ],
+      "expected": "next"
+    },
+    {
+      "name": "a missed workout earlier in the week does not count as ahead",
+      "today": 5,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 1
+        },
+        {
+          "id": "b",
+          "day": 3
+        },
+        {
+          "id": "c",
+          "day": 5
+        }
+      ],
+      "completed": [
+        "c"
+      ],
+      "expected": "next"
+    },
+    {
+      "name": "on a Saturday with a Sunday workout: this week",
+      "today": 6,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 2
+        },
+        {
+          "id": "b",
+          "day": 4
+        },
+        {
+          "id": "c",
+          "day": 7
+        }
+      ],
+      "completed": [
+        "a",
+        "b"
+      ],
+      "expected": "this"
+    },
+    {
+      "name": "on a Monday with nothing done: this week",
+      "today": 1,
+      "workouts": [
+        {
+          "id": "a",
+          "day": 1
+        },
+        {
+          "id": "b",
+          "day": 3
+        },
+        {
+          "id": "c",
+          "day": 5
+        }
+      ],
+      "completed": [],
+      "expected": "this"
     }
   ],
   "performance": [
@@ -3424,6 +3566,92 @@
     "lengths": [
       4,
       8
+    ],
+    "lifts": [
+      "barbell-back-squat",
+      "barbell-low-bar-squat",
+      "barbell-front-squat",
+      "barbell-pause-full-squat",
+      "barbell-bench-press",
+      "incline-barbell-bench-press",
+      "barbell-close-grip-bench-press",
+      "conventional-barbell-deadlift",
+      "barbell-sumo-deadlift",
+      "trap-bar-deadlift",
+      "standing-barbell-overhead-press",
+      "barbell-seated-overhead-press"
+    ],
+    "choices": [
+      {
+        "name": "Balanced Build's only barbell lift is a Romanian deadlift: nothing to test",
+        "exercises": [
+          {
+            "key": "ul-upper-a/bench",
+            "exerciseId": "dumbbell-bench-press"
+          },
+          {
+            "key": "ul-lower-a/hack",
+            "exerciseId": "sled-hack-squat"
+          },
+          {
+            "key": "ul-lower-a/rdl",
+            "exerciseId": "barbell-romanian-deadlift"
+          },
+          {
+            "key": "ul-lower-b/press",
+            "exerciseId": "leg-press"
+          }
+        ],
+        "expected": []
+      },
+      {
+        "name": "squat, bench, deadlift and press variations qualify; curls, rows and Romanian deadlifts do not",
+        "exercises": [
+          {
+            "key": "lower/squat",
+            "exerciseId": "barbell-back-squat"
+          },
+          {
+            "key": "lower/rdl",
+            "exerciseId": "barbell-romanian-deadlift"
+          },
+          {
+            "key": "upper/bench",
+            "exerciseId": "barbell-bench-press"
+          },
+          {
+            "key": "upper/row",
+            "exerciseId": "barbell-row"
+          },
+          {
+            "key": "pull/deadlift",
+            "exerciseId": "conventional-barbell-deadlift"
+          },
+          {
+            "key": "push/press",
+            "exerciseId": "standing-barbell-overhead-press"
+          },
+          {
+            "key": "push/curl",
+            "exerciseId": "ez-bar-curl"
+          },
+          {
+            "key": "athletic/trap",
+            "exerciseId": "trap-bar-deadlift"
+          },
+          {
+            "key": "athletic/push-press",
+            "exerciseId": "push-press"
+          }
+        ],
+        "expected": [
+          "lower/squat",
+          "upper/bench",
+          "pull/deadlift",
+          "push/press",
+          "athletic/trap"
+        ]
+      }
     ],
     "schedule": [
       {

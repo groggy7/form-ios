@@ -184,7 +184,8 @@ public struct TodayView: View {
                                             store.startTrainingBlock(length: length, focus: [], nextWeek: nextWeek, strength: true, lifts: lifts)
                                             blockSheet = nil
                                         },
-                                        onOpenMethod: { blockSheet = .method(fromSetup: true) }) { length, focus, nextWeek in
+                                        onOpenMethod: { blockSheet = .method(fromSetup: true) },
+                                        suggestNextWeek: store.blockSetupSuggestsNextWeek) { length, focus, nextWeek in
                     store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
                     blockSheet = nil
                 }

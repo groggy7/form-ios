@@ -331,8 +331,12 @@ public struct ActiveSessionView: View {
                                     let isRestForCurrentExercise = isRestActive && activeDraft.restTimer?.exerciseName == exercise.name
                                     let workingRows = currentSets.filter { !$0.isWarmup }
                                     let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
+                                    // In a block, reps in reserve on every working set stands in for the rating, so the
+                                    // muscle's pump and workload questions never follow a second "how did it feel".
+                                    let rirStandsIn = activeDraft.blockId != nil && workingRows.allSatisfy { $0.rir != nil }
+                                        && activeDraft.effortByExercise?[exercise.id] == nil
                                     let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
-                                        workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
+                                        workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil && !rirStandsIn
                                     let asksJointStress = store.jointStressRatings && WorkoutSessionUtils.offersJointStressRating(currentSets)
                                     // The first working set's reps in reserve can offer a load step for the rest (Premium coach).
                                     let effortOn = store.repsInReserve || activeDraft.blockId != nil

@@ -39,14 +39,21 @@ final class TrainingBlockFixtureTests: XCTestCase {
             struct LoadCase: Decodable { let name: String; let unit: String; let exercise: Lift; let e1rm: Double; let reps: Int; let rir: Int; let expected: Double }
             struct BackoffCase: Decodable { let name: String; let unit: String; let exercise: Lift; let top: Double; let percent: Double; let expected: Double }
             struct AttemptCase: Decodable { let name: String; let unit: String; let exercise: Lift; let e1rm: Double; let expected: [Double] }
+            struct ChoiceRow: Decodable { let key: String; let exerciseId: String }
+            struct ChoiceCase: Decodable { let name: String; let exercises: [ChoiceRow]; let expected: [String] }
             let lengths: [Int]
+            let lifts: [String]
+            let choices: [ChoiceCase]
             let schedule: [ScheduleRow]
             let weeks: [WeekCase]
             let loads: [LoadCase]
             let backoffs: [BackoffCase]
             let attempts: [AttemptCase]
         }
+        struct StartWorkout: Decodable { let id: String; let day: Int }
+        struct StartCase: Decodable { let name: String; let today: Int; let workouts: [StartWorkout]; let completed: [String]; let expected: String }
         let references: [String: [Double]]
+        let start: [StartCase]
         let strength: Strength
         let readiness: [ReadinessCase]
         let fewerSets: [FewerSetsCase]
@@ -85,6 +92,40 @@ final class TrainingBlockFixtureTests: XCTestCase {
         for row in fixtures.performance {
             func pairs(_ rows: [[Double]]) -> [(Double, Int)] { rows.map { ($0[0], Int($0[1])) } }
             XCTAssertEqual(TrainingBlockRules.performanceFell(previous: pairs(row.previous), current: pairs(row.current)), row.fell, row.name)
+        }
+    }
+
+    /// The setup's default start week (docs/training-blocks.md#weeks).
+    func testTheSetupSuggestsAWeekWithWorkoutsLeft() throws {
+        for row in try load().start {
+            let workouts = row.workouts.map {
+                Workout(id: $0.id, day: $0.day, title: $0.id,
+                        exercises: [Exercise(id: "e", name: "Barbell Bench Press", sets: 3, reps: RepTarget(min: 8, max: 12))])
+            }
+            let program = Program(id: "p", name: "P", workouts: workouts)
+            XCTAssertEqual(TrainingBlocks.suggestsNextWeek(program, completed: row.completed.map { "p:\($0)" }, today: row.today),
+                           row.expected == "next", row.name)
+        }
+    }
+
+    /// Only squat, bench, deadlift and overhead press variations can be tested (docs/training-blocks.md#strength-blocks).
+    func testStrengthBlocksOfferOnlyTestLifts() throws {
+        let strength = try load().strength
+        XCTAssertEqual(TrainingBlocks.testLifts, Set(strength.lifts))
+        for row in strength.choices {
+            var workoutIds: [String] = []
+            for exercise in row.exercises {
+                let id = String(exercise.key.split(separator: "/")[0])
+                if !workoutIds.contains(id) { workoutIds.append(id) }
+            }
+            let workouts = workoutIds.enumerated().map { index, workoutId in
+                Workout(id: workoutId, day: index + 1, title: workoutId, exercises: row.exercises.filter { $0.key.hasPrefix(workoutId + "/") }.map {
+                    Exercise(id: String($0.key.split(separator: "/")[1]),
+                             name: ExerciseCatalog.canonicalExercises[$0.exerciseId]?.name ?? $0.exerciseId,
+                             exerciseId: $0.exerciseId, sets: 3, reps: RepTarget(min: 5, max: 8))
+                })
+            }
+            XCTAssertEqual(TrainingBlocks.liftChoices(Program(id: "p", name: "P", workouts: workouts)).map(\.key), row.expected, row.name)
         }
     }
 
@@ -581,11 +622,14 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
             defer { store.abandonActiveSession() }
             store.setReadiness(ReadinessCheck(sleep: "poor", energy: "low"))
             store.chooseReadiness("more_rir")
-            for (name, completed) in [("soreness", false), ("pump", true)] {
+            // With reps in reserve on every set, the pump card follows the sets without the effort rating.
+            for (name, completed, rir) in [("soreness", false, nil), ("pump", true, nil), ("pump-rir", true, 2)] as [(String, Bool, Int?)] {
                 var draft = try XCTUnwrap(store.activeSession)
                 draft.setsByExercise["bench"] = (1...2).map {
-                    ExerciseSetLog(id: "b\($0)", setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10,
-                                   isCompleted: completed, inputTouched: true)
+                    var set = ExerciseSetLog(id: "b\($0)", setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10,
+                                             isCompleted: completed, inputTouched: true)
+                    set.rir = rir
+                    return set
                 }
                 store.activeSession = draft
                 let controller = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))

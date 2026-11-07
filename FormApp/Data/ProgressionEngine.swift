@@ -91,6 +91,8 @@ public enum ProgressionEngine {
         /// Working sets in the prescription saved with that session, when it names this exercise once.
         let prescribedSets: Int?
         let effort: ProgressionEffort?
+        /// Saved in a training block, which changes set counts itself (docs/training-blocks.md).
+        var inBlock = false
         var workingSets: [SessionSetLog] { sets.filter { !$0.isWarmup }.sorted { $0.setNumber < $1.setNumber } }
     }
 
@@ -136,7 +138,7 @@ public enum ProgressionEngine {
             let single = logs.count == 1 ? logs[0] : nil
             return HistoricalSessionSets(sets: logs.flatMap { $0.sets }, targetSets: single?.targetSets, ambiguous: logs.count != 1, date: date,
                                          prescribedSets: prescribed.count == 1 ? WorkoutSessionUtils.initialSetCount(exercise: prescribed[0]) : nil,
-                                         effort: ProgressionEffort(rawValue: single?.effort ?? ""))
+                                         effort: ProgressionEffort(rawValue: single?.effort ?? ""), inBlock: record.blockId != nil)
         }
     }
 
@@ -382,6 +384,9 @@ public enum ProgressionEngine {
             return guidance(.insufficientData, "progression.rationale.insufficient_data", ["sets": "\(expectedSets)"])
         }
         let planArgs = ["logged": "\(logged)", "sets": "\(expectedSets)"]
+        // A block changed the set count, not the lifter: its padded sessions still confirm a load increase.
+        // A session the lifter ended after a drop or rest-pause never confirms an increase, in a block or not.
+        let holdsLoad = padded && (!last.inBlock || endedWith != nil)
         // Converted history reads, and is targeted, at its loadable weight in the current unit.
         let barbell = WorkoutSessionUtils.usesBarbellPlates(exercise)
         let loadable: (Double) -> Double = { weightUnit.loadableKg($0, barbell: barbell) }
@@ -393,6 +398,10 @@ public enum ProgressionEngine {
         func comparable(_ session: HistoricalSessionSets) -> Bool {
             guard let sets = fullUnpadded(session) else { return false }
             return zip(sets, workingSets).allSatisfy { abs($0.weightKg! - $1.weightKg!) <= 0.01 }
+        }
+        func confirming(_ session: HistoricalSessionSets) -> [SessionSetLog]? {
+            if case let .full(sets, padded, _, ended) = baseline(session), !padded || (session.inBlock && ended == nil) { return sets }
+            return nil
         }
         let allHitCeiling = workingSets.allSatisfy { $0.reps! >= repMax }
         let summary = formatSessionSummary(workingSets, unit: weightUnit, barbell: barbell)
@@ -460,14 +469,17 @@ public enum ProgressionEngine {
         if hasUnverifiedJump { return guidance(.insufficientData, "progression.rationale.unverified_jump") }
 
         // A second full session at the same set-by-set loads, close enough in time, confirms the ceiling.
-        let confirmedTwice = allHitCeiling && !padded && sessions.dropFirst().first.map { previous in
-            comparable(previous) && fullUnpadded(previous)!.allSatisfy { $0.reps! >= repMax } && withinWindow(last, previous)
+        let confirmedTwice = allHitCeiling && !holdsLoad && sessions.dropFirst().first.map { previous in
+            guard let sets = confirming(previous) else { return false }
+            return zip(sets, workingSets).allSatisfy { abs($0.weightKg! - $1.weightKg!) <= 0.01 } && sets.allSatisfy { $0.reps! >= repMax }
+                && withinWindow(last, previous)
         } == true
         // The user's own rating: Easy confirms after one session, Hard withholds the step. Without one, every set's
-        // reps in reserve stands in for it (SetEffort.sessionEffort); a padded baseline repeats sets nobody rated.
-        let rirEffort = padded || last.effort != nil ? nil : SetEffort.sessionEffort(workingSets)
+        // reps in reserve stands in for it (SetEffort.sessionEffort); a padded baseline outside a block repeats sets nobody
+        // rated, and in a block only the logged sets count.
+        let rirEffort = holdsLoad || last.effort != nil ? nil : SetEffort.sessionEffort(Array(workingSets.prefix(logged)))
         let effort = last.effort ?? rirEffort
-        let ratedEasy = allHitCeiling && !padded && effort == .easy
+        let ratedEasy = allHitCeiling && !holdsLoad && effort == .easy
         let ratedHard = effort == .hard
         // Room to spare on every set below the ceiling: up to two more reps instead of one.
         let repStep = rirEffort == .easy ? 2 : 1
@@ -493,7 +505,7 @@ public enum ProgressionEngine {
             else if increase.resetReps { key = "progression.rationale.increase_load_reset" }
             else { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
         }
-        else if padded {
+        else if holdsLoad {
             switch endedWith {
             case .drop: key = "progression.rationale.ended_with_drop"
             case .restPause: key = "progression.rationale.ended_with_rest_pause"
