@@ -21,12 +21,14 @@ struct TrainingSetupView: View {
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
     @ScaledMetric(relativeTo: .caption) private var minimumPriorityWidth: CGFloat = 136
     @ScaledMetric(relativeTo: .caption) private var priorityFontSize: CGFloat = 13
+    @ScaledMetric(relativeTo: .subheadline) private var minimumWeekdayWidth: CGFloat = 64
     @ScaledMetric(relativeTo: .caption2) private var reviewBadgeSize: CGFloat = 50
     @ScaledMetric(relativeTo: .caption2) private var reviewWeekdayFontSize: CGFloat = 11
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var equipmentWidth: CGFloat = 0
     @State private var priorityWidth: CGFloat = 0
+    @State private var weekdayWidth: CGFloat = 0
 
     init(store: AppStore, completeSetup: Bool = true, onClose: @escaping () -> Void, onSkip: (() -> Void)? = nil) {
         self.store = store; self.completeSetup = completeSetup; self.onClose = onClose; self.onSkip = onSkip
@@ -238,13 +240,42 @@ struct TrainingSetupView: View {
             ForEach(OnboardingFrequency.allCases, id: \.rawValue) { count in
                 choice(LanguageManager.t("setup.days.count", ["count": count.rawValue]), selected: profile.selectedDays.count == count.rawValue) { profile.selectedDays = count.defaultWeekdays }
             }
-            ForEach(1...7, id: \.self) { day in
-                choice(LanguageManager.workoutDays[day - 1], selected: profile.selectedDays.contains(day), multiple: true, tag: "setup-day-\(day)") {
-                    if profile.selectedDays.contains(day) && profile.selectedDays.count > 2 { profile.selectedDays.removeAll { $0 == day } }
-                    else if !profile.selectedDays.contains(day) && profile.selectedDays.count < 6 { profile.selectedDays.append(day); profile.selectedDays.sort() }
-                }
-            }
+            weekdayCards
         }
+    }
+    private var weekdayCards: some View {
+        let columns = max(1, min(4, Int((weekdayWidth + 8) / (minimumWeekdayWidth * TextWidthScale.factor + 8))))
+        return VStack(alignment: .leading, spacing: 8) {
+            Text(LanguageManager.t("onboarding.days.weekdays")).fontWeight(.semibold)
+            VStack(spacing: 8) {
+                ForEach(Array(stride(from: 1, through: 7, by: columns)), id: \.self) { first in
+                    HStack(spacing: 8) {
+                        ForEach(first..<(first + columns), id: \.self) { day in
+                            if day <= 7 { weekdayCard(day) }
+                            else { Color.clear.frame(maxWidth: .infinity).frame(height: 0).accessibilityHidden(true) }
+                        }
+                    }
+                }
+            }.accessibilityIdentifier("setup-weekday-grid")
+        }.padding(.top, 12)
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { weekdayWidth = $0 }
+    }
+    private func weekdayCard(_ day: Int) -> some View {
+        let selected = profile.selectedDays.contains(day)
+        return Button {
+            if selected && profile.selectedDays.count > 2 { profile.selectedDays.removeAll { $0 == day } }
+            else if !selected && profile.selectedDays.count < 6 { profile.selectedDays.append(day); profile.selectedDays.sort() }
+        } label: {
+            Text(LanguageManager.dayLabels[day - 1]).appFont(.subheadline, weight: .semibold)
+                .foregroundStyle(selected ? AppColors.accent : AppColors.text)
+                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 8).padding(.vertical, 12).frame(maxWidth: .infinity, minHeight: 56)
+                .contentShape(Rectangle())
+        }.buttonStyle(.plain)
+            .background(selected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? AppColors.accent : AppColors.border))
+            .accessibilityLabel(LanguageManager.workoutDays[day - 1])
+            .accessibilityAddTraits(selected ? .isSelected : []).accessibilityIdentifier("setup-day-\(day)")
     }
     private var preferences: some View {
         let tileWidth = minimumPriorityWidth * TextWidthScale.factor

@@ -501,7 +501,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge, .accessibilityExtraExtraExtraLarge] : [.extraExtraExtraLarge]
             for size in sizes {
             for width in (language == "en" && size == .large ? [320.0, 390.0, 600.0] : [320.0]) {
-            for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 6, 7, 8] {
+            for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 5, 6, 7, 8] {
                 var rendered = profile(["dumbbells", "ez-bar", "plates"])
                 rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
                 if location != "home" { rendered.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"]).filter { $0 != "calf-machine" } }
@@ -516,7 +516,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 let name = "training-setup-\(location)-\(language)-\(step)" + (size == .large ? "-regular" : (size == .accessibilityExtraExtraExtraLarge ? "-accessibility" : "")) + (width > 390 ? "-tablet" : (width > 320 ? "-wide" : ""))
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
                 let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
-                if step == 7 || step == 8 {
+                if step == 5 || step == 7 || step == 8 {
                     func scrollView(in view: UIView) -> UIScrollView? {
                         if let scroll = view as? UIScrollView { return scroll }
                         return view.subviews.lazy.compactMap { scrollView(in: $0) }.first
