@@ -421,7 +421,10 @@ struct TrainingSetupView: View {
                         MovementIcon(exerciseId: exercise.exerciseId, size: 44).accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(exercise.displayName).font(.app(size: 15, weight: .medium)).foregroundStyle(AppColors.text)
-                            Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
+                            // Exercises serving the chosen muscle priority carry an accent tag.
+                            let priority = role.map { catalog.priorities[profile.priority]?.contains($0) ?? false } ?? false
+                            (Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
+                                + Text(priority ? " · \(LanguageManager.t("setup.priority.tag"))" : "").foregroundColor(AppColors.accent))
                                 .appFont(.footnote).foregroundStyle(AppColors.secondaryText)
                         }.padding(.vertical, 10).frame(maxWidth: .infinity, alignment: .leading)
                         if let replacement {

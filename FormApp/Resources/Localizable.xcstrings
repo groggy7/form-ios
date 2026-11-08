@@ -55664,6 +55664,41 @@
         }
       }
     },
+    "setup.priority.tag": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priority"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öncelik"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwerpunkt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priorité"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prioridad"
+          }
+        }
+      }
+    },
     "setup.preview.title": {
       "extractionState": "manual",
       "localizations": {
@@ -55730,6 +55765,76 @@
           "stringUnit": {
             "state": "translated",
             "value": "{days} días por semana, hasta {minutes} minutos por sesión. Los ejercicios se ajustan al equipo confirmado."
+          }
+        }
+      }
+    },
+    "setup.program.priority.one": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} priority: {sets} extra set a week."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} için haftada {sets} ek set."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwerpunkt {muscle}: {sets} zusätzlicher Satz pro Woche."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} en priorité : {sets} série supplémentaire par semaine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} como prioridad: {sets} serie más por semana."
+          }
+        }
+      }
+    },
+    "setup.program.priority.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} priority: {sets} extra sets a week."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} için haftada {sets} ek set."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwerpunkt {muscle}: {sets} zusätzliche Sätze pro Woche."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} en priorité : {sets} séries supplémentaires par semaine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{muscle} como prioridad: {sets} series más por semana."
           }
         }
       }
@@ -56325,6 +56430,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algunos de tus días de entrenamiento son consecutivos, así que las sesiones alternan grupos musculares en lugar de repetir cuerpo completo."
+          }
+        }
+      }
+    },
+    "setup.warning.priority": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your equipment has no direct exercises for this muscle priority, so the plan stays balanced."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekipmanınla bu kas önceliği için doğrudan bir egzersiz yok; plan dengeli kalıyor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit deiner Ausrüstung gibt es für diesen Muskelschwerpunkt keine direkten Übungen, daher bleibt der Plan ausgewogen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre matériel ne permet aucun exercice direct pour cette priorité musculaire ; le programme reste équilibré."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu equipo no permite ejercicios directos para esta prioridad muscular, así que el plan sigue equilibrado."
           }
         }
       }
@@ -57735,31 +57875,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hypertrophy"
+            "value": "Build Muscle"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hipertrofi"
+            "value": "Kas Gelişimi"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hypertrophie"
+            "value": "Muskelaufbau"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hypertrophie"
+            "value": "Prise de masse"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hipertrofia"
+            "value": "Volumen"
           }
         }
       }
@@ -57770,13 +57910,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lean Muscle"
+            "value": "Get Lean"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kuru Kas"
+            "value": "Yağ Yakımı"
           }
         },
         "de": {
@@ -57788,13 +57928,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muscle sec"
+            "value": "Sèche"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Músculo magro"
+            "value": "Definición"
           }
         }
       }
@@ -57805,19 +57945,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Strength"
+            "value": "Build Strength"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Güç"
+            "value": "Kuvvet Gelişimi"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kraft"
+            "value": "Kraftaufbau"
           }
         },
         "fr": {
@@ -57846,7 +57986,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Formda Kal"
+            "value": "Formu Koruma"
           }
         },
         "de": {
@@ -57951,7 +58091,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş/Çekiş/Bacak"
+            "value": "İtme/Çekme/Bacak"
           }
         },
         "de": {
@@ -58196,7 +58336,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst"
+            "value": "Üst Vücut"
           }
         },
         "de": {
@@ -58231,7 +58371,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alt"
+            "value": "Alt Vücut"
           }
         },
         "de": {
@@ -58301,7 +58441,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş"
+            "value": "İtme"
           }
         },
         "de": {
@@ -58336,7 +58476,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekiş"
+            "value": "Çekme"
           }
         },
         "de": {

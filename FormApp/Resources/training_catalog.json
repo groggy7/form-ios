@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "equipment": [
     {
       "id": "dumbbells",
@@ -2115,6 +2115,32 @@
       "area": "core",
       "rank": 3
     }
+  },
+  "priorities": {
+    "push": [
+      "push",
+      "chest"
+    ],
+    "row": [
+      "row",
+      "pull"
+    ],
+    "squat": [
+      "squat",
+      "lunge",
+      "quads"
+    ],
+    "shoulders": [
+      "shoulders",
+      "delts",
+      "rear"
+    ],
+    "biceps": [
+      "biceps"
+    ],
+    "core": [
+      "core"
+    ]
   },
   "goals": {
     "bulk": [

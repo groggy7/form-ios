@@ -84,6 +84,40 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertTrue(Set(flat).isSubset(of: benchReview.first { $0.id == "adjustable-bench" }?.exerciseIds ?? []))
     }
 
+    func testMusclePriorityVisiblyChangesThePlanAndStatesTheExtraSets() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled), preset = try XCTUnwrap(catalog.presets["commercial_gym"])
+        var beginner = TrainingProfile(); beginner.equipment = preset; beginner.equipmentConfirmed = true
+        var intermediate = beginner; intermediate.experience = "intermediate"; intermediate.advancedLifts = true
+        var fourDays = intermediate; fourDays.selectedDays = [1, 2, 4, 5]
+        func role(_ exercise: Exercise) -> String? { catalog.candidates.first { $0.id == exercise.exerciseId }?.role }
+        for base in [beginner, intermediate, fourDays, profile(["dumbbells", "bench"])] {
+            let balanced = try generate(base)
+            for (priority, family) in catalog.priorities {
+                var prioritized = base; prioritized.priority = priority
+                let result = try generate(prioritized)
+                func sets(_ plan: GeneratedTrainingPlan) -> Int {
+                    plan.program.workouts.flatMap(\.exercises).filter { role($0).map(family.contains) ?? false }.reduce(0) { $0 + ($1.sets ?? 0) }
+                }
+                let extra = sets(result) - sets(balanced)
+                let label = "\(base.location)/\(base.experience)/\(base.selectedDays.count) days: \(priority)"
+                XCTAssertGreaterThan(extra, 0, label)
+                XCTAssertTrue(result.program.description.hasSuffix(" setup.program.priority.\(extra == 1 ? "one" : "other")(muscle=setup.priority.\(priority),sets=\(extra))"), label)
+                XCTAssertFalse(result.warningKeys.contains("setup.warning.priority"), label)
+                // Small single-role priorities keep one exercise a session rather than stacking variants.
+                if family.count == 1 {
+                    XCTAssertTrue(result.program.workouts.allSatisfy { $0.exercises.filter { role($0).map(family.contains) ?? false }.count <= 1 }, label)
+                }
+            }
+        }
+        // Equipment that cannot train a priority keeps the balanced plan and says so.
+        let floor = profile()
+        var back = floor; back.priority = "row"
+        let untrainable = try generate(back)
+        XCTAssertEqual(try generate(floor).program.workouts.map { $0.exercises.map(\.exerciseId) }, untrainable.program.workouts.map { $0.exercises.map(\.exerciseId) })
+        XCTAssertTrue(untrainable.warningKeys.contains("setup.warning.priority"))
+        XCTAssertFalse(untrainable.program.description.contains("setup.program.priority"))
+    }
+
     func testOldSettingsDraftKeepsItsPreviewAtTheNewReviewStep() throws {
         let p = profile(["dumbbells"]), program = try generate(p).program
         let legacy = TrainingSetupStore.Draft(profile: p, step: 6, programId: program.id, program: program, flowVersion: nil)
@@ -535,7 +569,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
                 if step == 6 && location == "home" { rendered.minutes = 90 }
                 if location != "home" { rendered.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"]).filter { $0 != "calf-machine" } }
-                if step == 8 && location != "home" { rendered.goal = "cut"; rendered.experience = "intermediate"; rendered.advancedLifts = false; rendered.selectedDays = [1, 2, 4, 5] }
+                if step == 8 && location != "home" { rendered.goal = "cut"; rendered.experience = "intermediate"; rendered.advancedLifts = false; rendered.selectedDays = [1, 2, 4, 5]; rendered.priority = "row" }
                 TrainingSetupStore.saveDraft(.init(profile: rendered, step: step, programId: "render-plan", program: nil))
                 let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, size))
                 let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 900))

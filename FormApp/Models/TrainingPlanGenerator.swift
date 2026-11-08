@@ -18,6 +18,7 @@ struct TrainingProfile: Codable, Equatable {
     var priority = ""
     var excludedExerciseIds: [String] = []
 
+    func with(priority: String) -> Self { var copy = self; copy.priority = priority; return copy }
     func normalized() -> Self {
         var p = self
         p.selectedDays = Array(Set(selectedDays.filter { (1...7).contains($0) })).sorted()
@@ -51,6 +52,8 @@ struct TrainingCatalog: Decodable {
     let slots: [String: [String]]
     let regions: [String: [String]]
     let roles: [String: Role]
+    /// Each muscle priority's roles, its own role first: Back counts rows and vertical pulls, Legs single-leg and quad work.
+    let priorities: [String: [String]]
     let goals: [String: [Int]]
     let limits: [String: Limit]
     static let bundled: TrainingCatalog? = {
@@ -186,27 +189,38 @@ enum TrainingPlanGenerator {
         if profile.equipment.contains(where: { ["band-bar", "sliders", "weight-vest", "dip-belt", "landmine", "box", "dip-station"].contains($0) }) { warn("setup.warning.accessories") }
         if layout.contains(where: { kind($0) != "full" }) && layout != catalog.layouts[String(days.count)]?.first { warn("setup.warning.alternating") }
         if conflicts(layout, days: days, catalog: catalog, trainable: Set(depth(catalog, eligible: candidates).keys)) > 0 { warn("setup.warning.adjacent") }
-        // "Legs" priority covers single-leg work too.
-        func prioritized(_ role: String) -> Bool { role == profile.priority || (profile.priority == "squat" && role == "lunge") }
+        let family = catalog.priorities[profile.priority] ?? []
+        func prioritized(_ role: String) -> Bool { family.contains(role) }
         // Sessions stay focused: spare time adds sets to the chosen exercises, never more exercises. Weekly sets
-        // per focus area stay within a ceiling, with four more for the priority's area.
+        // per focus area stay within a ceiling, with four more for the priority's areas.
         let baseSets = profile.experience == "beginner" ? 2 : 3
+        let priorityAreas = Set(family.compactMap { catalog.roles[$0]?.area })
         var areaSets: [String: Int] = [:]
         func area(_ row: TrainingCatalog.Candidate) -> String { catalog.roles[row.role]?.area ?? row.role }
         func room(_ row: TrainingCatalog.Candidate, _ sets: Int) -> Bool {
-            areaSets[area(row), default: 0] + sets <= limit.weeklySets + (catalog.roles[profile.priority]?.area == area(row) ? 4 : 0)
+            areaSets[area(row), default: 0] + sets <= limit.weeklySets + (priorityAreas.contains(area(row)) ? 4 : 0)
         }
         // Direct core work on at most three spread-out days a week, unless it is the priority.
         let coreEvery = (layout.count + 2) / 3
         var picked = Array(repeating: [Pick](), count: layout.count)
         var seconds = Array(repeating: 300, count: layout.count) // Includes a five-minute warm-up; estimates include both sides.
         func fits(_ index: Int, _ extra: Int) -> Bool { seconds[index] + extra <= profile.minutes * 60 }
+        // In a session that trains the priority, its slots follow the day's lead, two of them for a priority with
+        // several roles: a session with only one gains a second that offers the other roles first. Small single-role
+        // priorities (biceps, core) keep one exercise a session. Time limits then trim accessories instead.
         let slotLists: [[String]] = layout.map { session in
-            var slots = catalog.slots[session] ?? []
-            if !profile.priority.isEmpty, let position = slots.firstIndex(of: profile.priority), position > 3 {
-                slots.remove(at: position); slots.insert(profile.priority, at: 4)
+            let slots = catalog.slots[session] ?? []
+            func trains(_ slot: String) -> Bool { slot.components(separatedBy: "|").contains(where: prioritized) }
+            var focus = slots.filter(trains)
+            guard let first = focus.first, let lead = slots.first else { return slots }
+            if focus.count == 1 && family.count > 1 {
+                let used = first.components(separatedBy: "|")
+                focus.append((family.filter { !used.contains($0) } + family.filter { used.contains($0) }).joined(separator: "|"))
             }
-            return slots
+            let front = [lead] + focus.filter { $0 != lead }.prefix(trains(lead) ? 1 : 2)
+            var rest = slots
+            for slot in front { if let position = rest.firstIndex(of: slot) { rest.remove(at: position) } }
+            return front + rest
         }
         // Every day's lead keeps its best option and is chosen first; other slots then rotate away from it.
         for lead in [true, false] {
@@ -259,10 +273,11 @@ enum TrainingPlanGenerator {
                 }
             }
         }
-        // Remaining time raises sets in selection order: every exercise to its base first, then the extras.
+        // Remaining time raises sets in selection order: priority work to its target first, then every exercise to
+        // its base, then the extras.
         for index in picked.indices {
-            for goal in [baseSets, 4] {
-                for p in picked[index].indices {
+            for (goal, priorityOnly) in [(4, true), (baseSets, false), (4, false)] {
+                for p in picked[index].indices where !priorityOnly || prioritized(picked[index][p].row.role) {
                     while (picked[index][p].exercise.sets ?? 2) < min(goal, picked[index][p].targetSets) {
                         var more = picked[index][p].exercise
                         more.sets = (more.sets ?? 2) + 1
@@ -338,8 +353,24 @@ enum TrainingPlanGenerator {
             default: coverId = "hypertrophy"
             }
         }
+        // The summary states what the priority adds over the same answers without one; equipment that cannot train
+        // the priority at all says so instead.
+        var description = text("setup.program.summary", ["days": days.count, "minutes": profile.minutes])
+        if !family.isEmpty && !candidates.contains(where: { prioritized($0.role) }) { warn("setup.warning.priority") }
+        else if !family.isEmpty, let balanced = try? generate(profile.with(priority: ""), catalog: catalog, exercises: exercises, programID: programID, text: text) {
+            func prioritySets(_ workouts: [Workout]) -> Int {
+                workouts.flatMap(\.exercises).filter { exercise in
+                    catalog.candidates.first { $0.id == exercise.exerciseId }.map { prioritized($0.role) } ?? false
+                }.reduce(0) { $0 + ($1.sets ?? 0) }
+            }
+            let extra = prioritySets(workouts) - prioritySets(balanced.program.workouts)
+            if extra > 0 {
+                description += " " + text(extra == 1 ? "setup.program.priority.one" : "setup.program.priority.other",
+                    ["muscle": text("setup.priority.\(profile.priority)", [:]), "sets": extra])
+            }
+        }
         let program = Program(id: programID, name: name,
-            description: text("setup.program.summary", ["days": days.count, "minutes": profile.minutes]),
+            description: description,
             guidelines: [text("setup.guideline.effort", [:]), text("setup.guideline.progress", [:]), text("setup.guideline.load", [:])] + warnings.map { text($0, [:]) },
             workouts: workouts, coverId: coverId)
         return GeneratedTrainingPlan(program: program, warningKeys: warnings, estimatedMinutes: estimates, generatorVersion: catalog.version)
