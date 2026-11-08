@@ -47,13 +47,16 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         let home = catalog.equipment.filter { $0.home == true }
         XCTAssertEqual(home.count, 12)
         XCTAssertTrue(home.allSatisfy { $0.artwork != nil })
-        let gym = try XCTUnwrap(catalog.presets["commercial_gym"])
-        XCTAssertTrue(catalog.equipment.filter { gym.contains($0.id) }.allSatisfy { $0.artwork != nil })
+        // Gym equipment is reviewed as text, so only Home's cards carry pictures.
+        XCTAssertTrue(catalog.equipment.filter { $0.home != true }.allSatisfy { $0.artwork == nil })
         let dedicated = catalog.equipment.filter { $0.artwork?.hasPrefix("equipment:") == true }
-        XCTAssertEqual(dedicated.count, 17)
+        XCTAssertEqual(dedicated.count, 7)
         for item in dedicated {
             XCTAssertEqual(item.artwork, "equipment:\(item.id)")
             XCTAssertNotNil(UIImage(named: "setup_equipment_" + item.id.replacingOccurrences(of: "-", with: "_")), item.id)
+        }
+        for retired in ["lat_pulldown", "seated_row", "chest_press", "shoulder_press", "leg_press", "leg_extension", "leg_curl", "calf_machine", "pec_deck", "safeties"] {
+            XCTAssertNil(UIImage(named: "setup_equipment_" + retired), retired)
         }
         XCTAssertFalse(catalog.equipment.contains { $0.artwork?.hasPrefix("exercise:") == true })
     }

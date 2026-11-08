@@ -55,8 +55,7 @@
     },
     {
       "id": "safeties",
-      "group": "supports",
-      "artwork": "equipment:safeties"
+      "group": "supports"
     },
     {
       "id": "landmine",
@@ -140,53 +139,43 @@
     },
     {
       "id": "cable",
-      "group": "machines",
-      "artwork": "product:machine"
+      "group": "machines"
     },
     {
       "id": "lat-pulldown",
-      "group": "machines",
-      "artwork": "equipment:lat-pulldown"
+      "group": "machines"
     },
     {
       "id": "seated-row",
-      "group": "machines",
-      "artwork": "equipment:seated-row"
+      "group": "machines"
     },
     {
       "id": "chest-press",
-      "group": "machines",
-      "artwork": "equipment:chest-press"
+      "group": "machines"
     },
     {
       "id": "shoulder-press",
-      "group": "machines",
-      "artwork": "equipment:shoulder-press"
+      "group": "machines"
     },
     {
       "id": "leg-press",
-      "group": "machines",
-      "artwork": "equipment:leg-press"
+      "group": "machines"
     },
     {
       "id": "leg-extension",
-      "group": "machines",
-      "artwork": "equipment:leg-extension"
+      "group": "machines"
     },
     {
       "id": "leg-curl",
-      "group": "machines",
-      "artwork": "equipment:leg-curl"
+      "group": "machines"
     },
     {
       "id": "calf-machine",
-      "group": "machines",
-      "artwork": "equipment:calf-machine"
+      "group": "machines"
     },
     {
       "id": "pec-deck",
-      "group": "machines",
-      "artwork": "equipment:pec-deck"
+      "group": "machines"
     }
   ],
   "presets": {
