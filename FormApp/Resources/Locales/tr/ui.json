@@ -1880,8 +1880,6 @@
   "notes.edit": "Düzenle",
   "notes.preserved": "Korunan notlar",
   "notes.button": "Notlar",
-  "keyboard.previousField": "Önceki alan",
-  "keyboard.nextField": "Sonraki alan",
   "import.error.notesTooLong": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden dene.",
   "supersets.pairNext": "Sonraki egzersizle eşleştir",
   "supersets.unpair": "Eşleştirmeyi kaldır",

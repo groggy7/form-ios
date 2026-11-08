@@ -127,6 +127,7 @@
 		CT0000000000000000000002 /* HistoryTileCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CT0000000000000000000001 /* HistoryTileCalendar.swift */; };
 		D246D003DB8EAC404C0F6470 /* WatchRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB0C1656C7A6A85A3AF9AEE /* WatchRootView.swift */; };
 		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
+		KP0000000000000000000002 /* LoggingKeypad.swift in Sources */ = {isa = PBXBuildFile; fileRef = KP0000000000000000000001 /* LoggingKeypad.swift */; };
 		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
 		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
 		DCB023D3F30E24DE5C691D23 /* WatchSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F21E03F4DB3CE128837B01 /* WatchSync.swift */; };
@@ -189,6 +190,7 @@
 		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
 		TW0000000000000000000001 /* TextWidthScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000002 /* TextWidthScale.swift */; };
 		TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000004 /* TextWidthScaleTests.swift */; };
+		KT0000000000000000000002 /* LoggingKeypadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = KT0000000000000000000001 /* LoggingKeypadTests.swift */; };
 		V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
@@ -269,6 +271,7 @@
 		2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityAttributes.swift; path = Models/RestActivityAttributes.swift; sourceTree = "<group>"; };
 		2D97FA7035F2317DFBE57498 /* MovementIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementIcon.swift; sourceTree = "<group>"; };
 		303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLoggingTable.swift; sourceTree = "<group>"; };
+		KP0000000000000000000001 /* LoggingKeypad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingKeypad.swift; sourceTree = "<group>"; };
 		35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderView.swift; sourceTree = "<group>"; };
 		37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 05_home_forge_dumbbells.json; sourceTree = "<group>"; };
@@ -430,6 +433,7 @@
 		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
 		TW0000000000000000000002 /* TextWidthScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScale.swift; sourceTree = "<group>"; };
 		TW0000000000000000000004 /* TextWidthScaleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScaleTests.swift; sourceTree = "<group>"; };
+		KT0000000000000000000001 /* LoggingKeypadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingKeypadTests.swift; sourceTree = "<group>"; };
 		V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
@@ -574,6 +578,7 @@
 				TR0000000000000000000005 /* TourTests.swift */,
 				FD0000000000000000000003 /* FoldableLayoutTests.swift */,
 				TW0000000000000000000004 /* TextWidthScaleTests.swift */,
+				KT0000000000000000000001 /* LoggingKeypadTests.swift */,
 				AI0000000000000000000005 /* LifetimePaywallTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
@@ -798,6 +803,7 @@
 				F89F4479A1065BF741953378 /* RestTimerBar.swift */,
 				DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */,
 				303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */,
+				KP0000000000000000000001 /* LoggingKeypad.swift */,
 				PG0000000000000000000005 /* ProgressionCoachCard.swift */,
 				PG0000000000000000000007 /* ProgressionInfoSheet.swift */,
 				WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */,
@@ -1196,6 +1202,7 @@
 				FD0000000000000000000002 /* FoldableLayout.swift in Sources */,
 				90CC3E5D0E555C597ED91ABB /* SessionSummaryView.swift in Sources */,
 				D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */,
+				KP0000000000000000000002 /* LoggingKeypad.swift in Sources */,
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
 				HI0000000000000000000004 /* HistoryImportSheet.swift in Sources */,
 				9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */,
@@ -1270,6 +1277,7 @@
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
 				FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */,
 				TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */,
+				KT0000000000000000000002 /* LoggingKeypadTests.swift in Sources */,
 				AI0000000000000000000006 /* LifetimePaywallTests.swift in Sources */,
 				F91DC1921D5F5121C870852C /* WatchSyncTests.swift in Sources */,
 			);

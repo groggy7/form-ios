@@ -114,18 +114,8 @@ enum WatchSnapshotBuilder {
         )
     }
 
-    /// One crown step: the Smart Progression steps where `ProgressionEngine.loadStep` has one, and a
-    /// plain 1 kg or 2.5 lb elsewhere, since the crown needs a step even where the coach must not invent one.
+    /// One crown step, the same step as the phone keypad's ± keys.
     static func loadStep(_ exercise: Exercise, unit: WeightUnit, steps: ProgressionLoadSteps) -> Double {
-        let fallback = unit == .lbs ? 2.5 : 1
-        if WorkoutSessionUtils.isAssisted(exercise) { return steps.machine(unit) }
-        if WorkoutSessionUtils.usesBodyweightResistance(exercise) { return steps.bodyweight(unit) }
-        let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? ExerciseCatalog.key(exercise.name)
-        switch EquipmentCatalog.shared.categoryId(id) {
-        case "bar": return steps.bar(unit) ?? fallback
-        case "dumbbell": return steps.dumbbell(unit)
-        case "machine": return steps.machine(unit)
-        default: return fallback
-        }
+        WorkoutSessionUtils.loadStep(exercise, unit: unit, steps: steps)
     }
 }

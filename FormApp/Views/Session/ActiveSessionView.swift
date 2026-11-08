@@ -33,9 +33,10 @@ public struct ActiveSessionView: View {
     @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
     @ObservedObject private var tour = TourController.shared
     @State private var compactHeight = false
-    /// While the keyboard is up, the exercise strip and navigation make way for a field bar and a one-line rest.
+    /// While a note's keyboard is up, the exercise strip and navigation make way for a Done bar and a one-line rest.
     @State private var keyboardVisible = false
-    @StateObject private var fieldNavigator = SessionFieldNavigator()
+    /// The session's own number pad replaces the system keyboard for set entry.
+    @State private var keypad = SessionKeypad()
     /// The exercise whose notes panel is open.
     @State private var notesOpenFor: String?
 
@@ -49,10 +50,11 @@ public struct ActiveSessionView: View {
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
-    public init(store: AppStore, draft: ActiveSessionDraft) {
+    public init(store: AppStore, draft: ActiveSessionDraft, keypad: SessionKeypad? = nil) {
         self.store = store
         self.liveSession = store.liveSession
         self.draft = draft
+        if let keypad { _keypad = State(initialValue: keypad) }
     }
 
     private var currentDraft: ActiveSessionDraft {
@@ -197,7 +199,7 @@ public struct ActiveSessionView: View {
                         onFinish: presentWorkoutSummary)
 
                     // The strip stays pinned above the sets, like Android, unless the window is too short for both.
-                    // Typing needs the room more than switching exercises does.
+                    // A note's keyboard needs the room more than switching exercises does; the set keypad leaves it.
                     if !compactHeight && !keyboardVisible { exerciseStrip }
 
                     // Main Content
@@ -342,7 +344,10 @@ public struct ActiveSessionView: View {
                                             jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
                                             onJointStress: asksJointStress ? { setJointStress($0, exerciseId: exercise.id) } : nil
                                         )) : nil,
-                                        fieldNavigator: fieldNavigator
+                                        keypad: keypad,
+                                        weightStep: WorkoutSessionUtils.loadStep(exercise, unit: store.weightUnit, steps: store.progressionLoadSteps),
+                                        barbellPlates: WorkoutSessionUtils.usesBarbellPlates(exercise),
+                                        warmupToolsUnlocked: proManager.isFeatureUnlocked(.warmupCalculator)
                                     )
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
                                     .padding(.top, showsProgressionCard || showsWarmupCard ? 8 : 0)
@@ -362,10 +367,16 @@ public struct ActiveSessionView: View {
                         .padding(.bottom, 20)
                     }
                     .scrollDismissesKeyboard(.interactively)
+                    // A revealed set keeps 20pt of room above the keypad.
+                    .safeAreaPadding(.bottom, keypad.isOpen ? 20 : 0)
                     .tourScrollable(tourProxy)
                     }
 
-                    if keyboardVisible {
+                    if keypad.isOpen {
+                        // While a set field is selected the keypad takes the navigation's place and a running rest is one line.
+                        restBar(restTimer, compact: true)
+                        LoggingKeypadView(keypad: keypad)
+                    } else if keyboardVisible {
                         restBar(restTimer, compact: true)
                         keyboardBar
                     } else {
@@ -656,6 +667,8 @@ public struct ActiveSessionView: View {
             checkRestTimerAlarm()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+            // A note's system keyboard and the set keypad never share the screen.
+            keypad.dismiss()
             withAnimation(.easeOut(duration: 0.2)) { keyboardVisible = true }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
@@ -679,6 +692,7 @@ public struct ActiveSessionView: View {
         ) { pending in
             Button(LanguageManager.t("session.anomalous_weight.edit"), role: .cancel) {
                 pendingAnomalousSet = nil
+                keypad.resync()
             }
             Button(LanguageManager.t("session.anomalous_weight.confirm")) {
                 let exercise = pending.exercise
@@ -788,7 +802,7 @@ public struct ActiveSessionView: View {
         return Image(uiImage: symbol.withTintColor(UIColor(color), renderingMode: .alwaysOriginal))
     }
 
-    /// The running rest under the exercise: the full bar, or one line while the keyboard is up.
+    /// The running rest under the exercise: the full bar, or one line while the keypad or a keyboard is up.
     @ViewBuilder
     private func restBar(_ restTimer: RestTimerState?, compact: Bool) -> some View {
         if let rest = restTimer {
@@ -816,28 +830,11 @@ public struct ActiveSessionView: View {
         }
     }
 
-    /// Sits on the keyboard like the system's input bar: previous and next field, then Done.
+    /// Sits on a note's keyboard like the system's input bar, with Done to put it away.
     private var keyboardBar: some View {
         HStack(spacing: 0) {
-            Button { fieldNavigator.send(.previous) } label: {
-                Image(systemName: "chevron.up").font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(fieldNavigator.canMovePrevious ? AppColors.text : AppColors.muted.opacity(0.4))
-                    .frame(width: 48, height: 44).contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .disabled(!fieldNavigator.canMovePrevious)
-            .accessibilityLabel(LanguageManager.t("keyboard.previousField"))
-            Button { fieldNavigator.send(.next) } label: {
-                Image(systemName: "chevron.down").font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(fieldNavigator.canMoveNext ? AppColors.text : AppColors.muted.opacity(0.4))
-                    .frame(width: 48, height: 44).contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .disabled(!fieldNavigator.canMoveNext)
-            .accessibilityLabel(LanguageManager.t("keyboard.nextField"))
             Spacer(minLength: 8)
             Button {
-                fieldNavigator.send(.done)
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             } label: {
                 Text(LanguageManager.t("common.done")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.accent)

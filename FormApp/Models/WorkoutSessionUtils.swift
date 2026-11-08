@@ -253,6 +253,24 @@ public enum WorkoutSessionUtils {
         return "\(adjusted)"
     }
 
+    /// The ± step before an exercise's equipment is known: one pair of small plates.
+    public static func defaultLoadStep(_ unit: WeightUnit) -> Double { unit == .lbs ? 5 : 2.5 }
+
+    /// One load step for the session keypad and the watch crown: the Smart Progression steps where it has one, and
+    /// a plain 1 kg or 2.5 lb elsewhere, since entry needs a step even where the coach must not invent one.
+    public static func loadStep(_ exercise: Exercise, unit: WeightUnit, steps: ProgressionLoadSteps) -> Double {
+        let fallback = unit == .lbs ? 2.5 : 1
+        if isAssisted(exercise) { return steps.machine(unit) }
+        if usesBodyweightResistance(exercise) { return steps.bodyweight(unit) }
+        let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? ExerciseCatalog.key(exercise.name)
+        switch EquipmentCatalog.shared.categoryId(id) {
+        case "bar": return steps.bar(unit) ?? fallback
+        case "dumbbell": return steps.dumbbell(unit)
+        case "machine": return steps.machine(unit)
+        default: return fallback
+        }
+    }
+
     public static func adjustReps(_ input: String, by delta: Int) -> String {
         let current = min(999, max(0, Int(input) ?? 0))
         let adjusted = min(999, max(0, current + delta))

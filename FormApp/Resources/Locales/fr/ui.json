@@ -1880,8 +1880,6 @@
   "notes.edit": "Modifier",
   "notes.preserved": "Notes conservées",
   "notes.button": "Notes",
-  "keyboard.previousField": "Champ précédent",
-  "keyboard.nextField": "Champ suivant",
   "import.error.notesTooLong": "Une note dépasse 10 000 caractères. Raccourcissez-la dans le fichier exporté, puis réessayez.",
   "supersets.pairNext": "Associer à l’exercice suivant",
   "supersets.unpair": "Dissocier les exercices",

@@ -1880,8 +1880,6 @@
   "notes.edit": "Bearbeiten",
   "notes.preserved": "Übernommene Notizen",
   "notes.button": "Notizen",
-  "keyboard.previousField": "Vorheriges Feld",
-  "keyboard.nextField": "Nächstes Feld",
   "import.error.notesTooLong": "Eine Notiz überschreitet 10.000 Zeichen. Kürze sie in der Exportdatei und versuche es erneut.",
   "supersets.pairNext": "Mit nächster Übung paaren",
   "supersets.unpair": "Paarung aufheben",

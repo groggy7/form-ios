@@ -1855,7 +1855,7 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testSetJumpControlsNarrowSnapshots() throws {
+    func testLoggingKeypadNarrowSnapshots() throws {
         defer { LanguageManager.setLanguage("en") }
         func textFields(_ view: UIView) -> [UITextField] {
             (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { textFields($0) }
@@ -1863,38 +1863,55 @@ final class FormAppTests: XCTestCase {
         for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)
             for index in 0..<2 {
-            let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: index == 0 ? "12.5" : "220.46", repsInput: "10") }, prescription: "3 × 6–10",
-                onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
-                weightUnit: index == 0 ? .kg : .lbs)
-                .padding(16).environment(\.dynamicTypeSize, .xxxLarge)
-                .frame(width: 320).background(AppColors.background)
-            let host = UIHostingController(rootView: content)
-            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 700))
-            window.rootViewController = host
-            window.makeKeyAndVisible()
-            host.view.frame = window.bounds
-            host.view.layoutIfNeeded()
-            RunLoop.main.run(until: Date().addingTimeInterval(0.15))
-            let fields = textFields(host.view)
-            XCTAssertEqual(fields.count, 6)
-                window.endEditing(true)
-                RunLoop.main.run(until: Date().addingTimeInterval(0.1))
-                let field = try XCTUnwrap(textFields(host.view).filter { !$0.isHidden }.dropFirst(index).first)
-                XCTAssertTrue(field.becomeFirstResponder())
-                RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+                let unit: WeightUnit = index == 0 ? .kg : .lbs
+                let keypad = SessionKeypad()
+                let label = "\(LanguageManager.t("table.set")) 1, \(LanguageManager.t(unit == .lbs ? "table.weightLbs" : "table.weightKg"))"
+                keypad.bind(KeypadField(id: "set-1:w", kind: index == 0 ? .weight : .reps, unit: unit, label: label,
+                                        title: label.replacingOccurrences(of: ", ", with: " · "), value: index == 0 ? "12.5" : "10",
+                                        step: index == 0 ? 2.5 : 1, action: index == 0 ? .next : .log,
+                                        onValue: { _ in }, onAction: {}, onDismiss: {},
+                                        previous: KeypadShortcut(tag: "keypad-previous", description: "", text: "100x8",
+                                                                 systemImage: "clock.arrow.circlepath", action: {}),
+                                        tools: [KeypadShortcut(tag: "keypad-plates", description: "", systemImage: "square.stack.3d.up", action: {})]))
+                let content = VStack(spacing: 0) {
+                    SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: index == 0 ? "12.5" : "220.46", repsInput: "10") },
+                                    prescription: "3 × 6–10", onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
+                                    weightUnit: unit, keypad: keypad)
+                        .padding(16)
+                    Spacer(minLength: 0)
+                    LoggingKeypadView(keypad: keypad)
+                }
+                .environment(\.dynamicTypeSize, .xxxLarge)
+                .frame(width: 320, height: 860).background(AppColors.background)
+                let host = UIHostingController(rootView: content)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 860))
+                window.rootViewController = host
+                window.makeKeyAndVisible()
+                host.view.frame = window.bounds
                 host.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+                // Set entry never hosts a text field, so the system keyboard cannot appear.
+                XCTAssertTrue(textFields(host.view).isEmpty)
+                XCTAssertTrue(keypad.isOpen)
                 let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { _ in
                     host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
                 }
                 let attachment = XCTAttachment(image: image)
-                attachment.name = "set-jumps-\(language)-\(index)"
+                attachment.name = "logging-keypad-\(language)-\(index)"
                 attachment.lifetime = .keepAlways
                 add(attachment)
-                try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/set-jumps-ios-\(language)-\(index).png"))
-            window.endEditing(true)
-            window.isHidden = true
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/logging-keypad-ios-\(language)-\(index).png"))
+                window.isHidden = true
             }
         }
+        // The keypad fits a 320pt phone with the largest standard text without growing past its four rows.
+        let keypad = SessionKeypad()
+        keypad.bind(KeypadField(id: "x", kind: .weight, unit: .kg, label: "SET 1", title: "SET 1 · WEIGHT (KG)", value: "", step: 2.5,
+                                action: .next, onValue: { _ in }, onAction: {}, onDismiss: {}))
+        let measured = UIHostingController(rootView: LoggingKeypadView(keypad: keypad).environment(\.dynamicTypeSize, .xxxLarge).frame(width: 320))
+        measured.safeAreaRegions = []
+        let height: CGFloat = measured.sizeThatFits(in: CGSize(width: 320, height: CGFloat.greatestFiniteMagnitude)).height
+        XCTAssertEqual(height, 244, accuracy: 2, "a 44pt heading and four 48pt rows")
     }
 
     func testSanitizedWeightInput() {
@@ -11349,18 +11366,18 @@ final class WeightConfirmationRegressionTests: XCTestCase {
                 ExerciseSetLog(id: "logged", setNumber: 1, weightInput: "80", repsInput: "12", weightKg: 80, completedReps: 12, isCompleted: true)
             ]])
         store.activeSession = draft
-        let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
+        let keypad = SessionKeypad()
+        let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft, keypad: keypad))
         window.rootViewController = host
         window.makeKeyAndVisible()
         host.view.frame = window.bounds
         host.view.layoutIfNeeded()
         RunLoop.main.run(until: Date().addingTimeInterval(0.4))
-        func fields(_ view: UIView) -> [UITextField] {
-            (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { fields($0) }
-        }
-        let weight = try XCTUnwrap(fields(host.view).first)
-        weight.text = "800"
-        weight.sendActions(for: .editingChanged)
+        // The logged load is edited on the session keypad; its first key replaces the value.
+        keypad.select("logged:w")
+        RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+        XCTAssertTrue(keypad.isOpen)
+        keypad.type("8"); keypad.type("0"); keypad.type("0")
         RunLoop.main.run(until: Date().addingTimeInterval(0.5))
         let alert = try XCTUnwrap(host.presentedViewController as? UIAlertController)
         XCTAssertEqual(alert.title, LanguageManager.t("session.anomalous_weight.title"))
@@ -12230,7 +12247,8 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             store.activeSession = active
             store.weightUnit = .lbs
             let current = try XCTUnwrap(store.activeSession)
-            let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: current))
+            let keypad = SessionKeypad()
+            let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: current, keypad: keypad))
             let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
             defer { window.endEditing(true); window.isHidden = true; previousWindow?.makeKeyAndVisible() }
@@ -12239,15 +12257,12 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             host.view.frame = window.bounds
             host.view.layoutIfNeeded()
             RunLoop.main.run(until: Date().addingTimeInterval(0.4))
-            @MainActor func fields(_ view: UIView) -> [UITextField] {
-                if let field = view as? UITextField { return [field] }
-                return view.subviews.flatMap { fields($0) }
-            }
-            let inputs = fields(host.view)
-            XCTAssertGreaterThanOrEqual(inputs.count, 2)
-            let reps = try XCTUnwrap(inputs.dropFirst().first)
-            reps.text = "12"
-            reps.sendActions(for: .editingChanged)
+            // Reps are entered on the session keypad: select the field, then type as the keys would.
+            let setId = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first?.id)
+            keypad.select(setId + ":r")
+            RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+            XCTAssertTrue(keypad.isOpen)
+            keypad.type("1"); keypad.type("2")
             RunLoop.main.run(until: Date().addingTimeInterval(0.2))
             XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.completedReps, 12)
             // The open row switched to the loadable 220 lbs it shows; a reps edit keeps that load.
@@ -14258,13 +14273,14 @@ final class SessionStripCollapseTests: XCTestCase {
     }
 
     func testSetRowsSitFourPointsApartWithFullTouchTargets() throws {
-        func textFields(_ view: UIView) -> [UITextField] {
-            (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { textFields($0) }
+        func table(_ rows: Int) -> some View {
+            SetLoggingTable(sets: (1...rows).map { ExerciseSetLog(setNumber: $0) }, prescription: "3 × 8–12",
+                onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, weightUnit: .kg)
+                .padding(16).background(AppColors.background)
         }
-        let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0) }, prescription: "3 × 8–12",
-            onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, weightUnit: .kg)
-            .padding(16).frame(width: 393).background(AppColors.background)
-        let host = UIHostingController(rootView: content)
+        // Each added row costs its 48pt target plus the 4pt gap.
+        XCTAssertEqual(hostedHeight(table(4), width: 393) - hostedHeight(table(3), width: 393), 52, accuracy: 1, "48pt rows with a 4pt gap")
+        let host = UIHostingController(rootView: table(3).frame(width: 393))
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 700))
         window.rootViewController = host
         window.makeKeyAndVisible()
@@ -14272,10 +14288,6 @@ final class SessionStripCollapseTests: XCTestCase {
         host.view.layoutIfNeeded()
         RunLoop.main.run(until: Date().addingTimeInterval(0.15))
         defer { window.isHidden = true }
-        let rows = Set(textFields(host.view).map { $0.convert($0.bounds, to: nil).midY.rounded() }).sorted()
-        XCTAssertEqual(rows.count, 3)
-        XCTAssertEqual(rows[1] - rows[0], 52, accuracy: 1, "48pt rows with a 4pt gap")
-        XCTAssertEqual(rows[2] - rows[1], 52, accuracy: 1)
         let image = UIGraphicsImageRenderer(size: host.view.bounds.size).image { _ in
             host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
         }

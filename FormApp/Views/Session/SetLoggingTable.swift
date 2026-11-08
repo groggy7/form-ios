@@ -1,5 +1,4 @@
 import SwiftUI
-import Combine
 
 public struct SetLoggingTable: View {
     @ObservedObject var themeManager = ThemeManager.shared
@@ -7,7 +6,6 @@ public struct SetLoggingTable: View {
         let id: String
         let weight: Bool
     }
-    @FocusState private var focusedField: Field?
     @State private var selectedField: Field?
     @State private var validationSetId: String?
     let sets: [ExerciseSetLog]
@@ -31,9 +29,18 @@ public struct SetLoggingTable: View {
     var intensity: IntensityActions? = nil
     /// The exercise's ratings, shown directly beneath its last set when the caller asks for them.
     var ratings: AnyView? = nil
-    /// The keyboard bar's previous, next and Done controls.
-    var fieldNavigator: SessionFieldNavigator? = nil
+    /// The session's number pad; the selected field becomes its target.
+    var keypad: SessionKeypad? = nil
+    /// The ± step for loads in `weightUnit`, from the exercise's equipment.
+    var weightStep: Double? = nil
+    /// Converted previous loads use the nearest plate setup ("225", not "220.46").
+    var barbellPlates: Bool = false
+    /// Plates and the warm-up switch join the keypad heading for Warmup & Plates owners.
+    var warmupToolsUnlocked: Bool = false
+    @State private var ownKeypad = SessionKeypad()
     @State private var knownExtensionIds: [String] = []
+    private var activeKeypad: SessionKeypad { keypad ?? ownKeypad }
+    private var loadStep: Double { weightStep ?? WorkoutSessionUtils.defaultLoadStep(weightUnit) }
 
     public init(
         sets: [ExerciseSetLog],
@@ -55,7 +62,10 @@ public struct SetLoggingTable: View {
         logbookBeatenSets: [Int: LogbookBeatResult] = [:],
         intensity: IntensityActions? = nil,
         ratings: AnyView? = nil,
-        fieldNavigator: SessionFieldNavigator? = nil
+        keypad: SessionKeypad? = nil,
+        weightStep: Double? = nil,
+        barbellPlates: Bool = false,
+        warmupToolsUnlocked: Bool = false
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -76,7 +86,10 @@ public struct SetLoggingTable: View {
         self.logbookBeatenSets = logbookBeatenSets
         self.intensity = intensity
         self.ratings = ratings
-        self.fieldNavigator = fieldNavigator
+        self.keypad = keypad
+        self.weightStep = weightStep
+        self.barbellPlates = barbellPlates
+        self.warmupToolsUnlocked = warmupToolsUnlocked
     }
 
     private func weightInputFontSize(_ text: String, width: CGFloat) -> CGFloat {
@@ -147,7 +160,6 @@ public struct SetLoggingTable: View {
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
             let latestCompletedIndex = sets.lastIndex(where: { $0.isCompleted && !$0.isWarmup })
-            let selectedIndex = sets.firstIndex(where: { Self.field(selectedField, belongsTo: $0) })
             // Set rows sit closer than the table's other blocks; every input keeps its 48pt target.
             VStack(spacing: 4) {
                 ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
@@ -155,10 +167,10 @@ public struct SetLoggingTable: View {
                         let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                         let selectedInSet = Self.field(selectedField, belongsTo: set)
                         let isSetInputEnabled = isSetEnabled
-                        // A technique follows a finished effort: offered under the newest completed working set until a
-                        // later set is being edited, and under any completed set being edited.
+                        // A technique follows a finished effort: offered under the newest completed working set and under any
+                        // completed set being edited. It stays while a later set is typed, so no row moves under the finger.
                         let showsTechniqueMenu = intensity != nil && !set.isWarmup && set.isCompleted
-                            && (selectedInSet || (index == latestCompletedIndex && (selectedIndex ?? index) <= index))
+                            && (selectedInSet || index == latestCompletedIndex)
                         let previous = set.isWarmup ? nil : previousSets[index].flatMap { $0.isWarmup ? nil : $0 }
                         let previousText: String = {
                             guard let previous, let load = previous.weightKg, load.isFinite, load >= 0,
@@ -198,6 +210,68 @@ public struct SetLoggingTable: View {
                         )
 
                         let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight))
+                        let completeSet = {
+                            if set.isCompleted {
+                                onToggleCompleteSet(index)
+                                selectedField = nil
+                            } else if canComplete {
+                                validationSetId = nil
+                                onToggleCompleteSet(index)
+                                selectedField = nil
+                            } else {
+                                validationSetId = set.id
+                            }
+                        }
+                        let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
+                        let weightName = isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))"
+                            : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")
+                        let repsName = LanguageManager.t("table.actualReps")
+                        let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
+                            ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map { weightUnit.toCanonicalKg($0) }
+                        // One tap copies the previous occurrence's load and reps, then waits on the reps for Log set.
+                        let usePrevious: KeypadShortcut? = {
+                            guard !set.isCompleted, let previous, let load = previous.weightKg, load.isFinite, load >= 0,
+                                  let count = previous.reps, (1...999).contains(count) else { return nil }
+                            return KeypadShortcut(
+                                tag: "keypad-previous",
+                                description: LanguageManager.t("keypad.usePrevious", ["value": WorkoutSessionUtils.sessionPrAccessibilityLabel(previousText, unit: weightUnit)]),
+                                text: previousText, systemImage: "clock.arrow.circlepath",
+                                action: {
+                                    onUpdateSet(index, WorkoutSessionUtils.formatWeightInput(load, unit: weightUnit, barbell: barbellPlates), "\(count)")
+                                    selectedField = Field(id: set.id, weight: false)
+                                })
+                        }()
+                        let tools: [KeypadShortcut] = !warmupToolsUnlocked ? [] : [
+                            onInspectPlates.flatMap { inspect in
+                                plateWeight.flatMap { WarmupPlateEngine.hasWorkingLoad($0) ? $0 : nil }.map { load in
+                                    KeypadShortcut(tag: "keypad-plates", description: LanguageManager.t("warmup.tab_plates"),
+                                                   systemImage: "square.stack.3d.up", tint: AppColors.accent, action: { inspect(load) })
+                                }
+                            },
+                            onToggleWarmup.map { toggle in
+                                KeypadShortcut(tag: "keypad-warmup",
+                                               description: LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"),
+                                               systemImage: set.isWarmup ? "dumbbell" : "flame",
+                                               tint: set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber, action: { toggle(index) })
+                            }
+                        ].compactMap { $0 }
+                        let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
+                        let weightField = KeypadField(
+                            id: set.id + ":w", kind: .weight, unit: weightUnit,
+                            label: "\(setLabel), \(weightName)", title: "\(setLabel) · \(weightName)",
+                            value: weightBinding.wrappedValue, step: loadStep, action: .next,
+                            onValue: { weightBinding.wrappedValue = $0 },
+                            // Next goes on to the set's reps, like a form.
+                            onAction: { selectedField = Field(id: set.id, weight: false) },
+                            onDismiss: { selectedField = nil }, previous: usePrevious, tools: tools)
+                        let repsField = KeypadField(
+                            id: set.id + ":r", kind: .reps, unit: weightUnit,
+                            label: "\(setLabel), \(repsName)" + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""),
+                            title: "\(setLabel) · \(repsName)",
+                            value: repsBinding.wrappedValue, step: 1, action: set.isCompleted ? .done : .log,
+                            onValue: { repsBinding.wrappedValue = $0 },
+                            onAction: { if set.isCompleted { selectedField = nil } else { completeSet() } },
+                            onDismiss: { selectedField = nil }, previous: usePrevious, tools: tools)
 
                         // A set and its drops, rest-pause efforts and partials share one container, so they read as one set.
                         VStack(spacing: 0) {
@@ -237,68 +311,21 @@ public struct SetLoggingTable: View {
                                 }
 
                                 GeometryReader { geometry in
-                                    TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                                        .focused($focusedField, equals: Field(id: set.id, weight: true))
-                                        .simultaneousGesture(TapGesture().onEnded {
-                                            if isSetInputEnabled {
-                                                selectedField = Field(id: set.id, weight: true)
-                                            }
-                                        })
-                                        .disabled(!isSetInputEnabled)
-                                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
-                                        .keyboardType(.decimalPad)
-                                        .multilineTextAlignment(.center)
-                                        .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
-                                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                                        .padding(.vertical, 8)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(minHeight: 48)
-                                        .background(RoundedRectangle(cornerRadius: 8)
-                                            .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
-                                        .overlay(RoundedRectangle(cornerRadius: 8)
-                                            .stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
+                                    KeypadValueField(field: weightField, keypad: activeKeypad, row: set,
+                                                     selected: selectedField == Field(id: set.id, weight: true), enabled: isSetInputEnabled,
+                                                     fontSize: weightInputFontSize(KeypadInput.display(weightBinding.wrappedValue), width: geometry.size.width),
+                                                     onSelect: { selectedField = Field(id: set.id, weight: true) })
                                 }
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 48)
 
                                 // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
-                                let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
-                                TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                                    .focused($focusedField, equals: Field(id: set.id, weight: false))
-                                    .simultaneousGesture(TapGesture().onEnded {
-                                        if isSetInputEnabled {
-                                            selectedField = Field(id: set.id, weight: false)
-                                        }
-                                    })
-                                    .disabled(!isSetInputEnabled)
-                                    .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
-                                        + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
-                                    .keyboardType(.numberPad)
-                                    .multilineTextAlignment(.center)
-                                    .font(.app(size: 15, weight: .semibold))
-                                    .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                                    .padding(.vertical, 8)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(minHeight: 48)
-                                    .background(RoundedRectangle(cornerRadius: 8)
-                                        .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
-                                    .overlay(RoundedRectangle(cornerRadius: 8)
-                                        .stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
+                                KeypadValueField(field: repsField, keypad: activeKeypad, row: set,
+                                                 selected: selectedField == Field(id: set.id, weight: false), enabled: isSetInputEnabled,
+                                                 placeholder: targetRepsHint.map(String.init) ?? "0",
+                                                 onSelect: { selectedField = Field(id: set.id, weight: false) })
 
-                                Button(action: {
-                                    if set.isCompleted {
-                                        onToggleCompleteSet(index)
-                                        focusedField = nil
-                                        selectedField = nil
-                                    } else if canComplete {
-                                        validationSetId = nil
-                                        onToggleCompleteSet(index)
-                                        focusedField = nil
-                                        selectedField = nil
-                                    } else {
-                                        validationSetId = set.id
-                                    }
-                                }) {
+                                Button(action: completeSet) {
                                     Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
                                         .font(.system(size: 24))
                                         .foregroundStyle(
@@ -369,80 +396,6 @@ public struct SetLoggingTable: View {
                                 .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
                                 .accessibilityIdentifier("set-validation-\(set.id)")
                         }
-                        if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
-                            let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
-                            let fieldLabel = LanguageManager.t(selected.weight ? weightLabelKey : "table.actualReps")
-                            let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
-                            VStack(spacing: 4) {
-                                HStack {
-                                    Text("\(setLabel) · \(fieldLabel)")
-                                        .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
-                                    Spacer()
-                                    Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
-                                        .font(.app(size: 12)).foregroundStyle(AppColors.accent)
-                                        .frame(minWidth: 48, minHeight: 48)
-                                }
-                                HStack(spacing: 8) {
-                                    ForEach(selected.weight ? [-10, -5, 5, 10] : [-1, 1], id: \.self) { step in
-                                        let label = step > 0 ? "+\(step)" : "−\(-step)"
-                                        Button {
-                                            if selected.weight {
-                                                weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step, unit: weightUnit)
-                                            } else {
-                                                repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
-                                            }
-                                        } label: {
-                                            Text(label).font(.app(size: 16)).foregroundStyle(AppColors.text)
-                                                .frame(maxWidth: .infinity, minHeight: 48)
-                                                .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
-                                                .contentShape(RoundedRectangle(cornerRadius: 8))
-                                        }
-                                        .buttonStyle(.plain)
-                                        .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
-                                    }
-                                }
-
-                                HStack(spacing: 8) {
-                                    let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
-                                        ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
-                                        weightUnit.toCanonicalKg($0)
-                                    }
-                                    if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
-                                        Button {
-                                            inspect(plateWeight)
-                                        } label: {
-                                            HStack(spacing: 4) {
-                                                Image(systemName: "square.stack.3d.up")
-                                                    .font(.system(size: 13))
-                                                Text(LanguageManager.t("warmup.tab_plates"))
-                                                    .font(.app(size: 12, weight: .medium))
-                                            }
-                                            .foregroundStyle(AppColors.accent)
-                                            .frame(maxWidth: .infinity, minHeight: 40)
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-
-                                    Button {
-                                        onToggleWarmup?(index)
-                                    } label: {
-                                        HStack(spacing: 4) {
-                                            Image(systemName: set.isWarmup ? "dumbbell" : "flame")
-                                                .font(.system(size: 13))
-                                            Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
-                                                .font(.app(size: 12, weight: .medium))
-                                        }
-                                        .foregroundStyle(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
-                                        .frame(maxWidth: .infinity, minHeight: 40)
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                                .padding(.top, 4)
-                            }
-                            .padding(.horizontal, 8).padding(.vertical, 4)
-                            .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
-                            .accessibilityIdentifier("set-adjustments")
-                        }
                         if showsTechniqueMenu, let intensity {
                             techniqueMenu(set: set, index: index, actions: intensity)
                         }
@@ -501,34 +454,32 @@ public struct SetLoggingTable: View {
             .padding(.top, 8)
         }
         .tint(AppColors.accent)
-        .onChange(of: focusedField) { _, value in
-            if let value { selectedField = value }
-            updateNavigator()
-        }
         .onChange(of: selectedField) { _, value in reveal(value, scrollProxy) }
-        .onReceive(fieldNavigator.map { $0.commands.eraseToAnyPublisher() } ?? Empty().eraseToAnyPublisher()) { perform($0) }
+        .onChange(of: activeKeypad.requestedField, initial: true) { _, id in
+            guard let id else { return }
+            activeKeypad.consumeRequest()
+            let parts = id.split(separator: ":", maxSplits: 1).map(String.init)
+            let field = Field(id: parts[0], weight: parts.count > 1 && parts[1] == "w")
+            if sets.contains(where: { Self.field(field, belongsTo: $0) }) { selectedField = field }
+        }
         .onChange(of: sets.map(\.id)) { _, _ in
-            if let selectedField, !sets.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil; focusedField = nil }
+            if let selectedField, !sets.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil }
         }
         .onAppear { knownExtensionIds = sets.flatMap { $0.extensions?.map(\.id) ?? [] } }
         .onChange(of: sets) { _, latest in
-            if let selectedField, !latest.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil; focusedField = nil }
+            if let selectedField, !latest.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil }
             // A newly added drop or rest-pause effort takes focus, so its numbers can be typed straight away.
             let ids = latest.flatMap { $0.extensions?.map(\.id) ?? [] }
             if let added = ids.first(where: { !knownExtensionIds.contains($0) }),
                let owner = latest.first(where: { $0.extensions?.contains { $0.id == added } == true }) {
                 let part = owner.extensions?.first { $0.id == added }
                 let wantsWeight = IntensitySets.technique(of: owner) == .drop && (part?.weightInput.isEmpty ?? true)
-                focusedField = Field(id: added, weight: wantsWeight)
+                selectedField = Field(id: added, weight: wantsWeight)
             }
             knownExtensionIds = ids
-            updateNavigator()
         }
         .onChange(of: isRestActive) { _, active in
-            if active {
-                self.selectedField = nil
-                self.focusedField = nil
-            }
+            if active { self.selectedField = nil }
         }
         }
     }
@@ -582,23 +533,15 @@ public struct SetLoggingTable: View {
         }
     }
 
-    private func subRowField(_ binding: Binding<String>, field: Field, prompt: String, enabled: Bool, label: String, keyboard: UIKeyboardType) -> some View {
-        TextField("0", text: binding, prompt: Text(prompt).foregroundStyle(AppColors.muted.opacity(enabled ? 0.6 : 0.25)))
-            .focused($focusedField, equals: field)
-            .simultaneousGesture(TapGesture().onEnded { if enabled { selectedField = field } })
-            .disabled(!enabled)
-            .accessibilityLabel(label)
-            .keyboardType(keyboard)
-            .multilineTextAlignment(.center)
-            .font(.app(size: 15, weight: .semibold))
-            .foregroundStyle(enabled ? AppColors.text : AppColors.muted.opacity(0.5))
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 48)
-            .background(RoundedRectangle(cornerRadius: 8)
-                .fill(AppColors.surfaceRaised.opacity(enabled ? 1.0 : 0.5)).padding(.vertical, 4))
-            .overlay(RoundedRectangle(cornerRadius: 8)
-                .stroke(selectedField == field && enabled ? AppColors.accent : .clear).padding(.vertical, 4))
+    /// A drop, rest-pause or partials value, edited with the keypad like the set's own fields.
+    private func subRowField(_ binding: Binding<String>, field: Field, kind: KeypadKind, label: String, title: String, enabled: Bool,
+                             row: ExerciseSetLog, action: KeypadAction, onAction: @escaping () -> Void) -> some View {
+        let keypadField = KeypadField(
+            id: field.id + (kind == .weight ? ":w" : ":r"), kind: kind, unit: weightUnit, label: label, title: title,
+            value: binding.wrappedValue, step: kind == .weight ? loadStep : 1, action: action,
+            onValue: { binding.wrappedValue = $0 }, onAction: onAction, onDismiss: { selectedField = nil })
+        return KeypadValueField(field: keypadField, keypad: activeKeypad, row: row, selected: selectedField == field, enabled: enabled,
+                                onSelect: { selectedField = field })
     }
 
     private func extensionRow(set: ExerciseSetLog, index: Int, extensionIndex: Int, part: SetExtensionLog, technique: SetTechnique,
@@ -623,6 +566,15 @@ public struct SetLoggingTable: View {
             }
         )
         let previous = previousPartText(set: set, index: index, extensionIndex: extensionIndex, actions: actions)
+        let tick = {
+            if part.isCompleted || canTick {
+                validationSetId = nil
+                actions.onToggleExtension(index, extensionIndex)
+                selectedField = nil
+            } else {
+                validationSetId = part.id
+            }
+        }
         return HStack(spacing: 8) {
             subRowMarker(isDrop ? "arrow.down.right" : "pause", enabled: rowEnabled)
             Text(previous)
@@ -632,9 +584,10 @@ public struct SetLoggingTable: View {
                 .frame(width: 56, alignment: .center)
                 .accessibilityLabel(previous)
             if isDrop {
-                subRowField(weightBinding, field: Field(id: part.id, weight: true), prompt: "0", enabled: inputEnabled,
-                            label: "\(label), \(isAssisted ? LanguageManager.t("table.assistance") : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"))",
-                            keyboard: .decimalPad)
+                let weightName = isAssisted ? LanguageManager.t("table.assistance") : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")
+                subRowField(weightBinding, field: Field(id: part.id, weight: true), kind: .weight,
+                            label: "\(label), \(weightName)", title: "\(label) · \(weightName)", enabled: inputEnabled, row: set,
+                            action: .next, onAction: { selectedField = Field(id: part.id, weight: false) })
             } else {
                 // Rest-pause keeps the main part's load.
                 Text(displayedWeight(set.weightInput, set.weightKg))
@@ -643,18 +596,11 @@ public struct SetLoggingTable: View {
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .accessibilityLabel("\(label), \(displayedWeight(set.weightInput, set.weightKg)) \(weightUnit.label)")
             }
-            subRowField(repsBinding, field: Field(id: part.id, weight: false), prompt: "0", enabled: inputEnabled,
-                        label: "\(label), \(LanguageManager.t("table.actualReps"))", keyboard: .numberPad)
-            Button(action: {
-                if part.isCompleted || canTick {
-                    validationSetId = nil
-                    actions.onToggleExtension(index, extensionIndex)
-                    focusedField = nil
-                    selectedField = nil
-                } else {
-                    validationSetId = part.id
-                }
-            }) {
+            subRowField(repsBinding, field: Field(id: part.id, weight: false), kind: .reps,
+                        label: "\(label), \(LanguageManager.t("table.actualReps"))", title: "\(label) · \(LanguageManager.t("table.actualReps"))",
+                        enabled: inputEnabled, row: set, action: part.isCompleted ? .done : .log,
+                        onAction: { if part.isCompleted { selectedField = nil } else { tick() } })
+            Button(action: tick) {
                 Image(systemName: part.isCompleted ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 20))
                     .foregroundStyle(part.isCompleted ? AppColors.accent : (inputEnabled ? AppColors.muted.opacity(canTick ? 0.5 : 0.2) : AppColors.muted.opacity(0.15)))
@@ -693,7 +639,8 @@ public struct SetLoggingTable: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, minHeight: 48)
                 .accessibilityHidden(true)
-            subRowField(binding, field: field, prompt: "0", enabled: inputEnabled, label: label, keyboard: .numberPad)
+            subRowField(binding, field: field, kind: .partials, label: label, title: label, enabled: inputEnabled, row: set,
+                        action: .done, onAction: { selectedField = nil })
             Color.clear.frame(width: 44, height: 44)
         }
         .padding(.horizontal, 14)
@@ -769,69 +716,16 @@ public struct SetLoggingTable: View {
         .accessibilityIdentifier("technique-menu")
     }
 
-    // MARK: Keyboard bar
+    // MARK: Scrolling
 
     static func groupId(_ setId: String) -> String { "set-group-" + setId }
 
-    /// Every field the table can focus, in reading order; locked future sets are skipped.
-    private var orderedFields: [Field] {
-        sets.enumerated().flatMap { index, set -> [Field] in
-            guard set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index) else { return [] }
-            var fields = [Field(id: set.id, weight: true), Field(id: set.id, weight: false)]
-            guard intensity != nil, !set.isWarmup else { return fields }
-            if set.partialRepsInput != nil { fields.append(Field(id: Self.partialsFieldId(set.id), weight: false)) }
-            let isDrop = IntensitySets.technique(of: set) != .restPause
-            for part in set.extensions ?? [] {
-                if isDrop { fields.append(Field(id: part.id, weight: true)) }
-                fields.append(Field(id: part.id, weight: false))
-                if part.partialRepsInput != nil { fields.append(Field(id: Self.partialsFieldId(part.id), weight: false)) }
-            }
-            return fields
-        }
-    }
-
-    private func neighbor(of field: Field?, by step: Int) -> Field? {
-        let fields = orderedFields
-        guard let field, let position = fields.firstIndex(of: field), fields.indices.contains(position + step) else { return nil }
-        return fields[position + step]
-    }
-
-    private func updateNavigator() {
-        fieldNavigator?.update(previous: neighbor(of: focusedField, by: -1) != nil, next: neighbor(of: focusedField, by: 1) != nil)
-    }
-
-    private func perform(_ command: SessionFieldNavigator.Command) {
-        switch command {
-        case .previous: if let field = neighbor(of: focusedField, by: -1) { focusedField = field }
-        case .next: if let field = neighbor(of: focusedField, by: 1) { focusedField = field }
-        case .done: focusedField = nil; selectedField = nil
-        }
-    }
-
-    /// Brings the edited set to the top of the visible area, so its adjustments and techniques stay above the keyboard.
+    /// Scrolls only as far as needed for the edited set, with its room, to clear the keypad once it has appeared.
     private func reveal(_ field: Field?, _ proxy: ScrollViewProxy) {
         guard let field, let set = sets.first(where: { Self.field(field, belongsTo: $0) }) else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo(Self.groupId(set.id), anchor: .top) }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
+            withAnimation(.easeOut(duration: 0.25)) { proxy.scrollTo(Self.groupId(set.id), anchor: nil) }
         }
-    }
-}
-
-/// Moves focus between the session table's fields from the bar above the keyboard.
-@MainActor
-public final class SessionFieldNavigator: ObservableObject {
-    public enum Command { case previous, next, done }
-    @Published public private(set) var canMovePrevious = false
-    @Published public private(set) var canMoveNext = false
-    let commands = PassthroughSubject<Command, Never>()
-
-    public init() {}
-
-    public func send(_ command: Command) { commands.send(command) }
-
-    func update(previous: Bool, next: Bool) {
-        if canMovePrevious != previous { canMovePrevious = previous }
-        if canMoveNext != next { canMoveNext = next }
     }
 }
 

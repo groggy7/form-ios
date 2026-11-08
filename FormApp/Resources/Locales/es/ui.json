@@ -1880,8 +1880,6 @@
   "notes.edit": "Editar",
   "notes.preserved": "Notas conservadas",
   "notes.button": "Notas",
-  "keyboard.previousField": "Campo anterior",
-  "keyboard.nextField": "Campo siguiente",
   "import.error.notesTooLong": "Una nota supera los 10.000 caracteres. Acórtala en el archivo exportado y vuelve a intentarlo.",
   "supersets.pairNext": "Emparejar con el siguiente ejercicio",
   "supersets.unpair": "Desemparejar ejercicios",

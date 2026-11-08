@@ -12,7 +12,7 @@ public struct RestTimerBar: View {
     var onSkip: () -> Void
     var isMuted: Bool
     var onToggleMute: () -> Void
-    /// One line while the keyboard is up; tapping still opens the full rest screen.
+    /// One line while the set keypad or a keyboard is up; tapping still opens the full rest screen.
     var compact: Bool = false
 
     @State private var isExpanded: Bool = false
