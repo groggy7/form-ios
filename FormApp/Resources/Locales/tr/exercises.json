@@ -1,6 +1,6 @@
 {
   "ab-wheel-rollout": {
-    "name": "Karın Çarkı Açılışı (Ab Wheel)",
+    "name": "Ab Wheel Rollout",
     "cues": [
       "Diz çöküp çarkı omuzlarının altına koy; gövdeni sıkıp ileri yuvarla.",
       "Belini kontrol edebildiğin kadar uzan, sonra çarkı geri çek."
@@ -116,7 +116,7 @@
       "Gövde ve uyluklar hizalanana kadar kalçanı kaldır; kontrollü indir."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -129,7 +129,7 @@
     "avoidDetails": [
       "Daha yükseğe çıkmak için belini aşırı çukurlaştırma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
@@ -223,13 +223,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -336,7 +336,7 @@
     ]
   },
   "dumbbell-floor-press": {
-    "name": "Dambıl Yer Presi (Floor Press)",
+    "name": "Dumbbell Floor Press",
     "cues": [
       "Yerde yat; ağırlığı sağlam tut, dirseklerin bileklerinin altında kalsın.",
       "Üst kolların yere hafifçe değene kadar indir, sonra yukarı it."
@@ -397,13 +397,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -434,7 +434,7 @@
     ]
   },
   "dumbbell-step-up": {
-    "name": "Dambıl Sehpaya Adımlama (Step-Up)",
+    "name": "Dumbbell Step-Up",
     "cues": [
       "Çalışan ayağının tamamını sağlam bir platforma koy.",
       "O bacakla yüksel; sonra dengeli ve yavaşça aşağı in."
@@ -507,7 +507,7 @@
     ]
   },
   "farmer-carry": {
-    "name": "Çift Ağırlık Taşıma (Farmer Carry)",
+    "name": "Çiftçi Yürüyüşü (Farmer Carry)",
     "cues": [
       "Yükü güvenle kaldırıp gövden sıkı biçimde dik dur.",
       "Ağırlığı kontrol ederek dengeli adımlarla yürü.",
@@ -532,7 +532,7 @@
     ]
   },
   "goblet-squat": {
-    "name": "Dambıl Goblet Squat",
+    "name": "Goblet Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk."
@@ -567,7 +567,7 @@
       "Bacaklarını sallayarak kaldırma veya en alta hızla düşme."
     ],
     "cuesDetails": [
-      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce kısa, bükülü diz kaldırışını dene.",
+      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce dizleri bükerek kısa diz çekmeyi dene.",
       "Hareket: Sağlam bir barda omuzların ve gövden aktifken asıl.",
       "Kontrol: Dizlerini veya bacaklarını gövdene kaldır, sonra yavaşça indir.",
       "Gövde: Kaldırmadan omuz ve karnı aktif tut. Vücudu sallamak yerine pelvisi kontrol ederek bacakları kaldır.",
@@ -576,7 +576,7 @@
     ],
     "avoidDetails": [
       "Bacaklarını sallayarak kaldırma veya en alta hızla düşme.",
-      "Salınımla başlamak: Kontrollü kaldırış için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
+      "Salınımla başlamak: Kontrollü kaldırma için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
       "Ani düşüş: Bacakları düşürüp dipte omuzları sert çekme. Dönüşün tamamını kontrol et.",
       "Tutuşun tükenmesi: Eller kaymaya başlarken asılı kalma. Güvenli biçimde in; yeni setten önce dinlen."
     ]
@@ -691,7 +691,7 @@
     ]
   },
   "kettlebell-swing": {
-    "name": "Kettlebell Salınımı (Kettlebell Swing)",
+    "name": "Kettlebell Swing",
     "cues": [
       "Kettlebelli bacaklarının arasına savurup kalçanı öne sür.",
       "Ağırlık kalça gücüyle yükselsin; geri dönerken kalçadan eğil.",
@@ -896,7 +896,7 @@
     ]
   },
   "pallof-press": {
-    "name": "Kablolu Gövde Sabitleme (Pallof Press)",
+    "name": "Pallof Press",
     "cues": [
       "Kabloya veya banda yan dön; tutamak göğüs hizasında olsun.",
       "Dönmeden ellerini ileri uzat, sonra geri getir.",
@@ -997,7 +997,7 @@
     ]
   },
   "push-press": {
-    "name": "İtişli Omuz Presi (Push Press)",
+    "name": "Push Press",
     "cues": [
       "Ağırlığı omuzlarında tut; kalça ve dizleri az bükerek alçal.",
       "Bacaklarınla hızlanıp baş üstüne it; kontrollü indir.",
@@ -1321,7 +1321,7 @@
     ]
   },
   "lever-chest-press": {
-    "name": "Makine Göğüs Presi (Chest Press)",
+    "name": "Machine Chest Press",
     "cues": [
       "Koltuğu tutamaklar göğüs hizasından başlayacak şekilde ayarla; sırtın desteklensin.",
       "Tutamakları ileri it, sonra kontrollü bir aralıkta geri getir.",
@@ -1346,7 +1346,7 @@
     ]
   },
   "lever-seated-shoulder-press": {
-    "name": "Makine Oturarak Omuz Presi (Shoulder Press)",
+    "name": "Machine Shoulder Press",
     "cues": [
       "Ağırlığı omuz hizasında, bileklerin destekli ve gövden sıkı başlat.",
       "Baş üstüne it, sonra rahat başlangıç konumuna indir.",
@@ -1398,7 +1398,7 @@
     ]
   },
   "walking-lunge": {
-    "name": "Yürüyüş Lunge (Walking Lunge)",
+    "name": "Walking Lunge",
     "cues": [
       "Dengeni koruyacak kadar ileri adım at; iki dizini bükerek alçal.",
       "Ön bacakla yükselip sonraki adımı kontrollü at.",
@@ -1449,7 +1449,7 @@
     ]
   },
   "lever-seated-reverse-fly": {
-    "name": "Makinede Ters Omuz Açış (Reverse Fly)",
+    "name": "Makinede Arka Omuz Açış (Reverse Fly)",
     "cues": [
       "Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
@@ -1463,20 +1463,20 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir.",
       "Makine ayarı: Koltuğu tutamak veya kol pedleri omuz yüksekliğine uyacak şekilde ayarla. Gövde destekli kalsın; makinenin rahat yayını izle."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "cable-curl": {
-    "name": "Kablolu Biceps Büküş (Cable Curl)",
+    "name": "Cable Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -1500,7 +1500,7 @@
     ]
   },
   "barbell-preacher-curl": {
-    "name": "Barbell Preacher Büküş (Preacher Curl)",
+    "name": "Barbell Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -1574,7 +1574,7 @@
     ]
   },
   "front-plank": {
-    "name": "Ön Plank (Plank)",
+    "name": "Plank",
     "cues": [
       "Ön kollarını omuzlarının altına koyup gövdeni sık.",
       "Normal nefes alırken omuzdan topuğa dengeli bir çizgi tut."
@@ -1599,7 +1599,7 @@
     ]
   },
   "cable-standing-fly": {
-    "name": "Kablolu Ayakta Göğüs Açışı (Cable Fly)",
+    "name": "Kablolu Ayakta Göğüs Açış (Cable Fly)",
     "cues": [
       "Tutamakları seçtiğin fly açısına ayarla; dirseklerini hafif bük.",
       "Kollarını göğsünün önünde birleştir, sonra yavaşça aç."
@@ -1656,7 +1656,7 @@
       "Ayaklarınla iterek kalçanı kaldır; kontrollü indir."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -1669,7 +1669,7 @@
     "avoidDetails": [
       "Fazladan yükselmek için belini aşırı çukurlaştırma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
@@ -1821,7 +1821,7 @@
       "Smith: Emniyetleri ayarla, kancaları dene; duruşunu veya sehpayı sabit yola göre yerleştir."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -1835,12 +1835,12 @@
     "avoidDetails": [
       "Daha yükseğe çıkmak için belini aşırı çukurlaştırma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
   "pendulum-squat": {
-    "name": "Sarkaç Çömelme (Pendulum Squat)",
+    "name": "Pendulum Squat",
     "cues": [
       "Koltuğu veya pedleri kendine göre ayarla; ayakların platformda sabit kalsın.",
       "Kalça ve dizleri rahat bir aralıkta bük, sonra yüksel.",
@@ -1866,7 +1866,7 @@
     ]
   },
   "lever-belt-squat": {
-    "name": "Kemerli Squat Makinesi (Belt Squat)",
+    "name": "Belt Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk."
@@ -1891,7 +1891,7 @@
     ]
   },
   "lever-vertical-squat": {
-    "name": "Dikey Squat Makinesi (Vertical Squat)",
+    "name": "Vertical Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk."
@@ -1916,7 +1916,7 @@
     ]
   },
   "sled-45-degrees-one-leg-press": {
-    "name": "45° Tek Bacak İtişi (Single-Leg Press)",
+    "name": "Single-Leg Press",
     "cues": [
       "Ayak konumunu platformda sağlam ayarla; kalçan koltukta kalsın.",
       "Pelvisin sabit kalabildiği kadar indir, sonra platformu it.",
@@ -1944,7 +1944,7 @@
     ]
   },
   "dumbbell-split-squat-front-foot-elevanted": {
-    "name": "Ön Ayak Yükseltmeli Split Squat (Front-Foot Elevated)",
+    "name": "Front-Foot Elevated Split Squat",
     "cues": [
       "Ön ayağını sağlam, alçak bir yükseltiye koyup dengeli dur.",
       "Ön dizini bükerek alçal, sonra o ayakla iterek yüksel.",
@@ -1972,7 +1972,7 @@
     ]
   },
   "barbell-good-morning": {
-    "name": "Barbell Bel Bükme (Good Morning)",
+    "name": "Barbell Good Morning",
     "cues": [
       "Barı üst sırtına yerleştir; dizleri hafif büküp gövdeni sık.",
       "Kalçanı geriye götürerek eğil, sonra kalçanı açarak doğrul.",
@@ -1999,7 +1999,7 @@
     ]
   },
   "dumbbell-single-leg-romanian-deadlift": {
-    "name": "Dambıl Tek Bacak Romen Deadlift (Single-Leg RDL)",
+    "name": "Single-Leg Dumbbell RDL",
     "cues": [
       "Bir bacakta hafif bükük dizle dengelen; diğer bacak geriye giderken kalçadan eğil.",
       "Pelvisin yere dönük kalsın; yerdeki ayağınla iterek doğrul.",
@@ -2026,13 +2026,13 @@
     ]
   },
   "dumbbell-45-deg-back-extension": {
-    "name": "Dambıl 45° Bel Uzatma (Back Extension)",
+    "name": "45° Dumbbell Back Extension",
     "cues": [
       "Pedi kalçanın altına ayarla; kalçadan rahatça eğilebil.",
       "Kalçadan alçal, sonra gövden bacaklarınla hizalanana kadar yüksel."
     ],
     "avoid": [
-      "Yükseklik için savurma veya beli çukurlaştırma; yavaşla ve kaldırışı kısalt."
+      "Yükseklik için savurma veya beli çukurlaştırma; yavaşla ve hareketi kısalt."
     ],
     "cuesDetails": [
       "Hazırlık: Sehpayı veya makineyi sabitle; desteği kalça hareketine izin verecek şekilde yerleştir. Gereken el veya ayak desteğini koru.",
@@ -2050,7 +2050,7 @@
     ]
   },
   "nordic-hamstring-curl": {
-    "name": "Nordic Arka Bacak Büküşü (Nordic Hamstring Curl)",
+    "name": "Nordic Curl",
     "cues": [
       "Ayak bileklerini sabitle; kalçan açıkken dizlerden öne eğil.",
       "Kontrollü alçal; gerekirse ellerinden destek alarak geri dön.",
@@ -2075,7 +2075,7 @@
     ]
   },
   "glute-ham-raise": {
-    "name": "Kalça ve Arka Bacak Kaldırışı (Glute-Ham Raise)",
+    "name": "Glute-Ham Raise",
     "cues": [
       "Ayaklarını makineye sabitle; uyluk pedini kalçanın altına ayarla.",
       "Gövdeni kontrollü indir; dizleri büküp kalçayı açarak yüksel.",
@@ -2101,7 +2101,7 @@
     ]
   },
   "cable-pull-through": {
-    "name": "Kablolu Bacak Arasından Kalça Çekişi (Pull-Through)",
+    "name": "Cable Pull-Through",
     "cues": [
       "Alçak kabloya sırtını dön; halat bacaklarının arasındayken gövdeni sık.",
       "Kalçadan geriye eğil, sonra kalçanı açarak doğrul ve halatı yavaşça bırak.",
@@ -2127,7 +2127,7 @@
     ]
   },
   "cable-kneeling-glute-kickback": {
-    "name": "Kablolu Diz Üstü Kalça Geriye İtiş (Glute Kickback)",
+    "name": "Cable Glute Kickback",
     "cues": [
       "Kabloyu çalışan bacağının arkasına ayarla; sağlam bir destek tut.",
       "Kalçanı açarak bacağını geriye götür, sonra yavaşça geri getir."
@@ -2200,7 +2200,7 @@
     ]
   },
   "sled-calf-press-on-leg-press": {
-    "name": "Bacak Presinde Baldır İtişi (Calf Press)",
+    "name": "Leg Press'te Baldır Kaldırma (Calf Press)",
     "cues": [
       "Leg press makinesine otur; ayak taraklarını plakaya güvenle koy.",
       "Dizlerini hafif açık tut; ayak uçlarınla it, sonra topuklarını indir."
@@ -2225,7 +2225,7 @@
     ]
   },
   "donkey-calf-raise": {
-    "name": "Eğilerek Baldır Kaldırma (Donkey Calf Raise)",
+    "name": "Donkey Calf Raise",
     "cues": [
       "Kalçadan eğilip ellerinle destek al; ayak taraklarını basamağa koy.",
       "Topuklarını yükselt, sonra rahat aralıkta indir."
@@ -2250,7 +2250,7 @@
     ]
   },
   "wall-supported-tibialis-raise": {
-    "name": "Duvar Destekli Ön Kaval Kaldırışı (Tibialis Raise)",
+    "name": "Tibialis Raise",
     "cues": [
       "Sırtını duvara daya; topukların biraz önünde yerde kalsın.",
       "Ayak parmaklarını kaval kemiklerine doğru kaldır, sonra yavaşça indir."
@@ -2274,7 +2274,7 @@
     ]
   },
   "barbell-decline-bench-press": {
-    "name": "Ters Eğimli Barbell Pres (Decline Bench Press)",
+    "name": "Decline Bench Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -2303,7 +2303,7 @@
     ]
   },
   "dumbbell-decline-bench-press": {
-    "name": "Ters Eğimli Dambıl Pres (Decline Dumbbell Press)",
+    "name": "Decline Dumbbell Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -2330,7 +2330,7 @@
     ]
   },
   "lever-incline-chest-press": {
-    "name": "Eğimli Makine Göğüs Presi (Incline Chest Press)",
+    "name": "Machine Incline Chest Press",
     "cues": [
       "Koltuğu tutamaklar göğüs hizasından başlayacak şekilde ayarla; sırtın desteklensin.",
       "Tutamakları ileri it, sonra kontrollü bir aralıkta geri getir.",
@@ -2355,7 +2355,7 @@
     ]
   },
   "cable-low-fly": {
-    "name": "Kablolu Aşağıdan Yukarı Göğüs Açış (Low Cable Fly)",
+    "name": "Low Cable Fly",
     "cues": [
       "Tutamakları seçtiğin fly açısına ayarla; dirseklerini hafif bük.",
       "Kollarını göğsünün önünde birleştir, sonra yavaşça aç."
@@ -2380,7 +2380,7 @@
     ]
   },
   "cable-decline-fly": {
-    "name": "Kablolu Yukarıdan Aşağı Göğüs Açış (Decline Cable Fly)",
+    "name": "Decline Cable Fly",
     "cues": [
       "Tutamakları seçtiğin fly açısına ayarla; dirseklerini hafif bük.",
       "Kollarını göğsünün önünde birleştir, sonra yavaşça aç."
@@ -2430,7 +2430,7 @@
     ]
   },
   "barbell-close-grip-bench-press": {
-    "name": "Dar Tutuş Barbell Pres (Close-Grip Bench Press)",
+    "name": "Close-Grip Bench Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -2459,7 +2459,7 @@
     ]
   },
   "dumbbell-pullover": {
-    "name": "Dambıl Pullover",
+    "name": "Dumbbell Pullover",
     "cues": [
       "Gövdeni sabitle; kolların baş üstüne uzansın.",
       "Ağırlığı yay çizerek gövdene çek, sonra yavaşça geri bırak."
@@ -2484,7 +2484,7 @@
     ]
   },
   "lever-chest-supported-row": {
-    "name": "Sehpaya Dayalı Makine Kürek (Chest-Supported Row)",
+    "name": "Machine Chest-Supported Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -2508,7 +2508,7 @@
     ]
   },
   "lever-t-bar-row": {
-    "name": "Makine T-Bar Kürek (T-Bar Row)",
+    "name": "Machine T-Bar Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -2532,7 +2532,7 @@
     ]
   },
   "barbell-pendlay-row": {
-    "name": "Barbell Pendlay Kürek (Pendlay Row)",
+    "name": "Pendlay Row",
     "cues": [
       "Bar yerdeyken üzerine eğilip gövdeni sık.",
       "Barı alt göğsüne veya üst karnına çek; her tekrarda yere koyup yeniden başla."
@@ -2557,7 +2557,7 @@
     ]
   },
   "inverted-row": {
-    "name": "Bar Altında Ters Kürek (Inverted Row)",
+    "name": "Inverted Row",
     "cues": [
       "Barı veya tutamakları kavra; omuzdan topuğa gövdeni gergin tut.",
       "Göğsünü ellerine çek, sonra kontrollü in.",
@@ -2582,7 +2582,7 @@
     ]
   },
   "cable-neutral-grip-lat-pulldown": {
-    "name": "Çift Makaralı Lat Pulldown",
+    "name": "Dual-Cable Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -2608,7 +2608,7 @@
     ]
   },
   "cable-close-grip-front-lat-pulldown": {
-    "name": "Kablolu Dar Tutuş Göğse Çekiş (Close-Grip Lat Pulldown)",
+    "name": "Close-Grip Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -2634,7 +2634,7 @@
     ]
   },
   "cable-underhand-pulldown": {
-    "name": "Kablolu Ters Tutuş Göğse Çekiş (Underhand Lat Pulldown)",
+    "name": "Underhand Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -2660,7 +2660,7 @@
     ]
   },
   "cable-straight-arm-pulldown": {
-    "name": "Kablolu Düz Kol Sırta Çekiş (Straight-Arm Pulldown)",
+    "name": "Straight-Arm Pulldown",
     "cues": [
       "Kabloya dön; kolların uzun, dirseklerin hafif bükülü olsun.",
       "Tutamağı uyluklarına doğru indir, sonra baş üstüne yavaşça geri bırak."
@@ -2685,7 +2685,7 @@
     ]
   },
   "cable-kneeling-pullover": {
-    "name": "Kablolu Diz Üstü Pullover (Kneeling Pullover)",
+    "name": "Kneeling Cable Pullover",
     "cues": [
       "Gövdeni sabitle; kolların baş üstüne uzansın.",
       "Ağırlığı yay çizerek gövdene çek, sonra yavaşça geri bırak."
@@ -2776,13 +2776,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -2809,7 +2809,7 @@
       "Omuzlarını döndürme veya yükü sektirme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "dumbbell-shrug": {
@@ -2834,7 +2834,7 @@
       "Omuzlarını döndürme veya yükü sektirme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "lever-machine-shrug": {
@@ -2859,11 +2859,11 @@
       "Omuzlarını döndürme veya yükü sektirme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "dumbbell-arnold-press": {
-    "name": "Dambıl Arnold Pres (Arnold Press)",
+    "name": "Arnold Press",
     "cues": [
       "Dambılları avuçların sana bakarken omuzlarının önünde başlat.",
       "Yukarı iterken avuçlarını dışa döndür; aynı yolu yavaşça geri izle.",
@@ -2890,7 +2890,7 @@
     ]
   },
   "barbell-seated-overhead-press": {
-    "name": "Barbell Oturarak Baş Üstü Pres (Seated Overhead Press)",
+    "name": "Seated Barbell Overhead Press",
     "cues": [
       "Ağırlığı omuz hizasında, bileklerin destekli ve gövden sıkı başlat.",
       "Baş üstüne it, sonra rahat başlangıç konumuna indir.",
@@ -2915,7 +2915,7 @@
     ]
   },
   "dumbbell-one-arm-shoulder-press": {
-    "name": "Tek Kol Dambıl Omuz Presi (Single-Arm Dumbbell Press)",
+    "name": "Single-Arm Dumbbell Shoulder Press",
     "cues": [
       "Ağırlığı omuz hizasında, bileklerin destekli ve gövden sıkı başlat.",
       "Baş üstüne it, sonra rahat başlangıç konumuna indir.",
@@ -2940,7 +2940,7 @@
     ]
   },
   "landmine-press": {
-    "name": "Landmine Omuz Presi (Landmine Press)",
+    "name": "Landmine Press",
     "cues": [
       "Bar ucunu omzuna yakın tut; dengeli durup gövdeni sık.",
       "Bar yolunda öne ve yukarı it; kontrollü indir.",
@@ -2977,13 +2977,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -3002,13 +3002,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -3035,7 +3035,7 @@
       "Omuzlarını ağrılı bir aralığa zorlama veya bitirmek için silkme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "barbell-curl": {
@@ -3063,7 +3063,7 @@
     ]
   },
   "dumbbell-alternate-biceps-curl": {
-    "name": "Sıralı Dambıl Biceps Büküş (Alternate Dumbbell Curl)",
+    "name": "Alternating Dumbbell Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -3087,7 +3087,7 @@
     ]
   },
   "dumbbell-concentration-curl": {
-    "name": "Dambıl Konsantrasyon Büküşü (Concentration Curl)",
+    "name": "Concentration Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -3111,7 +3111,7 @@
     ]
   },
   "ez-barbell-spider-curl": {
-    "name": "Z-Bar Spider Büküş (Spider Curl)",
+    "name": "EZ-Bar Spider Curl",
     "cues": [
       "Eğik sehpaya göğsünü daya; kolların serbestçe aşağı sarksın.",
       "Göğsünü kaldırmadan bükerek yükü yükselt, sonra yavaşça indir."
@@ -3137,7 +3137,7 @@
     ]
   },
   "cable-rope-hammer-curl": {
-    "name": "Kablolu Halatla Çekiç Büküş (Rope Hammer Curl)",
+    "name": "Cable Rope Hammer Curl",
     "cues": [
       "Avuçların içe bakarken ağırlıkları, dirseklerin yanında tut.",
       "Bileklerini döndürmeden bükerek kaldır; yavaşça indir."
@@ -3161,7 +3161,7 @@
     ]
   },
   "cable-incline-biceps-curl": {
-    "name": "Kablolu Eğimli Biceps Büküş (Incline Cable Curl)",
+    "name": "Incline Cable Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -3185,7 +3185,7 @@
     ]
   },
   "lever-preacher-curl": {
-    "name": "Makinede Preacher Büküş (Machine Preacher Curl)",
+    "name": "Machine Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -3210,7 +3210,7 @@
     ]
   },
   "ez-bar-lying-triceps-extension": {
-    "name": "Skull Crusher (EZ-Bar)",
+    "name": "EZ-Bar Skull Crusher",
     "cues": [
       "Sehpada yat; yükü göğsünün üzerinde, üst kolların dengeli tut.",
       "Dirseklerini bükerek başına doğru veya arkasına indir, sonra aç.",
@@ -3236,7 +3236,7 @@
     ]
   },
   "dumbbell-standing-triceps-extension": {
-    "name": "Dambıl Ayakta Baş Üstü Triceps Pres (Overhead Triceps Extension)",
+    "name": "Dumbbell Overhead Triceps Extension",
     "cues": [
       "Yükü baş üstünde, dirseklerin genel olarak öne dönük ve gövden sıkı tut.",
       "Dirseklerini bükerek indir, sonra kontrollü aç.",
@@ -3262,7 +3262,7 @@
     ]
   },
   "cable-one-arm-triceps-pushdown": {
-    "name": "Kablolu Tek Kol Triceps İtişi (Single-Arm Pushdown)",
+    "name": "Single-Arm Cable Pushdown",
     "cues": [
       "Üst kabloyu veya bandı ayarla; üst kolların yanlarında kalsın.",
       "Dirseklerini açarak aşağı it, sonra yavaşça geri getir."
@@ -3286,7 +3286,7 @@
     ]
   },
   "cable-reverse-grip-pushdown": {
-    "name": "Kablolu Ters Tutuş Triceps İtişi (Reverse-Grip Pushdown)",
+    "name": "Reverse-Grip Cable Pushdown",
     "cues": [
       "Üst kabloyu veya bandı ayarla; üst kolların yanlarında kalsın.",
       "Dirseklerini açarak aşağı it, sonra yavaşça geri getir."
@@ -3310,7 +3310,7 @@
     ]
   },
   "dumbbell-kickback": {
-    "name": "Dambıl Geriye Triceps İtiş (Dumbbell Kickback)",
+    "name": "Dumbbell Kickback",
     "cues": [
       "Kalçadan eğilip gövdeni destekle; üst kolun yanında kalsın.",
       "Dirseğini açarak yükü geriye götür, sonra yavaşça bük."
@@ -3344,7 +3344,7 @@
       "Bacaklarını sallayarak kaldırma veya en alta hızla düşme."
     ],
     "cuesDetails": [
-      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce kısa, bükülü diz kaldırışını dene.",
+      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce dizleri bükerek kısa diz çekmeyi dene.",
       "Hareket: Sağlam bir barda omuzların ve gövden aktifken asıl.",
       "Kontrol: Dizlerini veya bacaklarını gövdene kaldır, sonra yavaşça indir.",
       "Gövde: Kaldırmadan omuz ve karnı aktif tut. Vücudu sallamak yerine pelvisi kontrol ederek bacakları kaldır.",
@@ -3353,7 +3353,7 @@
     ],
     "avoidDetails": [
       "Bacaklarını sallayarak kaldırma veya en alta hızla düşme.",
-      "Salınımla başlamak: Kontrollü kaldırış için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
+      "Salınımla başlamak: Kontrollü kaldırma için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
       "Ani düşüş: Bacakları düşürüp dipte omuzları sert çekme. Dönüşün tamamını kontrol et.",
       "Tutuşun tükenmesi: Eller kaymaya başlarken asılı kalma. Güvenli biçimde in; yeni setten önce dinlen."
     ]
@@ -3374,7 +3374,7 @@
       "Karın hareketi: Amaçlanan bükümle kaburga ve pelvisi yaklaştır. Görünen tek hareket kol veya bacak olmasın.",
       "Nefes: Başı çekmeden çaba sırasında nefes ver. Boynu gergin tutmak yerine düzgün hareket et.",
       "Dönüş: Bükümü kademeli aç ve sonraki tekrardan önce hazırlan. Gövde hareketini kontrol edebildiğin aralığı kullan.",
-      "Pelvis bükümü: Küçük kontrollü kaldırışla pelvisi kaburgalara getir. Yalnızca uylukları göğse savurma."
+      "Pelvis bükümü: Küçük ve kontrollü bir kaldırmayla pelvisi kaburgalara getir. Yalnızca uylukları göğse savurma."
     ],
     "avoidDetails": [
       "Kalçanı kaldırmak için bacaklarını savurma.",
@@ -3410,7 +3410,7 @@
     ]
   },
   "cable-woodchopper": {
-    "name": "Kablolu Oduncu Çekişi (Woodchopper)",
+    "name": "Cable Woodchopper",
     "cues": [
       "Kabloyu seçtiğin yüksekliğe ayarla; ayakların dengeli kalsın.",
       "Gövden dönerken tutamağı çapraz taşı; yavaşça geri dön.",
@@ -3437,7 +3437,7 @@
     ]
   },
   "russian-twist": {
-    "name": "Rus Dönüşü (Russian Twist)",
+    "name": "Russian Twist",
     "cues": [
       "Dizlerin bükülü otur; gövdeni hafifçe geriye eğ.",
       "Kaburgalarını kontrollü bir tempoda iki yana döndür.",
@@ -3464,7 +3464,7 @@
     ]
   },
   "bird-dog": {
-    "name": "Çapraz Kol Bacak Uzatma (Bird Dog)",
+    "name": "Bird Dog",
     "cues": [
       "Ellerin ve dizlerin üzerinde gövdeni sabit tut.",
       "Bir kol ve karşı bacağı uzat, geri dön ve taraf değiştir."
@@ -3488,7 +3488,7 @@
     ]
   },
   "mountain-climber": {
-    "name": "Dağ Tırmanışı Hareketi (Mountain Climber)",
+    "name": "Mountain Climber",
     "cues": [
       "Ellerin omuzların altında sağlam bir yüksek plank tut.",
       "Bir dizini göğsüne çekip bacak değiştir; kalçan dengeli kalsın."
@@ -3513,7 +3513,7 @@
     ]
   },
   "burpee": {
-    "name": "Burpee (Tüm Vücut Sıçrama)",
+    "name": "Burpee",
     "cues": [
       "Çömelip ellerini yere koy; adımlayarak veya sıçrayarak planka geç.",
       "Ayaklarını altına getirip kontrollü biçimde kalk veya sıçra.",
@@ -3540,7 +3540,7 @@
     ]
   },
   "jumping-jack": {
-    "name": "Yıldız Zıplayışı (Jumping Jack)",
+    "name": "Jumping Jack",
     "cues": [
       "Kolların baş üstüne çıkarken ayaklarını yana açarak sıçra.",
       "Ayak ve kollarını hafif, kontrollü inişlerle geri getir."
@@ -3565,7 +3565,7 @@
     ]
   },
   "box-jump": {
-    "name": "Kutuya Sıçrama (Box Jump)",
+    "name": "Box Jump",
     "cues": [
       "Rahatça inebileceğin sağlam bir kutu seç; kollarınla destek alıp sıçra.",
       "İki ayağın tamamen üstte insin; doğrulup adımlayarak in."
@@ -3591,7 +3591,7 @@
     ]
   },
   "jump-squat": {
-    "name": "Sıçramalı Squat (Jump Squat)",
+    "name": "Jump Squat",
     "cues": [
       "Rahat bir derinliğe çömelip yukarı sıçra.",
       "Sonraki tekrardan önce dizlerini bükerek yumuşak in."
@@ -3641,7 +3641,7 @@
     ]
   },
   "kettlebell-one-arm-clean": {
-    "name": "Kettlebell Tek Kol Clean",
+    "name": "Single-Arm Kettlebell Clean",
     "cues": [
       "Kettlebelli kalçadan eğilerek geriye götür, sonra kalçanı hızla aç.",
       "Elini ağırlığın çevresinden geçir; ön omuz konumuna yumuşakça yerleşsin.",
@@ -3669,7 +3669,7 @@
     ]
   },
   "kettlebell-strict-press": {
-    "name": "Kettlebell Omuz Presi (Strict Press)",
+    "name": "Kettlebell Strict Press",
     "cues": [
       "Ağırlığı omuz hizasında, bileklerin destekli ve gövden sıkı başlat.",
       "Baş üstüne it, sonra rahat başlangıç konumuna indir.",
@@ -3694,7 +3694,7 @@
     ]
   },
   "kettlebell-one-arm-snatch": {
-    "name": "Kettlebell Tek Kol Koparma (Snatch)",
+    "name": "Single-Arm Kettlebell Snatch",
     "cues": [
       "Kettlebelli geriye savurup kalçanla yukarı taşı.",
       "Elini içinden geçirerek ağırlığı baş üstüne yerleştir; kontrollü indir.",
@@ -3722,7 +3722,7 @@
     ]
   },
   "dumbbell-suitcase-carry": {
-    "name": "Dambıl Tek Kol Çanta Taşıma (Suitcase Carry)",
+    "name": "Suitcase Carry",
     "cues": [
       "Yükü güvenle kaldırıp gövden sıkı biçimde dik dur.",
       "Ağırlığı kontrol ederek dengeli adımlarla yürü.",
@@ -3795,13 +3795,13 @@
     ]
   },
   "lever-machine-hip-thrust": {
-    "name": "Makinede Kalça İtişi (Machine Hip Thrust)",
+    "name": "Machine Hip Thrust",
     "cues": [
       "Üst sırtını sehpaya daya, ayaklarını bas ve yükü kalçanın üzerinde sabitle.",
       "Gövde ve uyluklar hizalanana kadar kalçanı kaldır; kontrollü indir."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -3814,12 +3814,12 @@
     "avoidDetails": [
       "Daha yükseğe çıkmak için belini aşırı çukurlaştırma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
   "floor-crunch": {
-    "name": "Zemin Mekiği (Floor Crunch)",
+    "name": "Mekik (Crunch)",
     "cues": [
       "Dizler bükülü, ayaklar destekli sırtüstü yat; boynun rahat olsun.",
       "Kaburgaları pelvise büküp kürek kemiklerini kaldır, sonra yavaşça indir; tam oturma hareketi yapma."
@@ -3844,7 +3844,7 @@
     ]
   },
   "dumbbell-lying-hammer-press": {
-    "name": "Dambıl Nötr Tutuş Göğüs Presi (Hammer Press)",
+    "name": "Dumbbell Hammer Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -3871,7 +3871,7 @@
     ]
   },
   "dumbbell-squeeze-bench-press": {
-    "name": "Dambıl Bitişik Göğüs Presi (Squeeze Press)",
+    "name": "Dumbbell Squeeze Press",
     "cues": [
       "Sehpada yat; dambılları göğsünün üzerinde birbirine bastır.",
       "İndirip kaldırırken birbirine temas ettir.",
@@ -3900,7 +3900,7 @@
     ]
   },
   "barbell-reverse-grip-bench-press": {
-    "name": "Ters Tutuş Barbell Pres (Reverse-Grip Bench Press)",
+    "name": "Reverse-Grip Bench Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -3931,7 +3931,7 @@
     ]
   },
   "barbell-floor-chest-press": {
-    "name": "Yerde Barbell Göğüs Presi (Barbell Floor Press)",
+    "name": "Barbell Floor Press",
     "cues": [
       "Yerde yat; ağırlığı sağlam tut, dirseklerin bileklerinin altında kalsın.",
       "Üst kolların yere hafifçe değene kadar indir, sonra yukarı it.",
@@ -3958,7 +3958,7 @@
     ]
   },
   "barbell-spoto-press": {
-    "name": "Duraklamalı Barbell Pres (Spoto Press)",
+    "name": "Spoto Press",
     "cues": [
       "Sehpada sağlam tutuş al; bileklerin destekli kalsın.",
       "Barı göğsünün hemen üstüne indirip değdirmeden duraklat, sonra it.",
@@ -3988,7 +3988,7 @@
     ]
   },
   "barbell-larsen-press": {
-    "name": "Ayaklar Havada Barbell Pres (Larsen Press)",
+    "name": "Larsen Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -4017,7 +4017,7 @@
     ]
   },
   "barbell-incline-close-grip-bench-press": {
-    "name": "Eğimli Dar Tutuş Barbell Pres (Incline Close-Grip Bench)",
+    "name": "Incline Close-Grip Bench Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -4071,7 +4071,7 @@
     ]
   },
   "dumbbell-decline-fly": {
-    "name": "Ters Eğimli Dambıl Açış (Decline Dumbbell Fly)",
+    "name": "Decline Dumbbell Fly",
     "cues": [
       "Sehpada yat; dambıllar göğsünün üzerindeyken dirseklerini hafif bük.",
       "Kollarını geniş bir yayda aç, sonra ağırlıkları birleştir."
@@ -4096,7 +4096,7 @@
     ]
   },
   "dumbbell-lying-one-arm-press": {
-    "name": "Tek Kol Dambıl Göğüs Presi (Single-Arm Dumbbell Press)",
+    "name": "Single-Arm Dumbbell Bench Press",
     "cues": [
       "Sehpada dengeli yerleş; bileklerin ön kollarının üzerinde kalsın.",
       "Ağırlığı kontrollü biçimde göğsüne doğru indir, sonra yukarı it.",
@@ -4125,7 +4125,7 @@
     ]
   },
   "cable-standing-single-arm-chest-press": {
-    "name": "Kablolu Ayakta Tek Kol Göğüs Presi (Single-Arm Cable Press)",
+    "name": "Single-Arm Cable Chest Press",
     "cues": [
       "Tutamakları göğüs hizasına ayarla ve dengeli bir adım duruşu al.",
       "Gövdeni döndürmeden ileri it, sonra yavaşça geri getir.",
@@ -4151,7 +4151,7 @@
     ]
   },
   "cable-standing-chest-press": {
-    "name": "Kablolu Ayakta Göğüs Presi (Standing Cable Chest Press)",
+    "name": "Standing Cable Chest Press",
     "cues": [
       "Tutamakları göğüs hizasına ayarla ve dengeli bir adım duruşu al.",
       "Gövdeni döndürmeden ileri it, sonra yavaşça geri getir."
@@ -4175,7 +4175,7 @@
     ]
   },
   "cable-middle-fly": {
-    "name": "Kablolu Orta Seviye Göğüs Açış (Cable Chest Fly)",
+    "name": "Mid-Cable Fly",
     "cues": [
       "Tutamakları seçtiğin fly açısına ayarla; dirseklerini hafif bük.",
       "Kollarını göğsünün önünde birleştir, sonra yavaşça aç."
@@ -4200,7 +4200,7 @@
     ]
   },
   "cable-standing-single-arm-fly": {
-    "name": "Kablolu Tek Kol Göğüs Açış (Single-Arm Cable Fly)",
+    "name": "Single-Arm Cable Fly",
     "cues": [
       "Tutamakları seçtiğin fly açısına ayarla; dirseklerini hafif bük.",
       "Kollarını göğsünün önünde birleştir, sonra yavaşça aç."
@@ -4225,7 +4225,7 @@
     ]
   },
   "svend-press": {
-    "name": "Plaka Sıkıştırma Presi (Svend Press)",
+    "name": "Svend Press",
     "cues": [
       "İki hafif plakayı göğüs hizasında avuçlarının arasında birleştir.",
       "Sıkmayı sürdürerek ileri it, sonra göğsüne geri çek.",
@@ -4373,7 +4373,7 @@
     ]
   },
   "lever-seated-wide-lat-pulldown": {
-    "name": "Makinede Geniş Tutuş Göğse Çekiş (Wide Lat Pulldown)",
+    "name": "Machine Wide-Grip Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -4399,7 +4399,7 @@
     ]
   },
   "cable-one-arm-lat-pulldown": {
-    "name": "Kablolu Tek Kol Göğse Çekiş (Single-Arm Lat Pulldown)",
+    "name": "Single-Arm Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -4425,7 +4425,7 @@
     ]
   },
   "cable-kneeling-one-arm-lat-pulldown": {
-    "name": "Kablolu Diz Üstü Tek Kol Çekiş (Kneeling One-Arm Pulldown)",
+    "name": "Kneeling Single-Arm Lat Pulldown",
     "cues": [
       "Üst kablonun altında diz çök; gövden sabit, tutuşun rahat olsun.",
       "Tutamağı üst göğsüne çek, sonra kollarını yavaşça yükselt.",
@@ -4450,7 +4450,7 @@
     ]
   },
   "cable-kneeling-lat-pulldown": {
-    "name": "Kablolu Diz Üstü Göğse Çekiş (Kneeling Lat Pulldown)",
+    "name": "Kneeling Lat Pulldown",
     "cues": [
       "Üst kablonun altında diz çök; gövden sabit, tutuşun rahat olsun.",
       "Tutamağı üst göğsüne çek, sonra kollarını yavaşça yükselt.",
@@ -4475,7 +4475,7 @@
     ]
   },
   "cable-lateral-pulldown-with-v-bar": {
-    "name": "Kablolu V-Bar Göğse Çekiş (V-Bar Lat Pulldown)",
+    "name": "V-Bar Lat Pulldown",
     "cues": [
       "Dengeli bir oturuş veya duruş al; tutamağı rahatça kavra.",
       "Üst göğsüne doğru çek; sonra kollarını yavaşça yükselt.",
@@ -4501,7 +4501,7 @@
     ]
   },
   "lever-machine-pullover": {
-    "name": "Makinede Pullover (Machine Pullover)",
+    "name": "Machine Pullover",
     "cues": [
       "Gövdeni sabitle; kolların baş üstüne uzansın.",
       "Ağırlığı yay çizerek gövdene çek, sonra yavaşça geri bırak."
@@ -4526,7 +4526,7 @@
     ]
   },
   "cable-rope-straight-arm-pulldown": {
-    "name": "Kablolu Halatlı Düz Kol Çekiş (Rope Straight-Arm Pulldown)",
+    "name": "Rope Straight-Arm Pulldown",
     "cues": [
       "Kabloya dön; kolların uzun, dirseklerin hafif bükülü olsun.",
       "Tutamağı uyluklarına doğru indir, sonra baş üstüne yavaşça geri bırak."
@@ -4551,7 +4551,7 @@
     ]
   },
   "cable-single-arm-straight-arm-pulldown": {
-    "name": "Kablolu Tek Kol Düz Kol Çekiş (Single-Arm Straight-Arm Pulldown)",
+    "name": "Single-Arm Straight-Arm Pulldown",
     "cues": [
       "Kabloya dön; kolların uzun, dirseklerin hafif bükülü olsun.",
       "Tutamağı uyluklarına doğru indir, sonra baş üstüne yavaşça geri bırak."
@@ -4576,7 +4576,7 @@
     ]
   },
   "barbell-lying-seal-row-on-rack": {
-    "name": "Sehpada Yatarak Barbell Kürek (Seal Row)",
+    "name": "Barbell Seal Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4600,7 +4600,7 @@
     ]
   },
   "landmine-one-arm-bent-over-row": {
-    "name": "Landmine Tek Kol Eğilerek Kürek (One-Arm Landmine Row)",
+    "name": "Single-Arm Landmine Row",
     "cues": [
       "Kalçadan eğilip gövdeni sık; ağırlık altında asılı kalsın.",
       "Alt kaburgana veya beline doğru çek; kolların uzanana kadar indir."
@@ -4625,7 +4625,7 @@
     ]
   },
   "landmine-v-bar-bent-over-row": {
-    "name": "Landmine V-Bar Eğilerek Kürek (V-Bar Landmine Row)",
+    "name": "V-Bar Landmine Row",
     "cues": [
       "Kalçadan eğilip gövdeni sık; ağırlık altında asılı kalsın.",
       "Alt kaburgana veya beline doğru çek; kolların uzanana kadar indir."
@@ -4650,7 +4650,7 @@
     ]
   },
   "lever-lying-t-bar-row": {
-    "name": "Sehpada Makine T-Bar Kürek (Lying T-Bar Row)",
+    "name": "Lying T-Bar Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4674,7 +4674,7 @@
     ]
   },
   "cable-seated-wide-grip-row": {
-    "name": "Kablolu Oturarak Geniş Tutuş Kürek (Wide-Grip Cable Row)",
+    "name": "Wide-Grip Cable Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4698,7 +4698,7 @@
     ]
   },
   "cable-seated-row-with-v-bar": {
-    "name": "Kablolu Oturarak V-Bar Kürek (V-Bar Cable Row)",
+    "name": "V-Bar Cable Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4722,7 +4722,7 @@
     ]
   },
   "cable-one-arm-twisting-seated-row": {
-    "name": "Kablolu Tek Kol Dönüşlü Kürek (Single-Arm Twisting Row)",
+    "name": "Single-Arm Twisting Cable Row",
     "cues": [
       "Kabloya dönük otur; bir kolun uzansın, ayakların sabit olsun.",
       "Beline çekerken gövdeni hafif döndür, sonra yavaşça geri açıl."
@@ -4746,7 +4746,7 @@
     ]
   },
   "cable-high-row": {
-    "name": "Kablolu Yüksekten Kürek (Cable High Row)",
+    "name": "Cable High Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4770,7 +4770,7 @@
     ]
   },
   "cable-low-seated-row": {
-    "name": "Kablolu Alçak Oturarak Kürek (Low Cable Row)",
+    "name": "Low Cable Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4794,7 +4794,7 @@
     ]
   },
   "cable-rope-seated-row": {
-    "name": "Kablolu Halatla Oturarak Kürek (Rope Seated Row)",
+    "name": "Rope Cable Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4818,7 +4818,7 @@
     ]
   },
   "lever-high-row": {
-    "name": "Makinede Yüksek Kürek (Lever High Row)",
+    "name": "Machine High Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4842,7 +4842,7 @@
     ]
   },
   "lever-machine-low-row": {
-    "name": "Makinede Alçak Kürek (Lever Low Row)",
+    "name": "Machine Low Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4866,7 +4866,7 @@
     ]
   },
   "lever-unilateral-row": {
-    "name": "Makinede Tek Taraflı Kürek (Unilateral Row)",
+    "name": "Machine Unilateral Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -4890,7 +4890,7 @@
     ]
   },
   "dumbbell-renegade-row": {
-    "name": "Dambıl Şınav Pozisyonunda Kürek (Renegade Row)",
+    "name": "Renegade Row",
     "cues": [
       "Ayakların dengeli açıkken dambıllar üzerinde plank tut.",
       "Bir ağırlığı kalçana çekip indir; sonra taraf değiştir.",
@@ -4915,7 +4915,7 @@
     ]
   },
   "dumbbell-kroc-row": {
-    "name": "Ağır Dambıl Tek Kol Kürek (Kroc Row)",
+    "name": "Kroc Row",
     "cues": [
       "Bir el destekli, dambıl aşağıda olacak şekilde dengeli adım duruşu al.",
       "Kontrollü gövde katkısıyla kalçana doğru çek, sonra kontrollü indir."
@@ -4940,7 +4940,7 @@
     ]
   },
   "dumbbell-gorilla-row": {
-    "name": "Dambıl Çift Kol Yerden Kürek (Gorilla Row)",
+    "name": "Gorilla Row",
     "cues": [
       "Dambılların üzerinde geniş dur; kalça ve dizleri büküp gövdeni sık.",
       "Biri yerdeyken diğerini kalçana çek; sonra taraf değiştir."
@@ -4965,7 +4965,7 @@
     ]
   },
   "suspension-trainer-row": {
-    "name": "Askı Kayışında Ters Kürek (TRX / Suspension Row)",
+    "name": "TRX Row",
     "cues": [
       "Barı veya tutamakları kavra; omuzdan topuğa gövdeni gergin tut.",
       "Göğsünü ellerine çek, sonra kontrollü in.",
@@ -4990,7 +4990,7 @@
     ]
   },
   "ring-inverted-row": {
-    "name": "Jimnastik Halkasında Ters Kürek (Ring Row)",
+    "name": "Ring Row",
     "cues": [
       "Barı veya tutamakları kavra; omuzdan topuğa gövdeni gergin tut.",
       "Göğsünü ellerine çek, sonra kontrollü in.",
@@ -5067,7 +5067,7 @@
     ]
   },
   "barbell-rack-pull": {
-    "name": "Bloktan Barbell Yarım Çekiş (Rack Pull)",
+    "name": "Rack Pull",
     "cues": [
       "Barı sağlam emniyet kollarına seçtiğin yükseklikte koy; çekmeden gövdeni sık.",
       "Yakın tutarak doğrul, sonra barı emniyet kollarına indir.",
@@ -5107,13 +5107,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -5131,13 +5131,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -5155,13 +5155,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -5179,19 +5179,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "cable-y-raise": {
-    "name": "Kablolu Y Şeklinde Omuz Kaldırışı (Cable Y-Raise)",
+    "name": "Cable Y-Raise",
     "cues": [
       "Gövdeni destekle veya sık; kolların aşağı uzansın.",
       "Kollarını çapraz yukarı Y biçiminde kaldır, sonra yavaşça indir."
@@ -5203,19 +5203,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Gövdeni destekle veya sık; kolların aşağı uzansın.",
       "Kontrol: Kollarını çapraz yukarı Y biçiminde kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Ek yükseklik için boynunu kasıp omuzları aşırı silkme veya belini çukurlaştırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "dumbbell-incline-y-raise": {
-    "name": "Eğimli Sehpada Dambıl Y Kaldırışı (Incline Y-Raise)",
+    "name": "Incline Dumbbell Y-Raise",
     "cues": [
       "Gövdeni destekle veya sık; kolların aşağı uzansın.",
       "Kollarını çapraz yukarı Y biçiminde kaldır, sonra yavaşça indir."
@@ -5227,19 +5227,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Gövdeni destekle veya sık; kolların aşağı uzansın.",
       "Kontrol: Kollarını çapraz yukarı Y biçiminde kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Ek yükseklik için boynunu kasıp omuzları aşırı silkme veya belini çukurlaştırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "dumbbell-front-raise": {
-    "name": "Dambıl Öne Kaldırış (Dumbbell Front Raise)",
+    "name": "Dambıl Öne Kaldırma (Front Raise)",
     "cues": [
       "Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir."
@@ -5251,19 +5251,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Kontrol: Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Arkaya yaslanma veya yükü savurarak kaldırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "cable-front-raise": {
-    "name": "Kablolu Öne Kaldırış (Cable Front Raise)",
+    "name": "Kablolu Öne Kaldırma (Cable Front Raise)",
     "cues": [
       "Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir."
@@ -5275,19 +5275,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Kontrol: Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Arkaya yaslanma veya yükü savurarak kaldırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "weighted-front-raise": {
-    "name": "Plaka ile Öne Kaldırış (Plate Front Raise)",
+    "name": "Plakayla Öne Kaldırma (Plate Front Raise)",
     "cues": [
       "Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir."
@@ -5299,19 +5299,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Kontrol: Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Arkaya yaslanma veya yükü savurarak kaldırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "barbell-front-raise": {
-    "name": "Barbell Öne Kaldırış (Barbell Front Raise)",
+    "name": "Barbell Öne Kaldırma (Front Raise)",
     "cues": [
       "Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir."
@@ -5323,19 +5323,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Yükü uyluklarının önünde, dirseklerin hafif bükülü tut.",
       "Kontrol: Öne, rahat bir omuz yüksekliğine kaldır; sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Arkaya yaslanma veya yükü savurarak kaldırma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "cable-standing-reverse-fly": {
-    "name": "Kablolu Ayakta Ters Omuz Açış (Reverse Cable Fly)",
+    "name": "Kablolu Arka Omuz Açış (Reverse Cable Fly)",
     "cues": [
       "Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir."
@@ -5348,13 +5348,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -5373,13 +5373,13 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
@@ -5398,19 +5398,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Göğsünü daya veya kalçadan eğil; kolların aşağı sarksın.",
       "Kontrol: Dirseklerin hafif bükülüyken kollarını yana aç, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Fly hareketini rowa çevirme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "lever-seated-rear-delt-row": {
-    "name": "Makinede Oturarak Arka Omuz Çekişi (Rear Delt Row)",
+    "name": "Machine Rear Delt Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -5455,7 +5455,7 @@
       "Omuzlarını ağrılı bir aralığa zorlama veya bitirmek için silkme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "dumbbell-upright-row": {
@@ -5480,11 +5480,11 @@
       "Omuzlarını ağrılı bir aralığa zorlama veya bitirmek için silkme.",
       "Vücutla savurmak: Yükü kaldırmak için dizlerden yaylanma veya geriye yaslanma. Yükü azalt ve kontrollü hareket et.",
       "Bileği zorlamak: Bilekleri rahatsız büken tutuşu zorlama. Açıklığı ayarla veya daha rahat tutamak kullan.",
-      "Boyun gerginliği: Kaldırışı büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
+      "Boyun gerginliği: Hareketi büyütmek için başı öne atma veya boynu daire çizdirme. Gövdeyle hizalı tut."
     ]
   },
   "barbell-z-press": {
-    "name": "Yerde Oturarak Barbell Omuz Presi (Z-Press)",
+    "name": "Z Press",
     "cues": [
       "Bacakların uzanmış yerde otur; bar omuz hizasında olsun.",
       "Gövdeni sıkıp baş üstüne it, sonra kontrollü indir.",
@@ -5511,7 +5511,7 @@
     ]
   },
   "landmine-single-arm-press": {
-    "name": "Landmine Tek Kol Omuz Presi (Single-Arm Landmine Press)",
+    "name": "Single-Arm Landmine Press",
     "cues": [
       "Bar ucunu omzuna yakın tut; dengeli durup gövdeni sık.",
       "Bar yolunda öne ve yukarı it; kontrollü indir.",
@@ -5536,7 +5536,7 @@
     ]
   },
   "lever-viking-press": {
-    "name": "Viking Omuz Presi Makinesi (Viking Press)",
+    "name": "Viking Press",
     "cues": [
       "Ağırlığı omuz hizasında, bileklerin destekli ve gövden sıkı başlat.",
       "Baş üstüne it, sonra rahat başlangıç konumuna indir.",
@@ -5588,7 +5588,7 @@
     ]
   },
   "ez-barbell-preacher-curl": {
-    "name": "Z-Bar Preacher Büküş (EZ Preacher Curl)",
+    "name": "EZ-Bar Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -5613,7 +5613,7 @@
     ]
   },
   "dumbbell-preacher-curl": {
-    "name": "Dambıl Preacher Büküş (Dumbbell Preacher Curl)",
+    "name": "Dumbbell Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -5638,7 +5638,7 @@
     ]
   },
   "dumbbell-one-arm-hammer-preacher-curl": {
-    "name": "Dambıl Tek Kol Çekiç Preacher Büküş (Hammer Preacher Curl)",
+    "name": "Single-Arm Hammer Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -5663,7 +5663,7 @@
     ]
   },
   "cable-preacher-curl": {
-    "name": "Kablolu Preacher Büküş (Cable Preacher Curl)",
+    "name": "Cable Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -5688,7 +5688,7 @@
     ]
   },
   "barbell-reverse-curl": {
-    "name": "Barbell Ters Tutuş Büküş (Reverse Curl)",
+    "name": "Barbell Reverse Curl",
     "cues": [
       "Bileklerin rahat hizadayken avuçlar aşağı bakan tutuş al.",
       "Dirseklerini büküp yükü kaldır, sonra yavaşça indir."
@@ -5713,7 +5713,7 @@
     ]
   },
   "ez-barbell-reverse-grip-curl": {
-    "name": "Z-Bar Ters Tutuş Büküş (EZ Reverse Curl)",
+    "name": "EZ-Bar Reverse Curl",
     "cues": [
       "Bileklerin rahat hizadayken avuçlar aşağı bakan tutuş al.",
       "Dirseklerini büküp yükü kaldır, sonra yavaşça indir."
@@ -5738,7 +5738,7 @@
     ]
   },
   "dumbbell-biceps-curl-reverse": {
-    "name": "Dambıl Ters Tutuş Büküş (Reverse Dumbbell Curl)",
+    "name": "Dumbbell Reverse Curl",
     "cues": [
       "Bileklerin rahat hizadayken avuçlar aşağı bakan tutuş al.",
       "Dirseklerini büküp yükü kaldır, sonra yavaşça indir."
@@ -5763,7 +5763,7 @@
     ]
   },
   "dumbbell-zottman-curl": {
-    "name": "Dambıl Zottman Büküş (Zottman Curl)",
+    "name": "Zottman Curl",
     "cues": [
       "Üst kolların yanlarda, avuçların yukarı bakarken dambılları bükerek kaldır.",
       "Tepede avuçları aşağı çevir, yavaşça indir ve tutuşu yenile."
@@ -5789,7 +5789,7 @@
     ]
   },
   "dumbbell-cross-body-hammer-curl": {
-    "name": "Gövdeye Çapraz Dambıl Çekiç Büküş (Cross-Body Hammer Curl)",
+    "name": "Cross-Body Hammer Curl",
     "cues": [
       "Avuçların içe bakarken ağırlıkları, dirseklerin yanında tut.",
       "Bileklerini döndürmeden bükerek kaldır; yavaşça indir.",
@@ -5815,7 +5815,7 @@
     ]
   },
   "dumbbell-seated-curl": {
-    "name": "Oturarak Dambıl Biceps Büküş (Seated Dumbbell Curl)",
+    "name": "Seated Dumbbell Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -5839,7 +5839,7 @@
     ]
   },
   "dumbbell-standing-biceps-curl": {
-    "name": "Ayakta Dambıl Biceps Büküş (Standing Dumbbell Curl)",
+    "name": "Standing Dumbbell Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -5863,7 +5863,7 @@
     ]
   },
   "barbell-drag-curl": {
-    "name": "Barbell Vücuda Bitişik Büküş (Drag Curl)",
+    "name": "Barbell Drag Curl",
     "cues": [
       "Yükü uyluklarına yakın, üst kollarını yanlarında tut.",
       "Yük gövdene yakın yükselirken dirseklerini biraz geriye al; yavaşça indir."
@@ -5888,7 +5888,7 @@
     ]
   },
   "cable-drag-curl": {
-    "name": "Kablolu Vücuda Bitişik Büküş (Cable Drag Curl)",
+    "name": "Cable Drag Curl",
     "cues": [
       "Yükü uyluklarına yakın, üst kollarını yanlarında tut.",
       "Yük gövdene yakın yükselirken dirseklerini biraz geriye al; yavaşça indir."
@@ -5913,7 +5913,7 @@
     ]
   },
   "cable-standing-inner-curl": {
-    "name": "Kablolu İç Biceps Büküş (Inner Biceps Curl)",
+    "name": "Cable Inner Biceps Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -5937,7 +5937,7 @@
     ]
   },
   "cable-one-arm-curl": {
-    "name": "Kablolu Tek Kol Biceps Büküş (Single-Arm Cable Curl)",
+    "name": "Single-Arm Cable Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -5961,7 +5961,7 @@
     ]
   },
   "cable-overhead-curl": {
-    "name": "Kablolu Çift Kol Yüksek Büküş (Overhead Cable Curl)",
+    "name": "Overhead Cable Curl",
     "cues": [
       "Üst kabloları ayarla; üst kolların iki yana açık kalsın.",
       "Dirseklerini büküp ellerini başına yaklaştır; yavaşça aç."
@@ -5986,7 +5986,7 @@
     ]
   },
   "lever-biceps-curl": {
-    "name": "Makinede Biceps Büküş (Machine Biceps Curl)",
+    "name": "Machine Biceps Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -6010,7 +6010,7 @@
     ]
   },
   "dumbbell-spider-curl": {
-    "name": "Eğimli Sehpada Dambıl Spider Büküş (Spider Curl)",
+    "name": "Dumbbell Spider Curl",
     "cues": [
       "Eğik sehpaya göğsünü daya; kolların serbestçe aşağı sarksın.",
       "Göğsünü kaldırmadan bükerek yükü yükselt, sonra yavaşça indir."
@@ -6036,7 +6036,7 @@
     ]
   },
   "dumbbell-hammer-preacher-curl": {
-    "name": "Çift Dambıl Çekiç Preacher Büküş (Hammer Preacher Curl)",
+    "name": "Dumbbell Hammer Preacher Curl",
     "cues": [
       "Üst kollarını pede daya; bileklerin dengeli kalsın.",
       "Yükü bükerek kaldır; dirseklerin rahatça açılana kadar indir."
@@ -6061,7 +6061,7 @@
     ]
   },
   "dumbbell-incline-hammer-curl": {
-    "name": "Eğimli Sehpada Dambıl Çekiç Büküş (Incline Hammer Curl)",
+    "name": "Incline Hammer Curl",
     "cues": [
       "Eğik sehpaya yaslan; kolların yanlarda aşağı sarksın.",
       "Üst kollarını kaldırmadan bük; sonra yavaşça indir.",
@@ -6088,7 +6088,7 @@
     ]
   },
   "dumbbell-skull-crusher": {
-    "name": "Dambıl Alına Triceps Presi (Skull Crusher)",
+    "name": "Dumbbell Skull Crusher",
     "cues": [
       "Sehpada yat; yükü göğsünün üzerinde, üst kolların dengeli tut.",
       "Dirseklerini bükerek başına doğru veya arkasına indir, sonra aç.",
@@ -6114,7 +6114,7 @@
     ]
   },
   "ez-barbell-incline-triceps-extension": {
-    "name": "Eğimli Sehpada Z-Bar Triceps Uzatma (Incline Triceps Extension)",
+    "name": "Incline EZ-Bar Triceps Extension",
     "cues": [
       "Sehpada yat; yükü göğsünün üzerinde, üst kolların dengeli tut.",
       "Dirseklerini bükerek başına doğru veya arkasına indir, sonra aç.",
@@ -6140,7 +6140,7 @@
     ]
   },
   "ez-barbell-decline-triceps-extension": {
-    "name": "Ters Eğimli Sehpada Z-Bar Triceps Presi (Decline Triceps Extension)",
+    "name": "Decline EZ-Bar Triceps Extension",
     "cues": [
       "Sehpada yat; yükü göğsünün üzerinde, üst kolların dengeli tut.",
       "Dirseklerini bükerek başına doğru veya arkasına indir, sonra aç.",
@@ -6166,7 +6166,7 @@
     ]
   },
   "barbell-jm-bench-press": {
-    "name": "Barbell JM Triceps Presi (JM Press)",
+    "name": "JM Press",
     "cues": [
       "Sehpada yat; barı sağlam tut, dirseklerin öne yönelsin.",
       "Dirsekleri büküp barı üst göğüs veya boyun hizasına indir, sonra it.",
@@ -6194,7 +6194,7 @@
     ]
   },
   "dumbbell-tate-press": {
-    "name": "Dambıl Tate Presi (Tate Press)",
+    "name": "Tate Press",
     "cues": [
       "Sehpada yat; dambıllar göğsünün üzerinde, dirsekler yanlara açık olsun.",
       "Dirseklerini büküp dambılları göğsüne yaklaştır, sonra aç.",
@@ -6220,7 +6220,7 @@
     ]
   },
   "cable-standing-high-cross-triceps-extension": {
-    "name": "Kablolu Çapraz Yüksek Triceps Uzatma (High Cross Triceps Extension)",
+    "name": "High Cable Cross Triceps Extension",
     "cues": [
       "Kablo tutamaklarını yükseğe ayarla; üst göğsünün önünde çapraz tut.",
       "Dirseklerini yana ve aşağı aç, sonra yavaşça geri dön."
@@ -6245,7 +6245,7 @@
     ]
   },
   "cable-single-arm-overhead-triceps-extension": {
-    "name": "Kablolu Tek Kol Baş Üstü Triceps Uzatma (Single-Arm Overhead Extension)",
+    "name": "Single-Arm Overhead Cable Extension",
     "cues": [
       "Yükü baş üstünde, dirseklerin genel olarak öne dönük ve gövden sıkı tut.",
       "Dirseklerini bükerek indir, sonra kontrollü aç.",
@@ -6271,7 +6271,7 @@
     ]
   },
   "cable-v-bar-triceps-pushdown": {
-    "name": "Kablolu V-Bar Triceps İtişi (V-Bar Pushdown)",
+    "name": "V-Bar Pushdown",
     "cues": [
       "Üst kabloyu veya bandı ayarla; üst kolların yanlarında kalsın.",
       "Dirseklerini açarak aşağı it, sonra yavaşça geri getir."
@@ -6295,7 +6295,7 @@
     ]
   },
   "cable-kickback": {
-    "name": "Kablolu Triceps Geriye İtiş (Cable Kickback)",
+    "name": "Cable Kickback",
     "cues": [
       "Kalçadan eğilip gövdeni destekle; üst kolun yanında kalsın.",
       "Dirseğini açarak yükü geriye götür, sonra yavaşça bük."
@@ -6319,7 +6319,7 @@
     ]
   },
   "lever-seated-dip": {
-    "name": "Makinede Oturarak Dips (Machine Seated Dip)",
+    "name": "Machine Seated Dip",
     "cues": [
       "Makine desteğinde otur; gövdenin yanındaki tutamakları kavra.",
       "Dirsekleri açarak tutamakları aşağı it, sonra yavaşça geri dön."
@@ -6345,7 +6345,7 @@
     ]
   },
   "barbell-low-bar-squat": {
-    "name": "Barbell Alçak Bar Squat (Low-Bar Squat)",
+    "name": "Low-Bar Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk.",
@@ -6374,7 +6374,7 @@
     ]
   },
   "barbell-box-squat": {
-    "name": "Kutuya Barbell Squat (Box Squat)",
+    "name": "Box Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk.",
@@ -6403,7 +6403,7 @@
     ]
   },
   "barbell-pause-full-squat": {
-    "name": "Duraklamalı Tam Squat (Pause Squat)",
+    "name": "Pause Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk.",
@@ -6432,7 +6432,7 @@
     ]
   },
   "barbell-full-zercher-squat": {
-    "name": "Kollarda Barbell Zercher Squat (Zercher Squat)",
+    "name": "Zercher Squat",
     "cues": [
       "Barı dirsek içlerinde taşıyıp gövdene yakın tut; gövdeni sık.",
       "Tabanın yerdeyken çömel; barı yakın tutarak ayağa kalk.",
@@ -6459,7 +6459,7 @@
     ]
   },
   "barbell-overhead-squat": {
-    "name": "Baş Üstü Barbell Squat (Overhead Squat)",
+    "name": "Overhead Squat",
     "cues": [
       "Barı düz kollarla baş üstünde sabit tut; gövdeni sık.",
       "Barı ayaklarının üzerinde dengede tutabildiğin kadar çömel, sonra kalk.",
@@ -6511,7 +6511,7 @@
     ]
   },
   "dumbbell-goblet-sumo-squat": {
-    "name": "Dambıl Geniş Duruş Goblet Squat (Sumo Goblet Squat)",
+    "name": "Sumo Goblet Squat",
     "cues": [
       "Ayaklarını rahat bir genişliğe koy; gövdeni sıkıp kalça ve dizleri birlikte bük.",
       "Tabanın yerde kalsın; kontrollü bir derinliğe inip ayağa kalk."
@@ -6678,7 +6678,7 @@
     ]
   },
   "smith-calf-raise": {
-    "name": "Smith Makinesi Kalf Kaldırma",
+    "name": "Smith Makinesi Baldır Kaldırma",
     "cues": [
       "Barı üst sırtına güvenle yerleştir; ayakların yerde olsun.",
       "Topuklarını yükselt, sonra kontrollü indir.",
@@ -6705,7 +6705,7 @@
     ]
   },
   "sissy-squat-bodyweight": {
-    "name": "Vücut Ağırlığıyla Sissy Squat (Sissy Squat)",
+    "name": "Sissy Squat",
     "cues": [
       "Destek tutup parmak uçlarına yüksel; dizlerin öne gitsin.",
       "Dizlerin bükülürken geriye eğil, sonra açarak yüksel.",
@@ -6730,7 +6730,7 @@
     ]
   },
   "sled-reverse-hack-squat": {
-    "name": "Kızaklı Ters Hack Squat (Reverse Hack Squat)",
+    "name": "Reverse Hack Squat",
     "cues": [
       "Koltuğu veya pedleri kendine göre ayarla; ayakların platformda sabit kalsın.",
       "Kalça ve dizleri rahat bir aralıkta bük, sonra yüksel.",
@@ -6810,7 +6810,7 @@
     ]
   },
   "cossack-squat": {
-    "name": "Yan Çömelme (Cossack Squat)",
+    "name": "Cossack Squat",
     "cues": [
       "Yana adım atıp o bacağını bük; diğer bacak daha uzun kalsın.",
       "Adım atan tabanın yerdeyken onunla iterek geri dön.",
@@ -6836,7 +6836,7 @@
     ]
   },
   "side-lunge": {
-    "name": "Yana Adımlama (Side Lunge)",
+    "name": "Yana Lunge (Side Lunge)",
     "cues": [
       "Yana adım atıp o bacağını bük; diğer bacak daha uzun kalsın.",
       "Adım atan tabanın yerdeyken onunla iterek geri dön."
@@ -6888,7 +6888,7 @@
     ]
   },
   "dumbbell-deficit-reverse-lunge": {
-    "name": "Blok Üstü Dambıl Geriye Lunge (Deficit Reverse Lunge)",
+    "name": "Deficit Reverse Lunge",
     "cues": [
       "Geriye dengeli bir adım atıp iki dizini bükerek alçal.",
       "Ön tabanın yerde kalsın; onunla iterek ayağa dön.",
@@ -6915,7 +6915,7 @@
     ]
   },
   "barbell-walking-lunge": {
-    "name": "Barbell Yürüyüş Lunge (Walking Lunge)",
+    "name": "Barbell Walking Lunge",
     "cues": [
       "Dengeni koruyacak kadar ileri adım at; iki dizini bükerek alçal.",
       "Ön bacakla yükselip sonraki adımı kontrollü at.",
@@ -6941,7 +6941,7 @@
     ]
   },
   "barbell-step-up": {
-    "name": "Barbell Sehpaya Adımlama (Step-Up)",
+    "name": "Barbell Step-Up",
     "cues": [
       "Çalışan ayağının tamamını sağlam bir platforma koy.",
       "O bacakla yüksel; sonra dengeli ve yavaşça aşağı in."
@@ -7014,7 +7014,7 @@
     ]
   },
   "lever-standing-single-leg-curl": {
-    "name": "Ayakta Makine Tek Bacak Bükme (Standing Leg Curl)",
+    "name": "Standing Single-Leg Curl",
     "cues": [
       "Dizini makinenin dönme noktasıyla hizala ve pedleri ayarla.",
       "Dizini bükerek pedi çek, sonra yavaşça geri bırak.",
@@ -7040,7 +7040,7 @@
     ]
   },
   "lever-lying-single-leg-curl": {
-    "name": "Yatarak Makine Tek Bacak Bükme (Lying Single-Leg Curl)",
+    "name": "Lying Single-Leg Curl",
     "cues": [
       "Dizini makinenin dönme noktasıyla hizala ve pedleri ayarla.",
       "Dizini bükerek pedi çek, sonra yavaşça geri bırak.",
@@ -7066,7 +7066,7 @@
     ]
   },
   "lever-seated-one-leg-curl": {
-    "name": "Oturarak Makine Tek Bacak Bükme (Seated Single-Leg Curl)",
+    "name": "Seated Single-Leg Curl",
     "cues": [
       "Dizini makinenin dönme noktasıyla hizala ve pedleri ayarla.",
       "Dizini bükerek pedi çek, sonra yavaşça geri bırak.",
@@ -7092,7 +7092,7 @@
     ]
   },
   "dumbbell-lying-leg-curl": {
-    "name": "Yatarak Dambıl Bacak Bükme (Dumbbell Leg Curl)",
+    "name": "Dumbbell Leg Curl",
     "cues": [
       "Yüzüstü yat; hafif bir dambılı ayaklarının arasında güvenle tut.",
       "Dizlerini bükerek kaldır, kalçan sehpada kalırken yavaşça indir.",
@@ -7120,7 +7120,7 @@
     ]
   },
   "cable-lying-single-leg-curl": {
-    "name": "Yatarak Kablolu Tek Bacak Bükme (Cable Leg Curl)",
+    "name": "Lying Cable Leg Curl",
     "cues": [
       "Ayak bileği kayışını alçak kabloya bağla; makineye dönük sırtüstü yat.",
       "Çalışan dizi büküp topuğunu geriye çek, sonra yavaşça aç.",
@@ -7146,13 +7146,13 @@
     ]
   },
   "bodyweight-frog-hip-thrust": {
-    "name": "Kurbağa Duruşu Kalça İtişi (Frog Hip Thrust)",
+    "name": "Frog Hip Thrust",
     "cues": [
       "Sırtüstü yat; ayak tabanlarını birleştirip dizlerini yana aç.",
       "Ayakların birleşikken kalçanı kaldır, sonra yavaşça indir."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -7166,12 +7166,12 @@
     "avoidDetails": [
       "Daha yükseğe çıkmak için belini çukurlaştırma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
   "single-leg-hip-thrust": {
-    "name": "Tek Bacak Kalça İtişi (Single-Leg Hip Thrust)",
+    "name": "Single-Leg Hip Thrust",
     "cues": [
       "Üst sırtını destekle; bir ayağını sağlam basıp diğerini kaldır.",
       "Yerdeki ayakla itip kalçanı yükselt, sonra yavaşça indir.",
@@ -7193,18 +7193,18 @@
     "avoidDetails": [
       "Pelvisini döndürme veya havadaki bacakla itme.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
   "barbell-kas-glute-bridge": {
-    "name": "Barbell Kas Kalça Köprüsü (Kas Glute Bridge)",
+    "name": "Barbell Kas Glute Bridge",
     "cues": [
       "Üst sırtını destekle; barı kalçanın üzerinde sabitle.",
       "Hip thrustın üst bölümünde kısa ve kontrollü hareket et."
     ],
     "avoid": [
-      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırışı azalt."
+      "Yükseklik için beli çukurlaştırma; kalçayla bitir, kaburgalar açılıyorsa kaldırma yüksekliğini azalt."
     ],
     "cuesDetails": [
       "Hazırlık: Kaymadan yükselmene izin veren sağlam destek ve ayak konumu seç. Başlamadan önce ek yükü ortala ve sabitle.",
@@ -7218,12 +7218,12 @@
     "avoidDetails": [
       "Kısa hareketi belini çukurlaştırarak yapma.",
       "Kayan destek: Sehpa, sırt desteği veya ayaklar kayıyorsa devam etme. Önce yükü bırak ve düzeni yeniden kur.",
-      "Başı geriye atmak: Kaldırışı bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
+      "Başı geriye atmak: Hareketi bitirmek için başını geriye savurma; boynun rahat bir konumda kalsın.",
       "Dengesiz kalça: Bir taraf önce yükseliyor veya dönüyorsa yükü ya da aralığı azalt; dengeli kalça hareketini yeniden kur."
     ]
   },
   "cable-hip-abduction": {
-    "name": "Kablolu Kalça Dışa Açma (Cable Hip Abduction)",
+    "name": "Cable Hip Abduction",
     "cues": [
       "Makineyi veya kabloyu kalçan sabit kalacak şekilde ayarla.",
       "Çalışan bacağını dışa aç, sonra yavaşça geri getir."
@@ -7247,13 +7247,13 @@
     ]
   },
   "reverse-hyperextension-on-box": {
-    "name": "Sehpada Ters Bel ve Kalça Kaldırışı (Reverse Hyperextension)",
+    "name": "Reverse Hyperextension",
     "cues": [
       "Yüzüstü yatıp kalçanı kutu kenarına yaklaştır; desteğin sağlam bir yerini kavra.",
       "Bacaklarını kalçadan kaldır, sonra kontrollü indir."
     ],
     "avoid": [
-      "Yükseklik için savurma veya beli çukurlaştırma; yavaşla ve kaldırışı kısalt."
+      "Yükseklik için savurma veya beli çukurlaştırma; yavaşla ve hareketi kısalt."
     ],
     "cuesDetails": [
       "Hazırlık: Sehpayı veya makineyi sabitle; desteği kalça hareketine izin verecek şekilde yerleştir. Gereken el veya ayak desteğini koru.",
@@ -7297,7 +7297,7 @@
     ]
   },
   "ring-dip": {
-    "name": "Jimnastik Halkasında Dips (Ring Dip)",
+    "name": "Ring Dip",
     "cues": [
       "Ellerini barlara veya tutamaklara sağlam koy; gövden sabit kalsın.",
       "Dirseklerini rahat bir derinliğe kadar bük, sonra iterek yüksel.",
@@ -7376,7 +7376,7 @@
     ]
   },
   "resistance-band-standing-chest-press": {
-    "name": "Direnç Bandı Ayakta Göğüs Presi (Band Chest Press)",
+    "name": "Band Chest Press",
     "cues": [
       "Tutamakları göğüs hizasına ayarla ve dengeli bir adım duruşu al.",
       "Gövdeni döndürmeden ileri it, sonra yavaşça geri getir."
@@ -7400,7 +7400,7 @@
     ]
   },
   "resistance-band-seated-row": {
-    "name": "Direnç Bandı Oturarak Kürek (Band Seated Row)",
+    "name": "Band Seated Row",
     "cues": [
       "Gövdeni desteğe daya veya dengeli biçimde sabitle.",
       "Dirseklerinle ağırlığı gövdene çek; sonra kollarını yavaşça uzat."
@@ -7424,7 +7424,7 @@
     ]
   },
   "resistance-band-lat-pulldown": {
-    "name": "Direnç Bandı Göğse Çekiş (Band Lat Pulldown)",
+    "name": "Band Lat Pulldown",
     "cues": [
       "Bandı baş üstünde güvenle sabitle ve dengeli dur.",
       "Ellerini üst göğsüne doğru çek, sonra yavaşça geri bırak.",
@@ -7450,7 +7450,7 @@
     ]
   },
   "resistance-band-face-pull": {
-    "name": "Direnç Bandı Yüze Çekiş (Band Face Pull)",
+    "name": "Band Face Pull",
     "cues": [
       "Kabloyu veya bandı yüz hizasına ayarla; dengeli dur.",
       "Dirseklerin yana açılırken yüzüne doğru çek, sonra yavaşça geri bırak."
@@ -7475,7 +7475,7 @@
     ]
   },
   "band-biceps-curl": {
-    "name": "Direnç Bandı Biceps Büküş (Band Biceps Curl)",
+    "name": "Band Biceps Curl",
     "cues": [
       "Üst kollarını gövdene yakın, bileklerini dengeli tut.",
       "Dirseklerini bükerek yükü kaldır, sonra kontrollü indir."
@@ -7499,7 +7499,7 @@
     ]
   },
   "resistance-band-triceps-pushdown": {
-    "name": "Direnç Bandı Triceps İtişi (Band Pushdown)",
+    "name": "Band Triceps Pushdown",
     "cues": [
       "Üst kabloyu veya bandı ayarla; üst kolların yanlarında kalsın.",
       "Dirseklerini açarak aşağı it, sonra yavaşça geri getir."
@@ -7535,19 +7535,19 @@
       "Hazırlık: Hafif direnç ve sağlam destek kullan. Dirsekleri hafif bük; rahat tekrarlayabildiğin omuz yolunu bul.",
       "Hareket: Kolların aşağıda, dirseklerin hafif bükülü olsun.",
       "Kontrol: Kollarını rahat bir omuz yüksekliğine kaldır, sonra yavaşça indir.",
-      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan kaldırış yolunda taşı. Boyun rahat kalsın.",
+      "Yön: Bilekleri savurmak yerine üst kolları amaçlanan hareket yolunda taşı. Boyun rahat kalsın.",
       "Omuz hareketi: Kürek kemiklerinin kollarla hareket etmesine izin ver. Kaldırırken onları sürekli aşağı zorlamaya çalışma.",
       "Aralık: Gövde ve kol yolu kontrollü kaldığı sürece kaldır; yükü düşürmek yerine kontrollü indir."
     ],
     "avoidDetails": [
       "Yükü kaldırmak için boynunu kasıp omuzları aşırı silkme veya gövdeni savurma.",
-      "Savurma: Kaldırışı başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
+      "Savurma: Hareketi başlatmak için dizlerle yaylanma veya gövdeyi sallama. Direnci azaltıp omuzdan hareket et.",
       "Bilekle yön vermek: Bilekleri başparmak aşırı aşağı bakacak şekilde zorlama. Rahat tutuş ve bilek hizasını koru.",
       "Kolu kısaltmak: Ağır tekrarı bitirmek için dirsekleri sürekli bükme. Kol biçimini koru veya yükü azalt."
     ]
   },
   "landmine-180": {
-    "name": "Landmine Gövde Dönüşü (Landmine 180)",
+    "name": "Landmine 180",
     "cues": [
       "Landmine bar ucunu önünde tut; ayakların dengeli kalsın.",
       "Gövden dönerken barı bir yandan diğerine yay çizerek taşı.",
@@ -7574,7 +7574,7 @@
     ]
   },
   "hanging-toes-to-bar": {
-    "name": "Asılarak Ayakları Bara Çekme (Toes to Bar)",
+    "name": "Toes to Bar",
     "cues": [
       "Sağlam bir barda gövden aktifken asıl.",
       "Bacaklarını bara doğru kaldır, sonra kontrollü indir.",
@@ -7585,23 +7585,23 @@
       "Kontrolsüz sallanma veya tepeden aniden düşme."
     ],
     "cuesDetails": [
-      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce kısa, bükülü diz kaldırışını dene.",
+      "Hazırlık: Altı açık sağlam bar kullan. Kontrollü asılmayı kur; uzun bacak çalışmasından önce dizleri bükerek kısa diz çekmeyi dene.",
       "Hareket: Sağlam bir barda gövden aktifken asıl.",
       "Kontrol: Bacaklarını bara doğru kaldır, sonra kontrollü indir.",
       "Gövde: Kaldırmadan omuz ve karnı aktif tut. Vücudu sallamak yerine pelvisi kontrol ederek bacakları kaldır.",
       "Yükseklik: Asılmayı bozmadan veya başı geriye atmadan ulaşabildiğin yüksekliği kullan. Düz bacak daha zor bir kaldıraç oluşturur.",
       "İniş: Bacakları kontrollü indir; tekrardan önce salınımı durdur. Tutuş tükenmeden aşağı in.",
-      "Kontrollü sürüm: Sallanmadan kontrol edebildiğin kaldırışta ayakları bara yaklaştır. Kuvvet ve hareket açıklığı gelişirken kısa kaldırış uygundur."
+      "Kontrollü sürüm: Ayakları yalnızca sallanmadan kontrol edebildiğin kadar bara yaklaştır. Kuvvet ve hareket açıklığı gelişirken daha kısa bir hareket uygundur."
     ],
     "avoidDetails": [
       "Kontrolsüz sallanma veya tepeden aniden düşme.",
-      "Salınımla başlamak: Kontrollü kaldırış için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
+      "Salınımla başlamak: Kontrollü kaldırma için bacakları geriye atıp hız kazanma. Aralığı azalt veya dizleri bük.",
       "Ani düşüş: Bacakları düşürüp dipte omuzları sert çekme. Dönüşün tamamını kontrol et.",
       "Tutuşun tükenmesi: Eller kaymaya başlarken asılı kalma. Güvenli biçimde in; yeni setten önce dinlen."
     ]
   },
   "battling-ropes-high-waves": {
-    "name": "Dalgalı Halat Savurma (Battle Ropes)",
+    "name": "Battle Ropes",
     "cues": [
       "Atletik bir duruş alıp iki halat ucunu tut.",
       "Gövden dengeliyken kollarınla art arda dalgalar oluştur.",
@@ -7626,7 +7626,7 @@
     ]
   },
   "power-sled-push": {
-    "name": "Ağırlık Kızağı İtişi (Sled Push)",
+    "name": "Sled Push",
     "cues": [
       "Kızağı sağlam tutup gövden sıkı biçimde öne eğil.",
       "Dengeli adımlarla yeri iterek kızağı ilerlet.",

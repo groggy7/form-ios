@@ -8114,7 +8114,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Harekete yardımcı olan ikincil kaslar yarım puan (0,5 set) alır; bench press sırasında göğse destek olan arka kol ve ön omuz gibi."
+            "value": "Harekete yardımcı olan ikincil kaslar yarım puan (0,5 set) alır; bench press sırasında göğse destek olan triseps ve ön omuz gibi."
           }
         },
         "de": {
@@ -14315,7 +14315,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş ve Çekiş"
+            "value": "İtme ve Çekme"
           }
         },
         "de": {
@@ -14350,7 +14350,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş"
+            "value": "İtme"
           }
         },
         "de": {
@@ -14385,7 +14385,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekiş"
+            "value": "Çekme"
           }
         },
         "de": {
@@ -14420,7 +14420,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekişe kıyasla daha fazla itiş seti yapıyorsun."
+            "value": "Çekme setlerine kıyasla daha fazla itme seti yapıyorsun."
           }
         },
         "de": {
@@ -14455,7 +14455,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtişe kıyasla daha fazla çekiş seti yapıyorsun."
+            "value": "İtme setlerine kıyasla daha fazla çekme seti yapıyorsun."
           }
         },
         "de": {
@@ -14490,7 +14490,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş ve çekiş setleri gayet dengeli. Omuz ve sırt gelişimi için ideal bir uyum."
+            "value": "İtme ve çekme setleri gayet dengeli. Omuz ve sırt gelişimi için ideal bir uyum."
           }
         },
         "de": {
@@ -14560,7 +14560,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dengeli bir gelişim hedefliyorsan bench press ve omuz presi gibi itiş hareketlerini ihmal etme."
+            "value": "Dengeli bir gelişim hedefliyorsan bench press ve omuz presi gibi itme hareketlerini ihmal etme."
           }
         },
         "de": {
@@ -14595,7 +14595,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mevcut programınla devam et; itiş ve çekiş hacmin gayet iyi bir dengede."
+            "value": "Mevcut programınla devam et; itme ve çekme hacmin gayet iyi bir dengede."
           }
         },
         "de": {
@@ -15437,7 +15437,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekiş çalışması kaydedilmemiş."
+            "value": "Çekme çalışması kaydedilmemiş."
           }
         },
         "de": {
@@ -15472,7 +15472,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş çalışması kaydedilmemiş."
+            "value": "İtme çalışması kaydedilmemiş."
           }
         },
         "de": {
@@ -17397,7 +17397,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş/çekiş ve ön bacak/arka bacak gibi hareket kalıpları ve kas grupları arasında kaydedilen çalışma setlerini karşılaştırır. Bu oranlar duruşu, eklem sağlığını veya toparlanmayı değil, antrenman dağılımını gösterir. Tıbbi tanı değildir. Programlama için referans olarak kullan; belirli bir bölgeye öncelik veren planlarda oranlar farklı olabilir."
+            "value": "İtme/çekme ve ön bacak/arka bacak gibi hareket kalıpları ve kas grupları arasında kaydedilen çalışma setlerini karşılaştırır. Bu oranlar duruşu, eklem sağlığını veya toparlanmayı değil, antrenman dağılımını gösterir. Tıbbi tanı değildir. Programlama için referans olarak kullan; belirli bir bölgeye öncelik veren planlarda oranlar farklı olabilir."
           }
         },
         "de": {
@@ -17432,7 +17432,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücut itiş/çekiş set dağılımı"
+            "value": "Üst vücut itme/çekme set dağılımı"
           }
         },
         "de": {
@@ -19777,7 +19777,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı setlerde itiş/çekiş, ön/arka bacak ve üst/alt vücut çalışmasını karşılaştır."
+            "value": "Kayıtlı setlerde itme/çekme, ön/arka bacak ve üst/alt vücut çalışmasını karşılaştır."
           }
         },
         "de": {
@@ -30882,7 +30882,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İTİŞ"
+            "value": "PRES"
           }
         },
         "de": {
@@ -38697,7 +38697,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temel kaldırışlarda (squat, bench, deadlift) kaldırdığın ağırlıkları artır."
+            "value": "Squat, bench press ve deadlift gibi temel hareketlerde kaldırdığın ağırlıkları artır."
           }
         },
         "de": {
@@ -39047,7 +39047,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yüksek hacim, farklı antrenman bölüşümleri ve yüksek yoğunluğa alışkın."
+            "value": "Yüksek hacme, farklı split programlara ve yüksek yoğunluğa alışkın."
           }
         },
         "de": {
@@ -39642,7 +39642,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İleri seviye lifterlar için saf İtiş, Çekiş, Bacak frekansı."
+            "value": "Toparlanması iyi, ileri seviye sporcular için İtme/Çekme/Bacak programı."
           }
         },
         "de": {
@@ -44612,7 +44612,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş / çekiş / bacak"
+            "value": "İtme / çekme / bacak"
           }
         },
         "de": {
@@ -49617,7 +49617,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtişi çekişle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştır."
+            "value": "İtme hareketlerini çekme hareketleriyle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştır."
           }
         },
         "de": {
@@ -51721,7 +51721,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "VA"
+            "value": "BW"
           }
         },
         "de": {
@@ -54871,7 +54871,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekiş ve vücut ağırlığı"
+            "value": "Çekme ve vücut ağırlığı"
           }
         },
         "de": {
@@ -56201,7 +56201,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kurulumunda sırt ve çekiş çalışmaları sınırlı. Onaylı bant sabitleme noktası, dambıl veya sağlam çekiş istasyonu seçenekleri artırır."
+            "value": "Kurulumunda sırt ve çekme çalışmaları sınırlı. Onaylı bant sabitleme noktası, dambıl veya sağlam bir barfiks barı seçenekleri artırır."
           }
         },
         "de": {
@@ -57321,7 +57321,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Karın çarkı"
+            "value": "Ab wheel"
           }
         },
         "de": {
@@ -57671,7 +57671,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacak açma makinesi"
+            "value": "Leg extension makinesi"
           }
         },
         "de": {
@@ -57706,7 +57706,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oturarak bacak bükme makinesi"
+            "value": "Oturarak leg curl makinesi"
           }
         },
         "de": {
@@ -58686,7 +58686,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kalça Menteşesi"
+            "value": "Deadlift"
           }
         },
         "de": {
@@ -60051,7 +60051,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Karın tekeri"
+            "value": "Ab wheel"
           }
         },
         "de": {
@@ -60261,7 +60261,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacak press"
+            "value": "Leg press"
           }
         },
         "de": {
@@ -60296,7 +60296,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacak açış"
+            "value": "Leg extension"
           }
         },
         "de": {
@@ -60331,7 +60331,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacak curl"
+            "value": "Leg curl"
           }
         },
         "de": {

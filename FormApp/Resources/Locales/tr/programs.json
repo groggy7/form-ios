@@ -11,16 +11,16 @@
     ],
     "workouts": {
       "aesthetic-push-a": {
-        "title": "Göğüs ve Arka Kol",
-        "focus": "İtiş, göğüs izolasyonu ve yan omuz"
+        "title": "Göğüs ve Triseps",
+        "focus": "Pres hareketleri, göğüs izolasyonu ve yan omuz"
       },
       "aesthetic-pull-a": {
-        "title": "Sırt ve Ön Kol",
+        "title": "Sırt ve Biseps",
         "focus": "Dikey çekiş, destekli row, arka ve yan omuz"
       },
       "aesthetic-legs-a": {
         "title": "Ön Bacak ve Baldır",
-        "focus": "Squat, diz açma ve arka bacak"
+        "focus": "Squat, leg extension ve arka bacak"
       },
       "aesthetic-upper-b": {
         "title": "Üst Vücut ve Omuz",
@@ -28,7 +28,7 @@
       },
       "aesthetic-lower-b": {
         "title": "Kalça ve Arka Bacak",
-        "focus": "Kalça menteşesi, tek bacak squat ve karın"
+        "focus": "RDL, tek bacak squat ve karın"
       }
     }
   },
@@ -56,16 +56,16 @@
         "focus": "Düşük hacimli deadlift ve squat desteği"
       },
       "pb-press-volume": {
-        "title": "Üst Vücut: İtiş ve Hacim",
-        "focus": "Baş üstü itiş, daha hafif bench press ve sırt"
+        "title": "Üst Vücut: Pres ve Hacim",
+        "focus": "Overhead press, daha hafif bench press ve sırt"
       }
     }
   },
   "classic-ppl": {
     "name": "Pure PPL: 6 Günlük Hipertrofi",
-    "description": "Haftada altı salon gününden düzenli toparlanabilen deneyimli sporcular için. Farklı odaklarla ikişer itiş, çekiş ve bacak seansı. Tam donanımlı salon; yaklaşık 45–65 dakika.",
+    "description": "Haftada altı salon gününden düzenli toparlanabilen deneyimli sporcular için. Farklı odaklarla ikişer itme, çekme ve bacak seansı. Tam donanımlı salon; yaklaşık 45–65 dakika.",
     "guidelines": [
-      "Haftada bir gün dinlenin. Altı günü sürdürmek zorsa 4 günlük Üst/Alt Vücut planını seçin. Çekiş günlerinde destekli row kullanılır; ağır kalça menteşesi hareketleri bacak günlerindedir.",
+      "Haftada bir gün dinlenin. Altı günü sürdürmek zorsa 4 günlük Üst/Alt Vücut planını seçin. Çekme günlerinde destekli row kullanılır; ağır deadlift hareketleri bacak günlerindedir.",
       "Destekli barfiks makinesinde karşı ağırlığı kaydedin; daha az destekle yapabilmek ilerlemedir. Paralel bar dips omuzlarınızı rahatsız ederse hareket açıklığını kısaltın veya hareketi Destekli Dips Makinesi olarak düzenleyin.",
       "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
       "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
@@ -74,27 +74,27 @@
     ],
     "workouts": {
       "ppl-push-1": {
-        "title": "İtiş A: Göğüs",
-        "focus": "Düz itiş, omuz ve arka kol desteği"
+        "title": "İtme A: Göğüs",
+        "focus": "Bench press, omuz ve triseps desteği"
       },
       "ppl-pull-1": {
-        "title": "Çekiş A: Kanat",
-        "focus": "Destekli barfiks, üstten çekiş, destekli row ve ön kol"
+        "title": "Çekme A: Kanat",
+        "focus": "Destekli barfiks, lat pulldown, destekli row ve biseps"
       },
       "ppl-legs-1": {
         "title": "Bacak A: Squat",
-        "focus": "Ön bacak, diz bükme ve baldır"
+        "focus": "Ön bacak, leg curl ve baldır"
       },
       "ppl-push-2": {
-        "title": "İtiş B: Eğik Sehpa",
-        "focus": "Eğik itiş, dips, göğüs izolasyonu ve baş üstü arka kol"
+        "title": "İtme B: Eğimli Pres",
+        "focus": "Eğimli pres, dips, göğüs izolasyonu ve baş üstü triseps"
       },
       "ppl-pull-2": {
-        "title": "Çekiş B: Row",
-        "focus": "Yatay çekiş, arka omuz ve kol bükme"
+        "title": "Çekme B: Row",
+        "focus": "Yatay çekiş, arka omuz ve biseps curl"
       },
       "ppl-legs-2": {
-        "title": "Bacak B: Kalça Menteşesi",
+        "title": "Bacak B: Deadlift",
         "focus": "Arka zincir ve ikinci squat çalışması"
       }
     }
@@ -113,11 +113,11 @@
     "workouts": {
       "fb-workout-a": {
         "title": "Tüm Vücut A",
-        "focus": "Leg press, göğüs itişi, row ve kalça menteşesi"
+        "focus": "Leg press, bench press, row ve RDL"
       },
       "fb-workout-b": {
         "title": "Tüm Vücut B",
-        "focus": "Goblet squat, üstten çekiş ve destekli itişler"
+        "focus": "Goblet squat, lat pulldown ve destekli pres hareketleri"
       },
       "fb-workout-c": {
         "title": "Tüm Vücut C",
@@ -138,20 +138,20 @@
     ],
     "workouts": {
       "hf-upper-a": {
-        "title": "Üst A: Düz İtiş",
-        "focus": "Düz itiş, tek kol row ve omuzlar"
+        "title": "Üst A: Bench Press",
+        "focus": "Bench press, tek kol row ve omuzlar"
       },
       "hf-lower-a": {
-        "title": "Alt A: Squat ve Kalça Menteşesi",
-        "focus": "Squat, Romen deadlift, split squat ve baldır"
+        "title": "Alt A: Squat ve RDL",
+        "focus": "Squat, Romanian deadlift, split squat ve baldır"
       },
       "hf-upper-b": {
-        "title": "Üst B: Eğik İtiş ve Row",
-        "focus": "Eğik itiş, destekli row ve arka omuz"
+        "title": "Üst B: Eğimli Pres ve Row",
+        "focus": "Eğimli pres, destekli row ve arka omuz"
       },
       "hf-lower-b": {
         "title": "Alt B: Tek Bacak Gücü",
-        "focus": "Step-up, tek bacak kalça menteşesi, bacak bükme ve baldır"
+        "focus": "Step-up, tek bacak RDL, leg curl ve baldır"
       }
     }
   },
@@ -169,7 +169,7 @@
     "workouts": {
       "ap-lower-power": {
         "title": "Patlayıcılık ve Alt Vücut",
-        "focus": "Hızlı kalça menteşesi, trap bar kuvveti ve dengeli üst vücut"
+        "focus": "Kettlebell swing, trap bar deadlift ve dengeli üst vücut"
       },
       "ap-upper-power": {
         "title": "Patlayıcılık ve Tek Bacak",
@@ -177,7 +177,7 @@
       },
       "ap-work-capacity": {
         "title": "Tüm Vücut Kuvveti",
-        "focus": "Squat, kalça menteşesi, eğik itiş ve destekli row"
+        "focus": "Squat, RDL, eğimli pres ve destekli row"
       }
     }
   },
@@ -193,20 +193,20 @@
     ],
     "workouts": {
       "ul-upper-a": {
-        "title": "Üst A: Düz İtiş ve Row",
+        "title": "Üst A: Bench Press ve Row",
         "focus": "Dengeli yatay ve dikey üst vücut çalışması"
       },
       "ul-lower-a": {
         "title": "Alt A: Ön Bacak",
-        "focus": "Hack squat, kalça menteşesi ve baldır"
+        "focus": "Hack squat, RDL ve baldır"
       },
       "ul-upper-b": {
-        "title": "Üst B: Eğik İtiş ve Çekiş",
-        "focus": "Eğik itiş, kanat ve omuzlar"
+        "title": "Üst B: Eğimli Pres ve Çekme",
+        "focus": "Eğimli pres, kanat ve omuzlar"
       },
       "ul-lower-b": {
         "title": "Alt B: Kalça ve Arka Bacak",
-        "focus": "Leg press, kalça açma ve diz bükme"
+        "focus": "Leg press, hip thrust ve leg curl"
       }
     }
   },
@@ -223,15 +223,15 @@
     "workouts": {
       "mf-a": {
         "title": "Makineler A",
-        "focus": "Leg press, göğüs itişi ve destekli row"
+        "focus": "Leg press, chest press ve destekli row"
       },
       "mf-b": {
         "title": "Makineler B",
-        "focus": "Squat makinesi, üstten çekiş ve omuz itişi"
+        "focus": "Squat makinesi, lat pulldown ve shoulder press"
       },
       "mf-c": {
         "title": "Makineler C",
-        "focus": "Leg press, eğik itiş, omuzlar, arka omuz ve karın"
+        "focus": "Leg press, eğimli pres, omuzlar, arka omuz ve karın"
       }
     }
   },
@@ -240,7 +240,7 @@
     "description": "Spor ekipmanı olmadan evde tüm vücut antrenmanı: boş bir zemin, duvar veya tezgâh, sabit bir sandalye ve bir merdiven basamağı yeterli. Yeni başlayanlar ve spora dönenler için. Yaklaşık 30–40 dakikalık üç kısa seans.",
     "guidelines": [
       "Haftada üç gün çalışın ve her seanstan sonra bir gün dinlenin. Her seanstan önce sandalye veya koltuğun kaymadığını ve basamağın sağlam olduğunu kontrol edin.",
-      "Bar veya başka bir ekipman olmadan sırt ve ön kol çalışması sınırlıdır ve doğrudan arka bacak bükme hareketi yoktur. Mümkün olduğunda sağlam monte edilmiş bir barfiks barı edinip Bar & Floor planına geçin.",
+      "Bar veya başka bir ekipman olmadan sırt ve biseps çalışması sınırlıdır ve doğrudan leg curl hareketi yoktur. Mümkün olduğunda sağlam monte edilmiş bir barfiks barı edinip Bar & Floor planına geçin.",
       "Şınavda el desteğini adım adım alçaltarak yere kadar ilerleyin. Henüz yerde 3 şınav yapamıyorsanız, yapabilene kadar Tüm Vücut B’deki şınavı Eğimli Şınav olarak düzenleyin.",
       "Listelenen setler çalışma setleridir. Önce birkaç dakika hafif hareketlerle ısının, ardından ilk hareketin daha kolay bir deneme setini yapın.",
       "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
@@ -307,11 +307,11 @@
     "workouts": {
       "ess-a": {
         "title": "Tüm Vücut A",
-        "focus": "Leg press, düz itiş, row ve kalça menteşesi"
+        "focus": "Leg press, bench press, row ve RDL"
       },
       "ess-b": {
         "title": "Tüm Vücut B",
-        "focus": "Goblet squat, üstten çekiş, eğik itiş ve kollar"
+        "focus": "Goblet squat, lat pulldown, eğimli pres ve kollar"
       }
     }
   }

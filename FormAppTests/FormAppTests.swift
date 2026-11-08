@@ -2381,16 +2381,16 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(cache.entries(catalogue: catalogue, query: " --- "), all)
         XCTAssertEqual(cache.entries(catalogue: catalogue), all)
 
-        var custom = ExerciseCatalogEntry(key: "custom", exercise: Exercise(name: "Special movement", movementType: "press"), programIds: [], workoutKeys: [])
-        XCTAssertTrue(cache.entries(catalogue: [custom], query: "itis").isEmpty)
+        var custom = ExerciseCatalogEntry(key: "custom", exercise: Exercise(name: "Special movement", movementType: "pull-up"), programIds: [], workoutKeys: [])
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "barfiks").isEmpty)
         LanguageManager.setLanguage("tr")
-        XCTAssertEqual(cache.entries(catalogue: [custom], query: "itis"), [custom])
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "barfiks"), [custom])
         custom.exercise.cues = "Updated technique"
         custom.exercise.videos = ["https://youtu.be/test"]
-        XCTAssertEqual(cache.entries(catalogue: [custom], query: "itis"), [custom])
-        XCTAssertEqual(cache.entries(catalogue: [custom, entry("barbell-bench-press")], query: "itis").count, 2)
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "barfiks"), [custom])
+        XCTAssertEqual(cache.entries(catalogue: [custom, entry("pull-ups")], query: "barfiks").count, 2)
         LanguageManager.setLanguage("en")
-        XCTAssertTrue(cache.entries(catalogue: [custom], query: "itis").isEmpty)
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "barfiks").isEmpty)
 
         let exact = ExerciseCatalogEntry(key: "custom-rdl", exercise: Exercise(name: "RDL"), programIds: [], workoutKeys: [])
         let aliases = [entry("barbell-romanian-deadlift"), exact, entry("barbell-bench-press")]
@@ -2418,7 +2418,7 @@ final class FormAppTests: XCTestCase {
     func testLibraryMuscleFilteringAndMatching() {
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", movementType: "press")
         let squat = Exercise(name: "Barbell Squat", exerciseId: "barbell-back-squat", movementType: "squat")
-        let curl = Exercise(name: "Barbell Curl", exerciseId: "barbell-curl", movementType: "curl")
+        let curl = Exercise(name: "Barbell Curl", exerciseId: "barbell-curl", movementType: "pull-up")
 
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: "chest"))
         XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: "quads"))
