@@ -17,6 +17,7 @@ struct TrainingSetupView: View {
     @State private var showGymInventory: Bool
     @State private var expandedDays: Set<String> = []
     @State private var advancedSearch = false
+    @State private var moreDurations: Bool
     @ScaledMetric(relativeTo: .caption) private var tileLabelHeight: CGFloat = 48
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
     @ScaledMetric(relativeTo: .caption) private var minimumPriorityWidth: CGFloat = 136
@@ -42,6 +43,7 @@ struct TrainingSetupView: View {
         // Gym equipment is ready by default; Home still needs an explicit inventory answer.
         if starting.location != "home" { starting.equipmentConfirmed = true }
         _profile = State(initialValue: starting)
+        _moreDurations = State(initialValue: [20, 75, 90].contains(starting.minutes))
         _showGymInventory = State(initialValue: starting.location != "home" && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
         _step = State(initialValue: min(max(draft?.step ?? 1, 1), 8))
         _programID = State(initialValue: draft?.programId ?? UUID().uuidString)
@@ -99,10 +101,7 @@ struct TrainingSetupView: View {
                         case 3: space(catalog)
                         case 4: equipment(catalog)
                         case 5: days
-                        case 6:
-                            ForEach([20, 30, 45, 60, 75, 90], id: \.self) { minutes in
-                                choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes) { profile.minutes = minutes }
-                            }
+                        case 6: duration
                         case 7: preferences
                         default:
                             if let program { preview(program, catalog: catalog) }
@@ -277,6 +276,29 @@ struct TrainingSetupView: View {
             .accessibilityLabel(LanguageManager.workoutDays[day - 1])
             .accessibilityAddTraits(selected ? .isSelected : []).accessibilityIdentifier("setup-day-\(day)")
     }
+    private var duration: some View {
+        Group {
+            Text(LanguageManager.t("setup.duration.hint")).foregroundStyle(AppColors.secondaryText)
+            ForEach([30, 45, 60], id: \.self) { minutes in
+                choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes,
+                    tag: "setup-duration-\(minutes)", badge: minutes == 45 ? LanguageManager.t("setup.duration.recommended") : "") { profile.minutes = minutes }
+            }
+            Button { moreDurations.toggle() } label: {
+                HStack {
+                    Text(LanguageManager.t(moreDurations ? "setup.duration.less" : "setup.duration.more"))
+                        .multilineTextAlignment(.leading)
+                    Spacer(minLength: 8)
+                    Image(systemName: moreDurations ? "chevron.up" : "chevron.down").accessibilityHidden(true)
+                }.frame(maxWidth: .infinity, minHeight: 48).contentShape(Rectangle())
+            }.buttonStyle(.plain).foregroundStyle(AppColors.accent)
+                .accessibilityValue(LanguageManager.t(moreDurations ? "progression.coach.expanded" : "progression.coach.collapsed"))
+                .accessibilityIdentifier("setup-duration-more")
+            ForEach([20, 75, 90].filter { moreDurations || profile.minutes == $0 }, id: \.self) { minutes in
+                choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes,
+                    tag: "setup-duration-\(minutes)") { profile.minutes = minutes }
+            }
+        }
+    }
     private var preferences: some View {
         let tileWidth = minimumPriorityWidth * TextWidthScale.factor
         let columns = dynamicTypeSize.isAccessibilitySize && priorityWidth < tileWidth * 2 + 8
@@ -427,11 +449,23 @@ struct TrainingSetupView: View {
                 .appFont(.footnote).foregroundStyle(AppColors.muted)
         }.multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
     }
-    private func choice(_ label: String, selected: Bool, hint: String = "", multiple: Bool = false, tag: String = "", action: @escaping () -> Void) -> some View {
+    private func choice(_ label: String, selected: Bool, hint: String = "", multiple: Bool = false, tag: String = "", badge: String = "", action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(label).fontWeight(.medium).foregroundStyle(AppColors.text)
+                    if badge.isEmpty { Text(label).fontWeight(.medium).foregroundStyle(AppColors.text) }
+                    else {
+                        ViewThatFits(in: .horizontal) {
+                            HStack(spacing: 8) {
+                                Text(label).fontWeight(.medium).foregroundStyle(AppColors.text).fixedSize()
+                                choiceBadge(badge).fixedSize()
+                            }
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(label).fontWeight(.medium).foregroundStyle(AppColors.text)
+                                choiceBadge(badge)
+                            }
+                        }
+                    }
                     if !hint.isEmpty { Text(hint).appFont(.caption).foregroundStyle(AppColors.secondaryText) }
                 }
                 Spacer(minLength: 0)
@@ -441,6 +475,11 @@ struct TrainingSetupView: View {
         }.buttonStyle(.plain).background(selected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(selected ? AppColors.accent : AppColors.border))
             .accessibilityAddTraits(selected ? .isSelected : []).accessibilityIdentifier(tag)
+    }
+    private func choiceBadge(_ label: String) -> some View {
+        Text(label).appFont(.caption2, weight: .semibold).foregroundStyle(AppColors.secondaryText)
+            .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 8).padding(.vertical, 4)
+            .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 6))
     }
     private func toggle(_ value: String, in values: inout [String]) {
         if values.contains(value) { values.removeAll { $0 == value } } else { values.append(value); values.sort() }
