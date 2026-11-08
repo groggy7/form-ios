@@ -1595,7 +1595,6 @@
   "setup.customize.title": "Passe deinen Plan an",
   "setup.customize.hint": "Behalte einen ausgewogenen Plan oder wähle einen Muskelschwerpunkt.",
   "setup.minutes": "Etwa {count} Min.",
-  "setup.advanced": "Ich beherrsche technische Langhantelübungen und fortgeschrittene Körpergewichtsübungen",
   "setup.priority.title": "Muskelschwerpunkt",
   "setup.priority.balanced": "Ausgewogen",
   "setup.priority.balanced.hint": "Kein Muskelschwerpunkt",

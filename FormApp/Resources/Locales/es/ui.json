@@ -1595,7 +1595,6 @@
   "setup.customize.title": "Personaliza tu programa",
   "setup.customize.hint": "Mantén un programa equilibrado o elige una prioridad muscular.",
   "setup.minutes": "Unos {count} min",
-  "setup.advanced": "Domino los movimientos técnicos con barra y los ejercicios avanzados de peso corporal",
   "setup.priority.title": "Prioridad muscular",
   "setup.priority.balanced": "Equilibrado",
   "setup.priority.balanced.hint": "Sin prioridad muscular",

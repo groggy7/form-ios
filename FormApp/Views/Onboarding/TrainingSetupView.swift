@@ -35,6 +35,8 @@ struct TrainingSetupView: View {
         initial.equipment = TrainingCatalog.bundled?.presets["commercial_gym"] ?? []
         var starting = draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial
         starting.excludedExerciseIds = []
+        // The former confidence flag now follows experience during setup, including restored drafts.
+        starting.advancedLifts = ["intermediate", "advanced"].contains(starting.experience)
         // Gym equipment is ready by default; Home still needs an explicit inventory answer.
         if starting.location != "home" { starting.equipmentConfirmed = true }
         _profile = State(initialValue: starting)
@@ -86,11 +88,11 @@ struct TrainingSetupView: View {
                             ForEach(OnboardingExperience.allCases, id: \.rawValue) { experience in
                                 choice(LanguageManager.t("onboarding.experience.\(experience.rawValue).title"), selected: profile.experience == experience.rawValue,
                                     hint: LanguageManager.t("onboarding.experience.\(experience.rawValue).desc"), tag: "setup-experience-\(experience.rawValue)") {
-                                    if profile.experience != experience.rawValue { profile.experience = experience.rawValue; profile.advancedLifts = false }
+                                    if profile.experience != experience.rawValue {
+                                        profile.experience = experience.rawValue
+                                        profile.advancedLifts = experience != .beginner
+                                    }
                                 }
-                            }
-                            if profile.experience != "beginner" {
-                                choice(LanguageManager.t("setup.advanced"), selected: profile.advancedLifts, multiple: true, tag: "setup-lift-confidence") { profile.advancedLifts.toggle() }
                             }
                         case 3: space(catalog)
                         case 4: equipment(catalog)

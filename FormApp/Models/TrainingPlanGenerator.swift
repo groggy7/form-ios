@@ -13,6 +13,7 @@ struct TrainingProfile: Codable, Equatable {
     var maxDumbbellKg: Double?
     var maxBarbellKg: Double?
     var pullUpReps = 0
+    // Retained for saved-profile compatibility; setup derives this from experience.
     var advancedLifts = false
     var priority = ""
     var excludedExerciseIds: [String] = []

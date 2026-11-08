@@ -1595,7 +1595,6 @@
   "setup.customize.title": "Customize your plan",
   "setup.customize.hint": "Keep a balanced plan, or choose a muscle group to prioritize.",
   "setup.minutes": "About {count} min",
-  "setup.advanced": "I am comfortable with technical barbell lifts and advanced bodyweight exercises",
   "setup.priority.title": "Muscle priority",
   "setup.priority.balanced": "Balanced",
   "setup.priority.balanced.hint": "No muscle priority",

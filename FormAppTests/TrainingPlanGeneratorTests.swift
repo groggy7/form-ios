@@ -117,6 +117,29 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         }
     }
 
+    @MainActor func testRestoredExperienceSetsEligibilityWithoutChangingAnEditedPreview() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled)
+        var edited = try generate(gym()).program
+        edited.name = "Edited preview"
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+        for experience in ["beginner", "intermediate", "advanced"] {
+            var p = try gym(); p.experience = experience; p.advancedLifts = experience == "beginner"
+            TrainingSetupStore.saveDraft(.init(profile: p, step: 2, programId: edited.id, program: edited))
+            let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 900))
+            defer { window.isHidden = true; previousWindow?.makeKeyAndVisible() }
+            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+            host.view.layoutIfNeeded(); RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+            let draft = try XCTUnwrap(TrainingSetupStore.draft())
+            XCTAssertEqual(draft.profile.advancedLifts, experience != "beginner", experience)
+            XCTAssertEqual(draft.program, edited, experience)
+            let eligible = TrainingPlanGenerator.eligible(draft.profile, catalog: catalog).map(\.id)
+            XCTAssertEqual(eligible.contains("barbell-back-squat"), experience != "beginner", experience)
+            XCTAssertFalse(eligible.contains("pull-ups"), experience)
+        }
+    }
+
     @MainActor func testSetupClearsLegacyExclusionsWithoutLosingMusclePriority() throws {
         var p = profile(["dumbbells"])
         p.priority = "row"; p.excludedExerciseIds = try XCTUnwrap(TrainingCatalog.bundled).candidates.map(\.id)

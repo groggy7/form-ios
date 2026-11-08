@@ -55209,41 +55209,6 @@
         }
       }
     },
-    "setup.advanced": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I am comfortable with technical barbell lifts and advanced bodyweight exercises"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Teknik bar hareketlerinde ve ileri vücut ağırlığı egzersizlerinde rahatım"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ich beherrsche technische Langhantelübungen und fortgeschrittene Körpergewichtsübungen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je maîtrise les mouvements techniques à la barre et les exercices avancés au poids du corps"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Domino los movimientos técnicos con barra y los ejercicios avanzados de peso corporal"
-          }
-        }
-      }
-    },
     "setup.priority.title": {
       "extractionState": "manual",
       "localizations": {
