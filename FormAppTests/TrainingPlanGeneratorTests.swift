@@ -58,6 +58,29 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertFalse(catalog.equipment.contains { $0.artwork?.hasPrefix("exercise:") == true })
     }
 
+    func testGymReviewListsPlanEquipmentAndKeepsRemovalsUndoable() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled), full = try gym()
+        let preset = try XCTUnwrap(catalog.presets["commercial_gym"])
+        let plan = try generate(full).program
+        let planIds = Set(plan.workouts.flatMap(\.exercises).compactMap(\.exerciseId))
+        let review = TrainingPlanGenerator.gymReviewEquipment(plan, profile: full, catalog: catalog)
+        XCTAssertEqual(review.map(\.id), preset.filter { id in review.contains { $0.id == id } }, "Preset order")
+        XCTAssertTrue(review.allSatisfy { !$0.exerciseIds.isEmpty && Set($0.exerciseIds).isSubset(of: planIds) })
+        XCTAssertLessThan(review.count, preset.count, "Unused preset items stay out of the review")
+        // A removed machine stays listed, unused and unchecked, so the removal can be undone.
+        let machine = try XCTUnwrap(review.first { item in catalog.equipment.first { $0.id == item.id }?.group == "machines" })
+        var without = full; without.equipment.removeAll { $0 == machine.id }
+        let after = TrainingPlanGenerator.gymReviewEquipment(try generate(without).program, profile: without, catalog: catalog)
+        XCTAssertEqual(after.first { $0.id == machine.id }?.exerciseIds, [])
+        // An adjustable bench is credited with the flat-bench work it covers.
+        let flat = try XCTUnwrap(review.first { $0.id == "bench" }?.exerciseIds)
+        XCTAssertFalse(flat.isEmpty)
+        var noFlat = full; noFlat.equipment.removeAll { $0 == "bench" }
+        let benchReview = TrainingPlanGenerator.gymReviewEquipment(try generate(noFlat).program, profile: noFlat, catalog: catalog)
+        XCTAssertEqual(benchReview.first { $0.id == "bench" }?.exerciseIds, [])
+        XCTAssertTrue(Set(flat).isSubset(of: benchReview.first { $0.id == "adjustable-bench" }?.exerciseIds ?? []))
+    }
+
     func testOldSettingsDraftKeepsItsPreviewAtTheNewReviewStep() throws {
         let p = profile(["dumbbells"]), program = try generate(p).program
         let legacy = TrainingSetupStore.Draft(profile: p, step: 6, programId: program.id, program: program, flowVersion: nil)
@@ -87,6 +110,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         }
     }
 
+    /// Gym drafts left on the former equipment question resume at Training days; Home keeps its question.
     @MainActor func testGymSetupDefaultsToReadyAndPreservesEditedInventories() throws {
         var pending = try gym(); pending.equipmentConfirmed = false
         var edited = try gym(); edited.equipment.removeAll { $0 == "leg-press" || $0 == "dumbbells" }
@@ -108,6 +132,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             let recovered = try XCTUnwrap(TrainingSetupStore.draft())
             XCTAssertEqual(Set(recovered.profile.equipment), Set(equipment), name)
             XCTAssertEqual(recovered.profile.equipmentConfirmed, confirmed, name)
+            XCTAssertEqual(recovered.step, original == nil ? 1 : (name == "home" ? 4 : 5), name)
             if confirmed { XCTAssertNoThrow(try TrainingSetupStore.generate(recovered.profile, id: recovered.programId), name) }
             if name == "pending" {
                 let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
@@ -501,7 +526,8 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge, .accessibilityExtraExtraExtraLarge] : [.extraExtraExtraLarge]
             for size in sizes {
             for width in (language == "en" && size == .large ? [320.0, 390.0, 600.0] : [320.0]) {
-            for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 5, 6, 7, 8] {
+            // Gym setup has no equipment question; its equipment check is captured expanded on the review.
+            for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 5, 6, 7, 8] where location == "home" || step != 4 {
                 var rendered = profile(["dumbbells", "ez-bar", "plates"])
                 rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
                 if step == 6 && location == "home" { rendered.minutes = 90 }

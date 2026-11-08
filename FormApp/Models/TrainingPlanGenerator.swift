@@ -69,6 +69,9 @@ struct GeneratedTrainingPlan {
 
 enum TrainingPlanError: Error { case incompleteProfile, missingCatalog, noExercises }
 
+/// One equipment item and the plan exercises that rely on it; empty when the item was removed.
+struct EquipmentUse: Identifiable, Equatable { let id: String; let exerciseIds: [String] }
+
 enum TrainingPlanGenerator {
     private static let barbells: Set<String> = ["barbell", "ez-bar", "trap-bar"]
     private static let priorityCovers = ["push": "chest_side_pose", "row": "push_pull_legs", "squat": "upper_lower",
@@ -86,6 +89,25 @@ enum TrainingPlanGenerator {
             (!row.advanced || (profile.advancedLifts && profile.experience != "beginner")) &&
             profile.pullUpReps >= row.pullUps && row.requirements.contains { $0.allSatisfy(gear.contains) }
         }
+    }
+    /// Equipment the gym review offers to remove: what the plan's exercises use, in preset order, plus preset items
+    /// already removed so a mistaken removal can be undone. Each exercise counts the first requirement option the
+    /// profile meets; an adjustable bench is credited where it stands in for a flat one.
+    static func gymReviewEquipment(_ program: Program, profile: TrainingProfile, catalog: TrainingCatalog) -> [EquipmentUse] {
+        let owned = Set(profile.equipment), gear = capabilities(profile)
+        var use: [String: [String]] = [:]
+        for id in program.workouts.flatMap(\.exercises).compactMap(\.exerciseId) {
+            guard let option = catalog.candidates.first(where: { $0.id == id })?.requirements.first(where: { $0.allSatisfy(gear.contains) }) else { continue }
+            for item in option {
+                guard let provider = owned.contains(item) ? item : (item == "bench" && owned.contains("adjustable-bench") ? "adjustable-bench" : nil),
+                      !(use[provider]?.contains(id) ?? false) else { continue }
+                use[provider, default: []].append(id)
+            }
+        }
+        let preset = catalog.presets["commercial_gym"] ?? []
+        return (preset + catalog.equipment.map(\.id).filter { !preset.contains($0) })
+            .filter { use[$0] != nil || (preset.contains($0) && !owned.contains($0)) }
+            .map { EquipmentUse(id: $0, exerciseIds: use[$0] ?? []) }
     }
     static func estimateSeconds(_ exercise: Exercise) -> Int {
         let sets = exercise.sets ?? 2, reps = exercise.reps?.max ?? 12

@@ -14,7 +14,7 @@ struct TrainingSetupView: View {
     @State private var search = ""
     @State private var error: String?
     @State private var editing = false
-    @State private var showGymInventory: Bool
+    @State private var gymEquipmentOpen: Bool
     @State private var expandedDays: Set<String> = []
     @State private var advancedSearch = false
     @State private var moreDurations: Bool
@@ -44,12 +44,17 @@ struct TrainingSetupView: View {
         if starting.location != "home" { starting.equipmentConfirmed = true }
         _profile = State(initialValue: starting)
         _moreDurations = State(initialValue: [20, 75, 90].contains(starting.minutes))
-        _showGymInventory = State(initialValue: starting.location != "home" && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
-        _step = State(initialValue: min(max(draft?.step ?? 1, 1), 8))
+        // A gym inventory with removals opens the review's equipment check so the removals stay visible.
+        _gymEquipmentOpen = State(initialValue: starting.location != "home" && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
+        // Gym users confirm equipment on the review, so a draft left on the old gym question resumes at Training days.
+        let restoredStep = min(max(draft?.step ?? 1, 1), 8)
+        _step = State(initialValue: restoredStep == 4 && starting.location != "home" ? 5 : restoredStep)
         _programID = State(initialValue: draft?.programId ?? UUID().uuidString)
         _editedProgram = State(initialValue: draft?.program)
     }
     private var generated: GeneratedTrainingPlan? { try? TrainingSetupStore.generate(profile, id: programID) }
+    /// Only Home asks for equipment as a question; gym users review it on the generated plan instead.
+    private var asksEquipment: Bool { profile.location == "home" }
     private var program: Program? { editedProgram ?? generated?.program }
     private var canContinue: Bool { TrainingCatalog.bundled != nil && (step == 4 ? profile.equipmentConfirmed : (step != 8 || program != nil)) }
     private var title: String {
@@ -57,7 +62,7 @@ struct TrainingSetupView: View {
         case 1: return "onboarding.goal.title"
         case 2: return "onboarding.experience.title"
         case 3: return "setup.space.title"
-        case 4: return profile.location == "home" ? "setup.inventory.title" : "setup.gym.title"
+        case 4: return "setup.inventory.title"
         case 5: return "onboarding.days.title"
         case 6: return "setup.duration.title"
         case 7: return "setup.customize.title"
@@ -70,8 +75,9 @@ struct TrainingSetupView: View {
             HStack(spacing: 12) {
                 Button(action: back) { Image(systemName: "arrow.left").frame(width: 48, height: 48) }
                     .accessibilityLabel(LanguageManager.t("onboarding.back")).accessibilityIdentifier("onboarding-back")
-                // Fill each step's share gradually, matching Android's 600ms setup progress.
-                ProgressView(value: Double(step), total: 8).progressViewStyle(SetupProgressStyle())
+                // Fill each step's share gradually, matching Android's 600ms setup progress. Gym setup has one screen fewer.
+                ProgressView(value: Double(asksEquipment || step < 4 ? step : step - 1), total: asksEquipment ? 8 : 7)
+                    .progressViewStyle(SetupProgressStyle())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.6), value: step)
                 // After answering every question, skipping is no longer offered; the invisible button keeps the progress line's width.
                 if let onSkip {
@@ -143,50 +149,68 @@ struct TrainingSetupView: View {
             choice(LanguageManager.t("setup.location.\(location)"), selected: (profile.location == "home") == (location == "home"), tag: "setup-location-\(location)") {
                 guard (profile.location == "home") != (location == "home") else { return }
                 profile.location = location; profile.equipment = catalog.presets[location] ?? []; profile.equipmentConfirmed = location != "home"
-                showGymInventory = false; advancedSearch = false; search = ""
+                gymEquipmentOpen = false; advancedSearch = false; search = ""
             }
         }
     }
     @ViewBuilder private func equipment(_ catalog: TrainingCatalog) -> some View {
-        let home = profile.location == "home"
-        if !home {
-            choice(LanguageManager.t("setup.gym.all"), selected: profile.equipmentConfirmed && !showGymInventory, tag: "setup-gym-all") {
-                profile.equipment = catalog.presets["commercial_gym"] ?? []; profile.equipmentConfirmed = true
-                showGymInventory = false; advancedSearch = false
-            }
-            choice(LanguageManager.t("setup.gym.missing"), selected: showGymInventory, tag: "setup-gym-missing") {
-                profile.equipmentConfirmed = true; showGymInventory = true
+        Text(LanguageManager.t("setup.home.pick")).foregroundStyle(AppColors.secondaryText)
+        choice(LanguageManager.t("setup.equipment.none"), selected: profile.equipment.isEmpty && profile.equipmentConfirmed, tag: "setup-no-equipment") {
+            profile.equipment = []; profile.equipmentConfirmed = true
+        }
+        let common = catalog.equipment.filter { $0.home == true }
+        if !advancedSearch {
+            equipmentGrid(common)
+            ForEach(catalog.equipment.filter { item in profile.equipment.contains(item.id) && !common.contains { $0.id == item.id } }, id: \.id) { item in
+                choice(LanguageManager.t("setup.gear.\(item.id)"), selected: true, multiple: true, tag: "setup-gear-\(item.id)") { toggleEquipment(item.id) }
             }
         }
-        if home || showGymInventory {
-            Text(LanguageManager.t(home ? "setup.home.pick" : "setup.gym.remove")).foregroundStyle(AppColors.secondaryText)
-            if home {
-                choice(LanguageManager.t("setup.equipment.none"), selected: profile.equipment.isEmpty && profile.equipmentConfirmed, tag: "setup-no-equipment") {
-                    profile.equipment = []; profile.equipmentConfirmed = true
-                }
+        equipmentSearch(catalog)
+    }
+    /// All 38 items stay reachable through the collapsed search, from Home's question and from the gym review.
+    @ViewBuilder private func equipmentSearch(_ catalog: TrainingCatalog) -> some View {
+        expander(advancedSearch ? "setup.equipment.common" : "setup.equipment.more", expanded: advancedSearch, tag: "setup-advanced-search") {
+            advancedSearch.toggle(); search = ""
+        }
+        if advancedSearch {
+            TextField("", text: $search, prompt: Text(LanguageManager.t("setup.equipment.search")).foregroundStyle(AppColors.muted))
+                .textFieldStyle(.plain).padding(14).background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border))
+                .accessibilityLabel(LanguageManager.t("setup.equipment.search")).accessibilityIdentifier("setup-equipment-search")
+            let matches = catalog.equipment.filter { LanguageManager.t("setup.gear.\($0.id)").localizedCaseInsensitiveContains(search) || $0.id.replacingOccurrences(of: "-", with: " ").localizedCaseInsensitiveContains(search) || search.isEmpty }
+            if matches.isEmpty { Text(LanguageManager.t("setup.equipment.noResults")).foregroundStyle(AppColors.secondaryText) }
+            ForEach(matches, id: \.id) { item in
+                choice(LanguageManager.t("setup.gear.\(item.id)"), selected: profile.equipment.contains(item.id), multiple: true, tag: "setup-gear-\(item.id)") { toggleEquipment(item.id) }
             }
-            let common = home ? catalog.equipment.filter { $0.home == true }
-                : (catalog.presets["commercial_gym"] ?? []).compactMap { id in catalog.equipment.first { $0.id == id } }
+        }
+    }
+    /// The gym review's collapsed equipment check. Rows name the plan exercises each item serves; unchecking one
+    /// regenerates the plan without it and keeps the row so the removal can be undone.
+    @ViewBuilder private func gymEquipment(_ program: Program, catalog: TrainingCatalog) -> some View {
+        Button { gymEquipmentOpen.toggle(); advancedSearch = false; search = "" } label: {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(LanguageManager.t("setup.gym.title")).appFont(.headline, weight: .semibold).foregroundStyle(AppColors.text)
+                    Text(LanguageManager.t("setup.gym.adjust")).appFont(.footnote).foregroundStyle(AppColors.secondaryText)
+                }.multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: gymEquipmentOpen ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.secondaryText).accessibilityHidden(true)
+            }.padding(14).frame(maxWidth: .infinity, minHeight: 48, alignment: .leading).contentShape(Rectangle())
+        }.buttonStyle(.plain).setupCard()
+            .accessibilityValue(LanguageManager.t(gymEquipmentOpen ? "progression.coach.expanded" : "progression.coach.collapsed"))
+            .accessibilityIdentifier("setup-gym-equipment")
+        if gymEquipmentOpen {
+            Text(LanguageManager.t("setup.gym.remove")).foregroundStyle(AppColors.secondaryText)
             if !advancedSearch {
-                equipmentGrid(common)
-                ForEach(catalog.equipment.filter { item in profile.equipment.contains(item.id) && !common.contains { $0.id == item.id } }, id: \.id) { item in
-                    choice(LanguageManager.t("setup.gear.\(item.id)"), selected: true, multiple: true, tag: "setup-gear-\(item.id)") { toggleEquipment(item.id) }
+                let names = Dictionary(program.workouts.flatMap(\.exercises).compactMap { exercise in exercise.exerciseId.map { ($0, exercise.displayName) } },
+                    uniquingKeysWith: { first, _ in first })
+                ForEach(TrainingPlanGenerator.gymReviewEquipment(program, profile: profile, catalog: catalog)) { item in
+                    let used = item.exerciseIds.compactMap { names[$0] }
+                    choice(LanguageManager.t("setup.gear.\(item.id)"), selected: profile.equipment.contains(item.id),
+                        hint: used.isEmpty ? "" : LanguageManager.t("setup.gym.usedBy", ["exercises": used.joined(separator: ", ")]),
+                        multiple: true, tag: "setup-gear-\(item.id)") { toggleEquipment(item.id) }
                 }
             }
-            expander(advancedSearch ? "setup.equipment.common" : "setup.equipment.more", expanded: advancedSearch, tag: "setup-advanced-search") {
-                advancedSearch.toggle(); search = ""
-            }
-            if advancedSearch {
-                TextField("", text: $search, prompt: Text(LanguageManager.t("setup.equipment.search")).foregroundStyle(AppColors.muted))
-                    .textFieldStyle(.plain).padding(14).background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border))
-                    .accessibilityLabel(LanguageManager.t("setup.equipment.search")).accessibilityIdentifier("setup-equipment-search")
-                let matches = catalog.equipment.filter { LanguageManager.t("setup.gear.\($0.id)").localizedCaseInsensitiveContains(search) || $0.id.replacingOccurrences(of: "-", with: " ").localizedCaseInsensitiveContains(search) || search.isEmpty }
-                if matches.isEmpty { Text(LanguageManager.t("setup.equipment.noResults")).foregroundStyle(AppColors.secondaryText) }
-                ForEach(matches, id: \.id) { item in
-                    choice(LanguageManager.t("setup.gear.\(item.id)"), selected: profile.equipment.contains(item.id), multiple: true, tag: "setup-gear-\(item.id)") { toggleEquipment(item.id) }
-                }
-            }
+            equipmentSearch(catalog)
         }
     }
     private func toggleEquipment(_ id: String) { toggle(id, in: &profile.equipment); profile.equipmentConfirmed = true }
@@ -215,7 +239,7 @@ struct TrainingSetupView: View {
                                 } else if let artwork = item.artwork, artwork.hasPrefix("product:") {
                                     Image("library_equipment_" + String(artwork.dropFirst("product:".count))).resizable().scaledToFit()
                                 }
-                            }.padding(6).frame(maxWidth: .infinity, maxHeight: .infinity).opacity(selected || profile.location == "home" ? 1 : 0.45)
+                            }.padding(6).frame(maxWidth: .infinity, maxHeight: .infinity)
                             if selected {
                                 AppColors.accent.opacity(0.10)
                                 Image(systemName: "checkmark.circle.fill").font(.system(size: 18)).foregroundStyle(AppColors.accent).padding(5)
@@ -366,6 +390,7 @@ struct TrainingSetupView: View {
                 Text(LanguageManager.t(key)).appFont(.footnote).foregroundStyle(AppColors.secondaryText)
             }.padding(14).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
+        if !asksEquipment { gymEquipment(program, catalog: catalog) }
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("builder.trainingDays")).appFont(.headline).foregroundStyle(AppColors.text)
@@ -500,9 +525,9 @@ struct TrainingSetupView: View {
         replacement.reps?.perSide = row.perSide; replacement.restSeconds = exercise.restSeconds
         var updated = program; updated.workouts[w].exercises[e] = replacement; editedProgram = updated
     }
-    private func back() { if step > 1 { step -= 1 } else { onClose() } }
+    private func back() { if step > 1 { step -= step == 5 && !asksEquipment ? 2 : 1 } else { onClose() } }
     private func next() {
-        if step < 8 { step += 1; search = ""; advancedSearch = false }
+        if step < 8 { step += step == 3 && !asksEquipment ? 2 : 1; search = ""; advancedSearch = false }
         else if let program {
             if store.saveGeneratedPlan(profile: profile.normalized(), program: program, completeSetup: completeSetup) { onClose() }
             else { error = LanguageManager.t("setup.saveFailed") }
