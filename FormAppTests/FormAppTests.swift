@@ -723,23 +723,42 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testHomeDayTileWidthFillsUpToThreeAcrossAnd128() {
+        func width(_ screen: CGFloat, _ count: Int) -> CGFloat { WorkoutDayStrip.tileWidth(stripWidth: screen, count: count) }
+        // A 393pt phone leaves 353pt inside the 20pt margins: three across up to three days, four across from four.
+        for count in 1...3 { XCTAssertEqual(width(393, count), 112.33, accuracy: 0.01) }
+        for count in 4...7 { XCTAssertEqual(width(393, count), 82.25, accuracy: 0.01) }
+        XCTAssertEqual(width(320, 3), 88, accuracy: 0.01)
+        // The widest phones reach the 128pt cap exactly at three across.
+        XCTAssertEqual(width(440, 3), 128, accuracy: 0.01)
+        XCTAssertEqual(width(440, 4), 94, accuracy: 0.01)
+        // iPad portrait fills the row once enough days fit below the cap.
+        XCTAssertEqual(width(820, 3), 128, accuracy: 0.01)
+        XCTAssertEqual(width(820, 5), 128, accuracy: 0.01)
+        XCTAssertEqual(width(820, 6), 123.33, accuracy: 0.01)
+        XCTAssertEqual(width(820, 7), 104.57, accuracy: 0.01)
+        // Calm keeps 108pt at four across and grows in proportion when widened.
+        XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: 82.25, stripWidth: 393), 108, accuracy: 0.01)
+        XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: width(393, 3), stripWidth: 393), 108 * 112.33 / 82.25, accuracy: 0.05)
+        XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: 82, stripWidth: 0), 108)
+    }
+
     @MainActor
-    func testHomeDayStripSpreadsRowsThatFitAcrossTheMargins() throws {
+    func testHomeDayStripKeepsEightPointGapsAndWidensTilesThatFit() throws {
         func scrollViews(in view: UIView) -> [UIScrollView] {
             (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
         }
-        // Phones fit three days; the 96pt cap leaves room for six on the open Duo and a whole week on a tablet.
-        for width in [CGFloat(320), CGFloat(393), CGFloat(440), CGFloat(669), CGFloat(1024)] {
-            let tileWidth = min(96, (width - 40 - 3 * 8) / 4)
+        for width in [CGFloat(320), CGFloat(393), CGFloat(440), CGFloat(669), CGFloat(820), CGFloat(1024)] {
             for count in 1...7 {
-                let workouts = (1...count).map { Workout(id: "spread-\($0)", day: $0, title: "Workout \($0)") }
-                let program = Program(id: "spread-fixture", name: "Fixture", workouts: workouts)
+                let tileWidth = WorkoutDayStrip.tileWidth(stripWidth: width, count: count)
+                let workouts = (1...count).map { Workout(id: "fit-\($0)", day: $0, title: "Workout \($0)") }
+                let program = Program(id: "fit-fixture", name: "Fixture", workouts: workouts)
                 let controller = UIHostingController(rootView: WorkoutDayStrip(program: program, workouts: workouts,
                     calendar: WeekCalendar(today: 0, numbers: Array(19...25)),
                     activeWorkoutId: nil, completedKeys: [], unfinishedKeys: [], onSelectWorkout: { _ in })
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .background(AppColors.background))
-                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 200))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 240))
                 window.rootViewController = controller
                 window.makeKeyAndVisible()
                 controller.view.frame = window.bounds
@@ -748,21 +767,21 @@ final class FormAppTests: XCTestCase {
                 controller.view.layoutIfNeeded()
                 let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
                 let natural = 40 + CGFloat(count) * tileWidth + CGFloat(count - 1) * 8
-                if count >= 3, natural <= width + 0.5 {
-                    XCTAssertEqual(scroll.contentSize.width, width, accuracy: 0.5,
-                        "\(count) days that fit at \(width)pt should end at the trailing margin")
+                XCTAssertEqual(scroll.contentSize.width, natural, accuracy: 0.5,
+                    "\(count) days at \(width)pt should keep 8pt gaps from the leading margin")
+                if natural <= width + 0.5 {
                     XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 0.01,
-                        "A spread row must not become scrollable")
-                } else {
-                    XCTAssertEqual(scroll.contentSize.width, natural, accuracy: 0.5,
-                        "\(count) days at \(width)pt should keep 8pt gaps from the leading margin")
+                        "A row that fits must not become scrollable")
                 }
-                if (width == 393 && count == 3) || (width == 1024 && count == 7) {
+                if count == 3, width <= 440 {
+                    XCTAssertEqual(scroll.contentSize.width, width, accuracy: 0.5, "Three days should fill a phone")
+                }
+                if (width == 393 && count == 3) || (width == 820 && count == 3) || (width == 1024 && count == 7) {
                     let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
                         controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
                     }
                     let attachment = XCTAttachment(image: image)
-                    attachment.name = "home-day-tiles-spread-\(count)-at-\(Int(width))"
+                    attachment.name = "home-day-tiles-\(count)-at-\(Int(width))"
                     attachment.lifetime = .keepAlways
                     add(attachment)
                 }

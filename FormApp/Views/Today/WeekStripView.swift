@@ -115,18 +115,29 @@ struct WorkoutDayStrip: View {
         return UnitPoint(x: fraction, y: 0)
     }
 
-    /// Four equal slots span a phone's width; further days scroll.
-    static func tileWidth(stripWidth: CGFloat) -> CGFloat {
+    private static let maxTileWidth: CGFloat = 128
+    private static let calmHeight: CGFloat = 108
+
+    /// Four equal slots across a phone, between the 48pt touch minimum and 96pt; days beyond four scroll at it.
+    static func compactTileWidth(stripWidth: CGFloat) -> CGFloat {
         min(96, max(48, (stripWidth - 2 * edgeInset - 3 * gap) / 4))
     }
 
-    /// When three or more days fit, they share the spare width as equal gaps and span the margins: three on
-    /// phones, or a whole week once the width cap leaves room. One or two days stay at the leading edge, and rows
-    /// that scroll keep the standard gap.
-    static func tileSpacing(stripWidth: CGFloat, count: Int) -> CGFloat {
-        guard count >= 3 else { return gap }
-        let spare = stripWidth - 2 * edgeInset - CGFloat(count) * tileWidth(stripWidth: stripWidth)
-        return max(gap, spare / CGFloat(count - 1))
+    /// Gaps stay 8pt. When every day fits at the compact width, tiles grow to share the row, up to the three-across
+    /// width and 128pt: three days fill any phone, and no tablet tile outgrows the widest phone's. Leftover space
+    /// stays at the trailing edge; days that do not fit keep the compact width and scroll.
+    static func tileWidth(stripWidth: CGFloat, count: Int) -> CGFloat {
+        let row = stripWidth - 2 * edgeInset
+        let compact = compactTileWidth(stripWidth: stripWidth)
+        guard count > 0, CGFloat(count) * compact + CGFloat(count - 1) * gap <= row + 0.01 else { return compact }
+        let cap = max(compact, min(maxTileWidth, (row - 2 * gap) / 3))
+        return min(cap, max(compact, (row - CGFloat(count - 1) * gap) / CGFloat(count)))
+    }
+
+    /// Calm text keeps its size, so a widened Calm tile grows taller in proportion instead of turning square.
+    static func calmMinHeight(tileWidth: CGFloat, stripWidth: CGFloat) -> CGFloat {
+        guard stripWidth > 0 else { return calmHeight }
+        return calmHeight * max(1, tileWidth / compactTileWidth(stripWidth: stripWidth))
     }
 
     var body: some View {
@@ -134,7 +145,7 @@ struct WorkoutDayStrip: View {
         let isDark = themeManager.currentTheme.isDark
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: Self.tileSpacing(stripWidth: stripWidth, count: workouts.count)) {
+                HStack(spacing: Self.gap) {
                     ForEach(workouts) { workout in
                         let dayIndex = workout.day - 1
                         let selected = workout.id == activeWorkoutId
@@ -217,8 +228,12 @@ struct WorkoutDayStrip: View {
                             }
                             .padding(.horizontal, glowTiles ? tileWidth * 0.06 : 8)
                             .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
-                            .containerRelativeFrame(.horizontal) { width, _ in Self.tileWidth(stripWidth: width) }
-                            .frame(minHeight: glowTiles ? tileWidth * 1.1667 : 108, alignment: .top)
+                            .containerRelativeFrame(.horizontal) { width, _ in
+                                Self.tileWidth(stripWidth: width, count: workouts.count)
+                            }
+                            .frame(minHeight: glowTiles ? tileWidth * 1.1667
+                                : Self.calmMinHeight(tileWidth: tileWidth, stripWidth: stripWidth),
+                                alignment: glowTiles ? .top : .center)
                             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { tileWidth = $0 }
                             .frame(maxHeight: .infinity, alignment: .top)
                             .background(
