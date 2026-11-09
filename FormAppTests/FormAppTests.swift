@@ -640,7 +640,7 @@ final class FormAppTests: XCTestCase {
                 for (today, firstIndex) in expectedStarts.enumerated() {
                     func content(completedKeys: [String] = []) -> some View {
                         WorkoutDayStrip(program: program, workouts: workouts,
-                            calendar: WeekCalendar(today: today, numbers: Array(1...7)),
+                            calendar: WeekCalendar(today: today, numbers: Array(1...7), missedDays: Set(0..<today)),
                             activeWorkoutId: workouts.first { $0.day == today + 1 }?.id,
                             completedKeys: completedKeys, unfinishedKeys: [], onSelectWorkout: { _ in })
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -693,7 +693,7 @@ final class FormAppTests: XCTestCase {
                 let workouts = (1...count).map { Workout(id: "reveal-\($0)", day: $0, title: "Workout \($0)") }
                 let program = Program(id: "reveal-fixture", name: "Fixture", workouts: workouts)
                 let controller = UIHostingController(rootView: WorkoutDayStrip(program: program, workouts: workouts,
-                    calendar: WeekCalendar(today: today, numbers: Array(19...25)),
+                    calendar: WeekCalendar(today: today, numbers: Array(19...25), missedDays: Set(0..<today)),
                     activeWorkoutId: workouts[selectedIndex].id, completedKeys: [], unfinishedKeys: [],
                     onSelectWorkout: { _ in })
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -798,7 +798,7 @@ final class FormAppTests: XCTestCase {
                 var rowHeight: CGFloat?
                 for selected in [workouts.first!.id, workouts.last!.id] {
                     let content = WorkoutDayStrip(program: program, workouts: workouts,
-                        calendar: WeekCalendar(today: 4, numbers: [28, 29, 30, 1, 2, 3, 4]),
+                        calendar: WeekCalendar(today: 4, numbers: [28, 29, 30, 1, 2, 3, 4], missedDays: Set(0..<4)),
                         activeWorkoutId: selected, completedKeys: [], unfinishedKeys: [], onSelectWorkout: { _ in })
                         .environment(\.sizeCategory, sizeCategory)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -1017,7 +1017,7 @@ final class FormAppTests: XCTestCase {
             var sizes: [CGSize] = []
             for glow in [false, true] {
                 let content = WorkoutDayStrip(program: program, workouts: workouts,
-                    calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18]),
+                    calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18], missedDays: Set(0..<4)),
                     activeWorkoutId: "tile-4", completedKeys: ["tile-fixture:tile-0"],
                     unfinishedKeys: ["tile-fixture:tile-2"], onSelectWorkout: { _ in }, glowTiles: glow)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -1063,7 +1063,7 @@ final class FormAppTests: XCTestCase {
         }
         let program = Program(id: "tile-fixture", name: "Fixture", workouts: workouts)
         let content = WorkoutDayStrip(program: program, workouts: workouts,
-            calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18]),
+            calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18], missedDays: Set(0..<4)),
             activeWorkoutId: nil, completedKeys: ["tile-fixture:tile-0"],
             unfinishedKeys: ["tile-fixture:tile-2"], onSelectWorkout: { _ in })
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -1388,17 +1388,67 @@ final class FormAppTests: XCTestCase {
     }
 
     func testOnlyPastUnstartedWorkoutDaysAreMissed() {
+        let week = Set(0..<7)
         for today in 0..<7 {
             for day in 0..<7 {
-                XCTAssertEqual(day < today, WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: false, unfinished: false))
-                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: false, completed: false, unfinished: false))
-                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: true, unfinished: false))
-                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: false, unfinished: true))
-                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: true, unfinished: true))
+                XCTAssertEqual(day < today, WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, missedDays: week, hasWorkout: true, completed: false, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, missedDays: week, hasWorkout: false, completed: false, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, missedDays: week, hasWorkout: true, completed: true, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, missedDays: week, hasWorkout: true, completed: false, unfinished: true))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, missedDays: week, hasWorkout: true, completed: true, unfinished: true))
             }
         }
-        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: 0, todayIndex: 7, hasWorkout: true, completed: false, unfinished: false))
-        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: -1, todayIndex: 6, hasWorkout: true, completed: false, unfinished: false))
+        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: 0, todayIndex: 7, missedDays: week, hasWorkout: true, completed: false, unfinished: false))
+        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: -1, todayIndex: 6, missedDays: week, hasWorkout: true, completed: false, unfinished: false))
+    }
+
+    func testEarlierDaysTheCalendarDidNotScheduleAreNotMissed() {
+        // A plan built on Friday: Monday to Thursday predate it, so the calendar records no misses.
+        for day in 0..<4 {
+            XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: 4, missedDays: [], hasWorkout: true, completed: false, unfinished: false))
+        }
+        XCTAssertTrue(WeeklyPlanView.isMissedPlanDay(dayIndex: 2, todayIndex: 4, missedDays: [2], hasWorkout: true, completed: false, unfinished: false))
+        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: 1, todayIndex: 4, missedDays: [2], hasWorkout: true, completed: false, unfinished: false))
+    }
+
+    func testPlanBuiltLateInTheWeekStartsWithoutMissedDays() throws {
+        let weekdays = [1, 2, 3, 4, 5]
+        func missed(_ history: WorkoutCalendarHistory, on day: String) throws -> Set<Int> {
+            WorkoutCalendar.missedWeekdays(statuses: WorkoutCalendar.statuses(history: history, today: day),
+                                           today: try XCTUnwrap(WorkoutCalendar.parseDate(day)))
+        }
+        let friday = "2026-08-28"
+        let fresh = WorkoutCalendar.refresh(
+            history: WorkoutCalendar.restore(raw: nil, sessions: [], today: friday, weekdays: weekdays),
+            today: friday, weekdays: weekdays)
+        XCTAssertEqual(fresh.missedDates, [])
+        XCTAssertEqual(try missed(fresh, on: friday), [])
+        // Logging today's workout must not back-fill the plan's earlier days on the next launch.
+        let logged = WorkoutCalendar.put(history: fresh, entry: WorkoutDayEntry(id: "manual:fri", date: friday, status: .completed))
+        let saturday = "2026-08-29"
+        let relaunched = WorkoutCalendar.refresh(
+            history: WorkoutCalendar.restore(raw: logged, sessions: [], today: saturday, weekdays: weekdays),
+            today: saturday, weekdays: weekdays)
+        XCTAssertEqual(relaunched.missedDates, [])
+        // From the next week on, skipped plan days are missed as usual.
+        let nextFriday = "2026-09-04"
+        let later = WorkoutCalendar.refresh(history: relaunched, today: nextFriday, weekdays: weekdays)
+        XCTAssertEqual(try missed(later, on: nextFriday), [0, 1, 2, 3])
+    }
+
+    func testPlanBuiltMidWeekOnlyMissesDaysSinceItExisted() throws {
+        let weekdays = [1, 2, 3, 4, 5]
+        let friday = "2026-08-28"
+        let fridayDate = try XCTUnwrap(WorkoutCalendar.parseDate(friday))
+        let history = WorkoutCalendar.refresh(
+            history: WorkoutCalendarHistory(nextScheduledDate: "2026-08-26", scheduledWeekdays: weekdays),
+            today: friday, weekdays: weekdays)
+        XCTAssertEqual(WorkoutCalendar.missedWeekdays(statuses: WorkoutCalendar.statuses(history: history, today: friday), today: fridayDate), [2, 3])
+        // Completing Wednesday clears it, and Monday has nothing earlier to miss.
+        let done = WorkoutCalendar.put(history: history, entry: WorkoutDayEntry(id: "manual:wed", date: "2026-08-26", status: .completed))
+        XCTAssertEqual(WorkoutCalendar.missedWeekdays(statuses: WorkoutCalendar.statuses(history: done, today: friday), today: fridayDate), [3])
+        XCTAssertEqual(WorkoutCalendar.missedWeekdays(statuses: WorkoutCalendar.statuses(history: history, today: friday),
+                                                      today: try XCTUnwrap(WorkoutCalendar.parseDate("2026-08-24"))), [])
     }
 
     @MainActor
@@ -5163,7 +5213,10 @@ final class FormAppTests: XCTestCase {
             weekdays: [1, 5],
             programs: [program]
         )
-        let statuses = WorkoutCalendar.statuses(history: restored, today: testToday)
+        // Launch restores, then refresh settles the saved schedule's days since 2026-09-28.
+        let refreshed = WorkoutCalendar.refresh(history: restored, today: testToday, weekdays: [1, 5],
+                                                programs: [program], sessions: [sundaySession])
+        let statuses = WorkoutCalendar.statuses(history: refreshed, today: testToday)
         // Monday 2026-09-28 was never done -> missed
         XCTAssertEqual(statuses["2026-09-28"], WorkoutDayStatus.missed)
         // Friday 2026-10-02 was performed on Sunday 2026-10-04 -> Friday remains neutral (nil), NOT missed
@@ -9211,7 +9264,7 @@ final class FormAppTests: XCTestCase {
         }
     }
 
-    func testActiveWeekWithFiveDayScheduleReconcilesAllUncompletedDaysAsMissed() {
+    func testRestoreDoesNotBackfillMissedDaysFromRecordedActivity() {
         let testToday = "2026-09-21"
         let mon = WorkoutSessionRecord(
             id: "s-mon", programId: "p5", workoutId: "w-push", workoutTitle: "Push",
@@ -9249,20 +9302,17 @@ final class FormAppTests: XCTestCase {
             weekdays: [1, 2, 4, 5, 6],
             programs: [program]
         )
-        XCTAssertEqual(restored.missedDates, ["2026-09-17", "2026-09-18", "2026-09-19"])
+        // Only the saved schedule's own misses survive; the week's activity does not invent earlier ones.
+        XCTAssertEqual(restored.missedDates, ["2026-09-19"])
 
         let statuses = WorkoutCalendar.statuses(history: restored, today: testToday)
         XCTAssertEqual(statuses["2026-09-14"], .unfinished)
         XCTAssertEqual(statuses["2026-09-15"], .completed)
         XCTAssertNil(statuses["2026-09-16"], "Wednesday is a rest day")
-        XCTAssertEqual(statuses["2026-09-17"], .missed)
-        XCTAssertEqual(statuses["2026-09-18"], .missed)
+        XCTAssertNil(statuses["2026-09-17"], "No saved schedule covered Thursday")
+        XCTAssertNil(statuses["2026-09-18"], "No saved schedule covered Friday")
         XCTAssertEqual(statuses["2026-09-19"], .missed)
         XCTAssertNil(statuses["2026-09-20"], "Sunday is a rest day")
-
-        let weekDays = ["2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-19", "2026-09-20"]
-        let count = weekDays.compactMap { statuses[$0] }.count
-        XCTAssertEqual(count, 5, "Exactly 5 scheduled workout days in that week must have a status")
     }
 
     func testGhostTargetCalculationAndProgressionTargets() {

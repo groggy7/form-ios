@@ -195,6 +195,7 @@ struct HomeWorkoutHero: View {
             isAvailable: isAvailable,
             availableDay: availableDay,
             hasUnfinishedProgress: !isCompleted && (store.activeSession?.workout.id == workout?.id || store.unfinishedWorkoutKeys().contains(workoutKey)),
+            missedDays: store.missedDaysThisWeek(),
             onStart: {
                 if let w = workout, let p = program {
                     if let active = store.activeSession, active.workout.id == w.id {

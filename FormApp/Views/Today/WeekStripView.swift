@@ -52,7 +52,8 @@ public struct WeekStripView: View {
             program.workouts.first(where: { $0.day == dayIndex + 1 })
         }
 
-        let calendar = store.weekCalendar
+        var calendar = store.weekCalendar
+        calendar.missedDays = store.missedDaysThisWeek()
         let completedKeys = store.state.completed
         let unfinishedKeys = store.unfinishedWorkoutKeys()
         let activeWorkout = store.activeWorkout
@@ -63,7 +64,7 @@ public struct WeekStripView: View {
             let completed = completedKeys.contains(key)
             let unfinished = !completed && unfinishedKeys.contains(key)
             return completed || unfinished || WeeklyPlanView.isMissedPlanDay(dayIndex: workout.day - 1,
-                todayIndex: calendar.today, hasWorkout: true, completed: completed, unfinished: unfinished)
+                todayIndex: calendar.today, missedDays: calendar.missedDays, hasWorkout: true, completed: completed, unfinished: unfinished)
         }
         var tourFlags = Set<String>()
         if workouts.count > 4 { tourFlags.insert(TourFlag.stripScrolls) }
@@ -142,7 +143,7 @@ struct WorkoutDayStrip: View {
                         let isCompleted = completedKeys.contains(workoutKey)
                         let isUnfinished = !isCompleted && unfinishedKeys.contains(workoutKey)
                         let isMissed = WeeklyPlanView.isMissedPlanDay(dayIndex: dayIndex, todayIndex: calendar.today,
-                            hasWorkout: true, completed: isCompleted, unfinished: isUnfinished)
+                            missedDays: calendar.missedDays, hasWorkout: true, completed: isCompleted, unfinished: isUnfinished)
                         let dayNumber = calendar.numbers.indices.contains(dayIndex) ? calendar.numbers[dayIndex] : (dayIndex + 1)
                         let textColor = AppColors.text
 

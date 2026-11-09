@@ -1215,8 +1215,9 @@ public enum WorkoutCalendar {
         activeSessionId: String? = nil,
         programs: [Program] = []
     ) -> WorkoutCalendarHistory {
+        // A new schedule starts today: days before the plan existed cannot be missed.
         let history = sanitize(raw: raw, today: today)
-            ?? WorkoutCalendarHistory(nextScheduledDate: mondayOfCurrentWeek(for: parseDate(today) ?? Date()), scheduledWeekdays: weekdays)
+            ?? WorkoutCalendarHistory(nextScheduledDate: today, scheduledWeekdays: weekdays)
         let sessionIds = Set(sessions.map { "session:\($0.id)" })
         let validActiveId = activeSessionId.map { "session:\($0)" }
 
@@ -1230,9 +1231,6 @@ public enum WorkoutCalendar {
                 entriesMap[entry.id] = entry
             }
         }
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = timeZone
-        cal.firstWeekday = 2 // Monday
         for session in sessions {
             let id = "session:\(session.id)"
             // Preserve an explicit past-day assignment; otherwise use the actual
@@ -1250,33 +1248,8 @@ public enum WorkoutCalendar {
         }
         let entriesByDate = Set(entriesMap.values.map { $0.date })
         var missedSet = Set(history.missedDates).subtracting(entriesByDate)
-        let todayDate = parseDate(today, timeZone: timeZone) ?? Date()
-
-        var activeWeekMondays = Set<String>()
-        for missedStr in history.missedDates {
-            if let d = parseDate(missedStr, timeZone: timeZone) {
-                activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
-            }
-        }
-        if raw != nil, let recentThreshold = cal.date(byAdding: .day, value: -14, to: todayDate) {
-            for entry in entriesMap.values {
-                if let d = parseDate(entry.date, timeZone: timeZone), d >= recentThreshold {
-                    activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
-                }
-            }
-        }
-
-        for weekMondayStr in activeWeekMondays {
-            guard let weekMonday = parseDate(weekMondayStr, timeZone: timeZone) else { continue }
-            let weekWeekdays = !history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays
-            for dayIndex in weekWeekdays {
-                if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
-                    let dayStr = formatDate(dayDate, timeZone: timeZone)
-                    if dayDate < todayDate && !entriesByDate.contains(dayStr) { missedSet.insert(dayStr) }
-                }
-            }
-        }
-
+        // Only refresh's saved schedule/cursor can establish missed days, as on Android. Recorded activity in a
+        // week is not evidence that the plan existed on that week's earlier days.
         missedSet = reconcileScheduledOrigins(missed: missedSet, sessions: sessions,
             entries: Array(entriesMap.values), today: today, timeZone: timeZone)
 
@@ -1364,6 +1337,19 @@ public enum WorkoutCalendar {
             }
         }
         return result
+    }
+
+    /// Weekday indices (0 = Monday) before `today` in its week that `statuses` mark missed.
+    public static func missedWeekdays(statuses: [String: WorkoutDayStatus], today: Date,
+                                      calendar: Calendar = Calendar(identifier: .gregorian)) -> Set<Int> {
+        var cal = calendar
+        cal.firstWeekday = 2 // Monday
+        let todayIndex = (cal.component(.weekday, from: today) + 5) % 7
+        guard let monday = cal.date(byAdding: .day, value: -todayIndex, to: today) else { return [] }
+        return Set((0..<todayIndex).filter { index in
+            cal.date(byAdding: .day, value: index, to: monday)
+                .map { statuses[formatDate($0, timeZone: cal.timeZone)] == .missed } ?? false
+        })
     }
 
     public static func monthWeeks(for displayedMonthDate: Date, calendar: Calendar = Calendar(identifier: .gregorian)) -> [[Date?]] {
@@ -1470,10 +1456,13 @@ public struct StoredAppState: Codable {
 public struct WeekCalendar {
     public var today: Int // 0 = Mon, ..., 6 = Sun
     public var numbers: [Int]
+    /// Earlier days this week the Progress calendar records as missed. Days before the plan existed never are.
+    public var missedDays: Set<Int>
 
-    public init(today: Int, numbers: [Int]) {
+    public init(today: Int, numbers: [Int], missedDays: Set<Int> = []) {
         self.today = today
         self.numbers = numbers
+        self.missedDays = missedDays
     }
 }
 

@@ -9,6 +9,8 @@ public struct TodayHeroCard: View {
     let isAvailable: Bool
     let availableDay: String?
     let hasUnfinishedProgress: Bool
+    /// Earlier days this week the Progress calendar records as missed.
+    let missedDays: Set<Int>
     let onStart: () -> Void
     /// The rest-day note points to the Home day strip above; Plan's side page has no strip.
     var showsRestGuidance = true
@@ -76,6 +78,7 @@ public struct TodayHeroCard: View {
         isAvailable: Bool,
         availableDay: String?,
         hasUnfinishedProgress: Bool,
+        missedDays: Set<Int> = [],
         initialViewIndex: Int? = nil,
         onStart: @escaping () -> Void,
         showsRestGuidance: Bool = true
@@ -87,6 +90,7 @@ public struct TodayHeroCard: View {
         self.isAvailable = isAvailable
         self.availableDay = availableDay
         self.hasUnfinishedProgress = hasUnfinishedProgress
+        self.missedDays = missedDays
         self._selectedViewIndex = State(initialValue: initialViewIndex)
         self.onStart = onStart
         self.showsRestGuidance = showsRestGuidance
@@ -283,7 +287,7 @@ public struct TodayHeroCard: View {
         } else if hasUnfinishedProgress {
             status = (LanguageManager.t("history.unfinished"), AppColors.unfinishedOrange)
         } else if WeeklyPlanView.isMissedPlanDay(dayIndex: workout.day - 1, todayIndex: todayIndex,
-            hasWorkout: true, completed: isCompleted, unfinished: hasUnfinishedProgress) {
+            missedDays: missedDays, hasWorkout: true, completed: isCompleted, unfinished: hasUnfinishedProgress) {
             status = (LanguageManager.t("history.missed"), AppColors.missedRed)
         } else {
             status = nil

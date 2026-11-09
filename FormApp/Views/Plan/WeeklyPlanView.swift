@@ -29,7 +29,8 @@ public struct WeeklyPlanView: View {
             return AnyView(EmptyView())
         }
 
-        let calendar = store.weekCalendar
+        var calendar = store.weekCalendar
+        calendar.missedDays = store.missedDaysThisWeek()
         let completedKeys = store.state.completed
         let unfinishedKeys = store.unfinishedWorkoutKeys()
         let activeWorkout = store.activeWorkout
@@ -68,7 +69,7 @@ public struct WeeklyPlanView: View {
                     let isCompleted = !workoutKey.isEmpty && completedKeys.contains(workoutKey)
                     let isUnfinished = !workoutKey.isEmpty && !isCompleted && unfinishedKeys.contains(workoutKey)
                     let isMissed = Self.isMissedPlanDay(dayIndex: index, todayIndex: calendar.today,
-                                                       hasWorkout: workout != nil, completed: isCompleted, unfinished: isUnfinished)
+                                                       missedDays: calendar.missedDays, hasWorkout: workout != nil, completed: isCompleted, unfinished: isUnfinished)
                     let isToday = index == calendar.today
                     let dayName = LanguageManager.workoutDays.indices.contains(index)
                         ? LanguageManager.workoutDays[index]
@@ -205,8 +206,12 @@ public struct WeeklyPlanView: View {
         )
     }
 
-    static func isMissedPlanDay(dayIndex: Int, todayIndex: Int, hasWorkout: Bool, completed: Bool, unfinished: Bool) -> Bool {
-        (0..<7).contains(dayIndex) && (0..<7).contains(todayIndex) && dayIndex < todayIndex && hasWorkout && !completed && !unfinished
+    /// The plan shows the current Monday–Sunday week; today's workout is never overdue. An earlier day is missed only
+    /// when the Progress calendar's saved schedule says so (`missedDays`), so days before the plan existed stay neutral.
+    static func isMissedPlanDay(dayIndex: Int, todayIndex: Int, missedDays: Set<Int>, hasWorkout: Bool,
+                                completed: Bool, unfinished: Bool) -> Bool {
+        (0..<7).contains(dayIndex) && (0..<7).contains(todayIndex) && dayIndex < todayIndex
+            && missedDays.contains(dayIndex) && hasWorkout && !completed && !unfinished
     }
 
     static func workoutSubtitle(workout: Workout?, isUnfinished: Bool, isMissed: Bool) -> String {

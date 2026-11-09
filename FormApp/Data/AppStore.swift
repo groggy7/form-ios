@@ -1286,7 +1286,7 @@ public final class AppStore: ObservableObject {
     public func calendarStatuses(today: Date = Date()) -> [String: WorkoutDayStatus] {
         let todayStr = WorkoutCalendar.formatDate(today)
         let curCal = state.calendarHistory ?? WorkoutCalendarHistory(
-            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
+            nextScheduledDate: todayStr,
             scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
         )
         let refreshed = WorkoutCalendar.refresh(
@@ -1371,6 +1371,12 @@ public final class AppStore: ObservableObject {
         return statuses
     }
 
+    /// Earlier days this week the Progress calendar marks missed. Home and Plan share it, so a plan built
+    /// mid-week starts without red days.
+    public func missedDaysThisWeek(now: Date = Date()) -> Set<Int> {
+        WorkoutCalendar.missedWeekdays(statuses: calendarStatuses(today: now), today: now)
+    }
+
     public func refreshForCurrentDate(now: Date = Date()) {
         let rotated = Self.rotateWeek(state, now: now)
         let refreshed = refreshCalendarState(rotated, now: now)
@@ -1405,7 +1411,7 @@ public final class AppStore: ObservableObject {
         let today = now
         let todayStr = WorkoutCalendar.formatDate(today)
         let curCal = st.calendarHistory ?? WorkoutCalendarHistory(
-            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
+            nextScheduledDate: todayStr,
             scheduledWeekdays: weekdays
         )
         let refreshed = WorkoutCalendar.refresh(
