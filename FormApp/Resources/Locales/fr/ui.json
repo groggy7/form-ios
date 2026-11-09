@@ -1431,7 +1431,7 @@
   "tour.workout.sets.body": "Saisissez le poids en {weight_unit} et les répétitions, puis cochez la série pour l’enregistrer. Le repos se fait entre les séries ou les tours de superset. Si {weight_unit} ne convient pas, changez l’unité de poids dans les réglages de l’app.",
   "tour.workout.finish.body": "Une fois terminé, revoyez et enregistrez la séance ici.",
   "tour.matrix.body.title": "Votre semaine, muscle par muscle",
-  "tour.matrix.body.body": "La couleur de chaque muscle compare ses séries de la semaine à sa plage de référence hebdomadaire. Le gris signifie en dessous de la plage, ou aucune plage pour ce muscle.",
+  "tour.matrix.body.body": "La couleur de chaque muscle compare les séries de la semaine à sa plage de référence. Gris : en dessous ou sans plage.",
   "tour.matrix.legend.title": "Lire les couleurs",
   "tour.matrix.legend.body": "Le vert signifie dans la plage de référence, le bleu juste en dessous, le violet et le rouge au-dessus. Ces plages sont des repères généraux, pas des limites personnelles.",
   "tour.matrix.detail.title": "Détails du muscle",

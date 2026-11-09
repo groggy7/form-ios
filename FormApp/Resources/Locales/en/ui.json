@@ -1431,7 +1431,7 @@
   "tour.workout.sets.body": "Enter weight in {weight_unit} and reps, then tick the set to log it. Rest runs between sets or superset rounds. If {weight_unit} is wrong, change the weight unit in app Settings.",
   "tour.workout.finish.body": "When you're done, review and save the workout here.",
   "tour.matrix.body.title": "Your week, muscle by muscle",
-  "tour.matrix.body.body": "Each muscle's color compares its sets this week with its weekly reference range. Gray means below range or no range for that muscle.",
+  "tour.matrix.body.body": "Each muscle's color compares this week's sets with its reference range. Gray means below range or no range.",
   "tour.matrix.legend.title": "Reading the colors",
   "tour.matrix.legend.body": "Green is within the reference range, blue is just under it, and purple and red are above it. Ranges are general guidelines, not personal limits.",
   "tour.matrix.detail.title": "Muscle details",

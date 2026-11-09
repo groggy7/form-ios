@@ -1431,7 +1431,7 @@
   "tour.workout.sets.body": "Gib das Gewicht in {weight_unit} und die Wiederholungen ein und hake den Satz ab, um ihn zu speichern. Pausen gibt es zwischen Sätzen oder Supersatz-Runden. Falls {weight_unit} nicht passt, ändere die Gewichtseinheit in den App-Einstellungen.",
   "tour.workout.finish.body": "Wenn du fertig bist, prüfst und speicherst du das Training hier.",
   "tour.matrix.body.title": "Deine Woche, Muskel für Muskel",
-  "tour.matrix.body.body": "Die Farbe jedes Muskels vergleicht seine Sätze dieser Woche mit seinem wöchentlichen Referenzbereich. Grau heißt unterhalb des Bereichs oder kein Bereich für diesen Muskel.",
+  "tour.matrix.body.body": "Die Farbe jedes Muskels vergleicht die Sätze dieser Woche mit seinem Referenzbereich. Grau heißt darunter oder kein Bereich.",
   "tour.matrix.legend.title": "So liest du die Farben",
   "tour.matrix.legend.body": "Grün liegt im Referenzbereich, Blau knapp darunter, Lila und Rot darüber. Die Bereiche sind allgemeine Richtwerte, keine persönlichen Grenzen.",
   "tour.matrix.detail.title": "Muskeldetails",

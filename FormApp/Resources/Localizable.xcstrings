@@ -49541,31 +49541,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Each muscle's color compares its sets this week with its weekly reference range. Gray means below range or no range for that muscle."
+            "value": "Each muscle's color compares this week's sets with its reference range. Gray means below range or no range."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her kasın rengi, bu haftaki setlerini o kasın haftalık referans aralığıyla karşılaştırır. Gri, aralığın altında olduğu ya da o kas için aralık bulunmadığı anlamına gelir."
+            "value": "Her kasın rengi, bu haftaki setlerini referans aralığıyla karşılaştırır. Gri, aralığın altında ya da aralık yok demektir."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Farbe jedes Muskels vergleicht seine Sätze dieser Woche mit seinem wöchentlichen Referenzbereich. Grau heißt unterhalb des Bereichs oder kein Bereich für diesen Muskel."
+            "value": "Die Farbe jedes Muskels vergleicht die Sätze dieser Woche mit seinem Referenzbereich. Grau heißt darunter oder kein Bereich."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La couleur de chaque muscle compare ses séries de la semaine à sa plage de référence hebdomadaire. Le gris signifie en dessous de la plage, ou aucune plage pour ce muscle."
+            "value": "La couleur de chaque muscle compare les séries de la semaine à sa plage de référence. Gris : en dessous ou sans plage."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El color de cada músculo compara sus series de esta semana con su rango de referencia semanal. El gris indica que está por debajo del rango o que ese músculo no tiene rango."
+            "value": "El color de cada músculo compara las series de esta semana con su rango de referencia. El gris indica por debajo o sin rango."
           }
         }
       }
