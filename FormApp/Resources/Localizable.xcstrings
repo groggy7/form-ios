@@ -49506,31 +49506,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muscles by color"
+            "value": "Your week, muscle by muscle"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Renklerle kaslar"
+            "value": "Haftan, kas kas"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muskeln nach Farbe"
+            "value": "Deine Woche, Muskel für Muskel"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les muscles en couleur"
+            "value": "Votre semaine, muscle par muscle"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Músculos por color"
+            "value": "Tu semana, músculo a músculo"
           }
         }
       }
@@ -49541,31 +49541,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Each muscle is colored by this week's working sets."
+            "value": "Each muscle's color compares its sets this week with its weekly reference range. Gray means below range or no range for that muscle."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her kas, bu haftaki çalışma setlerine göre renklendirilir."
+            "value": "Her kasın rengi, bu haftaki setlerini o kasın haftalık referans aralığıyla karşılaştırır. Gri, aralığın altında olduğu ya da o kas için aralık bulunmadığı anlamına gelir."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jeder Muskel ist nach den Arbeitssätzen dieser Woche eingefärbt."
+            "value": "Die Farbe jedes Muskels vergleicht seine Sätze dieser Woche mit seinem wöchentlichen Referenzbereich. Grau heißt unterhalb des Bereichs oder kein Bereich für diesen Muskel."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chaque muscle est coloré selon les séries de travail de la semaine."
+            "value": "La couleur de chaque muscle compare ses séries de la semaine à sa plage de référence hebdomadaire. Le gris signifie en dessous de la plage, ou aucune plage pour ce muscle."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cada músculo se colorea según las series de trabajo de esta semana."
+            "value": "El color de cada músculo compara sus series de esta semana con su rango de referencia semanal. El gris indica que está por debajo del rango o que ese músculo no tiene rango."
           }
         }
       }
@@ -49576,31 +49576,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "What the colors mean"
+            "value": "Reading the colors"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Renklerin anlamı"
+            "value": "Renkleri okumak"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Was die Farben bedeuten"
+            "value": "So liest du die Farben"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ce que signifient les couleurs"
+            "value": "Lire les couleurs"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Qué significan los colores"
+            "value": "Cómo leer los colores"
           }
         }
       }
@@ -49611,31 +49611,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "They run from below the reference range to well above it. These are general guides, not personal limits."
+            "value": "Green is within the reference range, blue is just under it, and purple and red are above it. Ranges are general guidelines, not personal limits."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Referans aralığının altından çok üstüne kadar uzanır. Bunlar kişisel sınırlar değil, genel kılavuzlardır."
+            "value": "Yeşil referans aralığında, mavi biraz altında, mor ve kırmızı ise üstünde demektir. Aralıklar kişisel sınırlar değil, genel kılavuzlardır."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie reichen von unter dem Referenzbereich bis weit darüber. Das sind allgemeine Richtwerte, keine persönlichen Grenzen."
+            "value": "Grün liegt im Referenzbereich, Blau knapp darunter, Lila und Rot darüber. Die Bereiche sind allgemeine Richtwerte, keine persönlichen Grenzen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elles vont d’en dessous de la plage de référence à bien au-dessus. Ce sont des repères généraux, pas des limites personnelles."
+            "value": "Le vert signifie dans la plage de référence, le bleu juste en dessous, le violet et le rouge au-dessus. Ces plages sont des repères généraux, pas des limites personnelles."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Van de por debajo del rango de referencia a muy por encima. Son guías generales, no límites personales."
+            "value": "El verde indica que está dentro del rango de referencia; el azul, justo por debajo; el morado y el rojo, por encima. Los rangos son guías generales, no límites personales."
           }
         }
       }
@@ -49681,31 +49681,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choose a muscle to compare its direct and assisting sets with general volume reference ranges."
+            "value": "Tap a muscle to see its direct and assisting sets and the exercises behind them. Assisting sets count as half."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seç."
+            "value": "Doğrudan ve yardımcı setlerini ve bu setlerin geldiği egzersizleri görmek için bir kasa dokun. Yardımcı setler yarım sayılır."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wähle einen Muskel, um seine direkten und unterstützenden Sätze mit allgemeinen Volumenreferenzbereichen zu vergleichen."
+            "value": "Tippe auf einen Muskel, um seine direkten und unterstützenden Sätze und die zugehörigen Übungen zu sehen. Unterstützende Sätze zählen halb."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez un muscle pour comparer ses séries directes et indirectes aux plages de référence générales du volume."
+            "value": "Touchez un muscle pour voir ses séries directes et indirectes et les exercices dont elles proviennent. Les séries indirectes comptent pour moitié."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige un músculo para comparar sus series directas e indirectas con los rangos de referencia generales de volumen."
+            "value": "Toca un músculo para ver sus series directas e indirectas y los ejercicios de los que provienen. Las series indirectas cuentan como media serie."
           }
         }
       }
