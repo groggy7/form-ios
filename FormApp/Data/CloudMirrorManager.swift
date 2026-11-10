@@ -66,8 +66,17 @@ private final class CloudSnapshotDiscovery {
     }
 }
 
+/// What the welcome step found in iCloud Drive, from metadata only; nothing is downloaded.
+public enum SetupBackupLookup: Equatable {
+    /// A backup exists; its save time when iCloud reports one.
+    case found(savedAt: Date?)
+    case none
+    /// No iCloud account, or iCloud Drive is off for this app.
+    case unavailable
+}
+
 enum CloudMirrorError: LocalizedError {
-    case premiumRequired, disabled, noBackup, discoveryTimedOut, discoveryFailed, downloadTimedOut, accountChanged, newerCloudBackup, invalidBackup
+    case premiumRequired, disabled, noBackup, discoveryTimedOut, discoveryFailed, downloadTimedOut, accountChanged, newerCloudBackup, keptSetupBackup, invalidBackup
     var errorDescription: String? {
         let key: String
         switch self {
@@ -78,6 +87,7 @@ enum CloudMirrorError: LocalizedError {
         case .downloadTimedOut: key = "form_lab.mirror_download_failed"
         case .accountChanged: key = "form_lab.mirror_account_changed"
         case .newerCloudBackup: key = "form_lab.mirror_newer_cloud"
+        case .keptSetupBackup: key = "form_lab.mirror_kept_backup"
         case .invalidBackup: key = "form_lab.mirror_invalid_backup"
         }
         return LanguageManager.t(key)
@@ -95,6 +105,7 @@ public final class CloudMirrorManager: ObservableObject {
     private let keyLastIdentity = CloudMirrorManager.preferencePrefix + "last_identity"
     private let keyLocalIdentity = CloudMirrorManager.preferencePrefix + "local_identity"
     private let keyConfirmedUploadIdentities = CloudMirrorManager.preferencePrefix + "confirmed_upload_identities"
+    private let keyKeptSetupBackupIdentity = CloudMirrorManager.preferencePrefix + "kept_setup_backup_identity"
 
     @Published public private(set) var status = CloudMirrorStatus(isEnabled: true, lastSyncTimestamp: nil, snapshotSizeBytes: nil, providerName: "iCloud Drive", isCheckingCloud: true)
     private let defaults: UserDefaults
@@ -333,6 +344,11 @@ public final class CloudMirrorManager: ObservableObject {
         guard Self.sameIdentity(pending.identity, identity) || (pending.canBindFirstAccount && pending.identity == nil) else { throw CloudMirrorError.accountChanged }
         let remote = try await discoverSnapshot(container)
         if let remote, remote.modifiedAt > pending.createdAt { throw CloudMirrorError.newerCloudBackup }
+        // Automatic backup never replaces a backup the welcome step found but the person did not restore.
+        if isKeepingSetupBackup(for: identity) {
+            if remote != nil { throw CloudMirrorError.keptSetupBackup }
+            clearKeptSetupBackup()
+        }
         try await runIO {
             try self.checkWriteAccess()
             guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
@@ -356,6 +372,8 @@ public final class CloudMirrorManager: ObservableObject {
             guard Self.sameIdentity(identity, identityProvider()) else { throw CloudMirrorError.accountChanged }
             try writeCloud(pending, container: container, identity: identity)
             clearPendingSync(generation: pending.generation)
+            // A deliberate Sync Now replaces the backup setup kept.
+            clearKeptSetupBackup()
             stateLock.lock(); cachedContainer = container; checkingCloud = false; stateLock.unlock()
             startObservingCloud(container)
         } else {
@@ -470,7 +488,34 @@ public final class CloudMirrorManager: ObservableObject {
         } catch { recordError(error); throw error }
     }
 
+    /// The welcome step's lookup. A backup found here is kept from automatic replacement until it
+    /// is restored or the person chooses Sync Now; an account with no backup has nothing to keep.
+    public func findSetupBackup() async throws -> SetupBackupLookup {
+        guard let container = try await resolveContainer(), let identity = identityProvider() else { return .unavailable }
+        let remote = try await discoverSnapshot(container)
+        guard Self.sameIdentity(identity, identityProvider()) else { throw CloudMirrorError.accountChanged }
+        if remote != nil {
+            defaults.set(identity, forKey: keyKeptSetupBackupIdentity)
+        } else if isKeepingSetupBackup(for: identity) {
+            clearKeptSetupBackup()
+        }
+        guard let remote else { return .none }
+        // Discovery reports distantFuture when iCloud gives no change date.
+        return .found(savedAt: remote.modifiedAt == .distantFuture ? nil : remote.modifiedAt)
+    }
+
+    /// True while the welcome step's unrestored backup belongs to this Apple Account.
+    public var isKeepingSetupBackup: Bool { isKeepingSetupBackup(for: identityProvider()) }
+
+    private func isKeepingSetupBackup(for identity: Data?) -> Bool {
+        guard let identity, let kept = defaults.data(forKey: keyKeptSetupBackupIdentity) else { return false }
+        return Self.sameIdentity(kept, identity)
+    }
+
+    private func clearKeptSetupBackup() { defaults.removeObject(forKey: keyKeptSetupBackupIdentity) }
+
     public func didRestoreSnapshot() {
+        clearKeptSetupBackup()
         // Restoring replaces the saved app data, so an older queued export must
         // never upload later and undo that deliberate restore.
         clearPendingSync()

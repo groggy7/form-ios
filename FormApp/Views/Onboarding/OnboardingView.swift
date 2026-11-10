@@ -17,6 +17,10 @@ public struct OnboardingView: View {
     @State private var showRestoreAlert = false
     @State private var isRestoring = false
     @State private var restoreErrorMessage: String?
+    /// iCloud backup lookup for this launch; nil until it finishes or when it failed.
+    @State private var setupBackup: SetupBackupSheet.Phase?
+    @State private var showWelcomeBack = false
+    @State private var welcomeBackOffered = false
 
     private static let welcomeStep = 0
     public init(store: AppStore) {
@@ -32,23 +36,29 @@ public struct OnboardingView: View {
                 VStack(spacing: 0) {
                     HStack { Spacer(); languagePill }.padding(8)
                     welcomeStep
-                }.background(AppColors.background)
+                }
+                .background(AppColors.background)
+                // iCloud needs no sign-in, so Welcome looks for a backup by itself.
+                .task { await lookForBackup() }
             }
         }
         .onAppear { TrainingSetupStore.clearDraft() }
         .onChange(of: scenePhase) { _, phase in
+            if phase == .active { presentWelcomeBackIfIdle() }
             guard phase == .background else { return }
             // An unfinished visit restarts at Welcome; no question or answer is restored.
             step = Self.welcomeStep
             showLanguageSheet = false
             showRestoreSheet = false
             showCloudRestore = false
+            showWelcomeBack = false
             isShowingBackupImporter = false
             showRestoreAlert = false
             backupToRestore = nil
             restoreErrorMessage = nil
         }
-        .sheet(isPresented: $showLanguageSheet) {
+        // A backup found while the language list was open is offered once it closes.
+        .sheet(isPresented: $showLanguageSheet, onDismiss: presentWelcomeBackIfIdle) {
             LanguageSelectionSheet(
                 preference: langManager.languagePreference,
                 deviceLanguageName: deviceLanguageName,
@@ -67,12 +77,11 @@ public struct OnboardingView: View {
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showCloudRestore) {
-            // A backup restored from the welcome step finishes setup as a returning user.
-            CloudBackupSheet(store: store, onRestored: {
-                showCloudRestore = false
-                store.completeSetupAfterRestore()
-                store.noticeMessage = LanguageManager.t("notice.backupRestored")
-            })
+            // Restore-only: saving from a fresh install could replace the backup being restored.
+            setupBackupSheet(phase: setupBackup.flatMap { $0 == .unavailable ? nil : $0 } ?? .looking) { showCloudRestore = false }
+        }
+        .sheet(isPresented: $showWelcomeBack) {
+            setupBackupSheet(phase: setupBackup ?? .looking) { showWelcomeBack = false }
         }
         .fileImporter(isPresented: $isShowingBackupImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
             readBackup(result)
@@ -95,6 +104,45 @@ public struct OnboardingView: View {
     }
 
     // MARK: - Welcome
+
+    private func setupBackupSheet(phase: SetupBackupSheet.Phase, close: @escaping () -> Void) -> some View {
+        SetupBackupSheet(store: store, phase: phase, onRestored: {
+            close()
+            // A backup restored from the welcome step finishes setup as a returning user.
+            store.completeSetupAfterRestore()
+            store.noticeMessage = LanguageManager.t("notice.backupRestored")
+        }, onStartFresh: {
+            close()
+            withAnimation(.easeInOut(duration: 0.25)) { step = 1 }
+        }, onRestoreFile: {
+            close()
+            isShowingBackupImporter = true
+        })
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+    }
+
+    /// Looks for an iCloud backup from metadata only. Nothing shows unless one is found.
+    private func lookForBackup() async {
+        if setupBackup == nil {
+            guard let result = try? await CloudMirrorManager.shared.findSetupBackup() else { return }
+            switch result {
+            case .found(let savedAt): setupBackup = .found(savedAt: savedAt)
+            case .none: setupBackup = SetupBackupSheet.Phase.none
+            case .unavailable: setupBackup = .unavailable
+            }
+        }
+        presentWelcomeBackIfIdle()
+    }
+
+    /// Offers a found backup once per launch, only while Welcome is idle on screen.
+    private func presentWelcomeBackIfIdle() {
+        guard case .found? = setupBackup, !welcomeBackOffered, step == Self.welcomeStep, scenePhase == .active,
+              !showLanguageSheet, !showRestoreSheet, !showCloudRestore, !isShowingBackupImporter,
+              !showRestoreAlert, !isRestoring, restoreErrorMessage == nil else { return }
+        welcomeBackOffered = true
+        showWelcomeBack = true
+    }
 
     private var deviceLanguageName: String {
         let code = LanguageManager.resolveLanguage(Locale.preferredLanguages)
@@ -163,7 +211,11 @@ public struct OnboardingView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("onboarding-start")
-                        Button(action: { showRestoreSheet = true }) {
+                        Button(action: {
+                            // Someone already restoring needs no separate offer.
+                            welcomeBackOffered = true
+                            showRestoreSheet = true
+                        }) {
                             Text(LanguageManager.t("onboarding.welcome.restore"))
                                 .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.text)

@@ -166,6 +166,7 @@
 		M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
 		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
 		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
+		SB0000000000000000000002 /* SetupBackupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = SB0000000000000000000001 /* SetupBackupSheet.swift */; };
 		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
 		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
 		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
@@ -408,6 +409,7 @@
 		M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		SB0000000000000000000001 /* SetupBackupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupBackupSheet.swift; sourceTree = "<group>"; };
 		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
 		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
 		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
@@ -902,6 +904,7 @@
 			isa = PBXGroup;
 			children = (
 				OV0000000000000000000001 /* OnboardingView.swift */,
+				SB0000000000000000000001 /* SetupBackupSheet.swift */,
 				D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */,
 			);
 			path = Onboarding;
@@ -1231,6 +1234,7 @@
 				6A06B66FDDD4DF6F6E3A2F09 /* TrainingPlanGenerator.swift in Sources */,
 				TR0000000000000000000002 /* TourModels.swift in Sources */,
 				OV0000000000000000000002 /* OnboardingView.swift in Sources */,
+				SB0000000000000000000002 /* SetupBackupSheet.swift in Sources */,
 				C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */,
 				109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */,
 				ECFEB80B3B0890A60B49074C /* RestLiveActivityCoordinator.swift in Sources */,

@@ -11782,6 +11782,116 @@ final class CloudBackupReliabilityTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json"), encoding: .utf8), newer)
     }
 
+    private final class SnapshotBox: @unchecked Sendable {
+        private let lock = NSLock()
+        private var _value: CloudSnapshot?
+        init(_ value: CloudSnapshot?) { _value = value }
+        var value: CloudSnapshot? { get { lock.withLock { _value } } set { lock.withLock { _value = newValue } } }
+    }
+
+    /// A cloud backup saved an hour ago, found by the welcome step's lookup.
+    private func setupBackupFixture() throws -> (CloudMirrorManager, Environment, URL, SnapshotBox, Date) {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let remote = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+        let saved = Date().addingTimeInterval(-3600)
+        try write(newer, to: remote, at: saved)
+        let box = SnapshotBox(CloudSnapshot(url: remote, modifiedAt: saved))
+        return (manager(root, defaults, environment, discover: { _ in box.value }), environment, remote, box, saved)
+    }
+
+    func testSetupLookupKeepsAFoundBackupFromAutomaticReplacement() async throws {
+        let (subject, _, remote, _, saved) = try setupBackupFixture()
+        let lookup = try await subject.findSetupBackup()
+        XCTAssertEqual(lookup, .found(savedAt: saved))
+        XCTAssertTrue(subject.isKeepingSetupBackup)
+        subject.autoSync(backupJson: older)
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertEqual(subject.getStatus().errorMessage, CloudMirrorError.keptSetupBackup.localizedDescription)
+        XCTAssertTrue(subject.hasPendingSync)
+        XCTAssertEqual(try String(contentsOf: remote, encoding: .utf8), newer)
+    }
+
+    func testSyncNowDeliberatelyReplacesTheKeptSetupBackup() async throws {
+        let (subject, _, remote, _, _) = try setupBackupFixture()
+        _ = try await subject.findSetupBackup()
+        _ = try await subject.syncNowAsync(backupJson: older)
+        XCTAssertEqual(try String(contentsOf: remote, encoding: .utf8), older)
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+    }
+
+    func testRestoringOrLosingTheKeptBackupEndsItsProtection() async throws {
+        let (subject, _, remote, box, _) = try setupBackupFixture()
+        _ = try await subject.findSetupBackup()
+        subject.didRestoreSnapshot()
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+
+        _ = try await subject.findSetupBackup()
+        XCTAssertTrue(subject.isKeepingSetupBackup)
+        box.value = nil
+        subject.autoSync(backupJson: older)
+        try await waitUntil { !subject.hasPendingSync }
+        XCTAssertEqual(try String(contentsOf: remote, encoding: .utf8), older)
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+    }
+
+    func testSetupLookupReportsMissingICloudAndEmptyAccounts() async throws {
+        let (subject, environment, _, box, _) = try setupBackupFixture()
+        let container = environment.container
+        environment.container = nil
+        let unavailable = try await subject.findSetupBackup()
+        XCTAssertEqual(unavailable, .unavailable)
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+
+        environment.container = container
+        _ = try await subject.findSetupBackup()
+        box.value = nil
+        let none = try await subject.findSetupBackup()
+        XCTAssertEqual(none, SetupBackupLookup.none)
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+    }
+
+    func testSetupBackupProtectionBelongsToItsAppleAccount() async throws {
+        let (subject, environment, _, _, _) = try setupBackupFixture()
+        _ = try await subject.findSetupBackup()
+        XCTAssertTrue(subject.isKeepingSetupBackup)
+        environment.identity = try NSKeyedArchiver.archivedData(withRootObject: "account-B", requiringSecureCoding: false)
+        XCTAssertFalse(subject.isKeepingSetupBackup)
+    }
+
+    func testSetupBackupSheetLocalizedNarrowLayout() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        let saved = Date(timeIntervalSince1970: 1_762_800_000)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (name, phase) in [("found", SetupBackupSheet.Phase.found(savedAt: saved)), ("none", .none), ("unavailable", .unavailable)] {
+                let view = SetupBackupSheet(store: AppStore(persistence: AppStatePersistence(inMemory: true)), phase: phase,
+                                            onRestored: {}, onStartFresh: {}, onRestoreFile: {})
+                    .environment(\.dynamicTypeSize, .xxxLarge)
+                let host = UIHostingController(rootView: view)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
+                window.rootViewController = host
+                window.makeKeyAndVisible()
+                host.view.frame = window.bounds
+                host.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds: 200_000_000)
+                host.view.layoutIfNeeded()
+                func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+                let scroll = try XCTUnwrap(descendants(host.view).compactMap { $0 as? UIScrollView }.first)
+                XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { context in host.view.layer.render(in: context.cgContext) }
+                XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 10_000, "A rendered sheet must contain visible content")
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "setup-backup-\(name)-\(language)-320-large"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+        }
+        XCTAssertFalse(SetupBackupSheet.savedAtText(saved).isEmpty)
+    }
+
     func testBackupSheetLocalizedNarrowLayoutWithFreeRestore() async throws {
         let (root, defaults, environment) = try fixture()
         environment.premium = false
