@@ -1047,7 +1047,10 @@ public struct ActiveSessionView: View {
             onUpdatePartials: { index, extensionIndex, input in
                 changeSet(exercise: exercise, index: index) { IntensitySets.editingPartials($0, extensionIndex: extensionIndex, input: input) }
             },
-            onRemoveLastPart: { index in changeSet(exercise: exercise, index: index, IntensitySets.removingLastPart) }
+            onRemoveLastPart: { index in changeSet(exercise: exercise, index: index, IntensitySets.removingLastPart) },
+            onEndExercise: { index in
+                store.updateActiveSession { IntensitySets.endingExercise(in: $0, exerciseId: exercise.id, at: index) }
+            }
         )
     }
 
