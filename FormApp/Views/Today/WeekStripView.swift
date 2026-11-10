@@ -134,10 +134,20 @@ struct WorkoutDayStrip: View {
         return min(cap, max(compact, (row - CGFloat(count - 1) * gap) / CGFloat(count)))
     }
 
-    /// Calm text keeps its size, so a widened Calm tile grows taller in proportion instead of turning square.
+    /// A widened tile's height and text grow by two-thirds of its extra width, so a three-day row fills the width
+    /// without outweighing the hero card: on a 393pt phone, 112pt tiles are laid out as if 102pt wide (date about
+    /// 27pt, under the hero title's 32pt). Compact tiles are unchanged.
+    static func tileScale(tileWidth: CGFloat, stripWidth: CGFloat) -> CGFloat {
+        guard stripWidth > 0 else { return tileWidth }
+        let compact = compactTileWidth(stripWidth: stripWidth)
+        return tileWidth <= compact ? tileWidth : compact + (tileWidth - compact) * 2 / 3
+    }
+
+    /// Calm text keeps its size, so a widened Calm tile grows taller with the scale instead of turning square.
     static func calmMinHeight(tileWidth: CGFloat, stripWidth: CGFloat) -> CGFloat {
         guard stripWidth > 0 else { return calmHeight }
-        return calmHeight * max(1, tileWidth / compactTileWidth(stripWidth: stripWidth))
+        let scale = tileScale(tileWidth: tileWidth, stripWidth: stripWidth)
+        return calmHeight * max(1, scale / compactTileWidth(stripWidth: stripWidth))
     }
 
     var body: some View {
@@ -148,6 +158,7 @@ struct WorkoutDayStrip: View {
                 HStack(spacing: Self.gap) {
                     ForEach(workouts) { workout in
                         let dayIndex = workout.day - 1
+                        let scale = Self.tileScale(tileWidth: tileWidth, stripWidth: stripWidth)
                         let selected = workout.id == activeWorkoutId
                         let isToday = dayIndex == calendar.today
                         let workoutKey = "\(program.id):\(workout.id)"
@@ -185,14 +196,14 @@ struct WorkoutDayStrip: View {
                                     : "DAY"
 
                                 Text(dayLabel)
-                                    .font(.app(size: glowTiles ? labelSize * tileWidth / 110 : labelSize, weight: .semibold))
+                                    .font(.app(size: glowTiles ? labelSize * scale / 110 : labelSize, weight: .semibold))
                                     .tracking(0.5)
                                     .foregroundStyle(glowTiles && isDark
                                         ? AppColors.homeDayGlowLabel(statusTint) : textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
-                                    .font(.app(size: glowTiles ? numberSize * tileWidth * 0.267 / 25 : numberSize, weight: .bold))
+                                    .font(.app(size: glowTiles ? numberSize * scale * 0.267 / 25 : numberSize, weight: .bold))
                                     .foregroundStyle(textColor)
                                     .shadow(color: !isDark ? .clear
                                                 : Color.black.opacity(0.30),
@@ -203,35 +214,35 @@ struct WorkoutDayStrip: View {
                                             let ink = isDark ? AppColors.homeDayGlowDivider(statusTint)
                                                 : (statusTint ?? glass.neutralRim).opacity(0.65)
                                             // Whole pixels, so the core keeps the reference's full strength.
-                                            let thickness = max(1, (tileWidth * 0.0075 * displayScale).rounded())
-                                            let top = (tileWidth * 0.058 * displayScale - thickness / 2).rounded()
+                                            let thickness = max(1, (scale * 0.0075 * displayScale).rounded())
+                                            let top = (scale * 0.058 * displayScale - thickness / 2).rounded()
                                             Rectangle().fill(LinearGradient(colors: [ink.opacity(0), ink, ink.opacity(0)],
                                                 startPoint: .leading, endPoint: .trailing))
-                                                .frame(width: tileWidth * 0.25, height: thickness / displayScale)
+                                                .frame(width: scale * 0.25, height: thickness / displayScale)
                                                 .alignmentGuide(.bottom) { $0[.top] }
                                                 .offset(y: top / displayScale)
                                                 .accessibilityHidden(true)
                                         }
                                     }
-                                    .padding(.top, glowTiles ? tileWidth * 0.04 : 0)
+                                    .padding(.top, glowTiles ? scale * 0.04 : 0)
 
                                 // Workout titles never drop below 10pt (scaled with Dynamic Type): phone tiles (76-96pt)
                                 // would otherwise set them at 7.6-9.6pt. The narrower side inset below gives them more room.
                                 Text(workout.displayTitle(programId: program.id))
-                                    .font(.app(size: glowTiles ? max(labelSize * tileWidth / 110, labelSize * 10 / 11) : labelSize))
+                                    .font(.app(size: glowTiles ? max(labelSize * scale / 110, labelSize * 10 / 11) : labelSize))
                                     .foregroundStyle(textColor)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(2, reservesSpace: true)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity)
-                                    .padding(.top, glowTiles ? tileWidth * 0.14 : 0)
+                                    .padding(.top, glowTiles ? scale * 0.14 : 0)
                             }
-                            .padding(.horizontal, glowTiles ? tileWidth * 0.06 : 8)
-                            .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
+                            .padding(.horizontal, glowTiles ? scale * 0.06 : 8)
+                            .padding(.vertical, glowTiles ? scale * 0.17 : 12)
                             .containerRelativeFrame(.horizontal) { width, _ in
                                 Self.tileWidth(stripWidth: width, count: workouts.count)
                             }
-                            .frame(minHeight: glowTiles ? tileWidth * 1.1667
+                            .frame(minHeight: glowTiles ? scale * 1.1667
                                 : Self.calmMinHeight(tileWidth: tileWidth, stripWidth: stripWidth),
                                 alignment: glowTiles ? .top : .center)
                             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { tileWidth = $0 }
