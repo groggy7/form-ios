@@ -134,13 +134,13 @@ struct WorkoutDayStrip: View {
         return min(cap, max(compact, (row - CGFloat(count - 1) * gap) / CGFloat(count)))
     }
 
-    /// A widened tile's height and text grow by two-thirds of its extra width, so a three-day row fills the width
-    /// without outweighing the hero card: on a 393pt phone, 112pt tiles are laid out as if 102pt wide (date about
-    /// 27pt, under the hero title's 32pt). Compact tiles are unchanged.
+    /// A widened tile's height and text grow by a third of its extra width, so a three-day row fills the width
+    /// without outweighing the hero card: on a 393pt phone, 112pt tiles are laid out as if 92pt wide, about square
+    /// at 110pt tall with a 25pt date under the hero title's 32pt. Compact tiles are unchanged.
     static func tileScale(tileWidth: CGFloat, stripWidth: CGFloat) -> CGFloat {
         guard stripWidth > 0 else { return tileWidth }
         let compact = compactTileWidth(stripWidth: stripWidth)
-        return tileWidth <= compact ? tileWidth : compact + (tileWidth - compact) * 2 / 3
+        return tileWidth <= compact ? tileWidth : compact + (tileWidth - compact) / 3
     }
 
     /// Calm text keeps its size, so a widened Calm tile grows taller with the scale instead of turning square.

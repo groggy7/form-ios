@@ -739,11 +739,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(width(820, 7), 104.57, accuracy: 0.01)
         // Calm keeps 108pt at four across and grows with the tile scale when widened.
         XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: 82.25, stripWidth: 393), 108, accuracy: 0.01)
-        XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: width(393, 3), stripWidth: 393), 108 * 102.31 / 82.25, accuracy: 0.05)
-        // Widened tiles grow their height and text by two-thirds of the extra width.
-        XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: width(393, 3), stripWidth: 393), 102.31, accuracy: 0.01)
+        XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: width(393, 3), stripWidth: 393), 108 * 92.28 / 82.25, accuracy: 0.05)
+        // Widened tiles grow their height and text by a third of the extra width.
+        XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: width(393, 3), stripWidth: 393), 92.28, accuracy: 0.01)
         XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: width(393, 4), stripWidth: 393), 82.25, accuracy: 0.01)
-        XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: width(820, 3), stripWidth: 820), 117.33, accuracy: 0.01)
+        XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: width(820, 3), stripWidth: 820), 106.67, accuracy: 0.01)
         XCTAssertEqual(WorkoutDayStrip.tileScale(tileWidth: 82, stripWidth: 0), 82)
         XCTAssertEqual(WorkoutDayStrip.calmMinHeight(tileWidth: 82, stripWidth: 0), 108)
     }
