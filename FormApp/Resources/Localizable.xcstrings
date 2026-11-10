@@ -25097,7 +25097,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günde zaten bir antrenman var. Boş bir gün seç."
+            "value": "Seçtiğin günde zaten bir antrenman var. Boş bir gün seç."
           }
         },
         "de": {
@@ -33596,13 +33596,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld antrenman gününde egzersiz yok; bu günler henüz başlatılamaz."
+                  "value": "%lld antrenman gününde egzersiz yok; egzersiz eklenene kadar başlatılamaz."
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld antrenman gününde egzersiz yok; bu günler henüz başlatılamaz."
+                  "value": "%lld antrenman gününde egzersiz yok; egzersiz eklenene kadar başlatılamaz."
                 }
               }
             }
@@ -33793,7 +33793,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günde zaten var"
+            "value": "Bu antrenmanda zaten var"
           }
         },
         "de": {
@@ -34003,7 +34003,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günden kaldır"
+            "value": "Bu antrenmandan kaldır"
           }
         },
         "de": {
@@ -45977,7 +45977,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günün ana odağını görmek için egzersiz ekle."
+            "value": "Bu antrenmanın ana odağını görmek için egzersiz ekle."
           }
         },
         "de": {
@@ -49197,7 +49197,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günün egzersizleri"
+            "value": "Seçili günün egzersizleri"
           }
         },
         "de": {
@@ -49232,7 +49232,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günün antrenmanındaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini aç."
+            "value": "Bu antrenmandaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini aç."
           }
         },
         "de": {
@@ -55291,7 +55291,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu günün Apple Sağlık tartımı burada gizlenir ve Apple Sağlık'ta kalır."
+            "value": "O günün Apple Sağlık tartımı burada gizlenir ve Apple Sağlık'ta kalır."
           }
         },
         "de": {
@@ -55956,7 +55956,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gerçekten çalışabileceğin 2–6 gün seç. Planın bu günlerde kalır."
+            "value": "Gerçekten çalışabileceğin 2–6 gün seç. Planın seçtiğin günlerde kalır."
           }
         },
         "de": {
