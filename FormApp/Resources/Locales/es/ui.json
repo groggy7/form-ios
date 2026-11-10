@@ -123,6 +123,8 @@
   "history.otherScheduledDay": "De otro día programado",
   "history.additionalWorkout": "Entrenamiento adicional",
   "history.alsoScheduledDay": "También programado para este día",
+  "history.fromOtherProgram": "De otro programa: {program}",
+  "history.fromOtherProgramUnnamed": "De otro programa",
   "history.usualSchedule": "Horario habitual: {date}",
   "history.scheduledFor": "Programado para: {date}",
   "history.scheduleUnknown": "Horario original no disponible",

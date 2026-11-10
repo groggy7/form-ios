@@ -4318,7 +4318,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu gün için de planlanmış"
+            "value": "Bu tarih için de planlanmıştı"
           }
         },
         "de": {
@@ -4337,6 +4337,76 @@
           "stringUnit": {
             "state": "translated",
             "value": "También programado para este día"
+          }
+        }
+      }
+    },
+    "history.fromOtherProgram": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From another program: {program}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başka bir programdan: {program}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus einem anderen Programm: {program}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "D’un autre programme : {program}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De otro programa: {program}"
+          }
+        }
+      }
+    },
+    "history.fromOtherProgramUnnamed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From another program"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başka bir programdan"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus einem anderen Programm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "D’un autre programme"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De otro programa"
           }
         }
       }
@@ -49022,7 +49092,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu gün için planlanmış bir şey yok. Antrenmanını görmek için yukarıdan bir antrenman gününe dokun."
+            "value": "O gün için planlanmış bir şey yok. Antrenmanını görmek için yukarıdan bir antrenman gününe dokun."
           }
         },
         "de": {

@@ -56,6 +56,10 @@ public struct WorkoutDaySection: Identifiable {
     public let scheduleSource: HistoryScheduleSource
     public let isLiveSession: Bool
     public let isCurrentPlanMatch: Bool
+    /// The record belongs to a program other than the active one, such as one used before a switch.
+    public let isFromOtherProgram: Bool
+    /// That program's name, or nil once it has been deleted.
+    public let otherProgramName: String?
     public let originDate: Date?
     public let originDateFormatted: String?
     public let completedSets: Int
@@ -80,7 +84,9 @@ public struct WorkoutDaySection: Identifiable {
         scheduledDate: Date? = nil,
         scheduleSource: HistoryScheduleSource = .unknown,
         isLiveSession: Bool = false,
-        isCurrentPlanMatch: Bool = false
+        isCurrentPlanMatch: Bool = false,
+        isFromOtherProgram: Bool = false,
+        otherProgramName: String? = nil
     ) {
         self.sessionRecord = sessionRecord
         self.workout = workout
@@ -89,6 +95,8 @@ public struct WorkoutDaySection: Identifiable {
         self.scheduleSource = scheduleSource
         self.isLiveSession = isLiveSession
         self.isCurrentPlanMatch = isCurrentPlanMatch
+        self.isFromOtherProgram = isFromOtherProgram
+        self.otherProgramName = otherProgramName
         self.originDate = originDate
         self.originDateFormatted = originDateFormatted
         self.completedSets = completedSets
@@ -121,7 +129,14 @@ public struct WorkoutDaySection: Identifiable {
         if isCurrentPlanMatch { return LanguageManager.t("history.recordedToday") }
         guard let scheduledDate else { return LanguageManager.t("history.additionalWorkout") }
         if Calendar.current.isDate(scheduledDate, inSameDayAs: day) {
-            if index > 0 { return LanguageManager.t("history.alsoScheduledDay") }
+            // A second workout planned for the same date needs its reason, usually a program switch.
+            if index > 0 {
+                guard isFromOtherProgram else { return LanguageManager.t("history.alsoScheduledDay") }
+                guard let name = otherProgramName, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                    return LanguageManager.t("history.fromOtherProgramUnnamed")
+                }
+                return LanguageManager.t("history.fromOtherProgram", ["program": name])
+            }
             return Calendar.current.isDate(day, inSameDayAs: today)
                 ? LanguageManager.t("history.todayWorkout")
                 : LanguageManager.t("history.workoutForDate", ["date": Self.formattedDate(day)])
@@ -210,8 +225,11 @@ public struct HistoryDayDetailData: Identifiable {
         // A checkbox/backup completion entry is not a session log or a saved prescription.
         if records.isEmpty && manuallyCompleted { return [] }
         let dayString = WorkoutCalendar.formatDate(day)
+        let hasActiveProgram = !(activeProgramId ?? "").isEmpty
         var sections = records.map { record -> WorkoutDaySection in
-            let workout = record.workoutSnapshot ?? programs.first { $0.id == record.programId }?.workouts.first { $0.id == record.workoutId }
+            let program = programs.first { $0.id == record.programId }
+            let workout = record.workoutSnapshot ?? program?.workouts.first { $0.id == record.workoutId }
+            let isFromOtherProgram = hasActiveProgram && record.programId != activeProgramId
             let (scheduledDate, source) = scheduleContext(record: record, workout: workout, day: day)
             let origin = scheduledDate.flatMap { Calendar.current.isDate($0, inSameDayAs: day) ? nil : $0 }
             let items = buildExerciseProgress(sessionRecord: record, workout: workout, history: history)
@@ -224,7 +242,9 @@ public struct HistoryDayDetailData: Identifiable {
                 isComplete: record.id != activeRecordId && WorkoutCalendar.isSessionComplete(session: record, workout: workout),
                 exerciseItems: items, scheduledDate: scheduledDate, scheduleSource: source, isLiveSession: record.id == activeRecordId,
                 isCurrentPlanMatch: Calendar.current.isDate(day, inSameDayAs: today) && scheduledDate == nil
-                    && record.programId == activeProgramId && record.workoutId == scheduledWorkout?.id)
+                    && record.programId == activeProgramId && record.workoutId == scheduledWorkout?.id,
+                isFromOtherProgram: isFromOtherProgram,
+                otherProgramName: isFromOtherProgram ? program?.displayName : nil)
         }
         // Current plans can supplement today's activity, but cannot add invented workouts to recorded history.
         if (records.isEmpty || Calendar.current.isDate(day, inSameDayAs: today)),

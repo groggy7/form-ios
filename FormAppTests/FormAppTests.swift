@@ -10433,6 +10433,35 @@ final class HistoryBreakdownTests: XCTestCase {
             programs: [p], history: records, activeRecordId: active, today: today ?? day)
     }
 
+    /// Today's plan after a program switch, with a workout recorded for the same date listed second.
+    private func sameDayContexts(fromOldProgram: Bool, oldProgramKept: Bool) -> [String] {
+        let full = Workout(id: "full", day: 2, title: "Full Body: Squat", exercises: [Exercise(id: "full-e", name: "Squat", sets: 2)])
+        let old = Program(id: "old-p", name: "Full Body 3-Day", workouts: [full])
+        var saved = record(fromOldProgram ? full : bench, complete: false, scheduled: "2026-10-06")
+        if fromOldProgram { saved.programId = old.id }
+        let result = HistoryDayDetailData.groupSections(day: day, records: [saved], scheduledWorkout: pull,
+            activeProgramId: program.id, programs: oldProgramKept ? [program, old] : [program], history: [saved], today: day)
+        XCTAssertEqual(result.map { $0.sessionRecord?.id }, [nil, saved.id])
+        return result.enumerated().map { $0.element.contextText(on: day, today: day, index: $0.offset) }
+    }
+
+    func testSameDayWorkoutFromAnotherProgramNamesThatProgram() {
+        let contexts = sameDayContexts(fromOldProgram: true, oldProgramKept: true)
+        XCTAssertEqual(contexts[0], LanguageManager.t("history.todayWorkout"))
+        XCTAssertEqual(contexts[1], LanguageManager.t("history.fromOtherProgram", ["program": "Full Body 3-Day"]))
+        XCTAssertTrue(contexts[1].contains("Full Body 3-Day"))
+    }
+
+    func testSameDayWorkoutFromDeletedProgramSaysAnotherProgram() {
+        XCTAssertEqual(sameDayContexts(fromOldProgram: true, oldProgramKept: false)[1],
+            LanguageManager.t("history.fromOtherProgramUnnamed"))
+    }
+
+    func testSameDayWorkoutFromActiveProgramKeepsAlsoScheduled() {
+        XCTAssertEqual(sameDayContexts(fromOldProgram: false, oldProgramKept: true)[1],
+            LanguageManager.t("history.alsoScheduledDay"))
+    }
+
     func testLastMonthUnfinishedRecordDoesNotAddEditedCurrentPlan() {
         let historicalDay = WorkoutCalendar.parseDate("2026-09-10")!
         let today = WorkoutCalendar.parseDate("2026-10-08")!
