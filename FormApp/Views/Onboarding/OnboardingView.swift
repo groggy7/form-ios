@@ -21,10 +21,19 @@ public struct OnboardingView: View {
     @State private var setupBackup: SetupBackupSheet.Phase?
     @State private var showWelcomeBack = false
     @State private var welcomeBackOffered = false
+    /// The live scene state. The lookup finishes after launch, and a view copy captured by its
+    /// task still holds the launch-time scenePhase, so presentation reads this instead.
+    @State private var isSceneActive = false
+    private let lookUpBackup: () async throws -> SetupBackupLookup
 
     private static let welcomeStep = 0
     public init(store: AppStore) {
+        self.init(store: store, lookUpBackup: { try await CloudMirrorManager.shared.findSetupBackup() })
+    }
+
+    init(store: AppStore, lookUpBackup: @escaping () async throws -> SetupBackupLookup) {
         self.store = store
+        self.lookUpBackup = lookUpBackup
     }
 
     public var body: some View {
@@ -43,7 +52,8 @@ public struct OnboardingView: View {
             }
         }
         .onAppear { TrainingSetupStore.clearDraft() }
-        .onChange(of: scenePhase) { _, phase in
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            isSceneActive = phase == .active
             if phase == .active { presentWelcomeBackIfIdle() }
             guard phase == .background else { return }
             // An unfinished visit restarts at Welcome; no question or answer is restored.
@@ -125,7 +135,7 @@ public struct OnboardingView: View {
     /// Looks for an iCloud backup from metadata only. Nothing shows unless one is found.
     private func lookForBackup() async {
         if setupBackup == nil {
-            guard let result = try? await CloudMirrorManager.shared.findSetupBackup() else { return }
+            guard let result = try? await lookUpBackup() else { return }
             switch result {
             case .found(let savedAt): setupBackup = .found(savedAt: savedAt)
             case .none: setupBackup = SetupBackupSheet.Phase.none
@@ -137,7 +147,7 @@ public struct OnboardingView: View {
 
     /// Offers a found backup once per launch, only while Welcome is idle on screen.
     private func presentWelcomeBackIfIdle() {
-        guard case .found? = setupBackup, !welcomeBackOffered, step == Self.welcomeStep, scenePhase == .active,
+        guard case .found? = setupBackup, !welcomeBackOffered, step == Self.welcomeStep, isSceneActive,
               !showLanguageSheet, !showRestoreSheet, !showCloudRestore, !isShowingBackupImporter,
               !showRestoreAlert, !isRestoring, restoreErrorMessage == nil else { return }
         welcomeBackOffered = true

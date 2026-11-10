@@ -11888,6 +11888,47 @@ final class CloudBackupReliabilityTests: XCTestCase {
         XCTAssertFalse(subject.isKeepingSetupBackup)
     }
 
+    /// Hosts Welcome the way a launch does: inactive first, active shortly after, with the lookup finishing later.
+    private struct LaunchPhaseHost: View {
+        let content: OnboardingView
+        @State private var phase: ScenePhase = .inactive
+        var body: some View {
+            content
+                .environment(\.scenePhase, phase)
+                .task { try? await Task.sleep(nanoseconds: 100_000_000); phase = .active }
+        }
+    }
+
+    private func presentedAfterLaunch(_ lookup: SetupBackupLookup) async throws -> UIViewController? {
+        let view = OnboardingView(store: AppStore(persistence: AppStatePersistence(inMemory: true)), lookUpBackup: {
+            try await Task.sleep(nanoseconds: 400_000_000)
+            return lookup
+        })
+        let host = UIHostingController(rootView: LaunchPhaseHost(content: view))
+        let previous = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.windowScene = previous?.windowScene
+        window.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        defer { host.dismiss(animated: false); window.isHidden = true; previous?.makeKeyAndVisible() }
+        let end = Date().addingTimeInterval(3)
+        while host.presentedViewController == nil && Date() < end { try await Task.sleep(nanoseconds: 50_000_000) }
+        return host.presentedViewController
+    }
+
+    func testWelcomeOffersAFoundBackupOnceTheLaunchBecomesActive() async throws {
+        let presented = try await presentedAfterLaunch(.found(savedAt: Date(timeIntervalSince1970: 1_762_800_000)))
+        XCTAssertNotNil(presented, "A backup found after launch must present Welcome back")
+    }
+
+    func testWelcomeStaysUnchangedWithoutABackup() async throws {
+        for lookup in [SetupBackupLookup.none, .unavailable] {
+            let presented = try await presentedAfterLaunch(lookup)
+            XCTAssertNil(presented, "Welcome must not present anything for \(lookup)")
+        }
+    }
+
     func testSetupBackupSheetLocalizedNarrowLayout() async throws {
         let previousLanguage = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previousLanguage) }
