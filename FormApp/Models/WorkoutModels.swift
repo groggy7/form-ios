@@ -1691,18 +1691,24 @@ public struct ExerciseMetadata {
         exercise: Exercise,
         muscleKey: String?
     ) -> Bool {
-        guard let muscleKey = muscleKey else { return true }
+        guard let muscleKey else { return true }
+        return muscleMatchRank(exercise: exercise, muscleKey: muscleKey) != nil
+    }
+
+    /// 0 when the filter names a primary target, 1 for supporting work, nil when it does not match.
+    public static func muscleMatchRank(exercise: Exercise, muscleKey: String) -> Int? {
         if muscleKey == "cardio" {
             let mov = exercise.resolvedMovement
-            if mov == .conditioning || mov == .boxing { return true }
+            if mov == .conditioning || mov == .boxing { return 0 }
             let lowerName = exercise.name.lowercased()
             let lowerId = (exercise.exerciseId ?? "").lowercased()
-            return lowerId.contains("jump-rope") || lowerId.contains("burpee") ||
+            let cardio = lowerId.contains("jump-rope") || lowerId.contains("burpee") ||
                    lowerName.contains("jump rope") || lowerName.contains("sprint") ||
                    lowerName.contains("burpee") || lowerName.range(of: #"\brun(?:ning)?\b"#, options: .regularExpression) != nil ||
                    lowerName.contains("cardio") || lowerName.contains("box jump") ||
                    lowerName.contains("battle rope") || lowerName.contains("jumping jack") ||
                    lowerName.contains("mountain climber")
+            return cardio ? 0 : nil
         }
         let muscleMap: [String: [String]] = [
             "chest": ["chest"],
@@ -1714,7 +1720,8 @@ public struct ExerciseMetadata {
             "quads": ["quads"],
             "adductors": ["adductors"],
             "hamstrings": ["hamstrings"],
-            "glutes": ["glutes"],
+            // Glutes is the broad group for its hip-abductor refinement, so it covers both.
+            "glutes": ["glutes", "hip-abductors"],
             "calves": ["calves"],
             "shins": ["tibialis"],
             "core": ["abs", "obliques", "deep-core"],
@@ -1734,42 +1741,17 @@ public struct ExerciseMetadata {
             "deep-core": ["deep-core"]
         ]
         let targetMuscles = muscleMap[muscleKey] ?? [muscleKey]
-        if let profile = ExerciseMuscleCatalog.shared?.profile(exercise.exerciseId),
-           profile.all.contains(where: { targetMuscles.contains($0) }) {
-            return true
+        if let profile = ExerciseMuscleCatalog.shared?.profile(exercise.exerciseId) {
+            if profile.primary.contains(where: { targetMuscles.contains($0) }) { return 0 }
+            if profile.secondary.contains(where: { targetMuscles.contains($0) }) { return 1 }
         }
+        // Custom and uncurated exercises carry one inferred label, treated as their main target.
         let fallbackKey = resolveMuscleKey(exerciseId: exercise.exerciseId, name: exercise.name, movementType: exercise.resolvedMovement)
-        switch muscleKey {
-        case "chest": return fallbackKey == "exercise.muscle.chest"
-        case "back": return fallbackKey == "exercise.muscle.back"
-        case "shoulders": return fallbackKey == "exercise.muscle.shoulders"
-        case "biceps": return fallbackKey == "exercise.muscle.biceps"
-        case "triceps": return fallbackKey == "exercise.muscle.triceps"
-        case "quads": return fallbackKey == "exercise.muscle.quads"
-        case "hamstrings": return fallbackKey == "exercise.muscle.hamstrings"
-        case "glutes": return fallbackKey == "exercise.muscle.glutes"
-        case "calves": return fallbackKey == "exercise.muscle.calves"
-        case "forearms": return fallbackKey == "exercise.muscle.forearms"
-        case "adductors": return fallbackKey == "exercise.muscle.adductors"
-        case "shins": return fallbackKey == "exercise.muscle.shins"
-        case "core": return fallbackKey == "exercise.muscle.core"
-        case "front-delts": return fallbackKey == "exercise.muscle.front-delts"
-        case "side-delts": return fallbackKey == "exercise.muscle.side-delts"
-        case "rear-delts": return fallbackKey == "exercise.muscle.rear-delts"
-        case "upper-back": return fallbackKey == "exercise.muscle.upper-back"
-        case "lats": return fallbackKey == "exercise.muscle.lats"
-        case "lower-back": return fallbackKey == "exercise.muscle.lower-back"
-        case "abs": return fallbackKey == "exercise.muscle.abs"
-        case "obliques": return fallbackKey == "exercise.muscle.obliques"
-        case "hip-flexors": return fallbackKey == "exercise.muscle.hip-flexors"
-        case "hip-abductors": return fallbackKey == "exercise.muscle.hip-abductors"
-        case "serratus": return fallbackKey == "exercise.muscle.serratus"
-        case "rotator-cuff": return fallbackKey == "exercise.muscle.rotator-cuff"
-        case "neck": return fallbackKey == "exercise.muscle.neck"
-        case "deep-core": return fallbackKey == "exercise.muscle.deep-core"
-        case "cardio": return fallbackKey == "exercise.muscle.cardio"
-        default: return false
-        }
+        guard let fallbackFilter = MuscleGroupFilter.allCases.first(where: { $0.translationKey == fallbackKey }) else { return nil }
+        if fallbackFilter.rawValue == muscleKey { return 0 }
+        // A narrower inferred label (deep core, hip abductors) still belongs to its broad group.
+        guard let fallbackMuscles = muscleMap[fallbackFilter.rawValue] else { return nil }
+        return fallbackMuscles.allSatisfy { targetMuscles.contains($0) } ? 0 : nil
     }
 }
 
@@ -1833,7 +1815,7 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
         case .quads: return [.quadriceps]
         case .adductors: return [.adductors]
         case .hamstrings: return [.hamstrings]
-        case .glutes: return [.glutes]
+        case .glutes: return [.glutes, .hipAbductors]
         case .calves: return [.calves]
         case .shins: return [.tibialis]
         case .core: return [.abs, .obliques, .deepCore]
@@ -1853,5 +1835,25 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
         case .deepCore: return [.deepCore]
         case .cardio: return []
         }
+    }
+
+    /// Library modal tiles in display order. Regions without main-target exercises stay search-only.
+    public static let libraryTiles: [MuscleGroupFilter] = [
+        .chest, .back, .shoulders, .biceps, .triceps, .forearms, .core, .cardio,
+        .quads, .hamstrings, .glutes, .calves, .adductors
+    ]
+
+    /// Narrower regions offered as chips once their broad group is the active filter.
+    public static let refinements: [MuscleGroupFilter: [MuscleGroupFilter]] = [
+        .back: [.lats, .upperBack, .lowerBack],
+        .shoulders: [.frontDelts, .sideDelts, .rearDelts],
+        .core: [.abs, .obliques],
+        .glutes: [.hipAbductors]
+    ]
+
+    /// The broad group a filter belongs to: itself for a broad group, its parent for a refinement.
+    public static func family(of filter: MuscleGroupFilter?) -> MuscleGroupFilter? {
+        guard let filter else { return nil }
+        return refinements.first(where: { $0.value.contains(filter) })?.key ?? filter
     }
 }

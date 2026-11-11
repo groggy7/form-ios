@@ -143,6 +143,11 @@ public struct LibraryView: View {
                 .tourTarget("library.filters", cornerRadius: 16)
                 .padding(.horizontal, 20)
 
+                if let family = MuscleGroupFilter.family(of: selectedMuscle.flatMap(MuscleGroupFilter.init(rawValue:))),
+                   let options = MuscleGroupFilter.refinements[family] {
+                    LibraryMuscleRefinements(family: family, options: options, selectedMuscle: $selectedMuscle)
+                }
+
                 if isCardView {
                     // Exercise cards grid (2 columns)
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
@@ -441,7 +446,7 @@ struct LibraryMuscleFilterGrid: View {
     var body: some View {
         let _ = themeManager.currentTheme
         VStack(spacing: 8) {
-            let muscles = MuscleGroupFilter.allCases
+            let muscles = MuscleGroupFilter.libraryTiles
             ForEach(Array(stride(from: 0, to: muscles.count, by: 2)), id: \.self) { start in
                 HStack(alignment: .top, spacing: 8) {
                     muscleFilterCard(muscles[start])
@@ -457,7 +462,8 @@ struct LibraryMuscleFilterGrid: View {
     }
 
     private func muscleFilterCard(_ muscle: MuscleGroupFilter) -> some View {
-        let isSelected = selectedMuscle == muscle.rawValue
+        // A refinement such as Rear delts keeps its broad group highlighted; tapping that tile clears it.
+        let isSelected = MuscleGroupFilter.family(of: selectedMuscle.flatMap(MuscleGroupFilter.init(rawValue:))) == muscle
         return Button(action: {
             selectedMuscle = isSelected ? nil : muscle.rawValue
             onSelect()
@@ -491,6 +497,45 @@ struct LibraryMuscleFilterGrid: View {
         .accessibilityIdentifier("muscle-\(muscle.rawValue)")
     }
 
+}
+
+/// Narrows a broad muscle group (Back, Shoulders, Core, Glutes) without reopening the modal.
+struct LibraryMuscleRefinements: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    let family: MuscleGroupFilter
+    let options: [MuscleGroupFilter]
+    @Binding var selectedMuscle: String?
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        ScrollView(.horizontal, showsIndicators: false) {
+            chipRow.padding(.horizontal, 20)
+        }
+        .accessibilityIdentifier("library-muscle-refinements")
+    }
+
+    /// The chips without their scroll view, which ImageRenderer cannot draw in tests.
+    var chipRow: some View {
+        HStack(spacing: 8) {
+            ForEach([family] + options) { option in
+                chip(option)
+            }
+        }
+    }
+
+    private func chip(_ option: MuscleGroupFilter) -> some View {
+        let isSelected = selectedMuscle == option.rawValue
+        let label = option == family ? LanguageManager.t("library.muscle_refine.all") : LanguageManager.t(option.translationKey)
+        return Button { selectedMuscle = option.rawValue } label: {
+            Text(label).appFont(.subheadline).lineLimit(1)
+                .padding(.horizontal, 12).frame(minHeight: 48)
+                .background(isSelected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10))
+                .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityIdentifier(option == family ? "muscle-refine-all" : "muscle-refine-\(option.rawValue)")
+    }
 }
 
 struct LibraryFilterPill: View {

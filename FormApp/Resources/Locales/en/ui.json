@@ -713,6 +713,7 @@
   "library.filter.allEquipments": "All equipments",
   "library.filter.allMovements": "All movements",
   "library.filter.allMuscles": "All muscle groups",
+  "library.muscle_refine.all": "All",
   "library.muscles": "Muscle groups",
   "library.resultCount": "{count} exercises",
   "library.movement": "Movement",
@@ -1948,5 +1949,5 @@
   "exercise.muscle.abs": "Abdominals",
   "exercise.muscle.obliques": "Obliques",
   "anatomy.deep_note": "Deep muscles are listed without surface outlines.",
-  "library.muscle_filter_note": "Filters include primary and supporting muscles. Deep muscles are named without surface outlines."
+  "library.muscle_filter_note": "Filters include primary and supporting muscles. Primary targets are listed first."
 }

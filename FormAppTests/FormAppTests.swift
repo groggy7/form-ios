@@ -2445,13 +2445,73 @@ final class FormAppTests: XCTestCase {
             let renderer = ImageRenderer(content: content)
             renderer.scale = 2
             let image = try XCTUnwrap(renderer.uiImage)
-            XCTAssertGreaterThan(image.size.height, 1400)
-            XCTAssertLessThan(image.size.height, 5000)
+            XCTAssertGreaterThan(image.size.height, 700)
+            XCTAssertLessThan(image.size.height, 2500)
             try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/muscle-filter-grid-\(lang).png"))
             let attachment = XCTAttachment(image: image)
             attachment.name = "Muscle filters 320pt large \(lang)"
             attachment.lifetime = .keepAlways
             add(attachment)
+        }
+    }
+
+    @MainActor
+    func testMuscleFiltersListPrimaryTargetsBeforeSupportingWork() {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        LanguageManager.setLanguage("en")
+        let cache = LibraryExerciseResults()
+        let catalogue = ExerciseCatalog.canonicalExercises.keys.sorted().map {
+            ExerciseCatalogEntry(key: $0, exercise: ExerciseCatalog.canonicalExercises[$0]!.toExercise(), programIds: [], workoutKeys: [])
+        }
+        XCTAssertEqual(cache.entries(catalogue: catalogue, muscleKey: "biceps").first?.key, "dumbbell-hammer-curl")
+        XCTAssertEqual(cache.entries(catalogue: catalogue, muscleKey: "shoulders").first?.key, "dumbbell-lateral-raise")
+        XCTAssertEqual(cache.entries(catalogue: catalogue, muscleKey: "rear-delts").first?.key, "face-pull")
+        // Supporting work still follows, after every primary target.
+        XCTAssertTrue(cache.entries(catalogue: catalogue, muscleKey: "biceps").contains { $0.key == "lat-pulldown" })
+        let shown = MuscleGroupFilter.libraryTiles + MuscleGroupFilter.refinements.values.flatMap { $0 }
+        for filter in shown {
+            let ranks = cache.entries(catalogue: catalogue, muscleKey: filter.rawValue).map {
+                ExerciseMetadata.muscleMatchRank(exercise: $0.exercise, muscleKey: filter.rawValue)!
+            }
+            XCTAssertEqual(ranks, ranks.sorted(), filter.rawValue)
+            // A tile or chip is offered only when the catalogue has exercises that mainly train it.
+            XCTAssertEqual(ranks.first, 0, filter.rawValue)
+        }
+        // Typed searches inside a muscle filter put primary targets ahead of equal-scoring support.
+        let cableBiceps = cache.entries(catalogue: catalogue, query: "cable", muscleKey: "biceps")
+        XCTAssertTrue(cableBiceps.contains { ExerciseMetadata.muscleMatchRank(exercise: $0.exercise, muscleKey: "biceps") == 1 })
+        XCTAssertEqual(cableBiceps.first.flatMap { ExerciseMetadata.muscleMatchRank(exercise: $0.exercise, muscleKey: "biceps") }, 0)
+        let hidden = ["neck", "serratus", "rotator-cuff", "deep-core", "hip-flexors", "shins"]
+        XCTAssertFalse(shown.contains { hidden.contains($0.rawValue) })
+        // Hidden regions remain reachable through their broad group or typed search.
+        XCTAssertTrue(cache.entries(catalogue: catalogue, muscleKey: "glutes").contains { $0.key == "cable-hip-abduction" })
+        let customCore = ExerciseCatalogEntry(key: "custom-core", exercise: Exercise(name: "Transversus hold"), programIds: [], workoutKeys: [])
+        let customAbduction = ExerciseCatalogEntry(key: "custom-abduction", exercise: Exercise(name: "Banded hip abduction"), programIds: [], workoutKeys: [])
+        XCTAssertTrue(cache.entries(catalogue: catalogue + [customCore], muscleKey: "core").contains(customCore))
+        XCTAssertTrue(cache.entries(catalogue: catalogue + [customAbduction], muscleKey: "glutes").contains(customAbduction))
+        XCTAssertFalse(cache.entries(catalogue: catalogue + [customAbduction], muscleKey: "core").contains(customAbduction))
+        XCTAssertEqual(MuscleGroupFilter.family(of: .rearDelts), .shoulders)
+        XCTAssertEqual(MuscleGroupFilter.family(of: .chest), .chest)
+    }
+
+    @MainActor
+    func testMuscleRefinementChipsRenderInEveryLanguage() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for lang in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(lang)
+            for (family, selected) in [(MuscleGroupFilter.shoulders, "rear-delts"), (.back, "back"), (.core, "obliques"), (.glutes, "hip-abductors")] {
+                let content = LibraryMuscleRefinements(family: family, options: MuscleGroupFilter.refinements[family] ?? [],
+                                                       selectedMuscle: .constant(selected)).chipRow
+                    .padding(8).environment(\.dynamicTypeSize, .xxxLarge).background(AppColors.background)
+                let renderer = ImageRenderer(content: content)
+                renderer.scale = 2
+                let image = try XCTUnwrap(renderer.uiImage)
+                // Chips keep 48pt touch targets at the largest standard text size.
+                XCTAssertGreaterThanOrEqual(image.size.height, 48 + 16)
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/muscle-refinements-\(family.rawValue)-\(lang).png"))
+            }
         }
     }
 
@@ -3924,7 +3984,8 @@ final class FormAppTests: XCTestCase {
             XCTAssertEqual(try XCTUnwrap(catalog.profile(id)).primary, ["hip-abductors"])
             let exercise = try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise()
             XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: exercise, muscleKey: "hip-abductors"))
-            XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: exercise, muscleKey: "glutes"))
+            // Glutes is the broad group for its hip-abductor refinement.
+            XCTAssertEqual(ExerciseMetadata.muscleMatchRank(exercise: exercise, muscleKey: "glutes"), 0)
         }
         XCTAssertTrue(try XCTUnwrap(catalog.profile("dumbbell-incline-hammer-curl")).primary.contains("forearms"))
         XCTAssertEqual(ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: "Back Extension", movementType: nil), "exercise.muscle.back")

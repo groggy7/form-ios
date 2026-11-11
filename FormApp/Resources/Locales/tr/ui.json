@@ -713,6 +713,7 @@
   "library.filter.allEquipments": "Tüm ekipmanlar",
   "library.filter.allMovements": "Tüm hareketler",
   "library.filter.allMuscles": "Tüm kas grupları",
+  "library.muscle_refine.all": "Tümü",
   "library.muscles": "Kas grupları",
   "library.resultCount": "{count} egzersiz",
   "library.movement": "Hareket",
@@ -1948,5 +1949,5 @@
   "exercise.muscle.abs": "Karın kasları",
   "exercise.muscle.obliques": "Yan karın",
   "anatomy.deep_note": "Derin kaslar yüzeyde çizilmeden listelenir.",
-  "library.muscle_filter_note": "Filtreler birincil ve yardımcı kasları içerir. Derin kaslar yüzeyde çizilmeden adlandırılır."
+  "library.muscle_filter_note": "Filtreler birincil ve yardımcı kasları içerir. Birincil hedefler önce listelenir."
 }

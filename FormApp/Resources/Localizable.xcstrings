@@ -25785,6 +25785,41 @@
         }
       }
     },
+    "library.muscle_refine.all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümü"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos"
+          }
+        }
+      }
+    },
     "library.muscles": {
       "extractionState": "manual",
       "localizations": {
@@ -67010,31 +67045,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filters include primary and supporting muscles. Deep muscles are named without surface outlines."
+            "value": "Filters include primary and supporting muscles. Primary targets are listed first."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filtreler birincil ve yardımcı kasları içerir. Derin kaslar yüzeyde çizilmeden adlandırılır."
+            "value": "Filtreler birincil ve yardımcı kasları içerir. Birincil hedefler önce listelenir."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Filter umfassen primäre und unterstützende Muskeln. Tiefe Muskeln werden ohne Oberflächenkontur benannt."
+            "value": "Filter umfassen primäre und unterstützende Muskeln. Primäre Zielmuskeln stehen zuerst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les filtres incluent les muscles principaux et auxiliaires. Les muscles profonds sont nommés sans contour en surface."
+            "value": "Les filtres incluent les muscles principaux et auxiliaires. Les cibles principales apparaissent en premier."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los filtros incluyen músculos principales y auxiliares. Los músculos profundos se nombran sin contornos superficiales."
+            "value": "Los filtros incluyen músculos principales y auxiliares. Los objetivos principales aparecen primero."
           }
         }
       }

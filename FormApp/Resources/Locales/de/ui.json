@@ -713,6 +713,7 @@
   "library.filter.allEquipments": "Alle Geräte",
   "library.filter.allMovements": "Alle Bewegungen",
   "library.filter.allMuscles": "Alle Muskelgruppen",
+  "library.muscle_refine.all": "Alle",
   "library.muscles": "Muskelgruppen",
   "library.resultCount": "{count} Übungen",
   "library.movement": "Bewegung",
@@ -1948,5 +1949,5 @@
   "exercise.muscle.abs": "Bauchmuskeln",
   "exercise.muscle.obliques": "Seitliche Bauchmuskeln",
   "anatomy.deep_note": "Tiefe Muskeln werden ohne Oberflächenkontur aufgeführt.",
-  "library.muscle_filter_note": "Filter umfassen primäre und unterstützende Muskeln. Tiefe Muskeln werden ohne Oberflächenkontur benannt."
+  "library.muscle_filter_note": "Filter umfassen primäre und unterstützende Muskeln. Primäre Zielmuskeln stehen zuerst."
 }

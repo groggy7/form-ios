@@ -238,12 +238,29 @@ final class LibraryExerciseResults {
         let filter = Filter(query: query, equipment: equipmentKey, muscle: muscleKey)
         if lastFilter == filter { return lastResult }
         let search = ExerciseSearch.Query(query)
-        func matchesFilters(_ entry: ExerciseCatalogEntry) -> Bool {
-            (equipmentKey == nil || EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: equipmentKey)) &&
-                ExerciseMetadata.matchesMuscle(exercise: entry.exercise, muscleKey: muscleKey)
+        // Muscle rank: 0 when the filter names a primary target, 1 for supporting work.
+        var ranks: [String: Int]? = nil
+        if equipmentKey != nil || muscleKey != nil {
+            var matched: [String: Int] = [:]
+            for entry in ordered {
+                guard equipmentKey == nil || EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: equipmentKey) else { continue }
+                if let muscleKey {
+                    guard let rank = ExerciseMetadata.muscleMatchRank(exercise: entry.exercise, muscleKey: muscleKey) else { continue }
+                    matched[entry.key] = rank
+                } else {
+                    matched[entry.key] = 0
+                }
+            }
+            ranks = matched
         }
         if search.tokens.isEmpty {
-            lastResult = equipmentKey == nil && muscleKey == nil ? ordered : ordered.filter(matchesFilters)
+            if let ranks {
+                // Stable partition keeps exercise priority within primary and supporting matches.
+                let matching = ordered.filter { ranks[$0.key] != nil }
+                lastResult = matching.filter { ranks[$0.key] == 0 } + matching.filter { ranks[$0.key] != 0 }
+            } else {
+                lastResult = ordered
+            }
         } else {
             // Build once on first search, preserving the empty-library launch path.
             let candidates = prepared ?? ordered.map { entry in
@@ -252,11 +269,12 @@ final class LibraryExerciseResults {
                     category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)"))
             }
             prepared = candidates
-            lastResult = candidates.compactMap { item -> (ExerciseCatalogEntry, Int)? in
-                guard matchesFilters(item.entry), let score = ExerciseSearch.score(search, candidate: item.candidate) else { return nil }
-                return (item.entry, score)
-            // Swift's stable sort retains the cached priority order for equal scores.
-            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+            lastResult = candidates.compactMap { item -> (ExerciseCatalogEntry, Int, Int)? in
+                let rank = ranks == nil ? 0 : ranks?[item.entry.key]
+                guard let rank, let score = ExerciseSearch.score(search, candidate: item.candidate) else { return nil }
+                return (item.entry, score, rank)
+            // Swift's stable sort retains the cached priority order for ties; primary targets lead equal scores.
+            }.sorted { ($0.1, $0.2) < ($1.1, $1.2) }.map { $0.0 }
         }
         lastFilter = filter
         return lastResult

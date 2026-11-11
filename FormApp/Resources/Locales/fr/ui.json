@@ -713,6 +713,7 @@
   "library.filter.allEquipments": "Tous les équipements",
   "library.filter.allMovements": "Tous les mouvements",
   "library.filter.allMuscles": "Tous les groupes musculaires",
+  "library.muscle_refine.all": "Tous",
   "library.muscles": "Groupes musculaires",
   "library.resultCount": "{count} exercices",
   "library.movement": "Mouvement",
@@ -1948,5 +1949,5 @@
   "exercise.muscle.abs": "Abdominaux",
   "exercise.muscle.obliques": "Obliques",
   "anatomy.deep_note": "Les muscles profonds sont indiqués sans contour en surface.",
-  "library.muscle_filter_note": "Les filtres incluent les muscles principaux et auxiliaires. Les muscles profonds sont nommés sans contour en surface."
+  "library.muscle_filter_note": "Les filtres incluent les muscles principaux et auxiliaires. Les cibles principales apparaissent en premier."
 }
