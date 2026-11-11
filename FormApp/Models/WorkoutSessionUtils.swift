@@ -1103,34 +1103,6 @@ public enum IntensitySets {
         return copy
     }
 
-    /// The working sets that stay if the exercise ends after set `index` ("End with 2 sets"), or nil when End here is
-    /// not offered: `index` must be the newest completed working set, have a ticked drop or rest-pause effort and be
-    /// followed by unticked working sets. Partials alone never offer it.
-    public static func endingCount(_ sets: [ExerciseSetLog], at index: Int) -> Int? {
-        guard let set = sets[safe: index], !set.isWarmup, set.isCompleted, technique(of: set) != nil,
-              (set.extensions ?? []).contains(where: \.isCompleted),
-              index == sets.lastIndex(where: { $0.isCompleted && !$0.isWarmup }),
-              sets.dropFirst(index + 1).contains(where: { !$0.isWarmup }) else { return nil }
-        return sets.prefix(index + 1).filter { !$0.isWarmup }.count
-    }
-
-    /// Removes the unticked working sets after `index` when End here is offered there; otherwise returns `sets`.
-    public static func endingExercise(_ sets: [ExerciseSetLog], at index: Int) -> [ExerciseSetLog] {
-        guard endingCount(sets, at: index) != nil else { return sets }
-        return sets.enumerated().filter { offset, set in offset <= index || set.isWarmup || set.isCompleted }.map(\.element)
-    }
-
-    /// End here in a session. No rest follows a workout's last set, so ending there also stops the rest that set started.
-    public static func endingExercise(in draft: ActiveSessionDraft, exerciseId: String, at index: Int) -> ActiveSessionDraft {
-        guard let sets = draft.setsByExercise[exerciseId] else { return draft }
-        let kept = endingExercise(sets, at: index)
-        guard kept != sets else { return draft }
-        var copy = draft
-        copy.setsByExercise[exerciseId] = kept
-        if WorkoutSessionUtils.isComplete(draft: copy), copy.restTimer?.setId == sets[index].id { copy.restTimer = nil }
-        return copy
-    }
-
     /// Converting a set to a warmup removes its technique and partials.
     public static func clearingIntensity(_ set: ExerciseSetLog) -> ExerciseSetLog {
         var copy = set

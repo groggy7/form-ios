@@ -23446,31 +23446,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Targets use your latest full session from this workout day, or from another day with the same sets and rep range. Extra sets are ignored. Incomplete logs give no target, except an exercise you ended after a drop set or rest-pause. Warmups don’t count."
+            "value": "Targets use your latest full session from this workout day, or from another day with the same sets and rep range. Extra sets are ignored; incomplete logs give no target. Warmups don’t count."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedefler bu antrenman gününün veya aynı set ve tekrar aralığına sahip başka bir günün en son tam antrenmanını kullanır. Fazladan setler dikkate alınmaz. Eksik kayıtlar hedef vermez; drop set veya rest-pause sonrası bitirdiğin egzersiz bunun dışındadır. Isınma setleri sayılmaz."
+            "value": "Hedefler bu antrenman gününün veya aynı set ve tekrar aralığına sahip başka bir günün en son tam antrenmanını kullanır. Fazladan setler dikkate alınmaz; eksik kayıtlar hedef vermez. Isınma setleri sayılmaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele nutzen dein letztes vollständiges Training dieses Trainingstags oder eines anderen Tags mit gleichen Sätzen und gleichem Wiederholungsbereich. Zusätzliche Sätze werden ignoriert. Unvollständige Protokolle ergeben kein Ziel, außer bei einer Übung, die du nach einem Drop-Satz oder Rest-Pause beendet hast. Aufwärmsätze zählen nicht."
+            "value": "Ziele nutzen dein letztes vollständiges Training dieses Trainingstags oder eines anderen Tags mit gleichen Sätzen und gleichem Wiederholungsbereich. Zusätzliche Sätze werden ignoriert; unvollständige Protokolle ergeben kein Ziel. Aufwärmsätze zählen nicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les objectifs utilisent votre dernière séance complète de ce jour d’entraînement, ou d’un autre jour avec les mêmes séries et la même plage de répétitions. Les séries supplémentaires sont ignorées. Un enregistrement incomplet ne donne pas d’objectif, sauf pour un exercice terminé après une série dégressive ou un rest-pause. Les échauffements ne comptent pas."
+            "value": "Les objectifs utilisent votre dernière séance complète de ce jour d’entraînement, ou d’un autre jour avec les mêmes séries et la même plage de répétitions. Les séries supplémentaires sont ignorées ; un enregistrement incomplet ne donne pas d’objectif. Les échauffements ne comptent pas."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los objetivos usan tu última sesión completa de este día de entrenamiento, o de otro día con las mismas series y el mismo rango de repeticiones. Las series extra se ignoran. Los registros incompletos no dan objetivo, salvo un ejercicio que terminaste tras una serie descendente o un rest-pause. Los calentamientos no cuentan."
+            "value": "Los objetivos usan tu última sesión completa de este día de entrenamiento, o de otro día con las mismas series y el mismo rango de repeticiones. Las series extra se ignoran; los registros incompletos no dan objetivo. Los calentamientos no cuentan."
           }
         }
       }
@@ -46630,76 +46630,6 @@
         }
       }
     },
-    "progression.rationale.ended_with_drop": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last time you did {logged} of {sets} working sets and finished with a drop set. Each remaining set repeats your last set before the drop. Weight increases wait for a workout with all {sets} sets."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geçen sefer {sets} çalışma setinin {logged} tanesini yapıp drop set ile bitirdin. Kalan her set, son setini drop öncesindeki haliyle tekrarlar. Ağırlık artışı, {sets} setin hepsini yaptığın bir antrenmanı bekler."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Letztes Mal hast du {logged} von {sets} Arbeitssätzen gemacht und mit einem Drop-Satz beendet. Jeder restliche Satz wiederholt deinen letzten Satz vor dem Drop. Gewichtssteigerungen warten auf ein Training mit allen {sets} Sätzen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La dernière fois, vous avez fait {logged} séries de travail sur {sets} et terminé par une série dégressive. Chaque série restante reprend votre dernière série avant la baisse de charge. Les augmentations de charge attendent un entraînement avec les {sets} séries."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La última vez hiciste {logged} de {sets} series de trabajo y terminaste con una serie descendente. Cada serie restante repite tu última serie antes de bajar el peso. Los aumentos de peso esperan a un entrenamiento con las {sets} series."
-          }
-        }
-      }
-    },
-    "progression.rationale.ended_with_rest_pause": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last time you did {logged} of {sets} working sets and finished with rest-pause. Each remaining set repeats your last set before the pause. Weight increases wait for a workout with all {sets} sets."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geçen sefer {sets} çalışma setinin {logged} tanesini yapıp rest-pause ile bitirdin. Kalan her set, son setini duraklama öncesindeki haliyle tekrarlar. Ağırlık artışı, {sets} setin hepsini yaptığın bir antrenmanı bekler."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Letztes Mal hast du {logged} von {sets} Arbeitssätzen gemacht und mit Rest-Pause beendet. Jeder restliche Satz wiederholt deinen letzten Satz vor der Pause. Gewichtssteigerungen warten auf ein Training mit allen {sets} Sätzen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La dernière fois, vous avez fait {logged} séries de travail sur {sets} et terminé en rest-pause. Chaque série restante reprend votre dernière série avant la pause. Les augmentations de charge attendent un entraînement avec les {sets} séries."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La última vez hiciste {logged} de {sets} series de trabajo y terminaste con rest-pause. Cada serie restante repite tu última serie antes de la pausa. Los aumentos de peso esperan a un entrenamiento con las {sets} series."
-          }
-        }
-      }
-    },
     "progression.rationale.increase_load_easy": {
       "extractionState": "manual",
       "localizations": {
@@ -51810,218 +51740,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quitar las parciales"
-          }
-        }
-      }
-    },
-    "intensity.endHint.drop": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A drop set usually finishes the exercise."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop set genelde egzersizi bitirir."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ein Drop-Satz beendet die Übung meist."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une série dégressive termine généralement l’exercice."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una serie descendente suele terminar el ejercicio."
-          }
-        }
-      }
-    },
-    "intensity.endHint.restPause": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rest-pause usually finishes the exercise."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rest-pause genelde egzersizi bitirir."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rest-Pause beendet die Übung meist."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le rest-pause termine généralement l’exercice."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El rest-pause suele terminar el ejercicio."
-          }
-        }
-      }
-    },
-    "intensity.endHere": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "End with %lld set"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "End with %lld sets"
-                }
-              }
-            }
-          }
-        },
-        "tr": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%lld setle bitir"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%lld setle bitir"
-                }
-              }
-            }
-          }
-        },
-        "de": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mit %lld Satz beenden"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Mit %lld Sätzen beenden"
-                }
-              }
-            }
-          }
-        },
-        "fr": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminer avec %lld série"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminer avec %lld séries"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminer avec %lld séries"
-                }
-              }
-            }
-          }
-        },
-        "es": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminar con %lld serie"
-                }
-              },
-              "many": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminar con %lld series"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "Terminar con %lld series"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "intensity.endHereA11y": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Removes the sets you haven’t logged."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kaydetmediğin setleri siler."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Entfernt die Sätze, die du nicht protokolliert hast."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprime les séries que vous n’avez pas enregistrées."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quita las series que no has registrado."
           }
         }
       }

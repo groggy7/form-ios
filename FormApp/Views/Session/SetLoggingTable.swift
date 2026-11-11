@@ -398,9 +398,6 @@ public struct SetLoggingTable: View {
                         }
                         if showsTechniqueMenu, let intensity {
                             techniqueMenu(set: set, index: index, actions: intensity)
-                            if let count = IntensitySets.endingCount(sets, at: index) {
-                                EndHereRow(set: set, index: index, count: count, actions: intensity)
-                            }
                         }
                     }
                     .tourTarget("workout.sets.row.\(index + 2)", cornerRadius: 10)
@@ -732,55 +729,6 @@ public struct SetLoggingTable: View {
     }
 }
 
-/// Offers to end the exercise after a ticked drop or rest-pause (docs/design/intensity-sets.md). No dismiss:
-/// logging the next set removes it. The hint sits beside the button, or above it at accessibility text sizes.
-private struct EndHereRow: View {
-    let set: ExerciseSetLog
-    let index: Int
-    let count: Int
-    let actions: IntensityActions
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    var body: some View {
-        let hint = LanguageManager.t(IntensitySets.technique(of: set) == .restPause ? "intensity.endHint.restPause" : "intensity.endHint.drop")
-        let label = LanguageManager.shared.plural("intensity.endHere", count)
-        let layout = dynamicTypeSize >= .xxLarge
-            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8)) : AnyLayout(HStackLayout(spacing: 10))
-        layout {
-            Text(hint)
-                .font(.app(size: 12))
-                .foregroundStyle(AppColors.secondaryText)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: dynamicTypeSize >= .xxLarge ? nil : .infinity, alignment: .leading)
-            Button { actions.onEndExercise(index) } label: {
-                Text(label)
-                    .font(.app(size: 13, weight: .semibold))
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundStyle(AppColors.purple)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .frame(minHeight: 48)
-                    .frame(maxWidth: dynamicTypeSize >= .xxLarge ? nil : 156)
-                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(label)
-            .accessibilityHint(LanguageManager.t("intensity.endHereA11y"))
-            .accessibilityIdentifier("end-here-button")
-        }
-        .padding(.leading, 14)
-        .padding(.trailing, dynamicTypeSize >= .xxLarge ? 14 : 6)
-        .padding(.vertical, dynamicTypeSize >= .xxLarge ? 10 : 6)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("end-here-\(set.id)")
-    }
-}
-
 /// What the session table needs to log drop sets, rest-pause and partials.
 public struct IntensityActions {
     public let exercise: Exercise
@@ -792,6 +740,4 @@ public struct IntensityActions {
     public let onAddPartials: (Int) -> Void
     public let onUpdatePartials: (Int, Int?, String) -> Void
     public let onRemoveLastPart: (Int) -> Void
-    /// End here: removes the unticked working sets after a set finished with a drop or rest-pause.
-    public let onEndExercise: (Int) -> Void
 }

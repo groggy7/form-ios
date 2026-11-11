@@ -10,14 +10,12 @@ final class IntensityFixtureTests: XCTestCase {
         let volume: [Volume]
         let notation: [Notation]
         let saved: [Saved]
-        let ending: [Ending]
         let stats: [Stats]
     }
     private struct Validation: Decodable { let name: String; let exerciseId: String; let set: SessionSetLog; let error: String? }
     private struct Volume: Decodable { let name: String; let set: SessionSetLog; let loadVolumeKg: Double }
     private struct Notation: Decodable { let name: String; let unit: String; let set: SessionSetLog; let text: String }
     private struct Saved: Decodable { let name: String; let exerciseId: String; let draft: ExerciseSetLog; let saved: SessionSetLog }
-    private struct Ending: Decodable { let name: String; let sets: [ExerciseSetLog]; let index: Int; let count: Int?; let remaining: [String] }
     private struct Stats: Decodable {
         struct Expected: Decodable {
             let prWeightKg: Double; let prReps: Int; let estimated1rmKg: Double; let totalVolumeKg: Double; let lifetimeSets: Int
@@ -67,13 +65,6 @@ final class IntensityFixtureTests: XCTestCase {
         for item in fixtures.saved {
             let saved = IntensitySets.savedSet(item.draft, exercise: exercise(item.exerciseId), unit: .kg)
             XCTAssertEqual(saved, item.saved, item.name)
-        }
-    }
-
-    func testEndingAfterATechnique() {
-        for item in fixtures.ending {
-            XCTAssertEqual(IntensitySets.endingCount(item.sets, at: item.index), item.count, item.name)
-            XCTAssertEqual(IntensitySets.endingExercise(item.sets, at: item.index).map(\.id), item.remaining, item.name)
         }
     }
 
@@ -191,33 +182,6 @@ final class IntensitySetsBehaviorTests: XCTestCase {
         XCTAssertEqual(IntensitySets.restAfterTickingExtension(in: draft([set], rest: paused), setId: set.id, exercise: bench, nowEpochMillis: 50_000), paused)
     }
 
-    func testEndHereRemovesUnloggedSetsAndTheCoachReadsTheEndedSession() {
-        let set = dropSet()
-        let open = [main(2, 100, 8, completed: false), main(3, 100, 8, completed: false)]
-        let running = RestTimerState(exerciseName: bench.name, totalSeconds: 120, isRunning: true, endsAtEpochMillis: 161_000, pausedSecondsRemaining: 120, setId: set.id)
-        let value = draft([set] + open, rest: running)
-        XCTAssertEqual(IntensitySets.endingCount(value.setsByExercise[bench.id]!, at: 0), 1)
-        XCTAssertEqual(IntensitySets.endingExercise(in: value, exerciseId: bench.id, at: 1), value, "only where it is offered")
-
-        let ended = IntensitySets.endingExercise(in: value, exerciseId: bench.id, at: 0)
-        XCTAssertEqual(ended.setsByExercise[bench.id]?.map(\.id), [set.id])
-        XCTAssertNil(ended.restTimer, "no rest follows the workout's last set")
-        let progress = SessionProgress.from(draft: ended, nowEpochMillis: 60_000)
-        XCTAssertEqual(progress.exerciseLogs.first?.targetSets, 1)
-        let record = progress.record(draft: ended, completedAtEpochMillis: 60_000)
-        let coach = ProgressionEngine.computeProgression(exercise: bench, history: [record])
-        XCTAssertEqual(coach?.rationaleKey, "progression.rationale.ended_with_drop")
-        XCTAssertEqual(coach?.setTargets.map(\.weightKg), [100, 100, 100])
-        XCTAssertEqual(coach?.lastTechniqueSets.map(\.setNumber), [1])
-
-        // With another exercise still to do, the rest keeps running.
-        let row = Exercise(id: "row", name: "Barbell Row", exerciseId: "barbell-row", prescription: "2 × 8–12", sets: 2, reps: RepTarget(min: 8, max: 12))
-        var twoExercises = value
-        twoExercises.workout = Workout(id: "w", day: 1, title: "Push", exercises: [bench, row])
-        twoExercises.setsByExercise[row.id] = [main(1, 60, 8, completed: false)]
-        XCTAssertEqual(IntensitySets.endingExercise(in: twoExercises, exerciseId: bench.id, at: 0).restTimer, running)
-    }
-
     func testWarmupConversionDropsTechniqueAndReindexKeepsIt() {
         let working = AppStore.reindexSets([main(1, 60, 10), dropSet()])
         XCTAssertEqual(working[1].technique, "drop")
@@ -310,8 +274,7 @@ final class IntensityTableRenderTests: XCTestCase {
         let previousSets: [Int: SessionSetLog] = [0: SessionSetLog(setNumber: 1, weightKg: 100, reps: 6, technique: "drop",
                                                                   extensions: [SessionSetExtension(weightKg: 70, reps: 4)])]
         let actions = IntensityActions(exercise: bench, previousSets: previousSets, onAddExtension: { _, _ in }, onUpdateExtension: { _, _, _, _ in },
-                                       onToggleExtension: { _, _ in }, onAddPartials: { _ in }, onUpdatePartials: { _, _, _ in }, onRemoveLastPart: { _ in },
-                                       onEndExercise: { _ in })
+                                       onToggleExtension: { _, _ in }, onAddPartials: { _ in }, onUpdatePartials: { _, _, _ in }, onRemoveLastPart: { _ in })
         let outputDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/intensity-review").standardized
         try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
         for language in ["en", "tr", "de", "fr", "es"] {
