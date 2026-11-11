@@ -191,8 +191,8 @@ struct WorkoutDayStrip: View {
                             // the highlight is centred between date and title. Text, insets and the gaps' total are
                             // unchanged, so the tile keeps its size.
                             VStack(spacing: glowTiles ? 0 : 6) {
-                                let dayLabel = LanguageManager.workoutDays.indices.contains(dayIndex)
-                                    ? String(LanguageManager.workoutDays[dayIndex].prefix(3)).uppercased()
+                                let dayLabel = LanguageManager.dayLabels.indices.contains(dayIndex)
+                                    ? LanguageManager.dayLabels[dayIndex]
                                     : "DAY"
 
                                 Text(dayLabel)

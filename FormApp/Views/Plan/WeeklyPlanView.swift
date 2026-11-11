@@ -71,8 +71,8 @@ public struct WeeklyPlanView: View {
                     let isMissed = Self.isMissedPlanDay(dayIndex: index, todayIndex: calendar.today,
                                                        missedDays: calendar.missedDays, hasWorkout: workout != nil, completed: isCompleted, unfinished: isUnfinished)
                     let isToday = index == calendar.today
-                    let dayName = LanguageManager.workoutDays.indices.contains(index)
-                        ? LanguageManager.workoutDays[index]
+                    let dayLabel = LanguageManager.dayLabels.indices.contains(index)
+                        ? LanguageManager.dayLabels[index]
                         : ""
                     let dayNumber = calendar.numbers.indices.contains(index)
                         ? calendar.numbers[index]
@@ -88,7 +88,7 @@ public struct WeeklyPlanView: View {
                         HStack(spacing: 14) {
                             // Day short & date number column
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(String(dayName.prefix(3)).uppercased())
+                                Text(dayLabel)
                                     .font(.app(size: 10, weight: .bold))
                                     .foregroundStyle(isToday ? AppColors.accent : (isUnfinished ? AppColors.unfinishedText : AppColors.muted))
 

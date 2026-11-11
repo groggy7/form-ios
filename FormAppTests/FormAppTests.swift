@@ -911,6 +911,20 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    // Week labels must not be cut from full names: Turkish Pazartesi/Pazar and Cuma/Cumartesi share three letters.
+    func testWeekdayLabelsAreDistinctInEverySupportedLanguage() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for (language, _) in LanguageManager.supportedLanguages {
+            LanguageManager.setLanguage(language)
+            let labels = LanguageManager.dayLabels
+            XCTAssertEqual(labels.count, 7, language)
+            XCTAssertEqual(Set(labels).count, 7, "\(language): \(labels)")
+        }
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(LanguageManager.dayLabels, ["PZT", "SAL", "ÇAR", "PER", "CUM", "CTS", "PAZ"])
+    }
+
     func testTiledCalendarAnnouncesDateStatusAndToday() {
         LanguageManager.setLanguage("en")
         let date = WorkoutCalendar.parseDate("2026-08-27")!
