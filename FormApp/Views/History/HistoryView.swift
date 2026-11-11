@@ -107,7 +107,10 @@ public struct WorkoutDaySection: Identifiable {
         self.exerciseItems = exerciseItems
     }
 
+    /// Whether this card offers Start or Resume workout. A saved session from a program other than the
+    /// active one stays read-only, since switching programs leaves it behind; a live draft can still be reopened.
     public func canAct(on day: Date, today: Date = Date()) -> Bool {
+        if isFromOtherProgram && !isLiveSession { return false }
         var cal = Calendar(identifier: .gregorian)
         cal.firstWeekday = 2 // Monday
         let todayStart = cal.startOfDay(for: today)

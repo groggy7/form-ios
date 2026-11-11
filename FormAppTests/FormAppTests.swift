@@ -10434,15 +10434,48 @@ final class HistoryBreakdownTests: XCTestCase {
     }
 
     /// Today's plan after a program switch, with a workout recorded for the same date listed second.
-    private func sameDayContexts(fromOldProgram: Bool, oldProgramKept: Bool) -> [String] {
+    private func sameDaySections(fromOldProgram: Bool, oldProgramKept: Bool, snapshot: Bool = false,
+        live: Bool = false, today: Date? = nil) -> [WorkoutDaySection] {
         let full = Workout(id: "full", day: 2, title: "Full Body: Squat", exercises: [Exercise(id: "full-e", name: "Squat", sets: 2)])
         let old = Program(id: "old-p", name: "Full Body 3-Day", workouts: [full])
         var saved = record(fromOldProgram ? full : bench, complete: false, scheduled: "2026-10-06")
         if fromOldProgram { saved.programId = old.id }
-        let result = HistoryDayDetailData.groupSections(day: day, records: [saved], scheduledWorkout: pull,
-            activeProgramId: program.id, programs: oldProgramKept ? [program, old] : [program], history: [saved], today: day)
-        XCTAssertEqual(result.map { $0.sessionRecord?.id }, [nil, saved.id])
+        if snapshot { saved.workoutSnapshot = fromOldProgram ? full : bench }
+        return HistoryDayDetailData.groupSections(day: day, records: [saved], scheduledWorkout: pull,
+            activeProgramId: program.id, programs: oldProgramKept ? [program, old] : [program], history: [saved],
+            activeRecordId: live ? saved.id : nil, today: today ?? day)
+    }
+
+    private func sameDayContexts(fromOldProgram: Bool, oldProgramKept: Bool) -> [String] {
+        let result = sameDaySections(fromOldProgram: fromOldProgram, oldProgramKept: oldProgramKept)
+        XCTAssertEqual(result.map { $0.sessionRecord == nil }, [true, false])
         return result.enumerated().map { $0.element.contextText(on: day, today: day, index: $0.offset) }
+    }
+
+    func testUnfinishedWorkoutFromAnotherProgramIsReadOnly() {
+        // A saved snapshot would otherwise keep Resume even after the old program is deleted.
+        for kept in [true, false] {
+            let result = sameDaySections(fromOldProgram: true, oldProgramKept: kept, snapshot: true)
+            XCTAssertTrue(result[1].isFromOtherProgram)
+            XCTAssertNotNil(result[1].workout)
+            XCTAssertFalse(result[1].canAct(on: day, today: day), "old program kept: \(kept)")
+            XCTAssertTrue(result[0].canAct(on: day, today: day), "The new program's plan can still start")
+        }
+        let live = sameDaySections(fromOldProgram: true, oldProgramKept: true, live: true).first { $0.isLiveSession }
+        XCTAssertEqual(live?.isFromOtherProgram, true)
+        XCTAssertEqual(live?.canAct(on: day, today: day), true, "A live draft stays reachable")
+
+        // Viewed later in the week, the old session is the only card and has no action.
+        let thursday = Calendar.current.date(byAdding: .day, value: 2, to: day)!
+        let later = sameDaySections(fromOldProgram: true, oldProgramKept: true, today: thursday)
+        XCTAssertEqual(later.count, 1)
+        XCTAssertFalse(later[0].canAct(on: day, today: thursday))
+    }
+
+    func testUnfinishedWorkoutFromActiveProgramStillResumes() {
+        let result = sameDaySections(fromOldProgram: false, oldProgramKept: true)
+        XCTAssertFalse(result[1].isFromOtherProgram)
+        XCTAssertTrue(result[1].canAct(on: day, today: day))
     }
 
     func testSameDayWorkoutFromAnotherProgramNamesThatProgram() {
