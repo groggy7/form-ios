@@ -28,6 +28,9 @@ public struct ActiveSessionView: View {
     @State private var selectedPlateWeight: Double? = nil
     @State private var paywallFeature: ProFeature? = nil
     @State private var openWarmupAfterUnlock = false
+    /// The exercise whose locked Replace opened the paywall; buying reopens Replace for it.
+    @State private var swapAfterUnlockId: String? = nil
+    @State private var openSwapAfterUnlock = false
     @State private var pendingAnomalousSet: PendingAnomalousSet? = nil
     @State private var swappingExercise: Exercise? = nil
     @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
@@ -656,11 +659,19 @@ public struct ActiveSessionView: View {
                 showWarmupPlateSheet = true
             }
             openWarmupAfterUnlock = false
+            if openSwapAfterUnlock, let id = swapAfterUnlockId {
+                swappingExercise = currentDraft.workout.exercises.first { $0.id == id }
+            }
+            openSwapAfterUnlock = false
+            swapAfterUnlockId = nil
         }) { feat in
             ProPaywallSheet(
                 feature: feat,
                 onDismiss: { paywallFeature = nil },
-                onUnlocked: { openWarmupAfterUnlock = feat == .warmupCalculator }
+                onUnlocked: {
+                    openWarmupAfterUnlock = feat == .warmupCalculator
+                    openSwapAfterUnlock = feat == .exerciseSwaps
+                }
             )
         }
         .onReceive(timer) { _ in
@@ -768,7 +779,7 @@ public struct ActiveSessionView: View {
             .accessibilityIdentifier("session-notes")
             if canReplace {
                 Button {
-                    if unlocked { swappingExercise = exercise } else { paywallFeature = .exerciseSwaps }
+                    if unlocked { swappingExercise = exercise } else { swapAfterUnlockId = exercise.id; paywallFeature = .exerciseSwaps }
                 } label: {
                     // Locked, the purple lock of the session's other locked cards stands in for the PREMIUM badge.
                     Label { Text(LanguageManager.t("session.replace.title")) } icon: {

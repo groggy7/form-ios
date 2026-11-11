@@ -7,8 +7,9 @@ public enum ProFeature: String, CaseIterable, Identifiable {
     case formLab = "form_lab"
     case cloudBackup = "cloud_backup"
     case customThemes = "custom_themes"
+    /// In-workout "Machine taken?" replace. Its paywall has its own copy over the general photograph.
     case exerciseSwaps = "exercise_swaps"
-    /// Bodyweight trend, weekly change and relative strength. Like swaps, it shows the general paywall.
+    /// Bodyweight trend, weekly change and relative strength. It shows the general paywall.
     case bodyTrends = "body_trends"
 
     public var id: String { rawValue }

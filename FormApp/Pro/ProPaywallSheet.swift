@@ -31,8 +31,8 @@ public struct ProPaywallSheet: View {
         onUnlocked: (() -> Void)? = nil,
         initialPlan: PaywallPlan? = nil
     ) {
-        // Workout swaps have no dedicated paywall art or copy; they use the general one, as on Android.
-        self.feature = feature == .exerciseSwaps || feature == .bodyTrends ? nil : feature
+        // Body Trends has no paywall copy of its own; it uses the general one, as on Android.
+        self.feature = feature == .bodyTrends ? nil : feature
         self.onDismiss = onDismiss
         self.onUnlocked = onUnlocked
         let preferredPlan = initialPlan ?? (ProAccessManager.shared.hasActiveSubscription ? .lifetime : .annual)

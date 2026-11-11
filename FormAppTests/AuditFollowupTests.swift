@@ -110,16 +110,18 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertEqual(store.activeSession?.workout.exercises.first?.exerciseId, "dumbbell-bench-press")
     }
 
-    func testExerciseSwapsAreProAndUseTheGeneralPaywall() {
+    func testExerciseSwapsAreProAndUseTheirOwnPaywallCopy() {
         let manager = ProAccessManager.shared
         manager.resetOverrides()
         defer { manager.resetOverrides() }
         XCTAssertFalse(manager.isFeatureUnlocked(.exerciseSwaps))
         manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isFeatureUnlocked(.exerciseSwaps))
-        XCTAssertNil(ProPaywallSheet(feature: .exerciseSwaps).feature)
+        XCTAssertEqual(ProPaywallSheet(feature: .exerciseSwaps).feature, .exerciseSwaps)
+        XCTAssertNil(ProPaywallSheet(feature: .bodyTrends).feature)
         XCTAssertEqual(ProPaywallSheet(feature: .formLab).feature, .formLab)
         XCTAssertEqual(LanguageManager.t(ProFeature.exerciseSwaps.titleKey), "Machine Taken? Swaps")
+        XCTAssertEqual(LanguageManager.t("paywall.exercise_swaps.headline"), "Machine taken?\nKeep training.")
     }
 
     // MARK: - Tabs under the workout cover

@@ -20920,6 +20920,356 @@
         }
       }
     },
+    "paywall.exercise_swaps.feature_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise Swaps"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hareket Değiştirme"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übungstausch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remplacement d’exercices"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sustitución de ejercicios"
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.headline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Machine taken?\nKeep training."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makine dolu mu?\nDevam et."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerät belegt?\nTrainier weiter."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Machine occupée ?\nGardez le rythme."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Máquina ocupada?\nSigue entrenando."
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to a matched exercise for this workout only. Your program stays the same."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca bu antrenman için uygun bir alternatife geç. Programın değişmez."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wechsle nur für dieses Training zu einer passenden Übung. Dein Plan bleibt unverändert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passez à un exercice adapté pour cette séance uniquement. Votre programme ne change pas."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambia a un ejercicio adecuado solo para este entrenamiento. Tu plan no cambia."
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.unlock_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Exercise Swaps"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hareket Değiştirme’yi aç"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übungstausch freischalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer le remplacement d’exercices"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear sustitución de ejercicios"
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matched substitutes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygun alternatifler"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passende Alternativen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alternatives adaptées"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alternativas adecuadas"
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit1_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The same movement on another station first, then related movements for the same muscles."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önce başka istasyonda aynı hareket, sonra aynı kasları çalıştıran benzer hareketler."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuerst die gleiche Bewegung an einem anderen Gerät, dann verwandte Bewegungen für dieselben Muskeln."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "D’abord le même mouvement sur un autre poste, puis des mouvements proches pour les mêmes muscles."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero el mismo movimiento en otra estación y después movimientos relacionados para los mismos músculos."
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your program stays put"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programın değişmez"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Plan bleibt gleich"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre programme reste intact"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu plan no cambia"
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit2_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The swap lasts for this workout, with the same sets, rep range and rest."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değişiklik yalnızca bu antrenman için geçerli; set sayısı, tekrar aralığı ve dinlenme aynı kalır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Tausch gilt nur für dieses Training, mit gleichen Sätzen, Wiederholungsbereich und Pause."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le remplacement vaut pour cette séance seulement, avec les mêmes séries, plage de répétitions et repos."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El cambio dura solo este entrenamiento, con las mismas series, rango de repeticiones y descanso."
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search the whole library"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm kütüphanede ara"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die ganze Bibliothek"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toute la bibliothèque"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toda la biblioteca"
+          }
+        }
+      }
+    },
+    "paywall.exercise_swaps.benefit3_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefer your own pick? Choose any exercise; it logs to its own history."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kendin mi seçmek istiyorsun? Herhangi bir hareketi seç; kendi geçmişine kaydedilir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieber selbst wählen? Nimm eine beliebige Übung; sie wird in ihrem eigenen Verlauf gespeichert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous préférez choisir ? Prenez n’importe quel exercice ; il est enregistré dans son propre historique."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Prefieres elegir tú? Escoge cualquier ejercicio; se registra en su propio historial."
+          }
+        }
+      }
+    },
     "settings.pro_membership": {
       "extractionState": "manual",
       "localizations": {
