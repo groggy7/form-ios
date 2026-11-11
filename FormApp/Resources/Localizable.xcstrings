@@ -14700,7 +14700,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön Bacak ve Arka Bacak"
+            "value": "Kuadriseps ve Hamstring"
           }
         },
         "de": {
@@ -14735,7 +14735,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön Bacak (Quad)"
+            "value": "Kuadriseps"
           }
         },
         "de": {
@@ -14770,7 +14770,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka Bacak (Hamstring)"
+            "value": "Hamstring"
           }
         },
         "de": {
@@ -14805,7 +14805,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacağa kıyasla daha fazla ön bacak (quad) seti yapıyorsun."
+            "value": "Hamstring setlerinden daha fazla kuadriseps seti yapıyorsun."
           }
         },
         "de": {
@@ -14840,7 +14840,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacağa kıyasla daha fazla arka bacak (hamstring) seti yapıyorsun."
+            "value": "Kuadriseps setlerinden daha fazla hamstring seti yapıyorsun."
           }
         },
         "de": {
@@ -14875,7 +14875,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak ve arka bacak setleri gayet dengeli. Bacak gelişimi için ideal bir oran."
+            "value": "Kuadriseps ve hamstring setleri gayet dengeli. Bacak gelişimi için ideal bir oran."
           }
         },
         "de": {
@@ -14910,7 +14910,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bacaklarının arka kısmını dengelemek için RDL (Romanian deadlift) veya leg curl ekleyebilirsin."
+            "value": "Hamstring hacmini dengelemek için RDL (Romanian deadlift) veya leg curl ekleyebilirsin."
           }
         },
         "de": {
@@ -14945,7 +14945,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak hacmini dengelemek istersen squat, leg press veya lunge gibi hareketleri artırabilirsin."
+            "value": "Kuadriseps hacmini dengelemek istersen squat, leg press veya lunge gibi hareketleri artırabilirsin."
           }
         },
         "de": {
@@ -14980,7 +14980,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Squat/pres hareketleri ile arka bacak egzersizlerin arasındaki bu dengeyi koru."
+            "value": "Squat/pres hareketleri ile hamstring egzersizlerin arasındaki bu dengeyi koru."
           }
         },
         "de": {
@@ -15577,7 +15577,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacak çalışması kaydedilmemiş."
+            "value": "Hamstring çalışması kaydedilmemiş."
           }
         },
         "de": {
@@ -15612,7 +15612,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak çalışması kaydedilmemiş."
+            "value": "Kuadriseps çalışması kaydedilmemiş."
           }
         },
         "de": {
@@ -17467,7 +17467,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtme/çekme ve ön bacak/arka bacak gibi hareket kalıpları ve kas grupları arasında kaydedilen çalışma setlerini karşılaştırır. Bu oranlar duruşu, eklem sağlığını veya toparlanmayı değil, antrenman dağılımını gösterir. Tıbbi tanı değildir. Programlama için referans olarak kullan; belirli bir bölgeye öncelik veren planlarda oranlar farklı olabilir."
+            "value": "İtme/çekme ve kuadriseps/hamstring gibi hareket kalıpları ve kas grupları arasında kaydedilen çalışma setlerini karşılaştırır. Bu oranlar duruşu, eklem sağlığını veya toparlanmayı değil, antrenman dağılımını gösterir. Tıbbi tanı değildir. Programlama için referans olarak kullan; belirli bir bölgeye öncelik veren planlarda oranlar farklı olabilir."
           }
         },
         "de": {
@@ -17537,7 +17537,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak/arka bacak set dağılımı"
+            "value": "Kuadriseps/hamstring set dağılımı"
           }
         },
         "de": {
@@ -19847,7 +19847,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı setlerde itme/çekme, ön/arka bacak ve üst/alt vücut çalışmasını karşılaştır."
+            "value": "Kayıtlı setlerde itme/çekme, kuadriseps/hamstring ve üst/alt vücut çalışmasını karşılaştır."
           }
         },
         "de": {
@@ -31547,7 +31547,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön Bacak"
+            "value": "Kuadriseps"
           }
         },
         "de": {
@@ -31582,7 +31582,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka Bacak"
+            "value": "Hamstring"
           }
         },
         "de": {
@@ -31722,7 +31722,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İç Bacak"
+            "value": "Addüktörler"
           }
         },
         "de": {
@@ -34948,7 +34948,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak"
+            "value": "Kuadriseps"
           }
         },
         "de": {
@@ -34983,7 +34983,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İç bacak"
+            "value": "Addüktörler"
           }
         },
         "de": {
@@ -35018,7 +35018,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacak"
+            "value": "Hamstring"
           }
         },
         "de": {
@@ -43072,7 +43072,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak"
+            "value": "Kuadriseps"
           }
         },
         "de": {
@@ -43107,7 +43107,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacak"
+            "value": "Hamstring"
           }
         },
         "de": {
@@ -43282,7 +43282,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İç bacak"
+            "value": "Addüktörler"
           }
         },
         "de": {
@@ -50597,7 +50597,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtme hareketlerini çekme hareketleriyle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştır."
+            "value": "İtme hareketlerini çekme hareketleriyle, kuadriseps çalışmasını hamstring çalışmasıyla ve üst vücudu alt vücutla karşılaştır."
           }
         },
         "de": {
@@ -57216,7 +57216,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu kurulumda doğrudan arka bacak yüklemesi sınırlı. Uygun olduğunda kalça ekstansiyonu çalışması eklenir."
+            "value": "Bu kurulumda doğrudan hamstring yüklemesi sınırlı. Uygun olduğunda kalça ekstansiyonu çalışması eklenir."
           }
         },
         "de": {
@@ -59876,7 +59876,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön bacak"
+            "value": "Kuadriseps"
           }
         },
         "de": {
@@ -59911,7 +59911,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arka bacak"
+            "value": "Hamstring"
           }
         },
         "de": {

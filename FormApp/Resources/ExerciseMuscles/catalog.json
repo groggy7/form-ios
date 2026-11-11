@@ -83,11 +83,11 @@
     },
     "quads": {
       "en": "Quadriceps",
-      "tr": "Ön bacak"
+      "tr": "Kuadriseps"
     },
     "hamstrings": {
       "en": "Hamstrings",
-      "tr": "Arka bacak"
+      "tr": "Hamstring"
     },
     "glutes": {
       "en": "Glutes",
@@ -107,7 +107,7 @@
     },
     "adductors": {
       "en": "Adductors",
-      "tr": "İç bacak"
+      "tr": "Addüktörler"
     },
     "tibialis": {
       "en": "Shins",

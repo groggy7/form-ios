@@ -19,15 +19,15 @@
         "focus": "Dikey çekiş, destekli row, arka ve yan omuz"
       },
       "aesthetic-legs-a": {
-        "title": "Ön Bacak ve Baldır",
-        "focus": "Squat, leg extension ve arka bacak"
+        "title": "Kuadriseps ve Baldır",
+        "focus": "Squat, leg extension ve hamstring"
       },
       "aesthetic-upper-b": {
         "title": "Üst Vücut ve Omuz",
         "focus": "İkinci göğüs/sırt çalışması; omuz ve kol desteği"
       },
       "aesthetic-lower-b": {
-        "title": "Kalça ve Arka Bacak",
+        "title": "Kalça ve Hamstring",
         "focus": "RDL, tek bacak squat ve karın"
       }
     }
@@ -45,7 +45,7 @@
     "workouts": {
       "pb-squat-strength": {
         "title": "Alt Vücut: Squat",
-        "focus": "Squat tekniği, arka bacak ve baldır"
+        "focus": "Squat tekniği, hamstring ve baldır"
       },
       "pb-bench-strength": {
         "title": "Üst Vücut: Bench Press",
@@ -83,7 +83,7 @@
       },
       "ppl-legs-1": {
         "title": "Bacak A: Squat",
-        "focus": "Ön bacak, leg curl ve baldır"
+        "focus": "Kuadriseps, leg curl ve baldır"
       },
       "ppl-push-2": {
         "title": "İtme B: Eğimli Pres",
@@ -197,7 +197,7 @@
         "focus": "Dengeli yatay ve dikey üst vücut çalışması"
       },
       "ul-lower-a": {
-        "title": "Alt A: Ön Bacak",
+        "title": "Alt A: Kuadriseps",
         "focus": "Hack squat, RDL ve baldır"
       },
       "ul-upper-b": {
@@ -205,7 +205,7 @@
         "focus": "Eğimli pres, kanat ve omuzlar"
       },
       "ul-lower-b": {
-        "title": "Alt B: Kalça ve Arka Bacak",
+        "title": "Alt B: Kalça ve Hamstring",
         "focus": "Leg press, hip thrust ve leg curl"
       }
     }
@@ -288,7 +288,7 @@
         "focus": "Chin-up, ters eğimli şınav, dips ve bacak kaldırma"
       },
       "bf-lower-b": {
-        "title": "Alt B: Lunge ve Arka Bacak",
+        "title": "Alt B: Lunge ve Hamstring",
         "focus": "Nordic curl, lunge, yan squat ve gövde"
       }
     }
