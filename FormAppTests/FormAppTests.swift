@@ -5693,8 +5693,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["settings.privacy"], "Gizlilik Politikası")
         XCTAssertEqual(Translations.en["settings.support"], "Customer Support")
         XCTAssertEqual(Translations.tr["settings.support"], "Müşteri Desteği")
-        XCTAssertEqual(Translations.en["settings.manage_subscription"], "Manage Subscription")
-        XCTAssertEqual(Translations.tr["settings.manage_subscription"], "Aboneliği Yönet")
+        XCTAssertEqual(Translations.en["settings.manage_subscription"], "Manage subscription")
+        XCTAssertEqual(Translations.tr["settings.manage_subscription"], "Aboneliği yönet")
         // The site's own domain and routes, not the github.io host it is published from.
         XCTAssertEqual(LegalUrls.termsOfService, "https://perseverancesoftware.app/terms/")
         XCTAssertEqual(LegalUrls.privacyPolicy, "https://perseverancesoftware.app/privacy/")

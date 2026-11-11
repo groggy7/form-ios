@@ -149,14 +149,29 @@ public struct SettingsView: View {
         }
     }
 
+    // The status sits under the title so it reads as the membership's state, not as a
+    // caption for the action below.
     private var premiumHeading: some View {
-        HStack(spacing: 8) {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
             Image(systemName: "crown.fill")
                 .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
-            Text(LanguageManager.t("settings.pro_membership"))
-                .font(.app(size: 16, weight: .bold))
-                .foregroundStyle(AppColors.text)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LanguageManager.t("settings.pro_membership"))
+                    .font(.app(size: 16, weight: .bold))
+                    .foregroundStyle(AppColors.text)
+                Text(LanguageManager.t(proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
+                    .font(.app(size: 12.5))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                if proManager.hasLifetimeAccess && proManager.hasActiveSubscription {
+                    Text(LanguageManager.t("lifetime.subscriptionNotice"))
+                        .font(.app(size: 12.5)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 4)
+                }
+            }
         }
     }
 
@@ -165,10 +180,12 @@ public struct SettingsView: View {
         VStack(alignment: .leading, spacing: 12) {
             if proManager.hasActiveSubscription && !proManager.hasLifetimeAccess {
                 Button { showPaywall = true } label: {
-                    HStack {
+                    HStack(spacing: 12) {
                         premiumHeading
                         Spacer(minLength: 0)
-                        Image(systemName: "chevron.right").foregroundStyle(AppColors.secondaryText)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(AppColors.secondaryText)
                     }
                     .frame(minHeight: 48).contentShape(Rectangle())
                 }
@@ -179,39 +196,39 @@ public struct SettingsView: View {
                 premiumHeading
             }
 
-            Text(LanguageManager.t(proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
-                .font(.app(size: 12.5))
-                .foregroundStyle(AppColors.secondaryText)
-                .lineSpacing(2)
-
-            if proManager.hasLifetimeAccess && proManager.hasActiveSubscription {
-                Text(LanguageManager.t("lifetime.subscriptionNotice"))
-                    .font(.app(size: 12.5)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
-            }
             if proManager.hasActiveSubscription {
+                // Secondary outlined action: purple on the card's purple wash keeps at least
+                // 5:1 in every suite, where white on the lavender fill fell to 2-3:1.
                 Button(action: {
                     if let url = URL(string: LegalUrls.manageSubscriptions) {
                         openURL(url)
                     }
                 }) {
-                    HStack(spacing: 6) {
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
                         Image(systemName: "arrow.up.right")
                             .font(.system(size: 11, weight: .semibold))
                         Text(LanguageManager.t("settings.manage_subscription"))
                             .font(.app(size: 13, weight: .semibold))
+                            .multilineTextAlignment(.center)
                     }
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(AppColors.purple)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 48)
-                    .background(AppColors.purple)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.purple, lineWidth: 1))
+                    .contentShape(RoundedRectangle(cornerRadius: 10))
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("settings-manage-subscription")
             } else if !proManager.isProSubscribed {
                 Button(action: { showPaywall = true }) {
                     Text(LanguageManager.t("settings.upgrade_to_pro"))
                         .font(.app(size: 13, weight: .semibold))
+                        .multilineTextAlignment(.center)
                         .foregroundStyle(AppColors.background)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 48)
                         .background(AppColors.accent)
