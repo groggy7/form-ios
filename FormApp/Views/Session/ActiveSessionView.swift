@@ -1198,13 +1198,14 @@ private struct MiniExerciseDetailModal: View {
     }
 }
 
-/// An exercise's demonstration, cues and mistakes: a modal during a session, or pinned beside it on an open foldable.
+/// An exercise's demonstration, linked videos, cues and mistakes: a modal during a session, or pinned beside it on an open foldable.
 private struct SessionExerciseDetailContent: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     @ObservedObject var media: SessionExerciseMedia
     var onDismiss: (() -> Void)? = nil
     var onReportIssue: (() -> Void)? = nil
+    @State private var watchingLinkedVideo = false
 
     var body: some View {
         let _ = themeManager.currentTheme
@@ -1240,10 +1241,11 @@ private struct SessionExerciseDetailContent: View {
 
             Divider().background(AppColors.border)
 
-            // Scrollable Content: Video + Cues + Avoid
+            // Scrollable Content: Video + Linked videos + Cues + Avoid
             ScrollView {
                 VStack(spacing: 14) {
-                    SessionExerciseDetailVideo(media: media, rowId: exercise.id, exerciseId: exercise.exerciseId)
+                    SessionExerciseDetailVideo(media: media, rowId: exercise.id, exerciseId: exercise.exerciseId,
+                                               active: !watchingLinkedVideo)
                         .frame(maxWidth: .infinity)
                         .background(AppColors.exerciseVideoSurface)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -1251,6 +1253,14 @@ private struct SessionExerciseDetailContent: View {
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
                                 .stroke(AppColors.border, lineWidth: 1)
                         )
+
+                    // The exercise's linked YouTube videos; the movement animation pauses while one plays.
+                    if !exercise.videos.isEmpty {
+                        ExerciseVideosView(exercise: exercise, onPlayerShownChange: { shown in
+                            if shown { media.freezeActive() }
+                            watchingLinkedVideo = shown
+                        })
+                    }
 
                     let cuesText = exercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !cuesText.isEmpty {

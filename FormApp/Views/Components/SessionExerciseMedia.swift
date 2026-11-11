@@ -263,11 +263,12 @@ struct SessionExerciseDetailVideo: View {
     @ObservedObject var media: SessionExerciseMedia
     let rowId: String
     let exerciseId: String?
+    var active = true
 
     var body: some View {
         ZStack {
             ExerciseMediaBackdrop()
-            if let video = media.tiles[rowId] { SessionVideoForeground(video: video, active: true) }
+            if let video = media.tiles[rowId] { SessionVideoForeground(video: video, active: active) }
         }
         .aspectRatio(ExerciseVideoCatalog.framing(for: exerciseId).aspectRatio, contentMode: .fit)
         .accessibilityHidden(true)

@@ -5,6 +5,8 @@ public struct ExerciseVideosView: View {
     let exercise: Exercise
     var onAddVideo: (() -> Void)? = nil
     var onRemoveVideo: ((String) -> Void)? = nil
+    /// Reports when the in-app player opens or closes, so other media can pause meanwhile.
+    var onPlayerShownChange: ((Bool) -> Void)? = nil
 
     @State private var selectedVideoUrl: String? = nil
     @State private var metadataMap: [String: VideoMetadata] = [:]
@@ -12,11 +14,13 @@ public struct ExerciseVideosView: View {
     public init(
         exercise: Exercise,
         onAddVideo: (() -> Void)? = nil,
-        onRemoveVideo: ((String) -> Void)? = nil
+        onRemoveVideo: ((String) -> Void)? = nil,
+        onPlayerShownChange: ((Bool) -> Void)? = nil
     ) {
         self.exercise = exercise
         self.onAddVideo = onAddVideo
         self.onRemoveVideo = onRemoveVideo
+        self.onPlayerShownChange = onPlayerShownChange
     }
 
     public var body: some View {
@@ -138,6 +142,7 @@ public struct ExerciseVideosView: View {
                 .buttonStyle(.plain)
             }
         }
+        .onChange(of: selectedVideoUrl != nil) { _, shown in onPlayerShownChange?(shown) }
         .sheet(item: Binding<IdentifiedVideo?>(
             get: { selectedVideoUrl.map { IdentifiedVideo(url: $0) } },
             set: { selectedVideoUrl = $0?.url }
