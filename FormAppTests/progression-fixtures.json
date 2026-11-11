@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. Formatting cases give the rounded `display` label, the lossless two-decimal `exact` text, and the text a set or target receives for other lifts (`loadable`) and barbell lifts (`barbell`). A load that reads back on the two-decimal grid in `unit` stays exact. A converted barbell load takes the multiple of 5 lb / 2.5 kg within 2.5% that needs the fewest standard plates per side on a 45 lb / 20 kg bar (lb: 45, 35, 25, 10, 5, 2.5; kg: 25, 20, 15, 10, 5, 2.5, 1.25), ties going to the closer, then lighter, load; other converted loads round to the nearest 5 lb or 2.5 kg. A positive load never rounds to zero and keeps one decimal instead. `applied` is the input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` and `platesLbs` set each unit's available plates (defaults include 1.25 kg and 2.5 lb); `barType` is the Warmup & Plates bar key (default `olympic_20`: 20 kg / 45 lb), where a bar step's grid starts. A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match.",
+  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. Formatting cases give the rounded `display` label, the lossless two-decimal `exact` text, and the text a set or target receives for other lifts (`loadable`) and barbell lifts (`barbell`). A load that reads back on the two-decimal grid in `unit` stays exact. A converted barbell load takes the multiple of 5 lb / 2.5 kg within 2.5% that needs the fewest standard plates per side on a 45 lb / 20 kg bar (lb: 45, 35, 25, 10, 5, 2.5; kg: 25, 20, 15, 10, 5, 2.5, 1.25), ties going to the closer, then lighter, load; other converted loads round to the nearest 5 lb or 2.5 kg. A positive load never rounds to zero and keeps one decimal instead. `applied` is the input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` and `platesLbs` set each unit's available plates (defaults include 1.25 kg and 2.5 lb); `barType` is the Warmup & Plates bar key (default `olympic_20`: 20 kg / 45 lb), where a bar step's grid starts. A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match. A log's optional `techniques` list adds a drop, rest-pause or partials to its working set at 1-based position `set`: `technique` (`drop` or `restPause`) with `extensions` as [load, reps] pairs, and/or `partialReps`. `techniqueSets`, when given, lists the set numbers the card shows on its \"Last time\" line.",
   "formatting": [
     { "value": 20.25, "valueUnit": "kg", "unit": "kg", "display": "20.3", "exact": "20.25", "loadable": "20.25", "barbell": "20.25" },
     { "value": 21.25, "valueUnit": "kg", "unit": "kg", "display": "21.3", "exact": "21.25", "loadable": "21.25", "barbell": "21.25" },
@@ -763,6 +763,61 @@
         { "id": "s1", "completedAt": "2026-10-13T11:00:00Z", "logs": [ { "exerciseId": "incline-dumbbell-press", "exerciseName": "Incline Dumbbell Press", "targetSets": 3, "working": [[20, 12], [16, 12], [12, 12]], "effort": "easy" } ] }
       ],
       "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load_reset_mixed", "targets": [[22, 12], [18, 8], [14, 8]] }
+    },
+    {
+      "name": "a drop that ended the exercise early pads the remaining sets with its main part",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.ended_with_drop", "targets": [[65, 11], [65, 10], [65, 10]], "rationaleArgs": { "logged": "2", "sets": "3" }, "techniqueSets": [2] }
+    },
+    {
+      "name": "an exercise ended with rest-pause at the ceiling never confirms a load increase",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 12], [65, 12]], "techniques": [{ "set": 2, "technique": "restPause", "extensions": [[65, 4], [65, 2]] }], "effort": "easy" } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.ended_with_rest_pause", "targets": [[65, 12], [65, 12], [65, 12]], "rationaleArgs": { "logged": "2", "sets": "3" }, "techniqueSets": [2] }
+    },
+    {
+      "name": "unticked rows left after a drop stay partial",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "insufficient_data", "rationaleKey": "progression.rationale.partial_log", "targets": [], "rationaleArgs": { "logged": "2", "sets": "3" } }
+    },
+    {
+      "name": "a drop on an earlier set does not end the exercise",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 1, "technique": "drop", "extensions": [[45, 8]] }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "insufficient_data", "rationaleKey": "progression.rationale.partial_log", "targets": [], "rationaleArgs": { "logged": "2", "sets": "3" } }
+    },
+    {
+      "name": "partials alone do not end the exercise",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 2, "partialReps": 4 }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "insufficient_data", "rationaleKey": "progression.rationale.partial_log", "targets": [], "rationaleArgs": { "logged": "2", "sets": "3" } }
+    },
+    {
+      "name": "a smaller saved plan ending with a drop reads as a plan change",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 2, "working": [[65, 10], [65, 9]], "techniques": [{ "set": 2, "technique": "drop", "extensions": [[45, 8]] }] } ], "snapshot": [ { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 2, "reps": [8, 12] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.plan_sets_changed", "targets": [[65, 11], [65, 10], [65, 10]], "rationaleArgs": { "logged": "2", "sets": "3" }, "techniqueSets": [] }
     }
   ]
 }

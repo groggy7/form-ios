@@ -67,6 +67,14 @@ final class ProgressionFixtureTests: XCTestCase {
         let effort: String?
         let warmups: [[Double]]?
         let working: [[Double]]
+        /// A drop, rest-pause or partials on the working set at a 1-based position.
+        let techniques: [Technique]?
+    }
+    private struct Technique: Decodable {
+        let set: Int
+        let technique: String?
+        let extensions: [[Double]]?
+        let partialReps: Int?
     }
     private struct Expected: Decodable {
         let action: String?
@@ -79,6 +87,7 @@ final class ProgressionFixtureTests: XCTestCase {
         let applied: [String]?
         let variation: String?
         let rationaleArgs: [String: String]?
+        let techniqueSets: [Int]?
     }
 
     private func load() throws -> Fixtures {
@@ -114,7 +123,13 @@ final class ProgressionFixtureTests: XCTestCase {
                         let loadUnit = WeightUnit.fromCode(log.loadUnit ?? fixture.unit)
                         func sets(_ pairs: [[Double]]?, warmup: Bool) -> [SessionSetLog] {
                             (pairs ?? []).enumerated().map { index, pair in
-                                SessionSetLog(setNumber: index + 1, weightKg: loadUnit.toCanonicalKg(pair[0]), reps: Int(pair[1]), isWarmup: warmup)
+                                var set = SessionSetLog(setNumber: index + 1, weightKg: loadUnit.toCanonicalKg(pair[0]), reps: Int(pair[1]), isWarmup: warmup)
+                                if !warmup, let technique = log.techniques?.first(where: { $0.set == index + 1 }) {
+                                    set.partialReps = technique.partialReps
+                                    set.technique = technique.technique
+                                    set.extensions = technique.extensions?.map { SessionSetExtension(weightKg: loadUnit.toCanonicalKg($0[0]), reps: Int($0[1])) }
+                                }
+                                return set
                             }
                         }
                         return SessionExerciseLog(exerciseName: log.exerciseName,
@@ -146,6 +161,9 @@ final class ProgressionFixtureTests: XCTestCase {
             if let display = expected.suggestedWeightDisplay { XCTAssertEqual(rec.suggestedWeightDisplay, display, "\(name) suggested") }
             if let delta = expected.weightDeltaDisplay { XCTAssertEqual(rec.weightDeltaDisplay, delta, "\(name) delta") }
             XCTAssertEqual(rec.suggestedVariationId, expected.variation, "\(name) variation")
+            if let sets = expected.techniqueSets {
+                XCTAssertEqual(rec.lastTechniqueSets.map(\.setNumber), sets, "\(name) last-time sets")
+            }
             for (key, value) in expected.rationaleArgs ?? [:] {
                 XCTAssertEqual(rec.rationaleArgs[key], value, "\(name) rationale argument \(key)")
             }

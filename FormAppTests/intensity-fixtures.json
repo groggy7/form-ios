@@ -1,5 +1,5 @@
 {
-  "about": "Shared contract for drop sets, rest-pause and partials (docs/design/intensity-sets.md). Android IntensityFixturesTest and iOS IntensityFixtureTests run every case. Edit here, then run node scripts/sync_intensity_fixtures.cjs.",
+  "about": "Shared contract for drop sets, rest-pause and partials (docs/design/intensity-sets.md). Android IntensityFixturesTest and iOS IntensityFixtureTests run every case. `ending` cases give draft sets, the set `index` that would offer End here, the `count` its button names (null when it is not offered) and the draft ids that remain after ending there. Edit here, then run node scripts/sync_intensity_fixtures.cjs.",
   "validation": [
     { "name": "straight set", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8 }, "error": null },
     { "name": "double drop", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }, { "weightKg": 50, "reps": 4 }] }, "error": null },
@@ -85,6 +85,88 @@
       "draft": { "setNumber": 1, "weightInput": "20", "repsInput": "6", "weightKg": 20, "completedReps": 6, "isCompleted": true, "technique": "drop",
         "extensions": [{ "weightInput": "0", "repsInput": "5", "weightKg": 0, "completedReps": 5, "isCompleted": true }] },
       "saved": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 0, "reps": 5 }] }
+    }
+  ],
+  "ending": [
+    {
+      "name": "a ticked drop on the newest set offers to end with the sets so far",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "6", "weightKg": 70, "completedReps": 6, "isCompleted": true }] },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 1, "count": 2, "remaining": ["s1", "s2"]
+    },
+    {
+      "name": "a drop on the first set ends with one set",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "6", "weightKg": 70, "completedReps": 6, "isCompleted": true }] },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 0, "count": 1, "remaining": ["s1"]
+    },
+    {
+      "name": "a ticked rest-pause effort offers it too",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "restPause", "extensions": [{ "id": "r1", "weightInput": "", "repsInput": "3", "completedReps": 3, "isCompleted": true }] },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 1, "count": 2, "remaining": ["s1", "s2"]
+    },
+    {
+      "name": "an unticked drop does not offer it",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "", "weightKg": 70, "isCompleted": false }] },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 1, "count": null, "remaining": ["s1", "s2", "s3"]
+    },
+    {
+      "name": "partials alone do not offer it",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "partialRepsInput": "4" },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 1, "count": null, "remaining": ["s1", "s2", "s3"]
+    },
+    {
+      "name": "nothing follows the last set",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "6", "weightKg": 70, "completedReps": 6, "isCompleted": true }] }
+      ],
+      "index": 1, "count": null, "remaining": ["s1", "s2"]
+    },
+    {
+      "name": "only the newest completed set offers it",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "6", "weightKg": 70, "completedReps": 6, "isCompleted": true }] },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 0, "count": null, "remaining": ["s1", "s2", "s3"]
+    },
+    {
+      "name": "warmups stay and do not count",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "id": "w1", "setNumber": 1, "weightInput": "60", "repsInput": "5", "weightKg": 60, "completedReps": 5, "isCompleted": true, "isWarmup": true },
+        { "id": "s1", "setNumber": 1, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true },
+        { "id": "s2", "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "drop", "extensions": [{ "id": "d1", "weightInput": "70", "repsInput": "6", "weightKg": 70, "completedReps": 6, "isCompleted": true }] },
+        { "id": "s3", "setNumber": 3, "weightInput": "100", "repsInput": "", "weightKg": 100, "isCompleted": false }
+      ],
+      "index": 2, "count": 2, "remaining": ["w1", "s1", "s2"]
     }
   ],
   "stats": [

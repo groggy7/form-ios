@@ -96,8 +96,9 @@ public enum ProgressionEngine {
 
     /// The baseline a session provides for a plan of `expected` working sets.
     private enum Baseline {
-        /// `padded` repeats the last set for sets added to the plan since that session.
-        case full(sets: [SessionSetLog], padded: Bool, logged: Int)
+        /// `padded` repeats the last set's main part for the sets the session lacks: sets added to the plan since, or,
+        /// when `endedWith` is set, sets the lifter removed after finishing on that drop or rest-pause.
+        case full(sets: [SessionSetLog], padded: Bool, logged: Int, endedWith: SetTechnique? = nil)
         case partial(logged: Int)
         case ambiguous
         case invalid
@@ -270,19 +271,23 @@ public enum ProgressionEngine {
             // A full session of a smaller earlier plan: its saved prescription had exactly these sets, all completed.
             let earlierPlan = !working.isEmpty && session.prescribedSets == working.count &&
                 (session.targetSets == nil || session.targetSets == working.count)
-            guard earlierPlan else { return .partial(logged: working.count) }
+            // Or a drop or rest-pause finished the exercise and the later rows were removed (End here).
+            let endedWith = working.last.flatMap { last in
+                !earlierPlan && session.targetSets == working.count && IntensitySets.usesTechnique(last) ? last.setTechnique : nil
+            }
+            guard earlierPlan || endedWith != nil else { return .partial(logged: working.count) }
             guard working.allSatisfy(valid), let lastSet = working.last else { return .invalid }
             let padding = (working.count + 1...expectedSets).map { number in
                 SessionSetLog(setNumber: lastSet.setNumber + number - working.count, weightKg: lastSet.weightKg, reps: lastSet.reps, isWarmup: false)
             }
-            return .full(sets: working + padding, padded: true, logged: working.count)
+            return .full(sets: working + padding, padded: true, logged: working.count, endedWith: endedWith)
         }
         func fullUnpadded(_ session: HistoricalSessionSets) -> [SessionSetLog]? {
-            if case let .full(sets, padded, _) = baseline(session), !padded { return sets }
+            if case let .full(sets, padded, _, _) = baseline(session), !padded { return sets }
             return nil
         }
         func fullSets(_ session: HistoricalSessionSets) -> [SessionSetLog]? {
-            if case let .full(sets, _, _) = baseline(session) { return sets }
+            if case let .full(sets, _, _, _) = baseline(session) { return sets }
             return nil
         }
 
@@ -290,8 +295,9 @@ public enum ProgressionEngine {
         let workingSets: [SessionSetLog]
         let padded: Bool
         let logged: Int
+        let endedWith: SetTechnique?
         switch baseline(last) {
-        case let .full(sets, isPadded, count): (workingSets, padded, logged) = (sets, isPadded, count)
+        case let .full(sets, isPadded, count, technique): (workingSets, padded, logged, endedWith) = (sets, isPadded, count, technique)
         case let .partial(count):
             return guidance(.insufficientData, "progression.rationale.partial_log", ["logged": "\(count)", "sets": "\(expectedSets)"])
         case .ambiguous:
@@ -304,7 +310,8 @@ public enum ProgressionEngine {
         let barbell = WorkoutSessionUtils.usesBarbellPlates(exercise)
         let loadable: (Double) -> Double = { weightUnit.loadableKg($0, barbell: barbell) }
         let lastSessionSets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(loadable), reps: $0.reps!) }
-        let lastTechniqueSets = padded ? [] : workingSets.filter(IntensitySets.hasDetail)
+        // A plan change hides last time's techniques; a session that ended on one shows its logged sets.
+        let lastTechniqueSets = padded && endedWith == nil ? [] : workingSets.filter(IntensitySets.hasDetail)
         let topWeight = workingSets.map { $0.weightKg! }.max()!
         let mixedLoads = workingSets.contains { abs($0.weightKg! - topWeight) > 0.01 }
         func comparable(_ session: HistoricalSessionSets) -> Bool {
@@ -403,7 +410,13 @@ public enum ProgressionEngine {
             else if increase.resetReps { key = "progression.rationale.increase_load_reset" }
             else { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
         }
-        else if padded { key = "progression.rationale.plan_sets_changed" }
+        else if padded {
+            switch endedWith {
+            case .drop: key = "progression.rationale.ended_with_drop"
+            case .restPause: key = "progression.rationale.ended_with_rest_pause"
+            case nil: key = "progression.rationale.plan_sets_changed"
+            }
+        }
         else if allHitCeiling {
             if ratedHard { key = "progression.rationale.repeat_ceiling_hard" }
             else if confirmedTwice || ratedEasy { key = bodyweightOnly ? "progression.rationale.bodyweight_ceiling" : "progression.rationale.load_step_unavailable" }
