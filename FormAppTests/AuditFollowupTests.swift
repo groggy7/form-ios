@@ -124,6 +124,23 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertEqual(LanguageManager.t("paywall.exercise_swaps.headline"), "Machine taken?\nKeep training.")
     }
 
+    func testTrainingBlocksHaveTheirOwnPaywallOnTheCoachEntitlement() {
+        let manager = ProAccessManager.shared
+        let previous = LanguageManager.shared.currentLanguage
+        manager.resetOverrides()
+        LanguageManager.setLanguage("en")
+        defer { manager.resetOverrides(); LanguageManager.setLanguage(previous) }
+        XCTAssertEqual(ProPaywallSheet(feature: .trainingBlocks).feature, .trainingBlocks)
+        XCTAssertEqual(LanguageManager.t(ProFeature.trainingBlocks.titleKey), "Training Blocks")
+        XCTAssertEqual(LanguageManager.t("paywall.training_blocks.headline"), "Each week adjusts\nto your answers.")
+        XCTAssertEqual(LanguageManager.t("paywall.general.benefit1"), "Training Blocks")
+        // Blocks keep the coach's entitlement: the Home card checks autoProgression.
+        manager.setFeatureOverride(.autoProgression, unlocked: true)
+        let state = BlockCardState.of(block: nil, activeProgram: nil, programs: [], weekKey: "2026-W46",
+                                      unlocked: manager.isFeatureUnlocked(.autoProgression))
+        XCTAssertNotEqual(state, .locked)
+    }
+
     // MARK: - Tabs under the workout cover
 
     func testSetEditsUnderTheWorkoutCoverPublishOnlyTheLiveSession() throws {

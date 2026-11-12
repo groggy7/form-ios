@@ -6989,9 +6989,9 @@ final class FormAppTests: XCTestCase {
         manager.resetOverrides()
         manager.updateSubscriptionStatus(active: false)
 
-        // 1. Free Tier Baseline: All 8 features strictly locked
-        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes, .exerciseSwaps, .bodyTrends]
-        XCTAssertEqual(ProFeature.allCases.count, 8)
+        // 1. Free Tier Baseline: All 9 features strictly locked
+        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes, .exerciseSwaps, .trainingBlocks, .bodyTrends]
+        XCTAssertEqual(ProFeature.allCases.count, 9)
         for feature in allFeatures {
             XCTAssertFalse(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be locked for free tier")
             XCTAssertFalse(feature.titleKey.isEmpty)
@@ -10413,7 +10413,7 @@ final class SessionFeaturePaywallTests: XCTestCase {
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
         let cases: [(ProFeature?, WeightUnit)] = [
             (.autoProgression, .kg), (.cloudBackup, .kg), (.volumeMatrix, .kg),
-            (.formLab, .kg), (.customThemes, .kg), (.exerciseSwaps, .kg), (nil, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)
+            (.formLab, .kg), (.customThemes, .kg), (.exerciseSwaps, .kg), (.trainingBlocks, .kg), (nil, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)
         ]
         for (feature, unit) in cases {
             let imageName: String
@@ -10434,6 +10434,9 @@ final class SessionFeaturePaywallTests: XCTestCase {
             case .exerciseSwaps:
                 imageName = "paywall_general"
                 tag = "swap-paywall"
+            case .trainingBlocks:
+                imageName = "paywall_general"
+                tag = "blocks-paywall"
             case .none:
                 imageName = "paywall_general"
                 tag = "general-paywall"
@@ -10446,7 +10449,10 @@ final class SessionFeaturePaywallTests: XCTestCase {
             }
             let artwork = try XCTUnwrap(UIImage(named: imageName))
             XCTAssertEqual(artwork.size.width, artwork.size.height)
-            for language in ["en", "tr"] {
+            // The paywalls that describe adaptive training are captured in all five languages; the rest in English and Turkish.
+            let languages = feature == nil || feature == .autoProgression || feature == .trainingBlocks
+                ? ["en", "tr", "de", "fr", "es"] : ["en", "tr"]
+            for language in languages {
                 LanguageManager.setLanguage(language)
                 for (width, textSize) in [(CGFloat(393), ContentSizeCategory.large), (320, .large), (320, .extraExtraExtraLarge)] {
                     let view = SessionFeaturePaywallContent(

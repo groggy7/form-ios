@@ -8843,31 +8843,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Logged-set targets, optional effort ratings and lighter-week options."
+            "value": "Logged-set targets, reps in reserve, a first-set check and lighter-week options."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı setlere dayalı hedefler, isteğe bağlı efor değerlendirmeleri ve hafif hafta seçenekleri."
+            "value": "Kayıtlı setlere dayalı hedefler, yedek tekrarlar, ilk set kontrolü ve hafif hafta seçenekleri."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele aus protokollierten Sätzen, optionale Anstrengungsbewertungen und Optionen für leichtere Wochen."
+            "value": "Ziele aus protokollierten Sätzen, Wiederholungen in Reserve, ein Check nach dem ersten Satz und Optionen für leichtere Wochen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objectifs issus des séries enregistrées, évaluations d’effort facultatives et options de semaine plus légère."
+            "value": "Objectifs issus des séries enregistrées, répétitions en réserve, point après la première série et options de semaine plus légère."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objetivos a partir de series registradas, valoraciones de esfuerzo opcionales y opciones de semana más ligera."
+            "value": "Objetivos a partir de series registradas, repeticiones en reserva, un control tras la primera serie y opciones de semana más ligera."
           }
         }
       }
@@ -10902,6 +10902,111 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sustituye un ejercicio durante el entrenamiento"
+          }
+        }
+      }
+    },
+    "pro.training_blocks.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training Blocks"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman Blokları"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingsblöcke"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocs d’entraînement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloques de entrenamiento"
+          }
+        }
+      }
+    },
+    "pro.training_blocks.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4–6 week blocks that adjust each muscle's sets from your answers, then a deload."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her kasın setlerini yanıtlarına göre ayarlayan 4–6 haftalık bloklar, ardından deload."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blöcke über 4–6 Wochen, die die Sätze jedes Muskels an deine Antworten anpassen, dann ein Deload."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des blocs de 4 à 6 semaines qui ajustent les séries de chaque muscle selon vos réponses, puis une décharge."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloques de 4 a 6 semanas que ajustan las series de cada músculo según tus respuestas, y luego una descarga."
+          }
+        }
+      }
+    },
+    "pro.training_blocks.teaser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly set changes from your own feedback"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kendi geri bildiriminle haftalık set değişiklikleri"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wöchentliche Satzänderungen aus deinem Feedback"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Séries ajustées chaque semaine selon vos retours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambios semanales de series según tus respuestas"
           }
         }
       }
@@ -18161,31 +18266,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use your saved sets to get personalized weight and rep targets with a clear reason for each suggestion."
+            "value": "Use your saved sets, and the reps in reserve you log, to get weight and rep targets with a reason for each."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kaydettiğin setlerden sana özel ağırlık ve tekrar hedefleri al. Her önerinin nedenini açıkça gör."
+            "value": "Kaydettiğin setlerden ve girdiğin yedek tekrarlardan ağırlık ve tekrar hedefleri al. Her önerinin nedenini gör."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erhalte aus deinen gespeicherten Sätzen passende Gewichts- und Wiederholungsziele mit einer klaren Begründung für jeden Vorschlag."
+            "value": "Erhalte aus deinen gespeicherten Sätzen und den Wiederholungen in Reserve, die du einträgst, Gewichts- und Wiederholungsziele mit einer Begründung für jedes."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Obtenez des objectifs de charge et de répétitions à partir de vos séries enregistrées, avec une explication claire pour chaque suggestion."
+            "value": "Obtenez des objectifs de charge et de répétitions à partir de vos séries enregistrées et de vos répétitions en réserve, avec une explication pour chacun."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Obtén objetivos de peso y repeticiones a partir de tus series registradas, con una explicación clara para cada sugerencia."
+            "value": "Obtén objetivos de peso y repeticiones a partir de tus series registradas y de las repeticiones en reserva que anotes, con un motivo para cada uno."
           }
         }
       }
@@ -20051,31 +20156,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Get weight and rep suggestions based on your previous sets."
+            "value": "Weight and rep suggestions from your previous sets and, if you log it, how many reps you had left."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Önceki setlerine göre ağırlık ve tekrar önerileri al."
+            "value": "Önceki setlerine ve, girersen, kaç tekrarın kaldığına göre ağırlık ve tekrar önerileri."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erhalte Gewichts- und Wiederholungsvorschläge aus deinen bisherigen Sätzen."
+            "value": "Gewichts- und Wiederholungsvorschläge aus deinen bisherigen Sätzen und, wenn du sie einträgst, deinen Wiederholungen in Reserve."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Obtenez des suggestions de charge et de répétitions à partir de vos séries précédentes."
+            "value": "Des suggestions de charge et de répétitions à partir de vos séries précédentes et, si vous les notez, de vos répétitions en réserve."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Obtén sugerencias de peso y repeticiones basadas en tus series anteriores."
+            "value": "Sugerencias de peso y repeticiones basadas en tus series anteriores y, si las anotas, en tus repeticiones en reserva."
           }
         }
       }
@@ -20156,31 +20261,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fill weights in one tap"
+            "value": "A check after set 1"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ağırlıkları tek dokunuşla gir"
+            "value": "İlk setten sonra kontrol"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gewichte mit einem Tipp eintragen"
+            "value": "Check nach Satz 1"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Charges saisies en un geste"
+            "value": "Un point après la série 1"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rellena pesos con un toque"
+            "value": "Un control tras la serie 1"
           }
         }
       }
@@ -20191,31 +20296,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use the suggested weights for your remaining sets, then log the reps you actually do."
+            "value": "Log reps left on set 1. Easier or harder than planned? Use a new load for the rest in one tap."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kalan setlerin için önerilen ağırlıkları kullan, sonra gerçekten yaptığın tekrarları kaydet."
+            "value": "İlk sette kalan tekrarı gir. Planlanandan kolay ya da zor mu geldi? Kalan setler için yeni ağırlığı tek dokunuşla kullan."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Übernimm die vorgeschlagenen Gewichte für deine verbleibenden Sätze und protokolliere dann die Wiederholungen, die du tatsächlich schaffst."
+            "value": "Trage die Wdh. in Reserve für Satz 1 ein. Leichter oder schwerer als geplant? Übernimm mit einem Tipp ein neues Gewicht für den Rest."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Utilisez les charges suggérées pour vos séries restantes, puis enregistrez les répétitions réellement effectuées."
+            "value": "Notez vos répétitions en réserve à la série 1. Plus facile ou plus dur que prévu ? Appliquez une nouvelle charge au reste en un geste."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Usa los pesos sugeridos para tus series restantes y luego registra las repeticiones que realmente haces."
+            "value": "Anota las repeticiones en reserva de la serie 1. ¿Más fácil o más difícil de lo previsto? Usa un nuevo peso para el resto con un toque."
           }
         }
       }
@@ -20611,31 +20716,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlock your full\ntraining potential."
+            "value": "Training that\nadjusts to you."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tam potansiyelini\nortaya çıkar."
+            "value": "Sana uyan\nantrenman."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entfalte dein ganzes\nTrainingspotenzial."
+            "value": "Training, das sich\nan dich anpasst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exprimez tout votre\npotentiel à l’entraînement."
+            "value": "Un entraînement\nqui s’adapte à vous."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desarrolla todo tu\npotencial de entrenamiento."
+            "value": "Entrenamiento\nque se adapta a ti."
           }
         }
       }
@@ -20646,36 +20751,106 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Intelligent progression targets, volume heatmaps, rep-max analytics, and plate calculations."
+            "value": "Training blocks, effort-aware targets, volume heatmaps and rep-max analytics, built on what you log."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kişisel ilerleme hedefleri, hacim haritası, RM analizleri ve plaka hesabı."
+            "value": "Antrenman blokları, efora duyarlı hedefler, hacim haritası ve RM analizleri; hepsi kaydettiklerinden."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Intelligente Trainingsziele, Volumen-Heatmaps, Maximalgewichtsanalysen und Scheibenberechnung."
+            "value": "Trainingsblöcke, Ziele nach deiner Anstrengung, Volumen-Heatmaps und Maximalgewichtsanalysen, aus dem, was du protokollierst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objectifs de progression, cartes de volume, analyses de charges maximales et calcul des disques."
+            "value": "Blocs d’entraînement, objectifs selon l’effort, cartes de volume et analyses de charges maximales, à partir de ce que vous enregistrez."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objetivos de progresión, mapas de volumen, análisis de cargas máximas y cálculo de discos."
+            "value": "Bloques de entrenamiento, objetivos según tu esfuerzo, mapas de volumen y análisis de cargas máximas, a partir de lo que registras."
           }
         }
       }
     },
     "paywall.general.benefit1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training Blocks"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman Blokları"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingsblöcke"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocs d’entraînement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloques de entrenamiento"
+          }
+        }
+      }
+    },
+    "paywall.general.benefit1_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4–6 weeks whose sets follow your pump, workload and soreness, then a deload."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setleri pump, iş yükü ve kas ağrına göre ayarlanan 4–6 hafta, ardından deload."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4–6 Wochen, deren Sätze deinem Pump, deiner Belastung und deinem Muskelkater folgen, dann ein Deload."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4 à 6 semaines dont les séries suivent votre congestion, votre charge de travail et vos courbatures, puis une décharge."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De 4 a 6 semanas cuyas series siguen tu congestión, carga de trabajo y agujetas, y luego una descarga."
+          }
+        }
+      }
+    },
+    "paywall.general.benefit2": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -20710,107 +20885,37 @@
         }
       }
     },
-    "paywall.general.benefit1_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weight and rep suggestions based on your logged sets."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kayıtlı setlerine göre ağırlık ve tekrar önerileri al."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gewichts- und Wiederholungsvorschläge aus deinen protokollierten Sätzen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Suggestions de charge et de répétitions issues de vos séries enregistrées."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sugerencias de peso y repeticiones basadas en tus series registradas."
-          }
-        }
-      }
-    },
-    "paywall.general.benefit2": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume Matrix"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hacim Haritası"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume Matrix"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume Matrix"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Volume Matrix"
-          }
-        }
-      }
-    },
     "paywall.general.benefit2_desc": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Weekly muscle-volume ranges and visual set distribution."
+            "value": "Weight and rep targets from your logged sets, with a check after the first set."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kas hacmi referans aralıkları ve görsel set dağılımı."
+            "value": "Kayıtlı setlerinden ağırlık ve tekrar hedefleri, ilk setten sonra kontrolle."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wöchentliche Muskelvolumenbereiche und eine visuelle Satzverteilung."
+            "value": "Gewichts- und Wiederholungsziele aus deinen Sätzen, mit einem Check nach dem ersten Satz."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plages de volume hebdomadaire par muscle et répartition visuelle des séries."
+            "value": "Des objectifs de charge et de répétitions issus de vos séries, avec un point après la première série."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rangos semanales de volumen muscular y distribución visual de las series."
+            "value": "Objetivos de peso y repeticiones a partir de tus series, con un control tras la primera serie."
           }
         }
       }
@@ -20821,31 +20926,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab & Plate Math"
+            "value": "Volume Matrix & Rep Lab"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab & Plaka Hesabı"
+            "value": "Hacim Haritası & Rep Lab"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab & Scheibenrechner"
+            "value": "Volume Matrix & Rep Lab"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab et calcul des disques"
+            "value": "Volume Matrix et Rep Lab"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab y cálculo de discos"
+            "value": "Volume Matrix y Rep Lab"
           }
         }
       }
@@ -20856,31 +20961,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimated rep-max curves and exact barbell plate loading."
+            "value": "Weekly sets per muscle against reference ranges, and estimated rep-max curves."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tahmini RM gelişimi ve bara takılacak plakaların tam dizilimi."
+            "value": "Referans aralıklarına göre kas başına haftalık setler ve tahmini RM eğrileri."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geschätzte Maximalgewichtsverläufe und genaue Scheibenbeladung."
+            "value": "Wöchentliche Sätze pro Muskel im Vergleich zu Referenzbereichen und geschätzte Maximalkurven."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Courbes de charges maximales estimées et chargement précis des disques."
+            "value": "Séries hebdomadaires par muscle face aux plages de référence, et courbes de charges maximales estimées."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Curvas de cargas máximas estimadas y carga exacta de discos."
+            "value": "Series semanales por músculo frente a rangos de referencia y curvas estimadas de cargas máximas."
           }
         }
       }
@@ -21266,6 +21371,356 @@
           "stringUnit": {
             "state": "translated",
             "value": "¿Prefieres elegir tú? Escoge cualquier ejercicio; se registra en su propio historial."
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.feature_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training Blocks"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman Blokları"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingsblöcke"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocs d’entraînement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloques de entrenamiento"
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.headline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each week adjusts\nto your answers."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her hafta\nyanıtlarına uyar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Woche folgt\ndeinen Antworten."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque semaine\nsuit vos réponses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus respuestas\nmarcan la semana."
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run your program as a 4–6 week block. Next week's sets follow your pump, workload and soreness answers, within reference ranges."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programını 4–6 haftalık bir blok olarak uygula. Gelecek haftanın setleri pump, iş yükü ve kas ağrısı yanıtlarına göre, referans aralıklarında belirlenir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainiere deinen Plan als Block über 4–6 Wochen. Die Sätze der nächsten Woche folgen deinen Antworten zu Pump, Belastung und Muskelkater, im Referenzbereich."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menez votre programme en bloc de 4 à 6 semaines. Vos réponses sur la congestion, la charge de travail et les courbatures fixent les séries suivantes, dans les plages de référence."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz tu programa como un bloque de 4 a 6 semanas. Tus respuestas sobre congestión, carga de trabajo y agujetas fijan las series de la semana siguiente, dentro de los rangos de referencia."
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.unlock_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Training Blocks"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman Blokları’nı aç"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingsblöcke freischalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer les blocs d’entraînement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear bloques de entrenamiento"
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets that follow your answers"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yanıtlarına göre setler"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sätze nach deinen Antworten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des séries selon vos réponses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Series según tus respuestas"
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit1_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recovered early with room to spare? A set is added. Still sore? One comes off."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erken ve rahat toparlandın mı? Bir set eklenir. Hâlâ ağrılı mı? Bir set azalır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Früh und mit Luft erholt? Ein Satz kommt dazu. Noch Muskelkater? Einer fällt weg."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupéré tôt avec de la marge ? Une série s’ajoute. Encore courbaturé ? Une série est retirée."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Te recuperaste pronto y con margen? Se añade una serie. ¿Aún con agujetas? Se quita una."
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review every week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her haftayı gözden geçir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Woche prüfen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revoyez chaque semaine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa cada semana"
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit2_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See each change and its reason, and edit any set count before the week starts."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her değişikliği nedeniyle gör, hafta başlamadan istediğin set sayısını düzenle."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh jede Änderung mit ihrem Grund und passe jede Satzzahl an, bevor die Woche beginnt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyez chaque changement et sa raison, et modifiez le nombre de séries avant le début de la semaine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira cada cambio y su motivo, y edita cualquier número de series antes de que empiece la semana."
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Build muscle or peak strength"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kas kazanma veya kuvvet bloğu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muskelaufbau oder Kraftblock"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prise de muscle ou force"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganar músculo o fuerza"
+          }
+        }
+      }
+    },
+    "paywall.training_blocks.benefit3_desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rising effort targets, then a deload. Or top sets that taper toward a test day."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giderek artan efor hedefleri, ardından deload. Ya da seni test gününe hazırlayan zirve setler."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steigende Anstrengungsziele, dann ein Deload. Oder Topsätze, die auf einen Testtag hinführen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Des cibles d’effort croissantes, puis une décharge. Ou des séries lourdes jusqu’au jour de test."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objetivos de esfuerzo crecientes y luego una descarga. O series principales hacia un día de prueba."
           }
         }
       }

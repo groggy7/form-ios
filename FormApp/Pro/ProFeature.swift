@@ -9,6 +9,9 @@ public enum ProFeature: String, CaseIterable, Identifiable {
     case customThemes = "custom_themes"
     /// In-workout "Machine taken?" replace. Its paywall has its own copy over the general photograph.
     case exerciseSwaps = "exercise_swaps"
+    /// The locked Home training block card's paywall: its own copy over the general photograph. Blocks keep the
+    /// coach's entitlement (gym/docs/training-blocks.md), so unlocking checks `autoProgression`.
+    case trainingBlocks = "training_blocks"
     /// Bodyweight trend, weekly change and relative strength. It shows the general paywall.
     case bodyTrends = "body_trends"
 
@@ -23,6 +26,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.title"
         case .customThemes: return "pro.custom_themes.title"
         case .exerciseSwaps: return "pro.exercise_swaps.title"
+        case .trainingBlocks: return "pro.training_blocks.title"
         case .bodyTrends: return "pro.body_trends.title"
         }
     }
@@ -36,6 +40,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.description"
         case .customThemes: return "pro.custom_themes.description"
         case .exerciseSwaps: return "pro.exercise_swaps.description"
+        case .trainingBlocks: return "pro.training_blocks.description"
         case .bodyTrends: return "pro.body_trends.description"
         }
     }
@@ -49,6 +54,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.teaser"
         case .customThemes: return "pro.custom_themes.teaser"
         case .exerciseSwaps: return "pro.exercise_swaps.teaser"
+        case .trainingBlocks: return "pro.training_blocks.teaser"
         case .bodyTrends: return "pro.body_trends.teaser"
         }
     }

@@ -67,6 +67,7 @@ struct SessionFeaturePaywallContent: View {
     private var isCloudBackup: Bool { feature == .cloudBackup }
     private var isCustomThemes: Bool { feature == .customThemes }
     private var isSwaps: Bool { feature == .exerciseSwaps }
+    private var isBlocks: Bool { feature == .trainingBlocks }
     private var isGeneral: Bool { feature == nil }
     private var copyPrefix: String { feature == nil ? "paywall.general" : "paywall.\(feature!.rawValue)" }
     private var tagPrefix: String {
@@ -77,6 +78,7 @@ struct SessionFeaturePaywallContent: View {
         case .cloudBackup: return "cloud-backup-paywall"
         case .customThemes: return "custom-themes-paywall"
         case .exerciseSwaps: return "swap-paywall"
+        case .trainingBlocks: return "blocks-paywall"
         case .none: return "general-paywall"
         default: return "progression-paywall"
         }
@@ -88,15 +90,15 @@ struct SessionFeaturePaywallContent: View {
         case .formLab: return "paywall_rep_lab"
         case .cloudBackup: return "paywall_cloud_backup"
         case .customThemes: return "paywall_custom_themes"
-        // Swaps reuse the general photograph: the athlete chalking up between exercises.
-        case .exerciseSwaps, .none: return "paywall_general"
+        // Swaps and blocks reuse the general photograph: the athlete chalking up before a heavy set.
+        case .exerciseSwaps, .trainingBlocks, .none: return "paywall_general"
         default: return "paywall_smart_progression"
         }
     }
     private var featureTitleKey: String {
         switch feature {
         case .warmupCalculator: return "warmup.card_title"
-        case .volumeMatrix, .formLab, .cloudBackup, .customThemes, .exerciseSwaps, .none: return "\(copyPrefix).feature_title"
+        case .volumeMatrix, .formLab, .cloudBackup, .customThemes, .exerciseSwaps, .trainingBlocks, .none: return "\(copyPrefix).feature_title"
         default: return "progression.coach.locked_title"
         }
     }
@@ -215,7 +217,7 @@ struct SessionFeaturePaywallContent: View {
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.app(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.progressionPaywallPhotoTitle).fixedSize(horizontal: false, vertical: true)
-                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup || isCustomThemes || isSwaps ? 0.72 : 0.64)) : width - 48, alignment: .leading)
+                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup || isCustomThemes || isSwaps || isBlocks ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
                 .font(.app(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
@@ -224,9 +226,9 @@ struct SessionFeaturePaywallContent: View {
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
             VStack(alignment: .leading, spacing: 16) {
-                benefit(1, icon: isSwaps ? "arrow.left.arrow.right" : isCustomThemes ? "paintpalette.fill" : (isCloudBackup ? "cloud.fill" : ((isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
-                benefit(2, icon: isSwaps ? "checklist" : isCustomThemes ? "circle.righthalf.filled" : (isCloudBackup ? "person.fill" : (isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
-                benefit(3, icon: isSwaps ? "magnifyingglass" : isCustomThemes ? "sparkles" : (isCloudBackup ? "arrow.triangle.2.circlepath" : (isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(1, icon: isBlocks || isGeneral ? "calendar.badge.clock" : isSwaps ? "arrow.left.arrow.right" : isCustomThemes ? "paintpalette.fill" : (isCloudBackup ? "cloud.fill" : ((isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : "arrow.up.right"))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(2, icon: isSwaps || isBlocks ? "checklist" : isGeneral ? "arrow.up.forward.circle.fill" : isCustomThemes ? "circle.righthalf.filled" : (isCloudBackup ? "person.fill" : (isWarmup ? "paywall.plates" : (isVolumeMatrix ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(3, icon: isSwaps ? "magnifyingglass" : isGeneral ? "square.grid.3x3.fill" : isCustomThemes ? "sparkles" : (isCloudBackup ? "arrow.triangle.2.circlepath" : (isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : "bolt.fill")))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))

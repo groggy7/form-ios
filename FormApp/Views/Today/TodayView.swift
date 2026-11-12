@@ -4,6 +4,8 @@ public struct TodayView: View {
     @State private var socialRequest: SocialShareRequest?
     @State private var blockSheet: BlockSheet?
     @State private var blockPaywall = false
+    /// Buying or restoring from the locked card opens the block setup once the paywall has gone.
+    @State private var blockSetupAfterUnlock = false
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var proManager = ProAccessManager.shared
@@ -147,7 +149,14 @@ public struct TodayView: View {
         )
         .padding(.horizontal, 20)
         .sheet(item: $blockSheet) { sheet in blockSheetView(sheet) }
-        .sheet(isPresented: $blockPaywall) { ProPaywallSheet(feature: .autoProgression, onDismiss: { blockPaywall = false }) }
+        .sheet(isPresented: $blockPaywall, onDismiss: {
+            // A returning subscriber's existing block keeps its own card state instead.
+            if blockSetupAfterUnlock && store.state.trainingBlock == nil && store.activeProgram != nil { blockSheet = .setup }
+            blockSetupAfterUnlock = false
+        }) {
+            ProPaywallSheet(feature: .trainingBlocks, onDismiss: { blockPaywall = false },
+                            onUnlocked: { blockSetupAfterUnlock = true })
+        }
         .onAppear { store.refreshTrainingBlock() }
 
         if let card = SocialCards.week(program: store.activeProgram, completed: store.state.completed, history: store.state.history, weekKey: store.state.currentWeekKey, unit: store.weightUnit) {
