@@ -21,6 +21,7 @@ public final class VideoMetadataStore {
     /// Saved URLs, oldest first. Linked videos change over time, so only the newest `maxEntries` are kept.
     private var savedOrder: [String] = []
     private let cacheKey = "video_metadata_cache"
+    private static let queryValueAllowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
     private let lock = NSLock()
     private let defaults: UserDefaults
     private let maxEntries: Int
@@ -46,7 +47,9 @@ public final class VideoMetadataStore {
             return VideoMetadata(url: url)
         }
 
-        guard let encoded = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+        // The link is one query value, so its own `&`, `=` and `+` are encoded too (as Android's URLEncoder does);
+        // otherwise `watch?list=…&v=…` reaches oEmbed without its video and the link is marked unavailable.
+        guard let encoded = url.addingPercentEncoding(withAllowedCharacters: Self.queryValueAllowed),
               let endpoint = URL(string: "https://www.youtube.com/oembed?url=\(encoded)&format=json") else {
             return VideoMetadata(url: url)
         }
