@@ -72,7 +72,8 @@ public struct VideoPlayerSheet: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
 
-                if let url = URL(string: videoUrl) {
+                // Links can come from imported backups or programs, so only web links are opened, as on Android.
+                if let url = URL(string: videoUrl), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
                     Button(action: { UIApplication.shared.open(url) }) {
                         Text(LanguageManager.t("video.openExternal"))
                             .font(.app(size: 14, weight: .medium))

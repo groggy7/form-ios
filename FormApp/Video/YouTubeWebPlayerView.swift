@@ -106,6 +106,8 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
         self.onExternalLink = onExternalLink
     }
 
+    static let origin = YouTubeEmbed.origin(bundleId: Bundle.main.bundleIdentifier ?? "com.perseverancesoftware.forcedrep")
+
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -125,7 +127,7 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
         controller.webView = webView
         controller.startPolling()
 
-        let origin = YouTubeEmbed.origin(bundleId: Bundle.main.bundleIdentifier ?? "com.perseverancesoftware.forcedrep")
+        let origin = Self.origin
         let html = YouTubeEmbed.page(
             video: controller.video,
             origin: origin,
@@ -159,9 +161,19 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
         }
 
         public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-            if navigationAction.navigationType == .linkActivated,
-               let url = navigationAction.request.url {
-                parent.onExternalLink(url.absoluteString)
+            let url = navigationAction.request.url
+            // A tapped link leaves the player; only web links open, never another app's URL scheme.
+            if navigationAction.navigationType == .linkActivated {
+                if let url, ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
+                    parent.onExternalLink(url.absoluteString)
+                }
+                decisionHandler(.cancel)
+                return
+            }
+            // The YouTube iframe loads freely, but the page around it stays the player wrapper, as on Android.
+            var address = url?.absoluteString ?? ""
+            if address.hasSuffix("/") { address.removeLast() }
+            if navigationAction.targetFrame?.isMainFrame != false, address != YouTubeWebPlayerView.origin {
                 decisionHandler(.cancel)
                 return
             }
