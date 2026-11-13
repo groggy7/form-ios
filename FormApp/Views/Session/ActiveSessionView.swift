@@ -1160,7 +1160,7 @@ public struct ActiveSessionView: View {
         }
     }
 
-    /// Ticking an extension of the set that started the running rest restarts that rest.
+    /// Ticking an extension restarts its set's rest, or starts one when none is left (`IntensitySets.restAfterTickingExtension`).
     private func toggleExtension(exercise: Exercise, index: Int, extensionIndex: Int) {
         store.updateActiveSession { d in
             var copy = d

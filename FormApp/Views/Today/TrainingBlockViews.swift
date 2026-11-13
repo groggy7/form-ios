@@ -586,14 +586,14 @@ enum BlockSheet: Identifiable, Equatable {
     case setup
     case week(Int)
     case summary
-    /// The Method page; from the setup, closing it returns there.
-    case method(fromSetup: Bool)
+    /// The Method page from the block card. The setup shows it over itself instead, keeping its choices.
+    case method
     var id: String {
         switch self {
         case .setup: return "setup"
         case .week(let week): return "week-\(week)"
         case .summary: return "summary"
-        case .method(let fromSetup): return fromSetup ? "method-setup" : "method"
+        case .method: return "method"
         }
     }
 }

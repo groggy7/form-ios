@@ -1271,10 +1271,18 @@ public enum IntensitySets {
         return copy
     }
 
-    /// Ticking an extension of the set that started the running rest restarts that rest at full length.
+    /// The rest after ticking an extension of `setId` (docs/design/intensity-sets.md, rule 4). The rest its set started
+    /// restarts at full length, even once run out; with no rest left, the exercise's latest completed working set starts
+    /// the rest its completion would. A paused rest and another set's running rest are kept. Android matches.
     public static func restAfterTickingExtension(in draft: ActiveSessionDraft, setId: String, exercise: Exercise, nowEpochMillis: Int64) -> RestTimerState? {
-        guard let rest = draft.restTimer, rest.isRunning, rest.setId == setId, rest.secondsRemaining(nowEpochMillis: nowEpochMillis) > 0 else {
-            return draft.restTimer
+        let rest = draft.restTimer
+        if let rest, !rest.isRunning || (rest.setId != setId && rest.secondsRemaining(nowEpochMillis: nowEpochMillis) > 0) {
+            return rest
+        }
+        if rest?.setId != setId {
+            let sets = draft.setsByExercise[exercise.id] ?? []
+            guard let index = sets.firstIndex(where: { $0.id == setId }),
+                  index == sets.lastIndex(where: { $0.isCompleted && !$0.isWarmup }) else { return rest }
         }
         return RestTimerUtils.afterCompletingSet(in: draft, exercise: exercise, setId: setId, nowEpochMillis: nowEpochMillis) ?? rest
     }

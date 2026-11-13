@@ -189,6 +189,24 @@ final class IntensitySetsBehaviorTests: XCTestCase {
         XCTAssertEqual(other, running)
         var paused = running; paused.isRunning = false
         XCTAssertEqual(IntensitySets.restAfterTickingExtension(in: draft([set], rest: paused), setId: set.id, exercise: bench, nowEpochMillis: 50_000), paused)
+        // The set's own rest restarts even after it has run out.
+        let runOut = IntensitySets.restAfterTickingExtension(in: draft([set, main(2, 100, 8, completed: false)], rest: running), setId: set.id, exercise: bench, nowEpochMillis: 200_000)
+        XCTAssertEqual(runOut?.endsAtEpochMillis, 200_000 + Int64(RestTimerUtils.restSeconds(for: bench)) * 1000)
+    }
+
+    func testADropStartsTheRestWhenNoneIsLeft() {
+        let set = dropSet()
+        let open = main(2, 100, 8, completed: false)
+        let started = IntensitySets.restAfterTickingExtension(in: draft([set, open]), setId: set.id, exercise: bench, nowEpochMillis: 50_000)
+        XCTAssertEqual(started?.setId, set.id)
+        XCTAssertEqual(started?.endsAtEpochMillis, 50_000 + Int64(RestTimerUtils.restSeconds(for: bench)) * 1000)
+        // Another set's rest that has run out gives way too.
+        let otherRunOut = RestTimerState(exerciseName: bench.name, totalSeconds: 180, isRunning: true, endsAtEpochMillis: 40_000, pausedSecondsRemaining: 180, setId: "another")
+        XCTAssertEqual(IntensitySets.restAfterTickingExtension(in: draft([set, open], rest: otherRunOut), setId: set.id, exercise: bench, nowEpochMillis: 50_000)?.setId, set.id)
+        // A drop logged later on an earlier set starts no rest.
+        XCTAssertNil(IntensitySets.restAfterTickingExtension(in: draft([set, main(2, 100, 8), main(3, 100, 8, completed: false)]), setId: set.id, exercise: bench, nowEpochMillis: 50_000))
+        // No rest follows the workout's last set.
+        XCTAssertNil(IntensitySets.restAfterTickingExtension(in: draft([main(1, 100, 8), main(2, 100, 8), set]), setId: set.id, exercise: bench, nowEpochMillis: 50_000))
     }
 
     func testEndHereRemovesUnloggedSetsAndTheCoachReadsTheEndedSession() {

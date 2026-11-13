@@ -3,6 +3,8 @@ import SwiftUI
 public struct TodayView: View {
     @State private var socialRequest: SocialShareRequest?
     @State private var blockSheet: BlockSheet?
+    /// How it works opened from the setup covers it, so closing it returns to the setup with its choices kept.
+    @State private var setupMethod = false
     @State private var blockPaywall = false
     /// Buying or restoring from the locked card opens the block setup once the paywall has gone.
     @State private var blockSetupAfterUnlock = false
@@ -145,7 +147,7 @@ public struct TodayView: View {
             onSummary: { blockSheet = .summary },
             onEnd: { store.endTrainingBlock() },
             onLocked: { blockPaywall = true },
-            onOpenMethod: { blockSheet = .method(fromSetup: false) }
+            onOpenMethod: { blockSheet = .method }
         )
         .padding(.horizontal, 20)
         .sheet(item: $blockSheet) { sheet in blockSheetView(sheet) }
@@ -193,11 +195,12 @@ public struct TodayView: View {
                                             store.startTrainingBlock(length: length, focus: [], nextWeek: nextWeek, strength: true, lifts: lifts)
                                             blockSheet = nil
                                         },
-                                        onOpenMethod: { blockSheet = .method(fromSetup: true) },
+                                        onOpenMethod: { setupMethod = true },
                                         suggestNextWeek: store.blockSetupSuggestsNextWeek) { length, focus, nextWeek in
                     store.startTrainingBlock(length: length, focus: focus, nextWeek: nextWeek)
                     blockSheet = nil
                 }
+                .sheet(isPresented: $setupMethod) { TrainingBlockMethodSheet() }
             }
         case .week(let week):
             if let block, let program {
@@ -206,9 +209,8 @@ public struct TodayView: View {
                     blockSheet = nil
                 }
             }
-        case .method(let fromSetup):
-            // From the setup, closing the Method page returns there.
-            TrainingBlockMethodSheet().onDisappear { if fromSetup && blockSheet == nil { blockSheet = .setup } }
+        case .method:
+            TrainingBlockMethodSheet()
         case .summary:
             if let block, let program {
                 TrainingBlockSummarySheet(block: block, program: program, history: store.state.history, weightUnit: store.weightUnit,

@@ -682,7 +682,7 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
             }
         }
         LanguageManager.setLanguage("en")
-        XCTAssertEqual(BlockSheet.method(fromSetup: true).id, "method-setup")
+        XCTAssertEqual(BlockSheet.method.id, "method")
 
         let sets = [ExerciseSetLog(id: "s1", setNumber: 1, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true, inputTouched: true, rir: 2),
                     ExerciseSetLog(id: "s2", setNumber: 2, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true, inputTouched: true)]
