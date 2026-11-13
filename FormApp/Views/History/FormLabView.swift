@@ -900,10 +900,9 @@ private func formatAchievedDate(_ dateStr: String) -> String {
         isoFormatter.formatOptions = [.withInternetDateTime]
         date = isoFormatter.date(from: dateStr)
     }
-    if date == nil && dateStr.count == 10 && dateStr.contains("-") {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        date = df.date(from: dateStr)
+    if date == nil {
+        // Training days are Gregorian `yyyy-MM-dd`, whatever calendar the device uses.
+        date = WorkoutCalendar.parseDate(dateStr)
     }
     guard let parsedDate = date else {
         return String(dateStr.prefix(10))

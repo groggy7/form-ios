@@ -38,6 +38,18 @@ public struct FormLabEngine {
         return nil
     }
 
+    /// Records in training order (training day, then start time); each record's dates are read once.
+    private static func trainingOrder(_ history: [WorkoutSessionRecord]) -> [WorkoutSessionRecord] {
+        history.map { ($0, PersonalRecordTracker.TrainingKey($0, timeZone: .current)) }
+            .sorted { $0.1.precedes($1.1) }
+            .map(\.0)
+    }
+
+    /// The first training day a timeframe includes, counted in whole local days as on Android.
+    private static func cutoffDay(_ timeframe: StrengthCurveTimeframe, today: Date) -> Date? {
+        timeframe.days.flatMap { Calendar.current.date(byAdding: .day, value: -$0, to: Calendar.current.startOfDay(for: today)) }
+    }
+
     public static func calculateEstimated1RM(
         weightKg: Double,
         reps: Int,
@@ -106,7 +118,7 @@ public struct FormLabEngine {
         var best1RM: Double = 0
         var bestDate: String? = nil
 
-        let sortedRecords = history.sorted { ($0.startedAt.isEmpty ? $0.completedAt : $0.startedAt) > ($1.startedAt.isEmpty ? $1.completedAt : $1.startedAt) }
+        let sortedRecords = trainingOrder(history).reversed()
 
         let targetCanonicalId = ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
         let targetKey = ExerciseCatalog.key(exerciseName)
@@ -132,7 +144,7 @@ public struct FormLabEngine {
                             best1RM = est
                             bestWeight = w
                             bestReps = r
-                            bestDate = record.startedAt.isEmpty ? record.completedAt : record.startedAt
+                            bestDate = trainingDay(record)
                         }
                     }
                 }
@@ -180,17 +192,17 @@ public struct FormLabEngine {
         today: Date = Date(),
         formula: RepMaxFormula = .brzycki
     ) -> LongitudinalCurveReport {
-        let cutoffDate: Date? = timeframe.days.flatMap { Calendar.current.date(byAdding: .day, value: -$0, to: today) }
+        let cutoffDate = cutoffDay(timeframe, today: today)
 
         var points: [StrengthDataPoint] = []
-        let sortedRecords = history.sorted { ($0.startedAt.isEmpty ? $0.completedAt : $0.startedAt) < ($1.startedAt.isEmpty ? $1.completedAt : $1.startedAt) }
+        let sortedRecords = trainingOrder(history)
 
         let targetCanonicalId = ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
         let targetKey = ExerciseCatalog.key(exerciseName)
 
         for record in sortedRecords {
-            let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
-            guard let recordDate = parseRecordDate(dateStr) else { continue }
+            // A workout assigned to another training day counts on that day, as in the calendar.
+            guard let recordDate = PersonalRecordTracker.trainingDate(record) else { continue }
 
             if let cutoff = cutoffDate, recordDate < cutoff { continue }
 
@@ -223,7 +235,7 @@ public struct FormLabEngine {
                 }
 
                 if sessionPeak1RM > 0 {
-                    let dateDisplay = String(dateStr.prefix(10))
+                    let dateDisplay = WorkoutCalendar.formatDate(recordDate)
                     points.append(
                         StrengthDataPoint(
                             date: recordDate,
@@ -266,7 +278,7 @@ public struct FormLabEngine {
         timeframe: StrengthCurveTimeframe = .allTime,
         today: Date = Date()
     ) -> AntagonistBalanceReport {
-        let cutoffDate: Date? = timeframe.days.flatMap { Calendar.current.date(byAdding: .day, value: -$0, to: today) }
+        let cutoffDate = cutoffDay(timeframe, today: today)
 
         var pushSets = 0
         var pullSets = 0
@@ -278,8 +290,7 @@ public struct FormLabEngine {
         var unclassifiedSets = 0
 
         for record in history {
-            let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
-            if let cutoff = cutoffDate, let recordDate = parseRecordDate(dateStr), recordDate < cutoff {
+            if let cutoff = cutoffDate, let recordDate = PersonalRecordTracker.trainingDate(record), recordDate < cutoff {
                 continue
             }
 

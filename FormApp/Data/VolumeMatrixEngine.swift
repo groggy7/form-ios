@@ -49,12 +49,13 @@ struct VolumeMatrixEngine {
             contributionsMap[muscle] = []
         }
 
+        // A workout counts on its training day in local time, as in History and on Android.
         let weekRecords = records.filter { record in
-            isRecordInWeek(record: record, targetWeekKey: targetWeekKey)
+            PersonalRecordTracker.isRecordInWeek(record, targetWeekKey: targetWeekKey)
         }
 
         for record in weekRecords {
-            let dateStr = recordDateString(record)
+            let dateStr = trainingDay(record)
             for log in record.exerciseLogs {
                 let counted = log.sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }
                 let completedSets = counted.count
@@ -280,58 +281,5 @@ struct VolumeMatrixEngine {
             unmappedExercises: unmapped,
             techniqueSets: techniqueSets
         )
-    }
-
-    private static let isoCalendar: Calendar = {
-        var cal = Calendar(identifier: .iso8601)
-        cal.firstWeekday = 2
-        return cal
-    }()
-
-    private static let isoFormatterWithMillis: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f
-    }()
-
-    private static let isoFormatter: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime]
-        return f
-    }()
-
-    private static let ymdFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        return f
-    }()
-
-    private static func isRecordInWeek(record: WorkoutSessionRecord, targetWeekKey: String) -> Bool {
-        guard !targetWeekKey.isEmpty else { return false }
-        let dateString = record.completedAt.isEmpty ? record.startedAt : record.completedAt
-        guard let date = parseDate(dateString) else { return false }
-        let year = isoCalendar.component(.yearForWeekOfYear, from: date)
-        let week = isoCalendar.component(.weekOfYear, from: date)
-        let weekKey = String(format: "%04d-W%02d", year, week)
-        return weekKey == targetWeekKey
-    }
-
-    private static func recordDateString(_ record: WorkoutSessionRecord) -> String? {
-        let dateString = record.completedAt.isEmpty ? record.startedAt : record.completedAt
-        if dateString.count >= 10 {
-            let prefix = String(dateString.prefix(10))
-            if prefix.count == 10 && prefix.contains("-") {
-                return prefix
-            }
-        }
-        guard let date = parseDate(dateString) else { return nil }
-        return ymdFormatter.string(from: date)
-    }
-
-    private static func parseDate(_ string: String) -> Date? {
-        if string.isEmpty { return nil }
-        if let d = isoFormatterWithMillis.date(from: string) { return d }
-        if let d = isoFormatter.date(from: string) { return d }
-        return ymdFormatter.date(from: string)
     }
 }

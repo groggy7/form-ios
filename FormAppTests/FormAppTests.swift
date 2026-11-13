@@ -1321,7 +1321,7 @@ final class FormAppTests: XCTestCase {
             let expected = FormLabEngine.calculateEstimated1RM(weightKg: 100, reps: 5, formula: formula)
             let summary = try XCTUnwrap(FormLabEngine.computeExerciseRepMax(exerciseName: "Bench", history: history, formula: formula))
             XCTAssertEqual(summary.estimated1rmKg, expected, accuracy: 0.001)
-            XCTAssertEqual(summary.achievedDate, mixed.startedAt)
+            XCTAssertEqual(summary.achievedDate, trainingDay(mixed))
             XCTAssertEqual(summary.bestWeightKg, 100)
             XCTAssertEqual(summary.bestReps, 5)
             XCTAssertEqual(summary.formula, formula)
@@ -4162,6 +4162,26 @@ final class FormAppTests: XCTestCase {
         let report = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W38", history: [session], catalog: catalog)
         XCTAssertEqual(report.muscleSummaries["biceps"]?.totalEffectiveSets, 1)
         XCTAssertEqual(report.muscleSummaries["forearms"]?.totalEffectiveSets, 0)
+    }
+
+    func testAnalyticsCountAWorkoutOnItsTrainingDay() throws {
+        // Logged on Tuesday 1 September but assigned to Sunday 30 August, as Android's trainingDate counts it.
+        var record = WorkoutSessionRecord(
+            id: "moved", programId: "p", workoutId: "w", workoutTitle: "Arms",
+            startedAt: "2026-09-01T10:00:00Z", completedAt: "2026-09-01T11:00:00Z",
+            durationSeconds: 600, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Curl", sets: [SessionSetLog(setNumber: 1, weightKg: 30, reps: 10)])
+            ])
+        record.performedDate = "2026-08-30"
+        let summary = try XCTUnwrap(FormLabEngine.computeExerciseRepMax(exerciseName: "Barbell Curl", history: [record]))
+        XCTAssertEqual(summary.achievedDate, "2026-08-30")
+        let curve = FormLabEngine.computeLongitudinalCurve(exerciseName: "Barbell Curl", history: [record])
+        XCTAssertEqual(curve.points.map(\.dateString), ["2026-08-30"])
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        let assignedWeek = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W35", history: [record], catalog: catalog)
+        XCTAssertEqual(assignedWeek.muscleSummaries["biceps"]?.totalEffectiveSets, 1)
+        let loggedWeek = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W36", history: [record], catalog: catalog)
+        XCTAssertEqual(loggedWeek.muscleSummaries["biceps"]?.totalEffectiveSets, 0)
     }
 
     func testCustomExerciseNamesResolveToTheirMuscleLabel() {
