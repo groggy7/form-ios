@@ -110,9 +110,6 @@ public struct FormLabView: View {
     @State private var balanceTimeframe: StrengthCurveTimeframe = .allTime
     @State private var showInfoSheet: Bool = false
 
-    // Interactive chart scrubber
-    @State private var selectedPointIndex: Int? = nil
-
     private let customHistory: [WorkoutSessionRecord]?
     private let isPreview: Bool
 
@@ -520,41 +517,12 @@ public struct FormLabView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 180)
                     } else {
-                        // Touch scrubber detail tooltip if active
-                        if let pt = selectedPointIndex.flatMap({ report.points.indices.contains($0) ? report.points[$0] : nil }) ?? report.points.last {
-                            VStack(alignment: .leading, spacing: 6) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("form_lab.achieved_with", [
-                                        "weight": formatWeight(pt.topWeightKg),
-                                        "reps": "\(pt.topReps)",
-                                        "date": formatAchievedDate(pt.dateString),
-                                        "formula": LanguageManager.t(selectedFormula.titleKey)
-                                    ]))
-                                        .font(.app(size: 11, weight: .medium))
-                                        .foregroundStyle(AppColors.muted)
-                                }
-                                VStack(alignment: .trailing, spacing: 2) {
-                                    Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
-                                        .font(.app(size: 10, weight: .bold))
-                                        .foregroundStyle(AppColors.accent)
-                                    Text(formatWeight(pt.estimated1rmKg))
-                                        .font(.app(size: 14, weight: .bold, design: .rounded))
-                                        .foregroundStyle(AppColors.accent)
-                                }
-                            }
-                            .padding(10)
-                            .background(AppColors.surface)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.accent.opacity(0.4), lineWidth: 1))
-                        }
-
-                        // Canvas Line Chart
-                        StrengthLineChart(
+                        // The scrubber keeps its own selection, so dragging redraws only it, not the whole report.
+                        StrengthCurveScrubber(
                             points: report.points,
-                            selectedIndex: $selectedPointIndex,
+                            formulaTitle: LanguageManager.t(selectedFormula.titleKey),
                             weightUnit: store.weightUnit
                         )
-                        .frame(height: 200)
                     }
                 }
                 .padding(16)
@@ -793,6 +761,60 @@ public struct FormLabView: View {
 }
 
 // MARK: - Canvas Progression Chart
+
+/// The curve's point details and chart. It owns the drag selection, so scrubbing never recomputes the report.
+private struct StrengthCurveScrubber: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let points: [StrengthDataPoint]
+    let formulaTitle: String
+    let weightUnit: WeightUnit
+    @State private var selectedIndex: Int? = nil
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(alignment: .leading, spacing: 12) {
+            // Touch scrubber detail tooltip if active
+            if let pt = selectedIndex.flatMap({ points.indices.contains($0) ? points[$0] : nil }) ?? points.last {
+                VStack(alignment: .leading, spacing: 6) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LanguageManager.t("form_lab.achieved_with", [
+                            "weight": formatWeight(pt.topWeightKg),
+                            "reps": "\(pt.topReps)",
+                            "date": formatAchievedDate(pt.dateString),
+                            "formula": formulaTitle
+                        ]))
+                            .font(.app(size: 11, weight: .medium))
+                            .foregroundStyle(AppColors.muted)
+                    }
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
+                            .font(.app(size: 10, weight: .bold))
+                            .foregroundStyle(AppColors.accent)
+                        Text(formatWeight(pt.estimated1rmKg))
+                            .font(.app(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(AppColors.accent)
+                    }
+                }
+                .padding(10)
+                .background(AppColors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.accent.opacity(0.4), lineWidth: 1))
+            }
+
+            // Canvas Line Chart
+            StrengthLineChart(
+                points: points,
+                selectedIndex: $selectedIndex,
+                weightUnit: weightUnit
+            )
+            .frame(height: 200)
+        }
+    }
+
+    private func formatWeight(_ kg: Double) -> String {
+        String(format: "%.1f %@", locale: LanguageManager.numberLocale, weightUnit.toDisplay(kg), weightUnit.label)
+    }
+}
 
 private struct StrengthLineChart: View {
     @ObservedObject var themeManager = ThemeManager.shared
