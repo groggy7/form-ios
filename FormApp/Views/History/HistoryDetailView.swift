@@ -13,7 +13,8 @@ public struct HistoryDetailView: View {
     var jointStressRatings: Bool = false
     var onRateJointStress: ((WorkoutSessionRecord, Int, JointStress?) -> Void)? = nil
     @State private var socialRequest: SocialShareRequest?
-    @State private var collapsedSections: Set<String> = []
+    /// Cards whose exercise list the viewer switched away from its opening state.
+    @State private var toggledSections: Set<String> = []
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .body) private var rowFont: CGFloat = 14
     @ScaledMetric(relativeTo: .caption) private var detailFont: CGFloat = 12
@@ -133,8 +134,8 @@ public struct HistoryDetailView: View {
                             .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
                             .accessibilityIdentifier("history-completion-mark")
                     }
-                    ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
-                        workoutCard(section, index: index, single: sections.count == 1)
+                    ForEach(sections) { section in
+                        workoutCard(section, single: sections.count == 1)
                     }
                 }
                 .padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 24)
@@ -196,9 +197,11 @@ public struct HistoryDetailView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private func workoutCard(_ section: WorkoutDaySection, index: Int, single: Bool) -> some View {
+    private func workoutCard(_ section: WorkoutDaySection, single: Bool) -> some View {
         let key = "\(detail.dateString):\(section.id)"
-        let expanded = !collapsedSections.contains(key)
+        // A workout not started yet opens closed beside recorded sessions; alone it is all the day has to show.
+        let opensExpanded = single || section.sessionRecord != nil
+        let expanded = opensExpanded != toggledSections.contains(key)
         let items = section.exerciseItems.enumerated().sorted { a, b in
             let aRank = exerciseRank(a.element), bRank = exerciseRank(b.element)
             return aRank == bRank ? a.offset < b.offset : aRank < bRank
@@ -221,7 +224,7 @@ public struct HistoryDetailView: View {
                     statusPill(statusText, color: statusColor, id: single ? "history-detail-status" : "history-section-status-\(section.id)")
                 }
             }
-            if !single { contextLabel(section, index: index) }
+            if !single { contextLabel(section) }
             HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(section.workoutTitle).font(.app(size: workoutTitleFont, weight: .bold)).foregroundStyle(AppColors.text)
@@ -278,7 +281,7 @@ public struct HistoryDetailView: View {
             }
             Rectangle().fill(AppColors.border).frame(height: 1)
             Button {
-                if expanded { collapsedSections.insert(key) } else { collapsedSections.remove(key) }
+                if toggledSections.contains(key) { toggledSections.remove(key) } else { toggledSections.insert(key) }
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "dumbbell.fill")
@@ -334,8 +337,8 @@ public struct HistoryDetailView: View {
         return single ? onActionWorkout : nil
     }
 
-    private func contextLabel(_ section: WorkoutDaySection, index: Int) -> some View {
-        Text(section.contextText(on: detail.date, today: today, index: index))
+    private func contextLabel(_ section: WorkoutDaySection) -> some View {
+        Text(section.contextText(on: detail.date, today: today))
             .font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("history-section-context-\(section.id)")

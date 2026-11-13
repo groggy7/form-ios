@@ -68,6 +68,11 @@ public struct WorkoutDaySection: Identifiable {
     public let durationSeconds: Int
     public let isComplete: Bool
     public let exerciseItems: [HistoryDayExerciseProgress]
+    /// Position among the day's cards by schedule, 0 for the day's own workout; cards themselves list by status.
+    public var scheduleRank = 0
+
+    /// Where the card lists among the day's cards: done first, then unfinished or in progress, then not started.
+    public var statusRank: Int { isComplete ? 0 : sessionRecord != nil ? 1 : 2 }
 
     public init(
         sessionRecord: WorkoutSessionRecord? = nil,
@@ -128,12 +133,12 @@ public struct WorkoutDaySection: Identifiable {
         return isInsideCurrentWeek && !completed && !(workout?.exercises.isEmpty ?? true)
     }
 
-    public func contextText(on day: Date, today: Date = Date(), index: Int = 0) -> String {
+    public func contextText(on day: Date, today: Date = Date()) -> String {
         if isCurrentPlanMatch { return LanguageManager.t("history.recordedToday") }
         guard let scheduledDate else { return LanguageManager.t("history.additionalWorkout") }
         if Calendar.current.isDate(scheduledDate, inSameDayAs: day) {
             // A second workout planned for the same date needs its reason, usually a program switch.
-            if index > 0 {
+            if scheduleRank > 0 {
                 guard isFromOtherProgram else { return LanguageManager.t("history.alsoScheduledDay") }
                 guard let name = otherProgramName, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                     return LanguageManager.t("history.fromOtherProgramUnnamed")
@@ -261,7 +266,8 @@ public struct HistoryDayDetailData: Identifiable {
                 totalVolumeKg: 0, durationSeconds: 0, isComplete: false, exerciseItems: items,
                 scheduledDate: day, scheduleSource: .currentPlan))
         }
-        return sections.enumerated().sorted { a, b in
+        // Schedule order decides the day's primary workout, its action and each card's context line.
+        let scheduleOrder = sections.enumerated().sorted { a, b in
             let aToday = a.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString || a.element.isCurrentPlanMatch
             let bToday = b.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString || b.element.isCurrentPlanMatch
             if aToday != bToday { return aToday }
@@ -271,7 +277,13 @@ public struct HistoryDayDetailData: Identifiable {
             if (a.element.scheduledDate == nil) != (b.element.scheduledDate == nil) { return a.element.scheduledDate != nil }
             if let ad = a.element.scheduledDate, let bd = b.element.scheduledDate, ad != bd { return ad < bd }
             return a.offset < b.offset
-        }.map(\.element)
+        }.enumerated().map { rank, entry -> WorkoutDaySection in
+            var section = entry.element
+            section.scheduleRank = rank
+            return section
+        }
+        // The cards list by status, keeping schedule order within one status.
+        return scheduleOrder.sorted { ($0.statusRank, $0.scheduleRank) < ($1.statusRank, $1.scheduleRank) }
     }
 
     public static func buildExerciseProgress(
@@ -880,7 +892,8 @@ public struct HistoryView: View {
     }
 
     private func handleWorkoutAction(detail: HistoryDayDetailData, section: WorkoutDaySection? = nil) {
-        let target = section ?? detail.sections.first { $0.canAct(on: detail.date) }
+        let target = section ?? detail.sections.filter { $0.canAct(on: detail.date) }
+            .min { $0.scheduleRank < $1.scheduleRank }
         guard let target, target.canAct(on: detail.date) else { return }
         guard let workout = target.workout else { return }
         let record = target.sessionRecord
@@ -980,7 +993,7 @@ public struct HistoryView: View {
             scheduledWorkout: scheduledWorkout, activeProgramId: store.activeProgram?.id,
             programs: store.state.programs, history: store.state.history, activeRecordId: activeRecord?.id,
             manuallyCompleted: status == .completed)
-        let primarySection = sortedSections.first
+        let primarySection = sortedSections.min { $0.scheduleRank < $1.scheduleRank }
         let primarySessionRecord = primarySection?.sessionRecord
         let primaryWorkout = primarySection == nil && status != .completed ? scheduledWorkout : primarySection?.workout
 

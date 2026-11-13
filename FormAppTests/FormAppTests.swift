@@ -10520,7 +10520,7 @@ final class HistoryBreakdownTests: XCTestCase {
             programs: [p], history: records, activeRecordId: active, today: today ?? day)
     }
 
-    /// Today's plan after a program switch, with a workout recorded for the same date listed second.
+    /// Today's unstarted plan after a program switch, listed below an unfinished workout recorded for the same date.
     private func sameDaySections(fromOldProgram: Bool, oldProgramKept: Bool, snapshot: Bool = false,
         live: Bool = false, today: Date? = nil) -> [WorkoutDaySection] {
         let full = Workout(id: "full", day: 2, title: "Full Body: Squat", exercises: [Exercise(id: "full-e", name: "Squat", sets: 2)])
@@ -10535,18 +10535,19 @@ final class HistoryBreakdownTests: XCTestCase {
 
     private func sameDayContexts(fromOldProgram: Bool, oldProgramKept: Bool) -> [String] {
         let result = sameDaySections(fromOldProgram: fromOldProgram, oldProgramKept: oldProgramKept)
-        XCTAssertEqual(result.map { $0.sessionRecord == nil }, [true, false])
-        return result.enumerated().map { $0.element.contextText(on: day, today: day, index: $0.offset) }
+        XCTAssertEqual(result.map { $0.sessionRecord == nil }, [false, true])
+        // Labels come back in schedule order: the plan, then the recorded session.
+        return result.sorted { $0.scheduleRank < $1.scheduleRank }.map { $0.contextText(on: day, today: day) }
     }
 
     func testUnfinishedWorkoutFromAnotherProgramIsReadOnly() {
         // A saved snapshot would otherwise keep Resume even after the old program is deleted.
         for kept in [true, false] {
             let result = sameDaySections(fromOldProgram: true, oldProgramKept: kept, snapshot: true)
-            XCTAssertTrue(result[1].isFromOtherProgram)
-            XCTAssertNotNil(result[1].workout)
-            XCTAssertFalse(result[1].canAct(on: day, today: day), "old program kept: \(kept)")
-            XCTAssertTrue(result[0].canAct(on: day, today: day), "The new program's plan can still start")
+            XCTAssertTrue(result[0].isFromOtherProgram)
+            XCTAssertNotNil(result[0].workout)
+            XCTAssertFalse(result[0].canAct(on: day, today: day), "old program kept: \(kept)")
+            XCTAssertTrue(result[1].canAct(on: day, today: day), "The new program's plan can still start")
         }
         let live = sameDaySections(fromOldProgram: true, oldProgramKept: true, live: true).first { $0.isLiveSession }
         XCTAssertEqual(live?.isFromOtherProgram, true)
@@ -10561,8 +10562,8 @@ final class HistoryBreakdownTests: XCTestCase {
 
     func testUnfinishedWorkoutFromActiveProgramStillResumes() {
         let result = sameDaySections(fromOldProgram: false, oldProgramKept: true)
-        XCTAssertFalse(result[1].isFromOtherProgram)
-        XCTAssertTrue(result[1].canAct(on: day, today: day))
+        XCTAssertFalse(result[0].isFromOtherProgram)
+        XCTAssertTrue(result[0].canAct(on: day, today: day))
     }
 
     func testSameDayWorkoutFromAnotherProgramNamesThatProgram() {
@@ -10634,14 +10635,32 @@ final class HistoryBreakdownTests: XCTestCase {
         XCTAssertEqual(result.first?.plannedSets, 2)
     }
 
-    func testTodayAtDifferentTimeStillIncludesUnstartedPlanAboveCarryover() {
+    func testTodayAtDifferentTimeStillIncludesUnstartedPlanBelowCarryover() {
         let laterToday = Calendar.current.date(byAdding: .hour, value: 23, to: day)!
         let carryover = record(bench, complete: false, scheduled: "2026-10-05")
         let result = sections([carryover], today: laterToday)
         XCTAssertEqual(result.count, 2)
-        XCTAssertEqual(result.first?.workout?.id, pull.id)
-        XCTAssertNil(result.first?.sessionRecord)
-        XCTAssertEqual(result.last?.sessionRecord?.id, carryover.id)
+        XCTAssertEqual(result.first?.sessionRecord?.id, carryover.id)
+        XCTAssertEqual(result.last?.workout?.id, pull.id)
+        XCTAssertNil(result.last?.sessionRecord)
+    }
+
+    func testCardsListDoneThenUnfinishedThenNotStartedWhateverTheirSchedule() {
+        let legs = Workout(id: "legs", day: 3, title: "Legs", exercises: [Exercise(id: "legs-e", name: "Squat", sets: 2)])
+        let plan = Program(id: program.id, name: "Heavy", workouts: [bench, pull, legs])
+        let partial = record(bench, complete: false, scheduled: "2026-10-05")
+        let done = record(legs, complete: true, scheduled: "2026-10-07")
+        for records in [[partial, done], [done, partial]] {
+            let result = sections(records, program: plan)
+            XCTAssertEqual(result.map { $0.sessionRecord?.id }, [done.id, partial.id, nil])
+            XCTAssertEqual(result.map(\.statusRank), [0, 1, 2])
+            // Context lines still follow the schedule: today's plan, then the earlier and later days.
+            XCTAssertEqual(result.map(\.scheduleRank), [2, 1, 0])
+            XCTAssertEqual(result[2].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
+        }
+        // Two cards of one status keep their schedule order.
+        let earlier = record(bench, complete: true, scheduled: "2026-10-05")
+        XCTAssertEqual(sections([done, earlier], program: plan).map { $0.sessionRecord?.id }, [earlier.id, done.id, nil])
     }
 
     @MainActor
@@ -10664,7 +10683,7 @@ final class HistoryBreakdownTests: XCTestCase {
     }
 
     @MainActor
-    func testLegacyCurrentWorkoutFirstWithoutRedundantScheduleAndCarryoverDated() {
+    func testLegacyDoneWorkoutListsFirstAndCurrentKeepsItsContext() {
         let old = record(bench, complete: true)
         let current = record(pull, complete: false)
         let previousLanguage = LanguageManager.shared.currentLanguage
@@ -10673,31 +10692,31 @@ final class HistoryBreakdownTests: XCTestCase {
             LanguageManager.setLanguage(language)
             for records in [[old, current], [current, old]] {
                 let result = sections(records)
-                XCTAssertEqual(result.map(\.workoutTitle), [pull.title, bench.title])
-                XCTAssertEqual(result[0].scheduleLabel(on: day), LanguageManager.t("history.scheduleUnknown"))
-                XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.recordedToday"))
-                XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.additionalWorkout"))
+                XCTAssertEqual(result.map(\.workoutTitle), [bench.title, pull.title])
                 XCTAssertEqual(result[1].scheduleLabel(on: day), LanguageManager.t("history.scheduleUnknown"))
-                XCTAssertTrue(result[0].canAct(on: day, today: day))
-                XCTAssertFalse(result[1].canAct(on: day, today: day))
+                XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.recordedToday"))
+                XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.additionalWorkout"))
+                XCTAssertEqual(result[0].scheduleLabel(on: day), LanguageManager.t("history.scheduleUnknown"))
+                XCTAssertTrue(result[1].canAct(on: day, today: day))
+                XCTAssertFalse(result[0].canAct(on: day, today: day))
             }
         }
         XCTAssertNil(old.scheduledDate)
     }
 
-    func testUnstartedPlanAboveCompletedCarryoverAndExcludedFromRecordedTotals() {
+    func testUnstartedPlanBelowCompletedCarryoverAndExcludedFromRecordedTotals() {
         let old = record(bench, complete: true, scheduled: "2026-10-05")
         let result = sections([old])
         XCTAssertEqual(result.count, 2)
-        XCTAssertEqual(result[0].workout?.id, pull.id)
-        XCTAssertNil(result[0].sessionRecord)
-        XCTAssertEqual(result[0].completedSets, 0)
-        XCTAssertFalse(result[0].isComplete)
-        XCTAssertTrue(result[0].canAct(on: day, today: day))
-        XCTAssertNil(result[0].scheduleLabel(on: day))
-        XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
-        XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.earlierWorkout"))
-        XCTAssertNotNil(result[1].scheduleLabel(on: day))
+        XCTAssertEqual(result[1].workout?.id, pull.id)
+        XCTAssertNil(result[1].sessionRecord)
+        XCTAssertEqual(result[1].completedSets, 0)
+        XCTAssertFalse(result[1].isComplete)
+        XCTAssertTrue(result[1].canAct(on: day, today: day))
+        XCTAssertNil(result[1].scheduleLabel(on: day))
+        XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
+        XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.earlierWorkout"))
+        XCTAssertNotNil(result[0].scheduleLabel(on: day))
         let detail = HistoryDayDetailData(date: day, dateString: "2026-10-06", status: .completed,
             sessionRecord: nil, workout: pull, sections: result)
         XCTAssertEqual(detail.recordedSections.reduce(0) { $0 + $1.plannedSets }, 2)
@@ -10719,8 +10738,8 @@ final class HistoryBreakdownTests: XCTestCase {
         XCTAssertNil(sections([saved], program: p).first { $0.sessionRecord != nil }!.scheduledDate)
         saved.workoutSnapshot = nil
         saved.programId = "deleted"
-        XCTAssertNil(sections([saved]).last!.scheduledDate)
-        XCTAssertEqual(sections([saved]).last!.scheduleSource, .unknown)
+        XCTAssertNil(sections([saved]).first!.scheduledDate)
+        XCTAssertEqual(sections([saved]).first!.scheduleSource, .unknown)
     }
 
     func testNoDuplicatePlanRestDayAndLiveCompletionRemainSeparate() {
