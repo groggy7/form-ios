@@ -999,8 +999,10 @@ public struct ActiveSessionView: View {
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
         let sets = currentDraft.setsByExercise[exerciseId] ?? []
         guard sets.indices.contains(index), let exercise = currentDraft.workout.exercises.first(where: { $0.id == exerciseId }) else { return }
-        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history.filter { $0.id != currentDraft.id }, exercise: exercise)
-        let prevTopKg = previous.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
+        // Only an edit to a completed set can need confirmation; typing into an open set skips the history scan.
+        let prevTopKg = sets[index].isCompleted ? WorkoutSessionUtils.findPreviousSessionWorkingSets(
+            history: store.state.history.filter { $0.id != currentDraft.id }, exercise: exercise
+        ).compactMap { $0.weightKg }.filter { $0 > 0 }.max() : nil
         if WorkoutSessionUtils.completedSetEditNeedsWeightConfirmation(sets[index], weightInput: weight, unit: store.weightUnit, previousTopWeightKg: prevTopKg),
            let normalized = WorkoutSessionUtils.sanitizedWeightInput(weight, unit: store.weightUnit), let displayWeight = Double(normalized) {
             let weightKg = store.weightUnit.toCanonicalKg(displayWeight)
