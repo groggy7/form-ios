@@ -184,7 +184,8 @@ public enum WorkoutSessionUtils {
             let added = weightKg == 0 ? "" : " +\(unit.formatDisplayWeight(weightKg))"
             return "BW\(added) ×\(reps)"
         }
-        return !isAssisted && weightKg == 0 ? "×\(reps)" : "\(formatWeight(weightKg, unit: unit))x\(reps)"
+        // On screen only: the app language's decimal mark ("102,5x5" in Turkish), like the load fields beside it.
+        return !isAssisted && weightKg == 0 ? "×\(reps)" : "\(unit.formatDisplayWeight(weightKg))x\(reps)"
     }
 
     public static func sessionPrAccessibilityLabel(_ text: String, unit: WeightUnit) -> String {
@@ -736,11 +737,11 @@ public enum WorkoutSessionUtils {
     }
 
     public static func formatLogbookBeatBadge(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
-        if result.isAssisted && result.weightDeltaKg < -0.01 { return "−\(formatWeight(-result.weightDeltaKg, unit: unit)) \(unit.uppercaseLabel)" }
+        if result.isAssisted && result.weightDeltaKg < -0.01 { return "−\(unit.formatDisplayWeight(-result.weightDeltaKg)) \(unit.uppercaseLabel)" }
         if result.repDelta > 0 && result.weightDeltaKg <= 0.01 {
             return LanguageManager.t("session.logbook.badge_rep", ["count": result.repDelta])
         } else if result.weightDeltaKg > 0.01 {
-            let deltaStr = "\(formatWeight(result.weightDeltaKg, unit: unit)) \(unit.uppercaseLabel)"
+            let deltaStr = "\(unit.formatDisplayWeight(result.weightDeltaKg)) \(unit.uppercaseLabel)"
             return LanguageManager.t("session.logbook.badge_weight", ["weight": deltaStr])
         } else {
             return LanguageManager.t("session.logbook.badge_beat")
@@ -749,9 +750,9 @@ public enum WorkoutSessionUtils {
 
     public static func formatLogbookBeatNotice(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
         func value(_ weight: Double, _ reps: Int) -> String {
-            if result.isAssisted { return "\(formatWeight(weight, unit: unit)) \(unit.label) \(LanguageManager.t("table.assistance")) × \(reps)" }
+            if result.isAssisted { return "\(unit.formatDisplayWeight(weight)) \(unit.label) \(LanguageManager.t("table.assistance")) × \(reps)" }
             if weight == 0 { return "\(reps) \(LanguageManager.t("exercise.history.reps"))" }
-            return "\(formatWeight(weight, unit: unit)) \(unit.label) × \(reps)"
+            return "\(unit.formatDisplayWeight(weight)) \(unit.label) × \(reps)"
         }
         let currStr = value(result.currentWeightKg, result.currentReps)
         let prevStr = value(result.previousWeightKg, result.previousReps)

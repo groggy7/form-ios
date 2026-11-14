@@ -9484,7 +9484,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertNotNil(beatLoad)
         XCTAssertEqual(beatLoad?.weightDeltaKg ?? 0.0, 2.5, accuracy: 0.01)
         let badgeLoad = WorkoutSessionUtils.formatLogbookBeatBadge(result: beatLoad!, unit: .kg)
-        XCTAssertTrue(badgeLoad.contains("+2.5 KG"))
+        XCTAssertTrue(badgeLoad.contains("+2.5 KG") || badgeLoad.contains("+2,5 KG"))
 
         // Rejection of matched or subpar performances
         XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 8, target: target))
@@ -9494,6 +9494,25 @@ final class FormAppTests: XCTestCase {
         // Notice text formatting
         let notice = WorkoutSessionUtils.formatLogbookBeatNotice(result: beatRep!, unit: .kg)
         XCTAssertTrue(notice.contains("100 kg × 9") && notice.contains("100 kg × 8"))
+    }
+
+    func testBeatNoticeBadgeAndPreviousUseTheLanguagesDecimalMark() throws {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", prescription: "5 × 5", sets: 5)
+        let target = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: 100, reps: 5)],
+                                                            workingSetIndex: 0, exercise: exercise, unit: .kg)
+        let beat = try XCTUnwrap(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 102.5, loggedReps: 5, target: target))
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(WorkoutSessionUtils.formatLogbookBeatNotice(result: beat, unit: .kg), "⚡ Better than last time! 102.5 kg × 5 (last time: 100 kg × 5)")
+        XCTAssertEqual(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: .kg), "⚡ +2.5 KG")
+        XCTAssertEqual(WorkoutSessionUtils.formatSessionPr(weightKg: 102.5, reps: 5), "102.5x5")
+        // Turkish writes the comma the load fields show; only the screen text changes, never a saved value.
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(WorkoutSessionUtils.formatLogbookBeatNotice(result: beat, unit: .kg), "⚡ Geçen seferi geçtin! 102,5 kg × 5 (önceki: 100 kg × 5)")
+        XCTAssertEqual(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: .kg), "⚡ +2,5 KG")
+        XCTAssertEqual(WorkoutSessionUtils.formatSessionPr(weightKg: 102.5, reps: 5), "102,5x5")
+        XCTAssertEqual(WorkoutSessionUtils.formatSessionPr(weightKg: 100, reps: 5), "100x5")
     }
 
     @MainActor
