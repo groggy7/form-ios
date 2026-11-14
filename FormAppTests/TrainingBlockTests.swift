@@ -735,7 +735,11 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         XCTAssertEqual(BlockFormat.targets(length: 4, scale: .rir), "RIR\u{00A0}3 · RIR\u{00A0}2 · RIR\u{00A0}1 · Deload")
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W50", unlocked: true), .complete(block))
         XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W44", unlocked: true), .upcoming(block))
-        XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W46", unlocked: false), .locked)
+        // Premium ends mid-block: the running block keeps its whole card to the end; only a new one is locked.
+        XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W46", unlocked: false),
+                       .active(block, week: 2, target: 2, ready: true))
+        XCTAssertEqual(BlockCardState.of(block: block, activeProgram: program, programs: [program], weekKey: "2026-W50", unlocked: false), .complete(block))
+        XCTAssertEqual(BlockCardState.of(block: nil, activeProgram: program, programs: [program], weekKey: "2026-W46", unlocked: false), .locked)
         // Every Method card has its words in every language: no key falls back to its name.
         for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)

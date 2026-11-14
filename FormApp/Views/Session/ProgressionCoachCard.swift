@@ -10,6 +10,8 @@ public struct ProgressionCoachCard: View {
     let onOpenInfo: () -> Void
     var onLockedClick: (() -> Void)? = nil
     var onDismissLocked: (() -> Void)? = nil
+    /// Overrides the Premium check, as a block's workout does after Premium ends.
+    var unlocked: Bool? = nil
 
     @ObservedObject private var proManager = ProAccessManager.shared
     @State private var wasApplied: Bool = false
@@ -26,7 +28,8 @@ public struct ProgressionCoachCard: View {
         onApplyTarget: @escaping () -> Void,
         onOpenInfo: @escaping () -> Void,
         onLockedClick: (() -> Void)? = nil,
-        onDismissLocked: (() -> Void)? = nil
+        onDismissLocked: (() -> Void)? = nil,
+        unlocked: Bool? = nil
     ) {
         self.recommendation = recommendation
         self.weightUnit = weightUnit
@@ -36,12 +39,13 @@ public struct ProgressionCoachCard: View {
         self.onOpenInfo = onOpenInfo
         self.onLockedClick = onLockedClick
         self.onDismissLocked = onDismissLocked
+        self.unlocked = unlocked
     }
 
     public var body: some View {
         let _ = themeManager.currentTheme
         Group {
-        if !proManager.isFeatureUnlocked(.autoProgression) {
+        if !(unlocked ?? proManager.isFeatureUnlocked(.autoProgression)) {
             LockedSessionFeatureCard(
                 title: LanguageManager.t("progression.coach.locked_title"),
                 description: LanguageManager.t("progression.coach.locked_desc"),

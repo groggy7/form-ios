@@ -9,9 +9,10 @@ enum BlockCardState: Equatable {
     case otherProgram(TrainingBlock, programName: String)
     case complete(TrainingBlock)
 
+    /// `unlocked` is Premium. A block that is already running keeps its whole card when Premium ends, to its last
+    /// week and summary; only starting a block needs Premium.
     static func of(block: TrainingBlock?, activeProgram: Program?, programs: [Program], weekKey: String, unlocked: Bool) -> BlockCardState {
-        guard unlocked else { return .locked }
-        guard let block else { return .none }
+        guard let block else { return unlocked ? .none : .locked }
         guard activeProgram?.id == block.programId else {
             return .otherProgram(block, programName: programs.first { $0.id == block.programId }?.displayName ?? "")
         }

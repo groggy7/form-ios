@@ -254,8 +254,10 @@ public struct ActiveSessionView: View {
                                     let liftEstimateKg = strengthPlan == nil ? nil
                                         : TrainingBlocks.estimatedOneRepMaxKg(workout: activeDraft.workout, exercise: exercise, history: store.state.history,
                                                                               excludeSessionId: activeDraft.id)
+                                    // A block's workouts keep the coach and the readiness check when Premium ends, until the block does.
+                                    let coachUnlocked = proManager.isFeatureUnlocked(.autoProgression) || activeDraft.blockId != nil
                                     // Asked before the workout's first working set; it leaves once one is ticked.
-                                    let asksReadiness = store.readinessCheck && proManager.isFeatureUnlocked(.autoProgression)
+                                    let asksReadiness = store.readinessCheck && coachUnlocked
                                         && !activeDraft.setsByExercise.values.joined().contains(where: { $0.isCompleted && !$0.isWarmup })
                                     // Soreness is asked before a muscle's first exercise, pump and workload after its last.
                                     let exerciseIndex = activeDraft.workout.exercises.firstIndex { $0.id == exercise.id } ?? -1
@@ -318,7 +320,8 @@ public struct ActiveSessionView: View {
                                                 withAnimation(.easeInOut(duration: 0.25)) {
                                                     store.showProgressionTargets = false
                                                 }
-                                            }
+                                            },
+                                            unlocked: coachUnlocked
                                         )
                                         .transition(.opacity.combined(with: .scale(scale: 0.96)))
                                     }
@@ -365,12 +368,12 @@ public struct ActiveSessionView: View {
                                     // muscle's pump and workload questions never follow a second "how did it feel".
                                     let rirStandsIn = activeDraft.blockId != nil && workingRows.allSatisfy { $0.rir != nil }
                                         && activeDraft.effortByExercise?[exercise.id] == nil
-                                    let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
+                                    let asksEffort = coachUnlocked && store.showProgressionTargets &&
                                         workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil && !rirStandsIn
                                     let asksJointStress = store.jointStressRatings && WorkoutSessionUtils.offersJointStressRating(currentSets)
                                     // The first working set's reps in reserve can offer a load step for the rest (Premium coach).
                                     let effortOn = store.repsInReserve || activeDraft.blockId != nil
-                                    let loadAdjustment = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
+                                    let loadAdjustment = coachUnlocked && store.showProgressionTargets &&
                                         effortOn && !keptAdjustments.contains(exercise.id) && !blockDeload && strengthPlan == nil
                                         ? ProgressionEngine.loadAdjustment(exercise: exercise, sets: currentSets, unit: store.weightUnit,
                                                                            steps: store.progressionLoadSteps,

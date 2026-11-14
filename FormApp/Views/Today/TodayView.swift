@@ -153,7 +153,8 @@ public struct TodayView: View {
         .sheet(item: $blockSheet) { sheet in blockSheetView(sheet) }
         .sheet(isPresented: $blockPaywall, onDismiss: {
             // A returning subscriber's existing block keeps its own card state instead.
-            if blockSetupAfterUnlock && store.state.trainingBlock == nil && store.activeProgram != nil { blockSheet = .setup }
+            let blockOver = store.state.trainingBlock.map { TrainingBlocks.isFinished($0, weekKey: store.state.currentWeekKey) } ?? true
+            if blockSetupAfterUnlock && blockOver && store.activeProgram != nil { blockSheet = .setup }
             blockSetupAfterUnlock = false
         }) {
             ProPaywallSheet(feature: .trainingBlocks, onDismiss: { blockPaywall = false },
@@ -214,7 +215,11 @@ public struct TodayView: View {
         case .summary:
             if let block, let program {
                 TrainingBlockSummarySheet(block: block, program: program, history: store.state.history, weightUnit: store.weightUnit,
-                                          onStartAnother: { blockSheet = .setup },
+                                          // Starting another block needs Premium, even from a block that ran to its end without it.
+                                          onStartAnother: {
+                                              if proManager.isFeatureUnlocked(.autoProgression) { blockSheet = .setup }
+                                              else { blockSheet = nil; blockPaywall = true }
+                                          },
                                           onDone: { store.endTrainingBlock(); blockSheet = nil })
             }
         }
