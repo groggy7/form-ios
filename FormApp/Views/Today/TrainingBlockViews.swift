@@ -88,7 +88,9 @@ struct TrainingBlockCard: View {
             HStack(spacing: 8) {
                 Image(systemName: "calendar.badge.clock").font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(AppColors.purple).accessibilityHidden(true)
+                // Wraps rather than truncating, and shrinks before it would break inside "d'entraînement".
                 Text(LanguageManager.t("block.card.title")).font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                    .lineLimit(2).minimumScaleFactor(0.6).fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading).accessibilityAddTraits(.isHeader)
                 if state == .locked {
                     Image(systemName: "lock.fill").font(.system(size: 14)).foregroundStyle(AppColors.purple)
@@ -171,13 +173,21 @@ struct TrainingBlockCard: View {
         }
     }
 
-    /// The card's last row: the quiet End block at the start and the card's one action at the end, which wraps rather
-    /// than pushing End block off the row.
+    /// The card's last row: the quiet End block at the start and the card's one action at the end, each on one line.
+    /// When they cannot share the row (large text, long languages), the action takes its own full-width row with End
+    /// block under it, rather than squeezing into a narrow, many-line button. Android `Footer` matches.
     private func footer<Action: View>(end: Bool, @ViewBuilder action: () -> Action) -> some View {
-        HStack(spacing: 12) {
-            if end { endButton }
-            Spacer(minLength: 0)
-            action()
+        let action = action()
+        return ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                if end { endButton.fixedSize() }
+                Spacer(minLength: 0)
+                action.fixedSize()
+            }
+            VStack(alignment: .leading, spacing: 0) {
+                action.environment(\.blockActionFills, true)
+                if end { endButton }
+            }
         }
         .padding(.top, 2)
     }
@@ -191,16 +201,8 @@ struct TrainingBlockCard: View {
         Text(text).font(.app(size: bodySize)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
     }
 
-    /// A compact accent button: 40pt shown inside a 48pt target, so it never towers over the card's text.
     private func primary(_ label: String, _ identifier: String, _ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(label).blockFont(14, .semibold).foregroundStyle(AppColors.background)
-                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 16).padding(.vertical, 10).frame(minHeight: 40)
-                .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .frame(minHeight: 48).contentShape(Rectangle())
-        }
-        .buttonStyle(.plain).accessibilityIdentifier(identifier)
+        BlockPrimaryAction(label: label, identifier: identifier, action: action)
     }
 
     private var endButton: some View {
@@ -336,7 +338,9 @@ struct TrainingBlockSetupContent: View {
         let weeks = { (count: Int) in LanguageManager.t("block.setup.weeks", ["count": count]) }
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 8) {
+                // Three lines at most, shrinking before it would break inside a word ("d'entraînement") at accessibility sizes.
                 Text(LanguageManager.t("block.setup.title")).blockFont(20, .bold).foregroundStyle(AppColors.text)
+                    .lineLimit(3).minimumScaleFactor(0.6)
                     .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityAddTraits(.isHeader)
                 // A 48pt target whose glyph lines up with the content edge.
@@ -547,7 +551,8 @@ private struct BlockWeekStrip: View {
                     let quiet = cell.level == 0
                     let here = current == index + 1
                     let outlined = current == nil ? cell.outlined : here
-                    Text(cell.label).blockFont(13, .semibold).lineLimit(1).minimumScaleFactor(0.85)
+                    // Sized to fit its cell: "Décharge" stays whole at accessibility sizes.
+                    Text(cell.label).blockFont(13, .semibold).lineLimit(1).minimumScaleFactor(0.5)
                         .foregroundStyle(quiet ? AppColors.secondaryText : AppColors.text)
                         .padding(.horizontal, 4).padding(.vertical, 6)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center).frame(minHeight: 36)
@@ -854,6 +859,39 @@ private struct BlockPill: View {
 private struct BlockPillWidthKey: PreferenceKey {
     static var defaultValue: CGFloat { 0 }
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
+}
+
+/// A compact accent button: 40pt shown inside a 48pt target, so it never towers over the card's text. In a stacked
+/// footer it fills the row.
+private struct BlockPrimaryAction: View {
+    let label: String
+    let identifier: String
+    let action: () -> Void
+    @Environment(\.blockActionFills) private var fills
+
+    var body: some View {
+        Button(action: action) {
+            Text(label).blockFont(14, .semibold).foregroundStyle(AppColors.background)
+                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 16).padding(.vertical, 10)
+                .frame(maxWidth: fills ? .infinity : nil, minHeight: 40)
+                .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .frame(minHeight: 48).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain).accessibilityIdentifier(identifier)
+    }
+}
+
+private struct BlockActionFillsEnvironment: EnvironmentKey {
+    static let defaultValue = false
+}
+
+private extension EnvironmentValues {
+    /// The block card's footer stacked, so its action fills the row.
+    var blockActionFills: Bool {
+        get { self[BlockActionFillsEnvironment.self] }
+        set { self[BlockActionFillsEnvironment.self] = newValue }
+    }
 }
 
 private struct BlockPillWidthEnvironment: EnvironmentKey {

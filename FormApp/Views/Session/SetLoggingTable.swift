@@ -159,6 +159,8 @@ public struct SetLoggingTable: View {
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
             }
             .font(.app(size: 11, weight: .bold))
+            // Fit-to-slot headings: "FERTIG" and "SATZ" stay whole in their columns.
+            .lineLimit(1).minimumScaleFactor(0.6)
             .foregroundStyle(AppColors.muted)
             .padding(.horizontal, 14)
             .tourTarget("workout.sets.row.1", cornerRadius: 12)
@@ -331,7 +333,8 @@ public struct SetLoggingTable: View {
                                         .foregroundStyle(beaten ? AppColors.accent : AppColors.secondaryText)
                                         .lineLimit(previousText.hasPrefix("BW") ? 2 : 1)
                                         .multilineTextAlignment(.center)
-                                        .minimumScaleFactor(previousText.hasPrefix("BW") ? 0.7 : 1)
+                                        // A load and reps stay whole and size to fit the column ("102.5x10").
+                                        .minimumScaleFactor(0.7)
                                         .frame(width: 56, alignment: .center)
                                         .background(beaten ? AppColors.positiveBg : .clear, in: RoundedRectangle(cornerRadius: 4))
                                         .overlay(RoundedRectangle(cornerRadius: 4).stroke(beaten ? AppColors.accent.opacity(0.35) : .clear))
