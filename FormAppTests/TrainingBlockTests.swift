@@ -240,6 +240,45 @@ final class TrainingBlocksTests: XCTestCase {
     private var lower: Workout { Workout(id: "lower", day: 3, title: "Lower", exercises: [squat, extensionLift]) }
     private var program: Program { Program(id: "p", name: "Upper Lower", workouts: [upper, lower]) }
 
+    func testTheEstimateReadsTheLiftFromAnyRecentSession() throws {
+        let now = try XCTUnwrap(WorkoutCalendar.parseIsoTimestamp("2026-11-20T12:00:00Z"))
+        let block = try XCTUnwrap(TrainingBlocks.startStrength(program, length: 5, lifts: ["lower/squat"], startWeek: "2026-W45", id: "s"))
+        // Another program's leg day: the same squat under its own exercise id, and another exercise.
+        var legsSquat = squat
+        legsSquat.id = "legs-squat"
+        let front = Exercise(id: "front", name: "Barbell Front Squat", exerciseId: "barbell-front-squat", sets: 3, reps: RepTarget(min: 3, max: 5))
+        let legs = Workout(id: "legs", day: 2, title: "Legs", exercises: [legsSquat, front])
+        var elsewhere = record("legs", block, week: 1, workout: legs, completedAt: "2026-11-03T18:00:00Z",
+                               sets: ["legs-squat": [(140, 4)], "front": [(150, 3)]])
+        elsewhere.programId = "other"
+        elsewhere.blockId = nil
+        elsewhere.blockWeek = nil
+        XCTAssertEqual(try XCTUnwrap(TrainingBlocks.estimatedOneRepMaxKg(workout: lower, exercise: squat, history: [elsewhere], now: now)),
+                       140.0 * 36 / 33, accuracy: 1e-6, "the squat logged in another workout counts")
+        var stale = elsewhere
+        stale.id = "stale"
+        stale.startedAt = "2026-09-01T18:00:00Z"
+        stale.completedAt = "2026-09-01T18:00:00Z"
+        XCTAssertNil(TrainingBlocks.estimatedOneRepMaxKg(workout: lower, exercise: squat, history: [stale], now: now), "but not past the 42 days")
+        XCTAssertNil(TrainingBlocks.estimatedOneRepMaxKg(workout: lower, exercise: squat, history: [elsewhere], now: now, excludeSessionId: "legs"),
+                     "and not this session")
+        let own = record("own", block, week: 1, workout: lower, completedAt: "2026-11-10T18:00:00Z", sets: ["squat": [(130, 5)]])
+        XCTAssertEqual(try XCTUnwrap(TrainingBlocks.estimatedOneRepMaxKg(workout: lower, exercise: squat, history: [own, elsewhere], now: now)),
+                       140.0 * 36 / 33, accuracy: 1e-6, "the best of both")
+    }
+
+    func testSummaryBarsShowSmallDifferencesAsSmall() throws {
+        // A taper week's estimate 0.7 kg under week 1 stays nearly as tall; week 2 had no session.
+        let taper = weekBarFractions([147.3, nil, 146.6], fromZero: false)
+        XCTAssertEqual(try XCTUnwrap(taper[0]), 1, accuracy: 1e-9)
+        XCTAssertNil(taper[1])
+        XCTAssertGreaterThan(try XCTUnwrap(taper[2]), 0.95, "a 0.5% dip is no drop")
+        // A real 10% gain still shows clearly.
+        XCTAssertLessThan(try XCTUnwrap(weekBarFractions([140, 154], fromZero: false)[0]), 0.45)
+        XCTAssertEqual(weekBarFractions([10, 20], fromZero: true), [0.5, 1])
+        XCTAssertEqual(weekBarFractions([120], fromZero: false), [1], "one week fills its bar")
+    }
+
     private func record(_ id: String, _ block: TrainingBlock, week: Int, workout: Workout, completedAt: String,
                         sets: [String: [(Double, Int)]], feedback: [String: MuscleFeedback]? = nil,
                         jointStress: [String: String] = [:]) -> WorkoutSessionRecord {
@@ -512,7 +551,7 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         }
     }
 
-    /// The back-off card moves under the ticked top set, before the row pre-fill gave the top set's load.
+    /// The back-off card moves under the ticked top set, right above the back-off rows its Use fills.
     func testTheBackOffCardSitsUnderTheTickedTopSet() throws {
         let plan = try XCTUnwrap(TrainingBlockRules.strengthWeek(length: 6, week: 1))
         func rows(_ done: [Bool], warmup: Bool = false) -> [ExerciseSetLog] {
@@ -526,6 +565,11 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         XCTAssertNil(plan.backoffCardRow(rows([true, true, true, true])), "nothing is left to load")
         let test = try XCTUnwrap(TrainingBlockRules.strengthWeek(length: 6, week: 6))
         XCTAssertNil(test.backoffCardRow(rows([true, false, false])), "the test's singles keep their card above the rows")
+        // Ticking the top set leaves the first back-off row empty; later rows and the test's singles pre-fill.
+        XCTAssertFalse(plan.prefillsAfter(rows([false, false, false, false]), index: 0))
+        XCTAssertFalse(plan.prefillsAfter(rows([false, false, false, false], warmup: true), index: 1), "after warmups too")
+        XCTAssertTrue(plan.prefillsAfter(rows([true, false, false, false]), index: 1))
+        XCTAssertTrue(test.prefillsAfter(rows([false, false, false]), index: 0))
     }
 
     /// A strength block through the store: the week's lift sets, the card's Use, and the test week's singles.

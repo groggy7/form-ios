@@ -224,16 +224,22 @@ enum TrainingBlocks {
     /// Days of history an estimated 1RM may come from.
     private static let estimateDays: Double = 42
 
-    /// The best Brzycki estimate (1–10 reps) from `exercise`'s working sets in that workout's sessions in the last 42 days.
+    /// The best Brzycki estimate (1–10 reps) from `exercise`'s working sets in the last 42 days: that workout's sessions
+    /// and any other session that logged the same exercise, in another workout, program or import. Prev already shows
+    /// those, and a block often starts right after a program switch.
     static func estimatedOneRepMaxKg(workout: Workout, exercise: Exercise, history: [WorkoutSessionRecord], now: Date = Date(),
                                      excludeSessionId: String? = nil) -> Double? {
         guard let index = workout.exercises.firstIndex(where: { $0.id == exercise.id }) else { return nil }
         let since = now.addingTimeInterval(-estimateDays * 86_400)
-        return history.filter { $0.workoutId == workout.id && $0.id != excludeSessionId
-                && (PersonalRecordTracker.trainingDate($0) ?? .distantPast) >= since }
-            .compactMap { record -> SessionExerciseLog? in
-                let logs = WorkoutSessionUtils.historyLogs(workout: workout, record: record)
-                return logs.indices.contains(index) ? logs[index] : nil
+        return history.filter { $0.id != excludeSessionId && (PersonalRecordTracker.trainingDate($0) ?? .distantPast) >= since }
+            .flatMap { record -> [SessionExerciseLog] in
+                if record.workoutId == workout.id {
+                    let logs = WorkoutSessionUtils.historyLogs(workout: workout, record: record)
+                    return logs.indices.contains(index) ? logs[index].map { [$0] } ?? [] : []
+                }
+                return record.exerciseLogs.filter {
+                    ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.exerciseName)
+                }
             }
             .flatMap(workingSets)
             .map { FormLabEngine.calculateEstimated1RM(weightKg: $0.0, reps: $0.1, formula: .brzycki) }

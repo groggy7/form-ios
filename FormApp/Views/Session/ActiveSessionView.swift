@@ -1126,9 +1126,14 @@ public struct ActiveSessionView: View {
                 }
             }
         }
+        // A strength lift's top set leaves the next row empty for the back-off card's loads.
+        let block = store.state.trainingBlock.flatMap { $0.id == currentDraft.blockId ? $0 : nil }
+        let strengthPlan = TrainingBlocks.strengthLift(block, week: block == nil ? nil : currentDraft.blockWeek,
+                                                       workout: currentDraft.workout, exercise: exercise)
+        let prefill = store.prefillNextSet && (strengthPlan?.prefillsAfter(currentSets, index: index) ?? true)
         store.updateActiveSession { d in
             let updated = WorkoutSessionUtils.toggledSet(d, exerciseId: exercise.id, index: index,
-                prefillNextSet: store.prefillNextSet, unit: store.weightUnit, now: nowEpochMillis)
+                prefillNextSet: prefill, unit: store.weightUnit, now: nowEpochMillis)
             if updated != d {
                 if d.setsByExercise[exercise.id]?[index].isCompleted == true { FormAudioPlayer.playSetUndoSound() }
                 else { FormAudioPlayer.playSetCompleteSound() }

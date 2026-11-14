@@ -1007,24 +1007,31 @@ private struct BlockSummaryRow: View {
     }
 }
 
-/// Small bars, one per week. Sets rise from zero; estimated 1RMs use their own range, since a few kilograms would not
-/// show from zero. The deload is quiet and a week without a value keeps its slot as a stub.
+/// Each week's bar height as a share of the full bar, nil for a week without a value. Sets rise from zero; estimated
+/// 1RMs use their own range, since a few kilograms would not show from zero, but that range spans at least a tenth of
+/// the best week, so a kilogram or two still looks small (a taper week's lighter estimate is not a drop).
+func weekBarFractions(_ values: [Double?], fromZero: Bool) -> [Double?] {
+    let known = values.compactMap { $0 }
+    let top = known.max() ?? 0
+    let bottom = fromZero ? 0 : min(known.min() ?? 0, top * 0.9)
+    return values.map { value in
+        guard let value else { return nil }
+        if top <= bottom { return 1 }
+        return fromZero ? value / top : 0.35 + 0.65 * (value - bottom) / (top - bottom)
+    }
+}
+
+/// Small bars, one per week (`weekBarFractions`). The deload is quiet and a week without a value keeps its slot as a stub.
 private struct BlockWeekBars: View {
     let values: [Double?]
     let quietLast: Bool
     let fromZero: Bool
 
     var body: some View {
-        let known = values.compactMap { $0 }
-        let top = known.max() ?? 0
-        let bottom = fromZero ? 0 : (known.min() ?? 0)
+        let fractions = weekBarFractions(values, fromZero: fromZero)
         HStack(alignment: .bottom, spacing: 3) {
             ForEach(Array(values.enumerated()), id: \.offset) { index, value in
-                let fraction: Double = {
-                    guard let value else { return 0 }
-                    if top <= bottom { return 1 }
-                    return fromZero ? value / top : 0.35 + 0.65 * (value - bottom) / (top - bottom)
-                }()
+                let fraction = fractions[index] ?? 0
                 let quiet = quietLast && index == values.count - 1
                 RoundedRectangle(cornerRadius: 2, style: .continuous)
                     .fill(value == nil ? AppColors.border : quiet ? AppColors.muted.opacity(0.45) : AppColors.purple)

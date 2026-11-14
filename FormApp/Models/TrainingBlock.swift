@@ -162,13 +162,18 @@ public enum TrainingBlockRules {
         public var liftSets: Int { test ? testPercents.count : 1 + backoffSets }
         public var liftReps: Int { test ? 1 : topReps }
 
-        /// The row the back-off card sits under: the ticked top set, while a back-off row is open, since pre-fill
-        /// copies the top set's load into the next row. Nil keeps the card above the set rows (before the top set,
-        /// and the test's singles).
+        /// The row the back-off card sits under: the ticked top set, while a back-off row is open, right above the rows
+        /// its Use fills. Nil keeps the card above the set rows (before the top set, and the test's singles).
         public func backoffCardRow(_ sets: [ExerciseSetLog]) -> Int? {
             guard !test, let top = sets.firstIndex(where: { !$0.isWarmup }), sets[top].isCompleted,
                   sets[(top + 1)...].contains(where: { !$0.isWarmup && !$0.isCompleted }) else { return nil }
             return top
+        }
+
+        /// Whether ticking row `index` pre-fills the next row. The top set does not: a copy of its load and reps would
+        /// sit in the first back-off row, unlike the others, so every back-off row waits for the card's load and reps.
+        public func prefillsAfter(_ sets: [ExerciseSetLog], index: Int) -> Bool {
+            test || index != sets.firstIndex(where: { !$0.isWarmup })
         }
     }
 
