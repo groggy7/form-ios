@@ -236,6 +236,27 @@ final class IntensitySetsBehaviorTests: XCTestCase {
         XCTAssertEqual(IntensitySets.endingExercise(in: twoExercises, exerciseId: bench.id, at: 0).restTimer, running)
     }
 
+    func testTheCoachCardNamesTheDropWhenAnEndedSessionAddsReps() {
+        // 100 × 10 twice, a drop after set 2, then End with 2 sets: below the top of the range, so the Coach adds reps.
+        var second = IntensitySets.addingExtension(.drop, to: main(2, 100, 10), unit: .kg)
+        second = IntensitySets.editingExtension(second, at: 0, weight: "70", reps: "6", exercise: bench, unit: .kg)
+        second = IntensitySets.togglingExtension(second, at: 0, exercise: bench, unit: .kg)
+        let value = draft([main(1, 100, 10), second, main(3, 100, 10, completed: false)])
+        XCTAssertEqual(IntensitySets.endingCount(value.setsByExercise[bench.id]!, at: 1), 2)
+        let ended = IntensitySets.endingExercise(in: value, exerciseId: bench.id, at: 1)
+        let record = SessionProgress.from(draft: ended, nowEpochMillis: 60_000).record(draft: ended, completedAtEpochMillis: 60_000)
+        let coach = ProgressionEngine.computeProgression(exercise: bench, history: [record])!
+        XCTAssertEqual(coach.action, .addReps)
+        XCTAssertEqual(coach.rationaleKey, "progression.rationale.ended_with_drop")
+        XCTAssertTrue(ProgressionRecommendationCard.showsRationale(coach), "the card explains the third set instead of the add-reps hint")
+        // A plain add-reps target, from all three sets at 100 × 10, keeps the short hint.
+        let full = draft([main(1, 100, 10), main(2, 100, 10), main(3, 100, 10)])
+        let plain = ProgressionEngine.computeProgression(exercise: bench, history: [
+            SessionProgress.from(draft: full, nowEpochMillis: 60_000).record(draft: full, completedAtEpochMillis: 60_000)])!
+        XCTAssertEqual(plain.rationaleKey, "progression.rationale.add_reps")
+        XCTAssertFalse(ProgressionRecommendationCard.showsRationale(plain))
+    }
+
     func testWarmupConversionDropsTechniqueAndReindexKeepsIt() {
         let working = AppStore.reindexSets([main(1, 60, 10), dropSet()])
         XCTAssertEqual(working[1].technique, "drop")

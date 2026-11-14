@@ -349,11 +349,21 @@ struct ProgressionRecommendationCard: View {
         }
     }
 
+    /// Rationales that explain a padded baseline: where the sets the lifter did not log last time came from.
+    private static let paddedRationales: Set<String> = ["progression.rationale.plan_sets_changed",
+        "progression.rationale.ended_with_drop", "progression.rationale.ended_with_rest_pause"]
+
+    /// Whether the description is the rationale itself rather than the add-reps hint: a weight decision, or a
+    /// padded baseline, which the hint alone would leave unexplained.
+    static func showsRationale(_ recommendation: ExerciseProgressionRecommendation) -> Bool {
+        paddedRationales.contains(recommendation.rationaleKey) || recommendation.action == .increaseLoad || recommendation.action == .holdLoad
+    }
+
     private var descriptionText: String {
         if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
         if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
         if WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) { return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs) }
-        if recommendation.rationaleKey == "progression.rationale.plan_sets_changed" || recommendation.action == .increaseLoad || recommendation.action == .holdLoad {
+        if Self.showsRationale(recommendation) {
             return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
         }
         if expanded { return LanguageManager.t("progression.coach.add_reps_expanded_hint") }
