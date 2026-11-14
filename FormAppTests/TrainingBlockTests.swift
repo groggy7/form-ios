@@ -614,15 +614,16 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                 try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("\(name).png"))
             }
             try render(draft, name: "strength-session-top")
-            // The top set ticked: pre-fill copies its load into the next row, so the back-off card sits between them.
+            // The top set ticked as the screen does: the next row stays empty, and the back-off card sits under the top set.
             var ticked = draft
             var top = try XCTUnwrap(ticked.setsByExercise["squat"]?.first)
             top.weightInput = "132.5"; top.weightKg = 132.5; top.repsInput = "5"; top.completedReps = 5; top.inputTouched = true
             ticked.setsByExercise["squat"]?[0] = top
-            ticked = WorkoutSessionUtils.toggledSet(ticked, exerciseId: "squat", index: 0, now: 0)
-            XCTAssertEqual(ticked.setsByExercise["squat"]?.map(\.weightInput), ["132.5", "132.5", "", ""])
             let plan = try XCTUnwrap(TrainingBlocks.strengthLift(store.state.trainingBlock, week: 1, workout: ticked.workout,
                                                                  exercise: ticked.workout.exercises[0]))
+            ticked = WorkoutSessionUtils.toggledSet(ticked, exerciseId: "squat", index: 0,
+                                                    prefillNextSet: plan.prefillsAfter(ticked.setsByExercise["squat"] ?? [], index: 0), now: 0)
+            XCTAssertEqual(ticked.setsByExercise["squat"]?.map(\.weightInput), ["132.5", "", "", ""])
             XCTAssertEqual(plan.backoffCardRow(ticked.setsByExercise["squat"] ?? []), 0)
             store.activeSession = ticked
             try render(ticked, name: "strength-session-backoff")
