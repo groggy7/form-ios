@@ -193,13 +193,6 @@ struct TrainingBlockCard: View {
     }
 }
 
-private struct BlockSectionLabel: View {
-    let text: String
-    var body: some View {
-        Text(text).blockFont(14, .semibold).foregroundStyle(AppColors.text).accessibilityAddTraits(.isHeader)
-    }
-}
-
 private struct BlockBody: View {
     let text: String
     var body: some View {
@@ -820,8 +813,15 @@ private struct BlockChangePill: View {
     let from: String
     let to: String
     let direction: Int
+    var body: some View { BlockPill(text: LanguageManager.t("block.review.sets", ["from": from, "to": to]), direction: direction) }
+}
+
+/// A result: accent when it went up, amber when it went down, quiet when it held.
+private struct BlockPill: View {
+    let text: String
+    let direction: Int
     var body: some View {
-        Text(LanguageManager.t("block.review.sets", ["from": from, "to": to])).blockFont(13, .semibold).lineLimit(1).fixedSize()
+        Text(text).blockFont(13, .semibold).lineLimit(1).fixedSize()
             .foregroundStyle(direction > 0 ? AppColors.accent : direction < 0 ? AppColors.warmupAmber : AppColors.secondaryText)
             .padding(.horizontal, 8).padding(.vertical, 4)
             .background(direction > 0 ? AppColors.positiveBg : direction < 0 ? AppColors.warmupAmberBg : AppColors.surface,
@@ -863,31 +863,118 @@ struct TrainingBlockSummaryContent: View {
     @ViewBuilder private var muscleSummary: some View {
         let sets = TrainingBlocks.setsByWeek(block, program: program)
         let strength = TrainingBlocks.strengthChanges(block, program: program, history: history)
-        Text(LanguageManager.t("block.summary.title")).blockFont(20, .bold).foregroundStyle(AppColors.text)
-            .accessibilityAddTraits(.isHeader)
-        BlockSectionLabel(text: LanguageManager.t("block.summary.sets"))
-        ForEach(sets, id: \.muscle) { row in
-            VStack(alignment: .leading, spacing: 2) {
-                Text(BlockFormat.muscle(row.muscle)).blockFont(14, .semibold).foregroundStyle(AppColors.text)
-                Text(row.weeks.enumerated().map { "\(LanguageManager.t("block.summary.week", ["week": $0.offset + 1]))\u{00A0}\(BlockFormat.sets($0.element))" }
-                    .joined(separator: " · "))
-                    .blockFont(13).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+        VStack(alignment: .leading, spacing: 0) {
+            BlockSummaryHeader(block: block)
+            BlockSetupHeader(text: LanguageManager.t("block.summary.sets"))
+            BlockGroup {
+                ForEach(Array(sets.enumerated()), id: \.element.muscle) { index, row in
+                    if index > 0 { BlockGroupDivider() }
+                    // Week 1 against the last hard week; the deload, when there, is the quiet last bar.
+                    let hard = Array(row.weeks.prefix(block.length - 1))
+                    let from = hard.first ?? 0
+                    let to = hard.last ?? 0
+                    BlockSummaryRow(name: BlockFormat.muscle(row.muscle), weeks: row.weeks.map { Optional($0) },
+                                    pill: "\(BlockFormat.sets(from))\u{00A0}→\u{00A0}\(BlockFormat.sets(to))",
+                                    spokenPill: LanguageManager.t("block.review.sets", ["from": BlockFormat.sets(from), "to": BlockFormat.sets(to)]),
+                                    direction: to > from ? 1 : to < from ? -1 : 0, quietLast: row.weeks.count >= block.length, fromZero: true,
+                                    weeksText: row.weeks.enumerated().map { "\(LanguageManager.t("block.summary.week", ["week": $0.offset + 1]))\u{00A0}\(BlockFormat.sets($0.element))" }
+                                        .joined(separator: " · "))
+                }
             }
-            .accessibilityElement(children: .combine)
-        }
-        BlockSectionLabel(text: LanguageManager.t("block.summary.strength"))
-        if strength.isEmpty { BlockBody(text: LanguageManager.t("block.summary.noStrength")) }
-        ForEach(strength, id: \.exerciseName) { change in
-            HStack(spacing: 10) {
-                Text(change.exerciseName).blockFont(14).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, alignment: .leading)
-                Text("\(weightUnit.formatWeight(change.fromKg)) → \(weightUnit.formatWeight(change.toKg))\u{00A0}\(weightUnit.label)")
-                    .blockFont(14, .semibold)
-                    .foregroundStyle(change.toKg >= change.fromKg ? AppColors.accent : AppColors.secondaryText).fixedSize()
+            BlockSetupHeader(text: LanguageManager.t("block.summary.strength")).padding(.top, 22)
+            BlockGroup {
+                if strength.isEmpty { BlockSummaryNote(text: LanguageManager.t("block.summary.noStrength")) }
+                ForEach(Array(strength.enumerated()), id: \.element.exerciseName) { index, change in
+                    if index > 0 { BlockGroupDivider() }
+                    let text = "\(weightUnit.formatWeight(change.fromKg))\u{00A0}→\u{00A0}\(weightUnit.formatWeight(change.toKg))\u{00A0}\(weightUnit.label)"
+                    BlockSummaryRow(name: change.exerciseName, weeks: nil, pill: text, spokenPill: text,
+                                    direction: change.toKg > change.fromKg ? 1 : change.toKg < change.fromKg ? -1 : 0)
+                }
             }
-            .accessibilityElement(children: .combine)
+            BlockSummaryActions(onStartAnother: onStartAnother, onDone: onDone)
         }
-        blockPrimaryButton(LanguageManager.t("block.summary.again"), "block-summary-again", action: onStartAnother)
-        blockSecondaryButton(LanguageManager.t("common.done"), "block-summary-done", action: onDone)
+    }
+}
+
+/// "Block complete", then which block it was in purple: "Build muscle · 5 weeks".
+private struct BlockSummaryHeader: View {
+    let block: TrainingBlock
+    var body: some View {
+        BlockWeekHeader(title: LanguageManager.t("block.summary.title"),
+                        target: LanguageManager.t(block.isStrength ? "block.setup.strength" : "block.setup.muscle") + " · "
+                            + LanguageManager.t("block.setup.weeks", ["count": block.length]))
+            .padding(.bottom, 8)
+    }
+}
+
+private struct BlockSummaryNote: View {
+    let text: String
+    var body: some View {
+        Text(text).blockFont(13).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true).padding(14)
+    }
+}
+
+private struct BlockSummaryActions: View {
+    let onStartAnother: () -> Void
+    let onDone: () -> Void
+    var body: some View {
+        blockPrimaryButton(LanguageManager.t("block.summary.again"), "block-summary-again", action: onStartAnother).padding(.top, 22)
+        blockSecondaryButton(LanguageManager.t("common.done"), "block-summary-done", action: onDone).padding(.top, 10)
+    }
+}
+
+/// A summary row: the name, its weeks as small bars when there are any, and the result as a pill. VoiceOver hears the
+/// name, every week's value (`weeksText`) and the result.
+private struct BlockSummaryRow: View {
+    let name: String
+    let weeks: [Double?]?
+    let pill: String?
+    let spokenPill: String?
+    let direction: Int
+    var quietLast = false
+    var fromZero = false
+    var weeksText: String? = nil
+    var identifier: String? = nil
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(name).blockFont(15, .semibold).foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            if let weeks, weeks.contains(where: { $0 != nil }) { BlockWeekBars(values: weeks, quietLast: quietLast, fromZero: fromZero) }
+            if let pill { BlockPill(text: pill, direction: direction) }
+        }
+        .padding(.horizontal, 14).padding(.vertical, 10).frame(minHeight: 52)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel([name, weeksText, spokenPill].compactMap { $0 }.joined(separator: ", "))
+        .accessibilityIdentifier(identifier ?? "")
+    }
+}
+
+/// Small bars, one per week. Sets rise from zero; estimated 1RMs use their own range, since a few kilograms would not
+/// show from zero. The deload is quiet and a week without a value keeps its slot as a stub.
+private struct BlockWeekBars: View {
+    let values: [Double?]
+    let quietLast: Bool
+    let fromZero: Bool
+
+    var body: some View {
+        let known = values.compactMap { $0 }
+        let top = known.max() ?? 0
+        let bottom = fromZero ? 0 : (known.min() ?? 0)
+        HStack(alignment: .bottom, spacing: 3) {
+            ForEach(Array(values.enumerated()), id: \.offset) { index, value in
+                let fraction: Double = {
+                    guard let value else { return 0 }
+                    if top <= bottom { return 1 }
+                    return fromZero ? value / top : 0.35 + 0.65 * (value - bottom) / (top - bottom)
+                }()
+                let quiet = quietLast && index == values.count - 1
+                RoundedRectangle(cornerRadius: 2, style: .continuous)
+                    .fill(value == nil ? AppColors.border : quiet ? AppColors.muted.opacity(0.45) : AppColors.purple)
+                    .frame(width: 6, height: value == nil ? 2 : max(3, 22 * fraction))
+            }
+        }
+        .frame(height: 22, alignment: .bottom)
     }
 }
 
@@ -996,28 +1083,30 @@ private struct StrengthSummaryContent: View {
 
     var body: some View {
         let progress = TrainingBlocks.liftProgress(block, program: program, history: history)
-        Text(LanguageManager.t("block.summary.title")).blockFont(20, .bold).foregroundStyle(AppColors.text).accessibilityAddTraits(.isHeader)
-        BlockSectionLabel(text: LanguageManager.t("block.summary.e1rm"))
-        if !progress.contains(where: { lift in lift.byWeek.contains { $0 != nil } || lift.testKg != nil }) {
-            BlockBody(text: LanguageManager.t("block.summary.noStrength"))
-        }
-        ForEach(progress, id: \.exerciseName) { lift in
-            VStack(alignment: .leading, spacing: 2) {
-                Text(lift.exerciseName).blockFont(14, .semibold).foregroundStyle(AppColors.text)
-                Text(lift.byWeek.enumerated().map { index, kg in
-                    "\(LanguageManager.t("block.summary.week", ["week": index + 1]))\u{00A0}\(kg.map(weightUnit.formatWeight) ?? "–")"
-                }.joined(separator: " · "))
-                    .blockFont(13).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
-                if let test = lift.testKg {
-                    Text(LanguageManager.t("block.summary.test", ["load": "\(weightUnit.formatWeight(test))\u{00A0}\(weightUnit.label)"]))
-                        .blockFont(14, .semibold).foregroundStyle(AppColors.accent)
+        let load = { (kg: Double) in "\(weightUnit.formatWeight(kg))\u{00A0}\(weightUnit.label)" }
+        VStack(alignment: .leading, spacing: 0) {
+            BlockSummaryHeader(block: block)
+            BlockSetupHeader(text: LanguageManager.t("block.summary.e1rm"))
+            BlockGroup {
+                if !progress.contains(where: { lift in lift.byWeek.contains { $0 != nil } || lift.testKg != nil }) {
+                    BlockSummaryNote(text: LanguageManager.t("block.summary.noStrength"))
+                }
+                ForEach(Array(progress.enumerated()), id: \.element.exerciseName) { index, lift in
+                    if index > 0 { BlockGroupDivider() }
+                    // The test's heaviest single is the result; without one, the first estimate against the last.
+                    let estimates = lift.byWeek.compactMap { $0 }
+                    let pill: String? = lift.testKg.map { LanguageManager.t("block.summary.test", ["load": load($0)]) }
+                        ?? (estimates.count >= 2 ? "\(weightUnit.formatWeight(estimates[0]))\u{00A0}→\u{00A0}\(load(estimates[estimates.count - 1]))" : nil)
+                    let direction = lift.testKg != nil ? 1
+                        : estimates.count >= 2 ? (estimates[estimates.count - 1] > estimates[0] ? 1 : estimates[estimates.count - 1] < estimates[0] ? -1 : 0) : 0
+                    BlockSummaryRow(name: lift.exerciseName, weeks: lift.byWeek, pill: pill, spokenPill: pill, direction: direction,
+                                    weeksText: lift.byWeek.enumerated().map { index, kg in
+                                        "\(LanguageManager.t("block.summary.week", ["week": index + 1]))\u{00A0}\(kg.map(weightUnit.formatWeight) ?? "–")"
+                                    }.joined(separator: " · "), identifier: "block-summary-lift")
                 }
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityIdentifier("block-summary-lift")
+            BlockSummaryActions(onStartAnother: onStartAnother, onDone: onDone)
         }
-        blockPrimaryButton(LanguageManager.t("block.summary.again"), "block-summary-again", action: onStartAnother)
-        blockSecondaryButton(LanguageManager.t("common.done"), "block-summary-done", action: onDone)
     }
 }
 

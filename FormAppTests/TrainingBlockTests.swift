@@ -716,6 +716,20 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                 try render(page(AnyView(TrainingBlockSummaryContent(block: block, program: program, history: [record], weightUnit: .kg,
                                                                     onStartAnother: {}, onDone: {}))),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-summary-\(language)-\(label)")
+                // Five full weeks: sets rise, the raise eases off, and the deload halves them.
+                var full = block
+                full.weeks = (0..<5).map { week in
+                    TrainingBlockWeek(sets: block.weeks[0].sets.mapValues { sets in sets })
+                }
+                for week in 0..<5 {
+                    for key in full.weeks[week].sets.keys {
+                        let sets = block.weeks[0].sets[key] ?? 0
+                        full.weeks[week].sets[key] = week == 4 ? (sets + 1) / 2 : key.contains("raise") ? sets - week / 2 : sets + week / 2 + week % 2
+                    }
+                }
+                try render(page(AnyView(TrainingBlockSummaryContent(block: full, program: program, history: [record], weightUnit: .kg,
+                                                                    onStartAnother: {}, onDone: {}))),
+                           width: width, size: size, height: size == .large ? 900 : 1500, name: "block-summary-full-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockMethodContent())),
                            width: width, size: size, height: size == .large ? 2200 : 2700, name: "block-method-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockWeekContent(block: strengthBlock, week: 4, program: program, scale: .rir) { _ in })),

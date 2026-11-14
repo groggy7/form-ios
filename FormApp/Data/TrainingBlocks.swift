@@ -258,7 +258,7 @@ enum TrainingBlocks {
                     .filter { $0 > 0 }.max()
             }
             let test = (logs[block.length]?[lift] ?? []).flatMap(workingSets).filter { $0.0 > 0 && $0.1 >= 1 }.map(\.0).max()
-            return LiftProgress(exerciseName: exercise.name, byWeek: byWeek, testKg: test)
+            return LiftProgress(exerciseName: exercise.displayName, byWeek: byWeek, testKg: test)
         }
     }
 
@@ -330,7 +330,7 @@ enum TrainingBlocks {
             guard let exercise = workout.exercises.first else { return nil }
             let key = key(workout, exercise)
             guard let from = best(1, key), let to = best(block.length - 1, key), seen.insert(exercise.name).inserted else { return nil }
-            return StrengthChange(exerciseName: exercise.name, fromKg: from, toKg: to)
+            return StrengthChange(exerciseName: exercise.displayName, fromKg: from, toKg: to)
         }
     }
 
