@@ -604,6 +604,24 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
         try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("\(name).png"))
     }
 
+    /// The folded question rows count answers and wait on a lighter-day choice.
+    func testQuestionPromptsCountAnswersAndWaitOnAChoice() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(QuestionPrompt.readiness(nil).status, "0/3 answered")
+        XCTAssertFalse(QuestionPrompt.readiness(nil).done)
+        let rough = QuestionPrompt.readiness(ReadinessCheck(sleep: "poor", energy: "low"))
+        XCTAssertEqual(rough.status, "Choose today's plan")
+        XCTAssertFalse(rough.done)
+        XCTAssertEqual(QuestionPrompt.readiness(ReadinessCheck(sleep: "poor", energy: "low", choice: "more_rir")).status, "2/3 answered")
+        let soreness = QuestionPrompt.soreness(["chest", "triceps"], answers: ["chest": MuscleFeedback(soreness: "healed_early")])
+        XCTAssertEqual(soreness.status, "1/2 answered")
+        XCTAssertTrue(QuestionPrompt.soreness(["chest"], answers: ["chest": MuscleFeedback(soreness: "healed_early")]).done)
+        XCTAssertEqual(readinessApplied(ReadinessCheck(choice: "fewer_sets"), lighterTarget: nil), "Lighter day: one set fewer per exercise.")
+        XCTAssertNil(readinessApplied(ReadinessCheck(choice: "planned"), lighterTarget: "RIR 3"))
+    }
+
     /// The workout screen inside a block week: the target in the pill, soreness before chest's first set, pump and workload after.
     @MainActor func testTheWorkoutScreenAsksTheBlockQuestions() throws {
         try preservingDefaults {
@@ -699,6 +717,10 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                                     onAddSet: {}, onRemoveSet: { _ in }, effort: EffortActions(scale: .rir) { _, _ in }, prescriptionSuffix: "RIR 2",
                                     ratings: AnyView(BlockFeedbackCard(muscles: ["chest"], answers: [:], questions: .pumpAndWorkload) { _, _ in }))
                     BlockFeedbackCard(muscles: ["side-delts"], answers: [:], questions: .soreness) { _, _ in }
+                    // The folded rows: a waiting choice, a partly answered block, and an answered check.
+                    QuestionPrompts(prompts: [.readiness(ReadinessCheck(sleep: "poor", energy: "low")),
+                                              .soreness(["chest", "side-delts"], answers: ["chest": MuscleFeedback(soreness: "healed_early")])]) { _ in }
+                    QuestionPrompts(prompts: [.readiness(ReadinessCheck(sleep: "good", energy: "high", soreness: "none"))]) { _ in }
                     ReadinessCard(check: ReadinessCheck(sleep: "poor", energy: "low"), options: Readiness.options(blockTarget: 2, deload: false),
                                   lighterTarget: nil, onAnswer: { _ in }, onChoose: { _ in })
                 }.padding(.horizontal, 20).padding(.vertical, 16).background(AppColors.background),

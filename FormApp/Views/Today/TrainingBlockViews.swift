@@ -99,7 +99,8 @@ struct TrainingBlockCard: View {
             }
             content
         }
-        .padding(.horizontal, 18).padding(.vertical, 14)
+        // A footer's 48pt target is taller than what it shows, so the card's own bottom padding gives way to it.
+        .padding(.horizontal, 18).padding(.top, 14).padding(.bottom, state == .locked ? 14 : 8)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -135,12 +136,12 @@ struct TrainingBlockCard: View {
             bodyText(LanguageManager.t("block.card.locked"))
         case .none:
             bodyText(LanguageManager.t("block.card.pitch"))
-            primary(LanguageManager.t("block.card.start"), "training-block-start", onStart)
+            footer(end: false) { primary(LanguageManager.t("block.card.start"), "training-block-start", onStart) }
         case .upcoming(let block):
             headline(LanguageManager.t("block.card.startsNext"))
             bodyText(block.isStrength ? LanguageManager.t("block.card.testIn", ["count": block.length])
                      : BlockFormat.targets(length: block.length, scale: scale))
-            endButton
+            footer(end: true) { EmptyView() }
         case .active(let block, let week, let target, let ready):
             let toTest = block.length - week
             let detail = block.isStrength
@@ -149,23 +150,36 @@ struct TrainingBlockCard: View {
                 : TrainingBlockRules.isDeload(length: block.length, week: week) ? LanguageManager.t("block.card.deload")
                 : LanguageManager.t("block.card.target", ["effort": BlockFormat.tag(target, scale: scale)])
             headline(LanguageManager.t("block.card.week", ["week": week, "length": block.length]) + " · " + detail)
-            if ready {
-                bodyText(LanguageManager.t("block.card.ready", ["week": week]))
-                primary(LanguageManager.t("block.card.review", ["week": week]), "training-block-review") { onReview(week) }
-            } else {
-                Button { onReview(week) } label: {
-                    Text(LanguageManager.t("block.card.review", ["week": week])).blockFont(14, .semibold)
-                        .foregroundStyle(AppColors.purple).frame(minHeight: 48)
-                }.buttonStyle(.plain).accessibilityIdentifier("training-block-open-week")
+            if ready { bodyText(LanguageManager.t("block.card.ready", ["week": week])) }
+            footer(end: true) {
+                if ready {
+                    primary(LanguageManager.t("block.card.review", ["week": week]), "training-block-review") { onReview(week) }
+                } else {
+                    Button { onReview(week) } label: {
+                        Text(LanguageManager.t("block.card.review", ["week": week])).blockFont(14, .semibold)
+                            .foregroundStyle(AppColors.purple).multilineTextAlignment(.trailing)
+                            .fixedSize(horizontal: false, vertical: true).frame(minHeight: 48)
+                    }.buttonStyle(.plain).accessibilityIdentifier("training-block-open-week")
+                }
             }
-            endButton
         case .otherProgram(_, let programName):
             bodyText(LanguageManager.t("block.card.otherProgram", ["program": programName]))
-            endButton
+            footer(end: true) { EmptyView() }
         case .complete:
             headline(LanguageManager.t("block.card.complete"))
-            primary(LanguageManager.t("block.card.summary"), "training-block-summary", onSummary)
+            footer(end: false) { primary(LanguageManager.t("block.card.summary"), "training-block-summary", onSummary) }
         }
+    }
+
+    /// The card's last row: the quiet End block at the start and the card's one action at the end, which wraps rather
+    /// than pushing End block off the row.
+    private func footer<Action: View>(end: Bool, @ViewBuilder action: () -> Action) -> some View {
+        HStack(spacing: 12) {
+            if end { endButton }
+            Spacer(minLength: 0)
+            action()
+        }
+        .padding(.top, 2)
     }
 
     private func headline(_ text: String) -> some View {
@@ -177,13 +191,16 @@ struct TrainingBlockCard: View {
         Text(text).font(.app(size: bodySize)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
     }
 
+    /// A compact accent button: 40pt shown inside a 48pt target, so it never towers over the card's text.
     private func primary(_ label: String, _ identifier: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(label).blockFont(14, .semibold).foregroundStyle(AppColors.background)
-                .padding(.horizontal, 18).frame(minHeight: 48)
-                .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 16).padding(.vertical, 10).frame(minHeight: 40)
+                .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .frame(minHeight: 48).contentShape(Rectangle())
         }
-        .buttonStyle(.plain).padding(.top, 4).accessibilityIdentifier(identifier)
+        .buttonStyle(.plain).accessibilityIdentifier(identifier)
     }
 
     private var endButton: some View {
@@ -816,17 +833,53 @@ private struct BlockChangePill: View {
     var body: some View { BlockPill(text: LanguageManager.t("block.review.sets", ["from": from, "to": to]), direction: direction) }
 }
 
-/// A result: accent when it went up, amber when it went down, quiet when it held.
+/// A result: accent when it went up, amber when it went down, quiet when it held. Inside `alignedBlockPills()` it takes
+/// its group's widest pill's width.
 private struct BlockPill: View {
     let text: String
     let direction: Int
+    @Environment(\.blockPillWidth) private var sharedWidth
     var body: some View {
         Text(text).blockFont(13, .semibold).lineLimit(1).fixedSize()
             .foregroundStyle(direction > 0 ? AppColors.accent : direction < 0 ? AppColors.warmupAmber : AppColors.secondaryText)
             .padding(.horizontal, 8).padding(.vertical, 4)
+            // Its own width, measured before the shared one applies.
+            .background(GeometryReader { Color.clear.preference(key: BlockPillWidthKey.self, value: $0.size.width) })
+            .frame(minWidth: sharedWidth)
             .background(direction > 0 ? AppColors.positiveBg : direction < 0 ? AppColors.warmupAmberBg : AppColors.surface,
                         in: RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
+}
+
+private struct BlockPillWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat { 0 }
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = max(value, nextValue()) }
+}
+
+private struct BlockPillWidthEnvironment: EnvironmentKey {
+    static var defaultValue: CGFloat? { nil }
+}
+
+private extension EnvironmentValues {
+    var blockPillWidth: CGFloat? {
+        get { self[BlockPillWidthEnvironment.self] }
+        set { self[BlockPillWidthEnvironment.self] = newValue }
+    }
+}
+
+/// Gives a summary group's pills one width, the widest of them, so every row's bars start at one x. Without it,
+/// "7,5 → 7,5" and "16,5 → 16,5" left the bars ragged.
+private struct AlignedBlockPills: ViewModifier {
+    @State private var width: CGFloat = 0
+    func body(content: Content) -> some View {
+        content
+            .environment(\.blockPillWidth, width > 0 ? width : nil)
+            .onPreferenceChange(BlockPillWidthKey.self) { widest in width = widest }
+    }
+}
+
+private extension View {
+    func alignedBlockPills() -> some View { modifier(AlignedBlockPills()) }
 }
 
 struct TrainingBlockWeekSheet: View {
@@ -878,9 +931,10 @@ struct TrainingBlockSummaryContent: View {
                                     spokenPill: LanguageManager.t("block.review.sets", ["from": BlockFormat.sets(from), "to": BlockFormat.sets(to)]),
                                     direction: to > from ? 1 : to < from ? -1 : 0, quietLast: row.weeks.count >= block.length, fromZero: true,
                                     weeksText: row.weeks.enumerated().map { "\(LanguageManager.t("block.summary.week", ["week": $0.offset + 1]))\u{00A0}\(BlockFormat.sets($0.element))" }
-                                        .joined(separator: " · "))
+                                        .joined(separator: " · "), identifier: "block-summary-muscle-\(row.muscle)")
                 }
             }
+            .alignedBlockPills()
             BlockSetupHeader(text: LanguageManager.t("block.summary.strength")).padding(.top, 22)
             BlockGroup {
                 if strength.isEmpty { BlockSummaryNote(text: LanguageManager.t("block.summary.noStrength")) }
@@ -891,6 +945,7 @@ struct TrainingBlockSummaryContent: View {
                                     direction: change.toKg > change.fromKg ? 1 : change.toKg < change.fromKg ? -1 : 0)
                 }
             }
+            .alignedBlockPills()
             BlockSummaryActions(onStartAnother: onStartAnother, onDone: onDone)
         }
     }
@@ -935,13 +990,15 @@ private struct BlockSummaryRow: View {
     var fromZero = false
     var weeksText: String? = nil
     var identifier: String? = nil
+    @Environment(\.blockPillWidth) private var pillWidth
 
     var body: some View {
         HStack(spacing: 12) {
             Text(name).blockFont(15, .semibold).foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            if let weeks, weeks.contains(where: { $0 != nil }) { BlockWeekBars(values: weeks, quietLast: quietLast, fromZero: fromZero) }
-            if let pill { BlockPill(text: pill, direction: direction) }
+            // Bars and pills keep their slots, in a row without them too, so the group reads in columns.
+            if let weeks { BlockWeekBars(values: weeks, quietLast: quietLast, fromZero: fromZero) }
+            if let pill { BlockPill(text: pill, direction: direction) } else if let pillWidth { Color.clear.frame(width: pillWidth, height: 1) }
         }
         .padding(.horizontal, 14).padding(.vertical, 10).frame(minHeight: 52)
         .accessibilityElement(children: .ignore)
@@ -1105,6 +1162,7 @@ private struct StrengthSummaryContent: View {
                                     }.joined(separator: " · "), identifier: "block-summary-lift")
                 }
             }
+            .alignedBlockPills()
             BlockSummaryActions(onStartAnother: onStartAnother, onDone: onDone)
         }
     }

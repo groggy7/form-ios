@@ -224,3 +224,130 @@ struct ReadinessCard: View {
         .accessibilityIdentifier("readiness-card")
     }
 }
+
+/// A question card folded into one row of the exercise: its glyph, its title and how many of its questions are
+/// answered. Opening it shows the card in `QuestionSheet`, so the questions never push the set rows down
+/// (docs/design/form-design-system.md, "The readiness check"). Android `QuestionPrompt` matches.
+struct QuestionPrompt: Identifiable, Equatable {
+    let id: String
+    let symbol: String
+    let title: String
+    let answered: Int
+    let total: Int
+    /// A lighter day is on offer and waits for the lifter's choice.
+    var needsChoice = false
+
+    var done: Bool { answered >= total && !needsChoice }
+    var status: String {
+        needsChoice ? LanguageManager.t("checkin.choose") : LanguageManager.t("checkin.answered", ["answered": answered, "total": total])
+    }
+
+    static func readiness(_ check: ReadinessCheck?) -> QuestionPrompt {
+        QuestionPrompt(id: "readiness", symbol: "bed.double", title: LanguageManager.t("readiness.title"),
+                       answered: [check?.sleep, check?.energy, check?.soreness].compactMap { $0 }.count, total: 3,
+                       needsChoice: Readiness.offersLighterDay(check))
+    }
+
+    static func soreness(_ muscles: [String], answers: [String: MuscleFeedback]) -> QuestionPrompt {
+        QuestionPrompt(id: "soreness", symbol: "calendar.badge.clock", title: LanguageManager.t("block.card.title"),
+                       answered: muscles.filter { answers[$0]?.soreness != nil }.count, total: muscles.count)
+    }
+}
+
+/// The exercise's open question cards as compact rows, 8pt apart. An unanswered card carries a breathing purple dot
+/// (`PendingDot`); an answered one, an accent check.
+struct QuestionPrompts: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let prompts: [QuestionPrompt]
+    let onOpen: (String) -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .caption) private var statusSize = 12.0
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(spacing: 8) { ForEach(prompts) { cell($0) } }.frame(maxWidth: .infinity)
+    }
+
+    private func cell(_ prompt: QuestionPrompt) -> some View {
+        Button { onOpen(prompt.id) } label: {
+            HStack(spacing: 10) {
+                Image(systemName: prompt.symbol).font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppColors.purple).frame(width: 18).accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(prompt.title).font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(prompt.status).font(.app(size: statusSize, weight: prompt.needsChoice ? .semibold : .regular))
+                        .foregroundStyle(prompt.needsChoice ? AppColors.purple : AppColors.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                if prompt.done {
+                    Image(systemName: "checkmark").font(.system(size: 13, weight: .bold)).foregroundStyle(AppColors.accent)
+                        .accessibilityHidden(true)
+                } else {
+                    PendingDot()
+                }
+            }
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(prompt.title), \(prompt.status)")
+        .accessibilityHint(LanguageManager.t("checkin.open"))
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("question-prompt-\(prompt.id)")
+    }
+}
+
+/// The unanswered marker: an 8pt purple dot that breathes its opacity on the weekly goal pill's relaxed 1.25 s cadence,
+/// so a waiting question is noticed without moving anything. Reduce Motion keeps it still.
+private struct PendingDot: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    var body: some View {
+        let dot = Circle().fill(AppColors.purple).frame(width: 8, height: 8).accessibilityHidden(true)
+        if reduceMotion {
+            dot
+        } else {
+            dot.phaseAnimator([1.0, 0.35]) { content, opacity in content.opacity(opacity) } animation: { _ in .easeInOut(duration: 1.25) }
+        }
+    }
+}
+
+/// An opened question card: the card itself, then an outlined Done. Answers save as they are tapped.
+struct QuestionSheet<Content: View>: View {
+    let onDone: () -> Void
+    @ViewBuilder let content: Content
+    @ScaledMetric(relativeTo: .subheadline) private var doneSize = 14.0
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                content
+                Button(action: onDone) {
+                    Text(LanguageManager.t("common.done")).font(.app(size: doneSize)).foregroundStyle(AppColors.secondaryText)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityIdentifier("question-sheet-done")
+            }
+            .padding(.horizontal, 20).padding(.top, 24).padding(.bottom, 36)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .background(AppColors.surface.ignoresSafeArea())
+        .accessibilityIdentifier("question-sheet")
+        .presentationDragIndicator(.visible)
+    }
+}
+
+/// What a lighter-day choice changed, one purple line under the prompts; nil before a lighter choice.
+func readinessApplied(_ check: ReadinessCheck?, lighterTarget: String?) -> String? {
+    if check?.choice == "fewer_sets" { return LanguageManager.t("readiness.applied.fewer") }
+    if check?.choice == "more_rir", let lighterTarget { return LanguageManager.t("readiness.applied.moreRir", ["effort": lighterTarget]) }
+    return nil
+}

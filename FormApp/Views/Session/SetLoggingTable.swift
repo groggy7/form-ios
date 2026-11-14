@@ -184,7 +184,8 @@ public struct SetLoggingTable: View {
                         // completed set being edited. It stays while a later set is typed, so no row moves under the finger.
                         let followsFinishedEffort = !set.isWarmup && set.isCompleted && (selectedInSet || index == latestCompletedIndex)
                         let showsTechniqueMenu = intensity != nil && followsFinishedEffort
-                        // Effort is asked where a technique is offered; elsewhere a rated set keeps a quiet tag.
+                        // Effort is asked where a technique is offered. Every rated set shows a quiet tag, the one whose
+                        // line is still open included, so the SET column reads the same down the table.
                         let showsEffortLine = effort != nil && followsFinishedEffort
                         let previous = set.isWarmup ? nil : previousSets[index].flatMap { $0.isWarmup ? nil : $0 }
                         let previousText: String = {
@@ -301,7 +302,7 @@ public struct SetLoggingTable: View {
                                                     ? AppColors.accent
                                                     : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
                                         )
-                                    if let effort, !showsEffortLine, !set.isWarmup, let rir = set.rir {
+                                    if let effort, !set.isWarmup, let rir = set.rir {
                                         Text(SetEffort.tag(rir, scale: effort.scale))
                                             .font(.app(size: 9, weight: .bold))
                                             .foregroundStyle(AppColors.purple)

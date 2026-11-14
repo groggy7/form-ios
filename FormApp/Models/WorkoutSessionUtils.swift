@@ -644,11 +644,22 @@ public enum WorkoutSessionUtils {
             }
             let working = logs.flatMap { $0.sets }.filter { !$0.isWarmup }
             if working.isEmpty { continue }
-            // Keep set positions and the latest baseline, including explicit zero loads.
+            // Keep set order and the latest baseline, including explicit zero loads.
             return logs.count == 1 && working.allSatisfy { validHistoricalSet($0, exercise: exercise) } && Set(working.map { $0.setNumber }).count == working.count
-                ? working.sorted { $0.setNumber < $1.setNumber } : []
+                ? workingSetNumbers(logs[0].sets) : []
         }
         return []
+    }
+
+    /// A log's working sets numbered by their order, 1 to N, the way the progression coach reads them. Imported
+    /// histories numbered every row, warmups included, and a session can leave a set unticked, so a log of four sets
+    /// could be numbered 2–5 and the Prev column showed nothing beside set 1 while the coach used them as sets 1–4.
+    public static func workingSetNumbers(_ sets: [SessionSetLog]) -> [SessionSetLog] {
+        sets.filter { !$0.isWarmup }.sorted { $0.setNumber < $1.setNumber }.enumerated().map { index, set in
+            var numbered = set
+            numbered.setNumber = index + 1
+            return numbered
+        }
     }
 
     public static func computeGhostTarget(

@@ -12875,6 +12875,23 @@ final class BodyweightLoggingTests: XCTestCase {
         XCTAssertEqual(WorkoutSessionUtils.computeGhostTarget(previousSets: mixed, workingSetIndex: 0, exercise: push).lastWeekWeightKg, 0)
         XCTAssertTrue(WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record(3, weights: [nil, 0]), record(2)], exercise: push).isEmpty)
     }
+    func testPreviousSetsArePairedByOrderLikeTheCoach() {
+        let bench = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 5)
+        func logged(_ sets: [SessionSetLog]) -> WorkoutSessionRecord {
+            WorkoutSessionRecord(id: "r", programId: "p", workoutId: "w", workoutTitle: "Heavy", startedAt: "2026-11-10T10:00:00Z",
+                                 completedAt: "2026-11-10T11:00:00Z", durationSeconds: 60,
+                                 exerciseLogs: [SessionExerciseLog(exerciseName: bench.name, sets: sets, targetSets: 5, exerciseId: bench.exerciseId)])
+        }
+        // An imported session numbered its warmup row 1, so its four working sets were saved as 2–5.
+        let imported = logged([SessionSetLog(setNumber: 1, weightKg: 60, reps: 10, isWarmup: true)]
+                              + (2...5).map { SessionSetLog(setNumber: $0, weightKg: 100, reps: 5) })
+        XCTAssertEqual(WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [imported], exercise: bench).map(\.setNumber), [1, 2, 3, 4])
+        // An unticked first set leaves the rest in order too, as the coach reads them.
+        let skipped = logged((2...5).map { SessionSetLog(setNumber: $0, weightKg: 100, reps: 5) })
+        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [skipped], exercise: bench)
+        XCTAssertEqual(previous.map(\.setNumber), [1, 2, 3, 4])
+        XCTAssertEqual(WorkoutSessionUtils.computeGhostTarget(previousSets: previous, workingSetIndex: 0, exercise: bench).lastWeekWeightKg, 100)
+    }
     func testInvalidCompletedEditsNeedExplicitCompletionAgainAndNeverSaveMissingValues() {
         let row = ExerciseSetLog(setNumber: 1, weightInput: "0", repsInput: "10", weightKg: 0, completedReps: 10, isCompleted: true)
         let cleared = WorkoutSessionUtils.editedSet(row, weight: "", reps: "10", exercise: push, unit: .kg)

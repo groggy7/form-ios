@@ -23,6 +23,8 @@ public struct ActiveSessionView: View {
     @State private var reportingExercise: Exercise? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showProgressionInfo: Bool = false
+    /// The question card opened from its compact row: "readiness" or "soreness".
+    @State private var openQuestions: String?
     /// Exercises whose mid-workout adjustment the lifter chose to keep: hidden for the rest of this workout.
     @State private var keptAdjustments: Set<String> = []
     @State private var showWarmupPlateSheet: Bool = false
@@ -253,12 +255,40 @@ public struct ActiveSessionView: View {
                                         : TrainingBlocks.estimatedOneRepMaxKg(workout: activeDraft.workout, exercise: exercise, history: store.state.history,
                                                                               excludeSessionId: activeDraft.id)
                                     // Asked before the workout's first working set; it leaves once one is ticked.
-                                    if store.readinessCheck && proManager.isFeatureUnlocked(.autoProgression)
-                                        && !activeDraft.setsByExercise.values.joined().contains(where: { $0.isCompleted && !$0.isWarmup }) {
-                                        ReadinessCard(check: activeDraft.readiness,
-                                                      options: Readiness.options(blockTarget: plannedTarget, deload: blockDeload),
-                                                      lighterTarget: blockTarget.map { SetEffort.tag($0, scale: store.effortScale) },
-                                                      onAnswer: { store.setReadiness($0) }, onChoose: { store.chooseReadiness($0) })
+                                    let asksReadiness = store.readinessCheck && proManager.isFeatureUnlocked(.autoProgression)
+                                        && !activeDraft.setsByExercise.values.joined().contains(where: { $0.isCompleted && !$0.isWarmup })
+                                    // Soreness is asked before a muscle's first exercise, pump and workload after its last.
+                                    let exerciseIndex = activeDraft.workout.exercises.firstIndex { $0.id == exercise.id } ?? -1
+                                    let sorenessMuscles = currentSets.contains { $0.isCompleted && !$0.isWarmup } ? []
+                                        : blockQuestions?.sorenessBefore[exerciseIndex] ?? []
+                                    let lighterTarget = blockTarget.map { SetEffort.tag($0, scale: store.effortScale) }
+                                    // Questions before the first set fold into compact rows that open their card in a sheet,
+                                    // so a readiness check and a block's soreness never push the set rows down.
+                                    let prompts = [asksReadiness ? QuestionPrompt.readiness(activeDraft.readiness) : nil,
+                                                   sorenessMuscles.isEmpty ? nil
+                                                       : QuestionPrompt.soreness(sorenessMuscles, answers: activeDraft.muscleFeedback ?? [:])]
+                                        .compactMap { $0 }
+                                    if !prompts.isEmpty {
+                                        QuestionPrompts(prompts: prompts) { openQuestions = $0 }
+                                            .sheet(isPresented: Binding(get: { openQuestions != nil }, set: { if !$0 { openQuestions = nil } })) {
+                                                QuestionSheet(onDone: { openQuestions = nil }) {
+                                                    if openQuestions == "readiness" && asksReadiness {
+                                                        ReadinessCard(check: activeDraft.readiness,
+                                                                      options: Readiness.options(blockTarget: plannedTarget, deload: blockDeload),
+                                                                      lighterTarget: lighterTarget,
+                                                                      onAnswer: { store.setReadiness($0) }, onChoose: { store.chooseReadiness($0) })
+                                                    } else if openQuestions == "soreness" && !sorenessMuscles.isEmpty {
+                                                        BlockFeedbackCard(muscles: sorenessMuscles, answers: activeDraft.muscleFeedback ?? [:], questions: .soreness) {
+                                                            store.setMuscleFeedback(muscle: $0, feedback: $1)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                    }
+                                    if asksReadiness, let applied = readinessApplied(activeDraft.readiness, lighterTarget: lighterTarget) {
+                                        Text(applied).appFont(.footnote).foregroundStyle(AppColors.purple)
+                                            .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
+                                            .accessibilityIdentifier("readiness-applied-line")
                                     }
                                     if blockDeload {
                                         Text(LanguageManager.t("block.session.deload")).appFont(.footnote).foregroundStyle(AppColors.purple)
@@ -346,16 +376,7 @@ public struct ActiveSessionView: View {
                                                                            steps: store.progressionLoadSteps,
                                                                            window: blockTarget.map { TrainingBlockRules.window(target: $0) } ?? SetEffort.targetWindow)
                                         : nil
-                                    // Soreness is asked before a muscle's first exercise, pump and workload after its last.
-                                    let exerciseIndex = activeDraft.workout.exercises.firstIndex { $0.id == exercise.id } ?? -1
-                                    let sorenessMuscles = currentSets.contains { $0.isCompleted && !$0.isWarmup } ? []
-                                        : blockQuestions?.sorenessBefore[exerciseIndex] ?? []
                                     let pumpMuscles = workingSetsDone ? blockQuestions?.pumpAfter[exerciseIndex] ?? [] : []
-                                    if !sorenessMuscles.isEmpty {
-                                        BlockFeedbackCard(muscles: sorenessMuscles, answers: activeDraft.muscleFeedback ?? [:], questions: .soreness) {
-                                            store.setMuscleFeedback(muscle: $0, feedback: $1)
-                                        }
-                                    }
                                     // A strength lift's card: above the rows for the top set, then under the ticked top set for its back-offs.
                                     let strengthCard = strengthPlan.map { plan in
                                         StrengthLiftCard(plan: plan, exercise: exercise, sets: currentSets, estimateKg: liftEstimateKg,

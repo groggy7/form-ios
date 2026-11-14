@@ -37849,31 +37849,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "⚡ Beat the logbook! {current} (vs. {previous})"
+            "value": "⚡ Better than last time! {current} (last time: {previous})"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "⚡ Log defteri aşıldı! {current} (önceki: {previous})"
+            "value": "⚡ Geçen seferi geçtin! {current} (önceki: {previous})"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "⚡ Schlage das Logbuch! {current} (im Vergleich zu {previous})"
+            "value": "⚡ Besser als letztes Mal! {current} (letztes Mal: {previous})"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "⚡ Battez votre dernier résultat ! {current} (contre {previous})"
+            "value": "⚡ Mieux que la dernière fois ! {current} (dernière fois : {previous})"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "⚡ ¡Supera tu registro! {current} (frente a {previous})"
+            "value": "⚡ ¡Mejor que la última vez! {current} (última vez: {previous})"
           }
         }
       }
@@ -52891,6 +52891,111 @@
           "stringUnit": {
             "state": "translated",
             "value": "Día ligero: objetivo {effort}."
+          }
+        }
+      }
+    },
+    "checkin.answered": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{answered}/{total} answered"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{answered}/{total} yanıtlandı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{answered}/{total} beantwortet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{answered}/{total} réponses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{answered}/{total} respondidas"
+          }
+        }
+      }
+    },
+    "checkin.choose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose today's plan"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugünün planını seç"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan für heute wählen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisir le plan du jour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige el plan de hoy"
+          }
+        }
+      }
+    },
+    "checkin.open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Answer"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yanıtla"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beantworten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Répondre"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Responder"
           }
         }
       }
