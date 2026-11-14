@@ -703,10 +703,16 @@ final class TrainingBlockStoreAndRenderTests: XCTestCase {
                                   lighterTarget: nil, onAnswer: { _ in }, onChoose: { _ in })
                 }.padding(.horizontal, 20).padding(.vertical, 16).background(AppColors.background),
                     width: width, size: size, height: size == .large ? 2000 : 2700, name: "block-card-\(language)-\(label)")
-                try render(page(AnyView(TrainingBlockSetupContent(program: program, scale: .rir, replacesBlock: true) { _, _, _ in })),
-                           width: width, size: size, height: size == .large ? 1100 : 1900, name: "block-setup-\(language)-\(label)")
+                for (state, strength, focus) in [("", false, false), ("-focus", false, true), ("-strength", true, false)] {
+                    try render(page(AnyView(TrainingBlockSetupContent(program: program, scale: .rir, replacesBlock: true, onStart: { _, _, _ in },
+                                                                      readinessCheck: .constant(true), opensOnStrength: strength, opensFocus: focus))),
+                               width: width, size: size, height: size == .large ? 1100 : 1900, name: "block-setup\(state)-\(language)-\(label)")
+                }
                 try render(page(AnyView(TrainingBlockWeekContent(block: block, week: 2, program: program, scale: .rpe) { _ in })),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-week-\(language)-\(label)")
+                try render(page(AnyView(TrainingBlockWeekContent(block: block, week: 2, program: program, scale: .rpe, onStartWeek: { _ in },
+                                                                 opensEditing: true))),
+                           width: width, size: size, height: size == .large ? 1100 : 1900, name: "block-week-edit-\(language)-\(label)")
                 try render(page(AnyView(TrainingBlockSummaryContent(block: block, program: program, history: [record], weightUnit: .kg,
                                                                     onStartAnother: {}, onDone: {}))),
                            width: width, size: size, height: size == .large ? 900 : 1500, name: "block-summary-\(language)-\(label)")

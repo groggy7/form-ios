@@ -48660,41 +48660,6 @@
         }
       }
     },
-    "block.setup.intro": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "After each muscle's work you answer three quick questions: pump, workload and soreness. Sets are added or removed within that muscle's reference range, and you see every change before its week starts."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her kasın işi bitince üç kısa soru yanıtlarsın: pump, iş yükü ve kas ağrısı. Setler o kasın referans aralığında eklenir veya azaltılır, her değişikliği haftası başlamadan görürsün."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nach der Arbeit für jeden Muskel beantwortest du drei kurze Fragen: Pump, Belastung und Muskelkater. Sätze kommen innerhalb des Referenzbereichs des Muskels dazu oder fallen weg, und du siehst jede Änderung, bevor ihre Woche beginnt."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Après le travail de chaque muscle, vous répondez à trois questions rapides : congestion, charge de travail et courbatures. Les séries sont ajoutées ou retirées dans la plage de référence du muscle, et vous voyez chaque changement avant le début de sa semaine."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tras el trabajo de cada músculo respondes tres preguntas rápidas: congestión, carga de trabajo y agujetas. Las series se añaden o se quitan dentro del rango de referencia del músculo, y ves cada cambio antes de que empiece su semana."
-          }
-        }
-      }
-    },
     "block.setup.length": {
       "extractionState": "manual",
       "localizations": {
@@ -48870,37 +48835,72 @@
         }
       }
     },
-    "block.setup.focusHint": {
+    "block.setup.focusOptional": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional, up to 3. They start one set higher."
+            "value": "Optional, up to 3"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İsteğe bağlı, en fazla 3. Bir set fazlasıyla başlarlar."
+            "value": "İsteğe bağlı, en fazla 3"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional, bis zu 3. Sie beginnen mit einem Satz mehr."
+            "value": "Optional, bis zu 3"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Facultatif, 3 au maximum. Ils commencent avec une série de plus."
+            "value": "Facultatif, 3 au maximum"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Opcional, hasta 3. Empiezan con una serie más."
+            "value": "Opcional, hasta 3"
+          }
+        }
+      }
+    },
+    "block.setup.focusEffect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They start one set higher."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir set fazlasıyla başlarlar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie beginnen mit einem Satz mehr."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ils commencent avec une série de plus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empiezan con una serie más."
           }
         }
       }
@@ -50620,41 +50620,6 @@
         }
       }
     },
-    "block.setup.goal": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Goal"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hedef"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ziel"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objectif"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objetivo"
-          }
-        }
-      }
-    },
     "block.setup.muscle": {
       "extractionState": "manual",
       "localizations": {
@@ -50725,6 +50690,76 @@
         }
       }
     },
+    "block.setup.muscleHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets follow your answers"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setler yanıtlarına göre değişir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sätze folgen deinen Antworten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les séries suivent vos réponses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las series siguen tus respuestas"
+          }
+        }
+      }
+    },
+    "block.setup.strengthHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heavier top sets, then a test"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağırlaşan zirve setler, ardından test"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwerere Topsätze, dann ein Test"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charges croissantes, puis un test"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Series más pesadas y una prueba"
+          }
+        }
+      }
+    },
     "block.setup.lifts": {
       "extractionState": "manual",
       "localizations": {
@@ -50760,37 +50795,37 @@
         }
       }
     },
-    "block.setup.liftsHint": {
+    "block.setup.liftsLimit": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Up to 3 barbell squats, bench presses, deadlifts or overhead presses. Each gets a top set and back-off sets; the rest of the program carries on."
+            "value": "Up to 3"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En fazla 3 halter squat, bench press, deadlift veya overhead press. Her biri bir zirve set ve geri çekilme setleri alır; programın geri kalanı devam eder."
+            "value": "En fazla 3"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bis zu 3 Langhantel-Kniebeugen, Bankdrück-, Kreuzheben- oder Überkopfdrück-Übungen. Jede bekommt einen Topsatz und Back-off-Sätze; der Rest des Programms läuft weiter."
+            "value": "Bis zu 3"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jusqu'à 3 squats, développés couchés, soulevés de terre ou développés militaires à la barre. Chacun reçoit une série lourde et des séries allégées ; le reste du programme continue."
+            "value": "3 au maximum"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hasta 3 sentadillas, press de banca, pesos muertos o press militar con barra. Cada uno recibe una serie principal y series de descarga; el resto del programa sigue igual."
+            "value": "Hasta 3"
           }
         }
       }
