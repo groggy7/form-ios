@@ -14152,7 +14152,8 @@ final class AuditSessionInsightsTests: XCTestCase {
         ]
         let insights = SessionHistoryInsightsCache().get(exercise: exercise, history: history, unit: .kg,
             scope: .init(sessionId: "resuming", programId: "new-program", workoutId: "new-day"))
-        XCTAssertEqual(insights.previousWorkingSets, latest, "Gaps stay gaps and a resumed session cannot compare against itself")
+        // Sets pair by order, as the coach reads them (sets 1 and 3 become 1 and 2), and a resumed session cannot compare against itself.
+        XCTAssertEqual(insights.previousWorkingSets, [SessionSetLog(setNumber: 1, weightKg: 80, reps: 8), SessionSetLog(setNumber: 2, weightKg: 75, reps: 6)])
     }
 }
 
